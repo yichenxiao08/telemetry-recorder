@@ -140,3 +140,44 @@ func TestContextPaddingBoundaries(t *testing.T) {
 		t.Fatalf("padding boundaries: %+v", detail.Context)
 	}
 }
+
+func TestContextBackfillAndChangedPaddingOnRestart(t *testing.T) {
+	ctx := context.Background()
+	path := filepath.Join(t.TempDir(), "restart-context.db")
+	options := Options{QueueSize: 2, IdleTimeout: time.Second, SweepInterval: time.Hour, ContextBefore: 30 * time.Second}
+	s, err := Open(ctx, path, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	span := fixture("span", "span", "run", "app", int64(100*time.Second), int64(101*time.Second))
+	span.Resource.Attrs = map[string]any{"host.name": "host-a"}
+	inside := fixture("inside", "metric", "", "host", int64(100*time.Second), int64(100*time.Second))
+	inside.Resource.Attrs = map[string]any{"host.name": "host-a"}
+	padding := inside
+	padding.ID = "padding"
+	padding.TS = int64(75 * time.Second)
+	padding.End = padding.TS
+	if err = s.Submit(ctx, model.Batch{Signals: []model.Signal{span, inside, padding}}); err != nil {
+		t.Fatal(err)
+	}
+	if err = s.Close(); err != nil {
+		t.Fatal(err)
+	}
+	options.ContextBefore = 0
+	s, err = Open(ctx, path, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := s.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
+	detail, err := s.Show(ctx, "run")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(detail.Context) != 1 || detail.Context[0].ID != "inside" || len(detail.Context[0].ContextMatches) != 1 {
+		t.Fatalf("restart retained stale padded links: %+v", detail.Context)
+	}
+}
