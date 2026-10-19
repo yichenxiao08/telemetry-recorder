@@ -1,0 +1,18 @@
+File: ingestbench.exe
+Build ID: <temp>\go-build1480951348\b001\exe\ingestbench.exe2026-10-19 13:19:58.4606316 -0400 EDT
+Type: alloc_space
+Time: 2026-10-19 13:21:08 EDT
+Showing nodes accounting for 2206.66MB, 69.31% of 3183.76MB total
+Dropped 256 nodes (cum <= 15.92MB)
+Showing top 10 nodes out of 135
+      flat  flat%   sum%        cum   cum%
+  403.55MB 12.68% 12.68%   403.55MB 12.68%  reflect.unsafe_New
+  345.44MB 10.85% 23.53%   345.44MB 10.85%  bytes.Clone (inline)
+  334.18MB 10.50% 34.02%   929.82MB 29.21%  github.com/signalscout/signalscout/internal/store.(*Store).write
+  291.29MB  9.15% 43.17%  1496.51MB 47.00%  github.com/signalscout/signalscout/internal/intake.(*decoder).add
+  270.07MB  8.48% 51.65%   270.07MB  8.48%  reflect.mapassign_faststr0
+  153.04MB  4.81% 56.46%   153.04MB  4.81%  encoding/json/jsontext.(*decoderState).fetch
+  115.02MB  3.61% 60.07%   115.02MB  3.61%  google.golang.org/protobuf/internal/encoding/json.appendString
+  111.03MB  3.49% 63.56%   111.03MB  3.49%  encoding/json/jsontext.NewDecoder (inline)
+  102.03MB  3.20% 66.77%   102.03MB  3.20%  database/sql.driverArgsConnLocked
+   81.01MB  2.54% 69.31%   383.04MB 12.03%  google.golang.org/protobuf/encoding/protojson.encoder.marshalMessage

@@ -322,7 +322,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Replaying recorded OTLP fixtures from `testdata/` produces the expected runs, spans, events, and outcomes (golden-file tests).
 - Malformed payloads return 4xx and do not corrupt storage.
 - Backpressure works: when the write queue is full, intake returns 503 (tested).
-- Ingest throughput targets, measured **separately** on the same laptop: 5,000 spans/sec, 5,000 log records/sec, and 10,000 scalar metric points/sec. The existing `task benchmark-ingest` sends one signal kind at a time; it does not measure simultaneous combined capacity. Record minimum and median over all seed trials, retain misses, and do not tune during the three M1 review repeats. A target is met only when every trial reaches it. Simultaneous mixed-signal capacity remains unmeasured.
+- Ingest throughput targets on the same laptop are **simultaneous combined capacity**: 5,000 spans/sec plus 5,000 log records/sec plus 10,000 scalar metric points/sec. Retain the unchanged separate-signal `task benchmark-ingest` as a diagnostic (20,000 records/kind, batches of 256, seeds 1–5), and additionally measure all signals concurrently with `-combined`. Record minimum and median per signal, retain every miss, and require every signal in every seed to reach its target. Earlier separate-signal review results do not establish combined capacity; the three M1 review repeats were performed without tuning.
 
 ### M2: Web sample app and seeded failure #1
 

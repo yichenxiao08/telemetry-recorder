@@ -42,3 +42,15 @@ func TestMeasurementVerifiesPersistedCounts(t *testing.T) {
 		})
 	}
 }
+
+func TestCombinedMeasurementVerifiesEverySignal(t *testing.T) {
+	m, err := combinedTrial(context.Background(), 500, 256, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for kind := range targets {
+		if m.Counts[kind] <= 0 || m.Counts[kind] > int64(500*targets[kind]/5000) || m.Rates[kind] != float64(m.Counts[kind])/m.Elapsed || m.CommittedInWindow[kind] > int(m.Counts[kind]) {
+			t.Fatalf("invalid combined rate/count: %+v", m)
+		}
+	}
+}

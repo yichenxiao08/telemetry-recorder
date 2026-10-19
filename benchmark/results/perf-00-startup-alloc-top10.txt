@@ -1,0 +1,17 @@
+File: startup-before.exe
+Build ID: <repo>\.cache\performance\startup-before.exe2026-10-19 13:21:12.40587 -0400 EDT
+Type: alloc_space
+Time: 2026-10-19 13:22:20 EDT
+Showing nodes accounting for 6306.48kB, 100% of 6306.48kB total
+Showing top 10 nodes out of 70
+      flat  flat%   sum%        cum   cum%
+ 1538.05kB 24.39% 24.39%  1538.05kB 24.39%  runtime.mallocgc
+ 1536.05kB 24.36% 48.75%  1536.05kB 24.36%  modernc.org/memory.mmap
+ 1184.27kB 18.78% 67.52%  1184.27kB 18.78%  runtime/pprof.StartCPUProfile
+ 1024.02kB 16.24% 83.76%  1024.02kB 16.24%  modernc.org/memory.unmap (inline)
+  512.05kB  8.12% 91.88%   512.05kB  8.12%  modernc.org/sqlite.interruptOnDone.func1
+  512.03kB  8.12%   100%   512.03kB  8.12%  regexp/syntax.(*parser).collapse
+         0     0%   100%  2560.07kB 40.59%  database/sql.(*DB).execDC
+         0     0%   100%  2560.07kB 40.59%  database/sql.(*DB).execDC.func2
+         0     0%   100%  2560.07kB 40.59%  database/sql.(*Tx).ExecContext
+         0     0%   100%  2560.07kB 40.59%  database/sql.ctxDriverExec

@@ -1,0 +1,116 @@
+Total: 72.21s
+ROUTINE ======================== github.com/signalscout/signalscout/internal/store.(*Store).write in <repo>\internal\store\store.go
+      60ms     58.21s (flat, cum) 80.61% of Total
+         .          .    359:func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) error {
+         .       30ms    360:	tx, err := s.writer.BeginTx(ctx, nil)
+         .          .    361:	if err != nil {
+         .          .    362:		return fmt.Errorf("begin ingest: %w", err)
+         .          .    363:	}
+         .          .    364:	defer func() { _ = tx.Rollback() }()
+         .          .    365:	states := map[string]runs.State{}
+         .          .    366:	resourcesWritten := map[string]bool{}
+         .          .    367:	runResources := map[string]map[string]bool{}
+         .          .    368:	var ambientIDs, closedIDs []string
+         .          .    369:	resourceStmt, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO resources VALUES(?,?,?)")
+         .          .    370:	if err != nil {
+         .          .    371:		return fmt.Errorf("prepare resources: %w", err)
+         .          .    372:	}
+         .          .    373:	defer func() { _ = resourceStmt.Close() }()
+         .          .    374:	signalStmt, err := tx.PrepareContext(ctx, `INSERT INTO signals VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(evidence_id) DO UPDATE SET data=excluded.data,received_at=excluded.received_at,ts_ns=excluded.ts_ns,end_ns=excluded.end_ns,resource_id=excluded.resource_id WHERE signals.run_id=excluded.run_id AND signals.kind=excluded.kind`)
+         .          .    375:	if err != nil {
+         .          .    376:		return fmt.Errorf("prepare signals: %w", err)
+         .          .    377:	}
+         .          .    378:	defer func() { _ = signalStmt.Close() }()
+      40ms       40ms    379:	for _, signal := range batch.Signals {
+         .          .    380:		id, domain := runs.Identity(signal)
+         .          .    381:		signal.RunID = id
+         .          .    382:		if id == "" && (signal.Kind == "log" || signal.Kind == "metric") {
+         .          .    383:			ambientIDs = append(ambientIDs, signal.ID)
+         .          .    384:		}
+         .          .    385:		if id != "" {
+         .          .    386:			state, ok := states[id]
+         .          .    387:			if !ok {
+         .      310ms    388:				state, err = loadState(ctx, tx, id)
+         .          .    389:				if err != nil {
+         .          .    390:					return err
+         .          .    391:				}
+         .          .    392:			}
+         .          .    393:			if state.Run.ID != "" && state.Run.Domain != domain {
+         .          .    394:				return fmt.Errorf("run ID %q has conflicting domains", id)
+         .          .    395:			}
+         .      110ms    396:			state = runs.Observe(state, signal, now, 0)
+         .          .    397:			// The root may have just supplied the workload for threshold lookup.
+         .          .    398:			state.Run.Outcome = state.Outcome(s.options.Thresholds[state.Run.Workload])
+         .       50ms    399:			states[id] = state
+         .          .    400:			if signal.Kind == "span" && runResources[id] == nil {
+         .          .    401:				runResources[id] = map[string]bool{}
+         .          .    402:			}
+         .          .    403:			if signal.Kind == "span" {
+         .       10ms    404:				runResources[id][signal.Resource.ID] = true
+         .          .    405:			}
+         .          .    406:		}
+         .          .    407:		// Resources are immutable by content identity. Write each once per batch,
+         .          .    408:		// rather than doing the same insert for every span/log/point.
+         .          .    409:		if !resourcesWritten[signal.Resource.ID] {
+         .       10ms    410:			attrs, err := json.Marshal(signal.Resource.Attrs)
+         .          .    411:			if err != nil {
+         .          .    412:				return fmt.Errorf("encode resource: %w", err)
+         .          .    413:			}
+         .      140ms    414:			if _, err = resourceStmt.ExecContext(ctx, signal.Resource.ID, string(attrs), string(signal.Resource.Raw)); err != nil {
+         .          .    415:				return fmt.Errorf("write resource: %w", err)
+         .          .    416:			}
+         .          .    417:			resourcesWritten[signal.Resource.ID] = true
+         .          .    418:		}
+         .          .    419:		// Resource content already lives in resources. Persist its reference,
+         .          .    420:		// then restore full resource metadata in readers instead of duplicating it.
+         .          .    421:		stored := signal
+         .          .    422:		stored.Resource = model.Resource{ID: signal.Resource.ID}
+         .      1.20s    423:		data, err := json.Marshal(stored)
+         .          .    424:		if err != nil {
+         .          .    425:			return fmt.Errorf("encode signal: %w", err)
+         .          .    426:		}
+      20ms     21.70s    427:		written, writeErr := signalStmt.ExecContext(ctx, signal.ID, signal.Kind, id, signal.Resource.ID, signal.TS, signal.End, now.UnixNano(), string(data))
+         .          .    428:		if writeErr != nil {
+         .          .    429:			return fmt.Errorf("write signal: %w", writeErr)
+         .          .    430:		}
+         .       10ms    431:		changed, err := written.RowsAffected()
+         .          .    432:		if err != nil {
+         .          .    433:			return fmt.Errorf("check signal write: %w", err)
+         .          .    434:		}
+         .          .    435:		if changed == 0 {
+         .          .    436:			return fmt.Errorf("evidence %q cannot change run ownership or kind", signal.ID)
+         .          .    437:		}
+         .          .    438:	}
+         .          .    439:	for _, state := range states {
+         .      530ms    440:		if err = saveState(ctx, tx, state); err != nil {
+         .          .    441:			return err
+         .          .    442:		}
+         .          .    443:		if state.Run.Closed {
+         .          .    444:			closedIDs = append(closedIDs, state.Run.ID)
+         .          .    445:		}
+         .          .    446:	}
+         .          .    447:	// Track only pairs from this batch; scanning retained history on every
+         .          .    448:	// commit would make ingest cost grow with database size.
+         .          .    449:	if len(runResources) > 0 {
+         .          .    450:		pairs, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO run_resources VALUES(?,?)")
+         .          .    451:		if err != nil {
+         .          .    452:			return fmt.Errorf("prepare resource links: %w", err)
+         .          .    453:		}
+         .          .    454:		defer func() { _ = pairs.Close() }()
+         .          .    455:		for id, resources := range runResources {
+         .       10ms    456:			for resourceID := range resources {
+         .      180ms    457:				if _, err = pairs.ExecContext(ctx, id, resourceID); err != nil {
+         .          .    458:					return fmt.Errorf("track run resource: %w", err)
+         .          .    459:				}
+         .          .    460:			}
+         .          .    461:		}
+         .          .    462:	}
+         .     21.88s    463:	if err = s.refreshContext(ctx, tx, closedIDs, ambientIDs); err != nil {
+         .          .    464:		return err
+         .          .    465:	}
+         .        12s    466:	if err = tx.Commit(); err != nil {
+         .          .    467:		return fmt.Errorf("commit ingest: %w", err)
+         .          .    468:	}
+         .          .    469:	for id, state := range states {
+         .          .    470:		if state.Run.Closed {
+         .          .    471:			delete(s.open, id)

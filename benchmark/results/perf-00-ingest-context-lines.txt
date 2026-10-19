@@ -1,0 +1,54 @@
+Total: 72.21s
+ROUTINE ======================== github.com/signalscout/signalscout/internal/store.(*Store).refreshContext in <repo>\internal\store\store.go
+         0     22.14s (flat, cum) 30.66% of Total
+         .          .    479:func (s *Store) refreshContext(ctx context.Context, tx *sql.Tx, runIDs, signalIDs []string) error {
+         .          .    480:	for _, scope := range []struct {
+         .          .    481:		column string
+         .          .    482:		ids    []string
+         .          .    483:	}{{"r.run_id", runIDs}, {"signal.evidence_id", signalIDs}} {
+         .          .    484:		if len(scope.ids) == 0 {
+         .          .    485:			continue
+         .          .    486:		}
+         .       20ms    487:		data, err := json.Marshal(scope.ids)
+         .          .    488:		if err != nil {
+         .          .    489:			return fmt.Errorf("encode context scope: %w", err)
+         .          .    490:		}
+         .          .    491:		if scope.column == "r.run_id" {
+         .          .    492:			// A late span can change the qualifying resources. Rebuild only those
+         .          .    493:			// runs so provenance cannot keep a resource that no longer served it.
+         .       20ms    494:			if _, err = tx.ExecContext(ctx, "DELETE FROM context_links WHERE run_id IN (SELECT value FROM json_each(?))", string(data)); err != nil {
+         .          .    495:				return fmt.Errorf("refresh changed run context: %w", err)
+         .          .    496:			}
+         .          .    497:		}
+         .     22.10s    498:		if err = s.refreshContextWhere(ctx, tx, scope.column+" IN (SELECT value FROM json_each(?))", []any{string(data)}); err != nil {
+         .          .    499:			return err
+         .          .    500:		}
+         .          .    501:	}
+         .          .    502:	return nil
+         .          .    503:}
+ROUTINE ======================== github.com/signalscout/signalscout/internal/store.(*Store).refreshContextWhere in <repo>\internal\store\store.go
+         0     22.10s (flat, cum) 30.61% of Total
+         .          .    523:func (s *Store) refreshContextWhere(ctx context.Context, tx *sql.Tx, scope string, scopeArgs []any) error {
+         .          .    524:	rules := []struct{ name, predicate string }{
+         .          .    525:		{"exact_resource", "ambient.resource_id=source.resource_id"},
+         .          .    526:		{"host.name", `json_type(source.attrs,'$."host.name"')='text' AND json_extract(source.attrs,'$."host.name"')<>'' AND json_type(ambient.attrs,'$."host.name"')='text' AND json_extract(ambient.attrs,'$."host.name"')=json_extract(source.attrs,'$."host.name"')`},
+         .          .    527:		{"service.instance.id", `json_type(source.attrs,'$."service.instance.id"')='text' AND json_extract(source.attrs,'$."service.instance.id"')<>'' AND json_type(ambient.attrs,'$."service.instance.id"')='text' AND json_extract(ambient.attrs,'$."service.instance.id"')=json_extract(source.attrs,'$."service.instance.id"')`},
+         .          .    528:	}
+         .          .    529:	for _, rule := range rules {
+         .          .    530:		// The predicate comes only from the fixed rules above, never from input.
+         .          .    531:		from := ` FROM runs r JOIN run_resources rr ON rr.run_id=r.run_id
+         .          .    532:		JOIN resources source ON source.resource_id=rr.resource_id
+         .          .    533:		JOIN resources ambient ON ` + rule.predicate + `
+         .          .    534:		JOIN signals signal ON signal.resource_id=ambient.resource_id AND signal.run_id='' AND signal.kind IN ('log','metric')
+         .          .    535:		AND signal.ts_ns>=r.started_at-? AND signal.ts_ns<=r.ended_at+?
+         .          .    536:		WHERE r.closed=1 AND (` + scope + `) AND EXISTS(SELECT 1 FROM signals span WHERE span.run_id=r.run_id AND span.kind='span' AND span.resource_id=source.resource_id)`
+         .          .    537:		args := append([]any{int64(s.options.ContextBefore), int64(s.options.ContextAfter)}, scopeArgs...)
+         .     11.24s    538:		if _, err := tx.ExecContext(ctx, "INSERT OR IGNORE INTO context_links SELECT r.run_id,signal.evidence_id"+from, args...); err != nil {
+         .          .    539:			return fmt.Errorf("attach context %s: %w", rule.name, err)
+         .          .    540:		}
+         .     10.86s    541:		if _, err := tx.ExecContext(ctx, "INSERT OR IGNORE INTO context_matches SELECT r.run_id,signal.evidence_id,?,source.resource_id"+from, append([]any{rule.name}, args...)...); err != nil {
+         .          .    542:			return fmt.Errorf("record context rule %s: %w", rule.name, err)
+         .          .    543:		}
+         .          .    544:	}
+         .          .    545:	return nil
+         .          .    546:}

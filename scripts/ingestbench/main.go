@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -243,13 +244,27 @@ func run(ctx context.Context, count, batchSize, seeds int, out string) error {
 	return nil
 }
 
-func command() error {
+func command() (resultErr error) {
 	count := flag.Int("count", 20000, "Records per signal and seed")
 	batch := flag.Int("batch-size", 256, "Records per HTTP request")
 	seeds := flag.Int("seeds", 5, "Fixed seeds 1..N (N >= 5)")
 	out := flag.String("out", filepath.Join("benchmark", "results", "ingest.json"), "Result JSON path")
 	profilePath := flag.String("cpuprofile", "", "Optional CPU profile path for diagnosing a failed measurement")
+	allocPath := flag.String("allocprofile", "", "Optional cumulative allocation profile (includes setup and shutdown)")
+	combined := flag.Bool("combined", false, "Offer all signals simultaneously at 5000/5000/10000 per second; metric count is twice count")
 	flag.Parse()
+	if *allocPath != "" {
+		defer func() {
+			file, err := os.Create(*allocPath)
+			if err == nil {
+				err = pprof.Lookup("allocs").WriteTo(file, 0)
+				err = errors.Join(err, file.Close())
+			}
+			if err != nil {
+				resultErr = errors.Join(resultErr, fmt.Errorf("write allocation profile: %w", err))
+			}
+		}()
+	}
 	if *profilePath != "" {
 		file, err := os.Create(*profilePath)
 		if err != nil {
@@ -260,6 +275,9 @@ func command() error {
 			return fmt.Errorf("start CPU profile: %w", err)
 		}
 		defer pprof.StopCPUProfile()
+	}
+	if *combined {
+		return runCombined(context.Background(), *count, *batch, *seeds, *out)
 	}
 	return run(context.Background(), *count, *batch, *seeds, *out)
 }

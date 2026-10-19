@@ -1,0 +1,13 @@
+{
+  "status": "aborted_incomplete_harness_attempt",
+  "offered_window_seconds": 10,
+  "intended_records": {
+    "log": 50000,
+    "metric": 100000,
+    "span": 50000
+  },
+  "completed_seeds": 0,
+  "elapsed_wall_seconds": 365.0071573,
+  "process_cpu_seconds": 342.5625,
+  "reason": "Initial new combined harness continued sending its entire unsent workload after the offered window. No complete trial or valid throughput result was produced. Replaced by a fixed-window bounded exporter that records unsent work as a target miss; unchanged separate benchmark is unaffected."
+}

@@ -1,0 +1,19 @@
+File: ingestbench.exe
+Build ID: <temp>\go-build1480951348\b001\exe\ingestbench.exe2026-10-19 13:19:58.4606316 -0400 EDT
+Type: cpu
+Time: 2026-10-19 13:19:59 EDT
+Duration: 68.95s, Total samples = 72.21s (104.73%)
+Showing nodes accounting for 44.59s, 61.75% of 72.21s total
+Dropped 1355 nodes (cum <= 0.36s)
+Showing top 10 nodes out of 261
+      flat  flat%   sum%        cum   cum%
+    30.67s 42.47% 42.47%     30.92s 42.82%  runtime.cgocall
+     4.83s  6.69% 49.16%      4.83s  6.69%  runtime.memmove
+     1.64s  2.27% 51.43%      1.64s  2.27%  runtime.osyield.func1
+     1.34s  1.86% 53.29%      1.34s  1.86%  internal/sync.(*Mutex).Lock (inline)
+     1.33s  1.84% 55.13%     39.98s 55.37%  modernc.org/sqlite/lib._sqlite3VdbeExec
+     1.21s  1.68% 56.81%      1.22s  1.69%  internal/sync.(*Mutex).Unlock (inline)
+     1.12s  1.55% 58.36%      6.61s  9.15%  modernc.org/sqlite/lib._sqlite3BtreeIndexMoveto
+     1.03s  1.43% 59.78%      2.99s  4.14%  modernc.org/sqlite/lib._sqlite3VdbeRecordCompareWithSkip
+     0.76s  1.05% 60.84%      0.76s  1.05%  modernc.org/libc.Xmemcmp (inline)
+     0.66s  0.91% 61.75%      0.66s  0.91%  modernc.org/libc.(*TLS).Free

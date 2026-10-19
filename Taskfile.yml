@@ -25,12 +25,18 @@ tasks:
     env:
       CGO_ENABLED: '0'
     cmds:
-      - go run ./scripts/ingestbench
+      - go run ./scripts/ingestbench {{.CLI_ARGS}}
   shop-demo:
     desc: Build and verify the shop pool-exhaustion demo with native intake
     deps: [build]
     cmds:
       - go run ./scripts/shopdemo {{.CLI_ARGS}}
+  benchmark-store:
+    desc: Measure seeded 1M-record storage growth and bounded SQL (not M4b pages)
+    env:
+      CGO_ENABLED: '0'
+    cmds:
+      - go run ./scripts/storebench {{.CLI_ARGS}}
   shop-load:
     desc: Send fixed-seed checkout traffic to an already running shop
     cmds:

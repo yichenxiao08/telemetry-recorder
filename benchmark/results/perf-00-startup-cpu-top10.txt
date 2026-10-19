@@ -1,0 +1,19 @@
+File: startup-before.exe
+Build ID: <repo>\.cache\performance\startup-before.exe2026-10-19 13:21:12.40587 -0400 EDT
+Type: cpu
+Time: 2026-10-19 13:21:13 EDT
+Duration: 67.64s, Total samples = 66000ms (97.58%)
+Showing nodes accounting for 51970ms, 78.74% of 66000ms total
+Dropped 223 nodes (cum <= 330ms)
+Showing top 10 nodes out of 149
+      flat  flat%   sum%        cum   cum%
+   35780ms 54.21% 54.21%    36010ms 54.56%  runtime.cgocall
+    3910ms  5.92% 60.14%     3920ms  5.94%  modernc.org/libc.Xmemcmp (inline)
+    2720ms  4.12% 64.26%    62530ms 94.74%  modernc.org/sqlite/lib._sqlite3VdbeExec
+    2410ms  3.65% 67.91%     2420ms  3.67%  internal/sync.(*Mutex).Lock (inline)
+    1760ms  2.67% 70.58%     1770ms  2.68%  internal/sync.(*Mutex).Unlock (inline)
+    1740ms  2.64% 73.21%    21360ms 32.36%  modernc.org/sqlite/lib._sqlite3BtreeIndexMoveto
+    1440ms  2.18% 75.39%     2980ms  4.52%  modernc.org/sqlite/lib._sqlite3VdbeRecordCompareWithSkip
+     790ms  1.20% 76.59%     3370ms  5.11%  modernc.org/sqlite/lib._walFindFrame
+     730ms  1.11% 77.70%      730ms  1.11%  modernc.org/libc.(*TLS).Alloc
+     690ms  1.05% 78.74%     4430ms  6.71%  modernc.org/sqlite/lib._vdbeRecordCompareString
