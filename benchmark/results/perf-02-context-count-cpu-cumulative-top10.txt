@@ -1,0 +1,19 @@
+File: storebench.exe
+Build ID: <temp>\go-build1872165761\b001\exe\storebench.exe2026-10-19 16:40:26.4550392 -0400 EDT
+Type: cpu
+Time: 2026-10-19 16:40:26 EDT
+Duration: 60s, Total samples = 58.72s (97.87%)
+Showing nodes accounting for 0, 0% of 58.72s total
+Dropped 89 nodes (cum <= 0.29s)
+Showing top 10 nodes out of 90
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).QueryContext
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).QueryContext.func1
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).QueryRowContext (inline)
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).query
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).queryDC
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).queryDC.func1
+         0     0%     0%     57.59s 98.08%  database/sql.(*DB).retry
+         0     0%     0%     57.59s 98.08%  database/sql.ctxDriverQuery
+         0     0%     0%     57.59s 98.08%  database/sql.withLock
+         0     0%     0%     57.59s 98.08%  main.main

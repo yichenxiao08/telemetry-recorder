@@ -1,0 +1,6 @@
+{
+  "sql": "SELECT count(*) FROM context_matches",
+  "seconds": 60.0003372,
+  "error": "context deadline exceeded",
+  "method": "Read-only whole-dataset provenance count, one-minute profiling deadline. Timeout is failed/censored; a missing count is not zero. This is a storage-cardinality diagnostic, not a bounded explorer query."
+}

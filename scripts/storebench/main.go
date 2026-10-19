@@ -127,6 +127,8 @@ type report struct {
 	ContextObjectType   string           `json:"context_links_object_type"`
 	ContextCountSeconds float64          `json:"context_count_seconds"`
 	Queries             []timing         `json:"queries"`
+	ContextPlan         []string         `json:"context_count_query_plan"`
+	ContextStorageBytes *int64           `json:"context_btree_bytes,omitempty"`
 }
 
 func queries(total int, seed int64) []query {
@@ -140,7 +142,7 @@ func queries(total int, seed int64) []query {
 	}
 }
 
-func inspect(ctx context.Context, path string, total int, seed int64) (report, error) {
+func inspect(ctx context.Context, path string, total int, seed int64, skipContext bool) (report, error) {
 	r := report{Database: filepath.ToSlash(path), Seed: seed, Go: runtime.Version(), Counts: map[string]int64{}, Method: "Seeded real-schema storage fixture (not an HTTP throughput measurement): 25% spans (10/trace), 25% logs (one quarter trace-correlated), 50% gauge points; ten services on two hosts, every fourth metric batch host-only. One-second event spacing, 30s/5s context padding. Full raw synthetic records, durable writer batches of 256 and shutdown finalization. Query clock includes query, row decoding, iteration and close, excludes EXPLAIN. Five repeats on one read-only connection; first is connection-cold, OS filesystem caches are not flushed. Required time windows and LIMIT 100. File size is after all writers close/checkpoint; free pages reported separately. Context view counts are logical links, scope counts are physical rows."}
 	absolute, err := filepath.Abs(path)
 	if err != nil {
@@ -167,7 +169,14 @@ func inspect(ctx context.Context, path string, total int, seed int64) (report, e
 	if err = db.QueryRowContext(ctx, "PRAGMA freelist_count").Scan(&r.FreePages); err != nil {
 		return r, err
 	}
+	var contextBytes int64
+	if err = db.QueryRowContext(ctx, "SELECT sum(pgsize) FROM dbstat WHERE name IN ('context_scopes','sqlite_autoindex_context_scopes_1')").Scan(&contextBytes); err == nil {
+		r.ContextStorageBytes = &contextBytes
+	}
 	for _, table := range []string{"signals", "runs", "resources", "context_scopes", "context_links", "context_matches"} {
+		if skipContext && (table == "context_links" || table == "context_matches") {
+			continue
+		}
 		var exists int
 		if err = db.QueryRowContext(ctx, "SELECT count(*) FROM sqlite_master WHERE name=?", table).Scan(&exists); err != nil {
 			return r, err
@@ -181,6 +190,7 @@ func inspect(ctx context.Context, path string, total int, seed int64) (report, e
 			return r, err
 		}
 		r.Counts[table] = count
+		fmt.Printf("count %s=%d seconds=%.3f\n", table, count, time.Since(start).Seconds())
 		if strings.HasPrefix(table, "context_") {
 			r.ContextCountSeconds += time.Since(start).Seconds()
 		}
@@ -189,6 +199,27 @@ func inspect(ctx context.Context, path string, total int, seed int64) (report, e
 		return r, fmt.Errorf("fixture has %d signals, expected %d", r.Counts["signals"], total)
 	}
 	if err = db.QueryRowContext(ctx, "SELECT type FROM sqlite_master WHERE name='context_links'").Scan(&r.ContextObjectType); err != nil {
+		return r, err
+	}
+	if skipContext {
+		r.Method += " Logical context view counts omitted in this query-only report, not reported as zero. Exact counts are measured separately."
+	}
+	plan, err := db.QueryContext(ctx, "EXPLAIN QUERY PLAN SELECT count(*) FROM context_matches")
+	if err != nil {
+		return r, err
+	}
+	for plan.Next() {
+		var a, b, c int
+		var line string
+		if err = plan.Scan(&a, &b, &c, &line); err != nil {
+			_ = plan.Close()
+			return r, err
+		}
+		r.ContextPlan = append(r.ContextPlan, line)
+	}
+	err = plan.Err()
+	_ = plan.Close()
+	if err != nil {
 		return r, err
 	}
 	for _, q := range queries(total, seed) {
@@ -272,11 +303,28 @@ func run() error {
 	count := flag.Int("count", 1000000, "Signal count (multiple of four)")
 	seed := flag.Int64("seed", 1, "Published fixture seed")
 	create := flag.Bool("create", false, "Generate fixture; refuses existing destination")
+	upgrade := flag.Bool("upgrade", false, "Run normal single-writer startup and close before read-only measurements")
 	audit := flag.Bool("audit-context", false, "Hash complete raw data and context sets in an existing closed database; do not migrate")
+	skipContext := flag.Bool("skip-context-counts", false, "Query-only measurement: omit global logical context counts rather than claiming zero")
+	contextProfile := flag.Bool("profile-context-count", false, "Profile a global logical context count for at most one minute; expiration is a failed measurement")
+	cpu := flag.String("cpuprofile", "", "Context-count CPU profile path")
+	alloc := flag.String("allocprofile", "", "Context-count allocation profile path")
 	flag.Parse()
 	ctx := context.Background()
+	if *contextProfile {
+		return profileContext(ctx, *path, *out, *cpu, *alloc)
+	}
 	if *audit {
 		return auditContext(ctx, *path, *out)
+	}
+	if *upgrade {
+		s, err := store.Open(ctx, *path, store.Options{QueueSize: 64, IdleTimeout: time.Hour, SweepInterval: time.Hour, ContextBefore: 30 * time.Second, ContextAfter: 5 * time.Second})
+		if err != nil {
+			return err
+		}
+		if err = s.Close(); err != nil {
+			return err
+		}
 	}
 	var seconds float64
 	var err error
@@ -286,7 +334,7 @@ func run() error {
 			return err
 		}
 	}
-	r, err := inspect(ctx, *path, *count, *seed)
+	r, err := inspect(ctx, *path, *count, *seed, *skipContext)
 	if err != nil {
 		return err
 	}

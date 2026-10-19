@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 )
 
@@ -92,7 +93,14 @@ func generate(directory, out string) error {
 			return err
 		}
 		fixtures[path] = r
-		fmt.Fprintf(&b, "| %s | %d | %d | %d | %d | %d |\n", filepath.Base(path), r.Bytes, r.Bytes-r.PageSize*r.Free, r.Counts["context_scopes"], r.Counts["context_links"], r.Counts["context_matches"])
+		cell := func(name string) string {
+			n, ok := r.Counts[name]
+			if !ok {
+				return "not measured"
+			}
+			return strconv.FormatInt(n, 10)
+		}
+		fmt.Fprintf(&b, "| %s | %d | %d | %s | %s | %s |\n", filepath.Base(path), r.Bytes, r.Bytes-r.PageSize*r.Free, cell("context_scopes"), cell("context_links"), cell("context_matches"))
 	}
 	fmt.Fprintln(&b, "\n| Measurement | Query | First ms | Median ms | Maximum ms | Every repeat <500 ms |\n|---|---|---:|---:|---:|---|")
 	for _, path := range paths {

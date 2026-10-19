@@ -1,0 +1,17 @@
+File: storebench.exe
+Build ID: <temp>\go-build1872165761\b001\exe\storebench.exe2026-10-19 16:40:26.4550392 -0400 EDT
+Type: alloc_space
+Time: 2026-10-19 16:41:26 EDT
+Showing nodes accounting for 6969.31kB, 100% of 6969.31kB total
+Showing top 10 nodes out of 39
+      flat  flat%   sum%        cum   cum%
+ 2560.52kB 36.74% 36.74%  2560.52kB 36.74%  runtime/pprof.allFrames
+ 1184.27kB 16.99% 53.73%  1184.27kB 16.99%  runtime/pprof.StartCPUProfile
+ 1032.02kB 14.81% 68.54%  1032.02kB 14.81%  runtime/pprof.(*profMap).lookup
+  655.29kB  9.40% 77.94%   655.29kB  9.40%  compress/flate.NewWriter (inline)
+     513kB  7.36% 85.30%      513kB  7.36%  runtime.mallocgc
+  512.16kB  7.35% 92.65%   512.16kB  7.35%  regexp/syntax.(*compiler).inst (inline)
+  512.05kB  7.35%   100%   512.05kB  7.35%  context.(*cancelCtx).Done
+         0     0%   100%   655.29kB  9.40%  compress/gzip.(*Writer).Write
+         0     0%   100%   512.05kB  7.35%  database/sql.(*DB).connectionOpener
+         0     0%   100%   512.16kB  7.35%  github.com/dustin/go-humanize.init.0

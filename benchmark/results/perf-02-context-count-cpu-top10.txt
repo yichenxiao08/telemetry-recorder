@@ -1,0 +1,19 @@
+File: storebench.exe
+Build ID: <temp>\go-build1872165761\b001\exe\storebench.exe2026-10-19 16:40:26.4550392 -0400 EDT
+Type: cpu
+Time: 2026-10-19 16:40:26 EDT
+Duration: 60s, Total samples = 58720ms (97.87%)
+Showing nodes accounting for 48340ms, 82.32% of 58720ms total
+Dropped 89 nodes (cum <= 293.60ms)
+Showing top 10 nodes out of 90
+      flat  flat%   sum%        cum   cum%
+   31460ms 53.58% 53.58%    31840ms 54.22%  runtime.cgocall
+    5910ms 10.06% 63.64%    57590ms 98.08%  modernc.org/sqlite/lib._sqlite3VdbeExec
+    5140ms  8.75% 72.39%     5140ms  8.75%  modernc.org/libc.Xmemcmp (inline)
+    1680ms  2.86% 75.26%     4290ms  7.31%  modernc.org/sqlite/lib._jsonLookupStep
+     890ms  1.52% 76.77%     5420ms  9.23%  modernc.org/sqlite/lib._jsonCacheSearch
+     730ms  1.24% 78.01%     1040ms  1.77%  runtime.(*_panic).nextDefer
+     670ms  1.14% 79.16%      760ms  1.29%  modernc.org/sqlite/lib._btreeParseCellPtr
+     650ms  1.11% 80.26%      650ms  1.11%  modernc.org/libc.(*TLS).Free
+     620ms  1.06% 81.32%      620ms  1.06%  internal/sync.(*Mutex).Lock (inline)
+     590ms  1.00% 82.32%      590ms  1.00%  runtime.semawakeup

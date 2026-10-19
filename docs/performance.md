@@ -141,3 +141,34 @@ before/at/after chunk boundaries and duplicate updates across chunks.
 The unchanged separate benchmark now has minimum rates of 20,011 spans, 17,164
 logs and 16,893 points/sec. Every separate target is met; this alone does not
 establish simultaneous capacity. All raw trials remain in `perf-02-multirow-ingest`.
+
+The follow-up mixed-load CPU profile (`perf-02-combined-*`) shows statement
+preparation reduced to 2.63%, with Windows FlushFileBuffers at 30.39%, WriteFile
+17.53% and ReadFile 7.45%. Canonical OTLP JSON accounts for 7.24%. Thus the
+remaining combined limitation is primarily the durable storage path, not just
+decoding. No synchronous setting, WAL checkpoint policy, raw record fidelity or
+acknowledgment rule was relaxed.
+
+### 3. Preserve time-range join order in context views (migration 006)
+
+The first 1M-row fixture run completed storage but was interrupted before an
+inspection report was saved. The retained database was verified to contain
+exactly 1,000,000 signals, then measured read-only. Plans exposed the host and
+instance branches starting at ambient signals and scanning scopes inside that
+loop. A separate global provenance-count profile failed at its new one-minute
+diagnostic deadline: 98.08% of samples were in SQLite's VDBE, with JSON lookup
+and repeated comparison work. That count is missing/censored, not zero; this is
+not a relaxation of the 500 ms bounded-query target.
+
+Migration 006 fixes only join ordering: scopes, resources, then evidence through
+the indexed resource/run/time range. A plan test first failed (one of three
+branches used its time range), then passed for all three. On the same 1M-row
+file, complete counts now finish: 1,876,896 logical links in 15.80 seconds and
+3,484,277 provenance rows in 4.94 seconds, backed by only 51,562 physical scopes.
+These global counts are storage diagnostics, not bounded explorer queries.
+
+Before explorer indexes, bounded trace lookup takes up to 2,809.96 ms and
+template grouping up to 1,177.22 ms; both miss 500 ms and scan signals. Service
+and time filtering already meets the target. SQL, arguments, all five repeat
+timings and plans are retained in `perf-02-million-before-indexes` and
+`perf-03-million-context-plan`. No timings were substituted for the failures.
