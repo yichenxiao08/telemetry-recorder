@@ -8,12 +8,14 @@
 
 It targets intermittent failures: ones that pass on rerun, appear only under load, or show up after a change. The useful evidence is a comparison against passing runs, so history must be collected before the bug appears.
 
-The deliverable is a working system plus a reproducible benchmark with real measurements. The benchmark is the centerpiece; the viewer is deliberately minimal.
+Signal Scout is built on a **full telemetry store**: it keeps all the traces, logs, and metrics it receives (not only data attached to runs), and makes them searchable and correlated. **Runs are the lens** that organizes this data and provide the baselines for diffing. Broad telemetry is valuable because the cause of an intermittent failure is often *around* the run, not inside it (CPU saturation on a host, a connection-pool gauge, a warning log from another service). Signal Scout attaches that context to runs and feeds it into the diff engine.
+
+The deliverable is a working system plus a reproducible benchmark with real measurements. The benchmark is the centerpiece; the viewer and telemetry explorer are deliberately minimal.
 
 ### The core loop
 
 1. Instrumented apps emit standard OpenTelemetry (OTLP) data.
-2. Signal Scout groups telemetry into **runs** (one web request, one training job) and stores them.
+2. Signal Scout stores **all** telemetry (traces, logs, metrics), searchable on its own, and groups it into **runs** (one web request, one training job). Telemetry from the same services and hosts during a run's time window is attached to the run as **context**.
 3. Given one failing run and a baseline of passing runs of the same workload, the **diff engine** ranks what differed by how well it discriminates failure.
 4. An **evidence-grounded agent** proposes a hypothesis from the ranked diff, citing evidence IDs. A **verifier** checks every citation.
 5. A **benchmark** of seeded failures with known root causes measures all of this.
@@ -34,6 +36,7 @@ The deliverable is a working system plus a reproducible benchmark with real meas
 - An artifact store. Artifacts are references (URI + content hash) only; never copy large files.
 - A human diagnosis-time study.
 - Multi-tenant auth, user accounts, or cloud deployment.
+- A dashboard builder, alerting, or PromQL/LogQL compatibility. The telemetry explorer is for inspecting and correlating data, not for replacing Grafana. Do not out-build mature tools on breadth.
 
 ## 2. Tech stack (fixed unless a milestone says otherwise)
 
@@ -97,6 +100,8 @@ signalscout/
     model/                 # Run, Span, Event, MetricPoint, Artifact, Difference types
     runs/                  # run grouping, open-run tracking, outcome rules
     store/                 # SQLite access, migrations/ (embedded .sql), queries
+    telemetry/             # query layer over all spans/logs/metrics, service aggregates, context attachment
+    retention/             # TTL cleanup for ambient telemetry
     stats/                 # numeric helpers (median, MAD, quantile, CUSUM)
     diff/                  # feature extraction, alignment, scoring, ranking
     agent/                 # prompt building, LLMClient interface, mock, verifier
@@ -137,6 +142,8 @@ A **run** is one execution of a **workload** with a start, an end, and an outcom
 - **Spans**: causal, timed steps (requests, DB queries, training steps, data loading).
 - **Metrics**: periodic series (loss, queue depth, pool usage). Stored as `(name, t, value)` points.
 - **Events**: discrete occurrences (retry, error, config load, batch drawn).
+- **Logs**: log records, linked to a run by trace/span ID when present.
+- **Context telemetry**: metrics and logs from the same resources (service instance or host) during the run's time window, attached to the run by resource and time rather than by trace ID. Examples: host CPU, memory, pool-in-use gauges, warning logs from a neighboring service.
 
 ### Artifact references
 
@@ -163,13 +170,14 @@ A profile names the attributes that carry domain meaning without claiming domain
 
 ## 5. Storage schema (SQLite, initial)
 
+Run tables first, then the telemetry tables that hold every signal (including `metric_points`, defined below).
+
 ```sql
 runs(run_id TEXT PRIMARY KEY, workload TEXT, domain TEXT, started_at INTEGER, ended_at INTEGER,
      outcome TEXT, failure_marker TEXT, env TEXT /*JSON*/, config TEXT /*JSON*/, closed INTEGER)
 spans(span_id TEXT PRIMARY KEY, run_id TEXT, parent_span_id TEXT, name TEXT, service TEXT,
       start_ns INTEGER, end_ns INTEGER, duration_ms REAL, status TEXT, attrs TEXT /*JSON*/)
 events(event_id TEXT PRIMARY KEY, run_id TEXT, span_id TEXT, name TEXT, ts_ns INTEGER, attrs TEXT /*JSON*/)
-metric_points(run_id TEXT, name TEXT, ts_ns INTEGER, value REAL, attrs TEXT /*JSON*/)
 artifacts(artifact_id TEXT PRIMARY KEY, run_id TEXT, uri TEXT, content_hash TEXT, kind TEXT,
           redaction_status TEXT, retention TEXT)
 diff_results(diff_id TEXT PRIMARY KEY, failing_run_id TEXT, baseline_spec TEXT /*JSON*/,
@@ -177,6 +185,22 @@ diff_results(diff_id TEXT PRIMARY KEY, failing_run_id TEXT, baseline_spec TEXT /
 ```
 
 Add indexes on `(workload, outcome, started_at)` for runs and on `run_id` for spans, events, and metric points.
+
+### Telemetry tables (all signals, not only run-attached)
+
+```sql
+resources(resource_id TEXT PRIMARY KEY, service TEXT, instance TEXT, host TEXT, attrs TEXT /*JSON*/)
+logs(log_id TEXT PRIMARY KEY, resource_id TEXT, run_id TEXT /*nullable*/, trace_id TEXT, span_id TEXT,
+     ts_ns INTEGER, severity INTEGER, body TEXT, template TEXT, attrs TEXT /*JSON*/)
+metric_series(series_id TEXT PRIMARY KEY, resource_id TEXT, name TEXT, unit TEXT, kind TEXT, attrs TEXT /*JSON*/)
+metric_points(series_id TEXT, run_id TEXT /*nullable*/, ts_ns INTEGER, value REAL)
+```
+
+- Spans, logs, and metric points are all stored whether or not they belong to a run. `run_id` is nullable and set when grouping succeeds.
+- `logs.template` is a normalized message (numbers, IDs, UUIDs, and quoted strings replaced by placeholders) so recurring log patterns can be counted and compared. Keep the normalizer simple and tested.
+- Add indexes on `(resource_id, ts_ns)` for logs and `(series_id, ts_ns)` for metric points, and on `trace_id` for logs and spans.
+- **Retention:** telemetry not attached to any run (ambient) is deleted after a configurable TTL (default 7 days) by a periodic cleanup goroutine in `internal/retention`. Run-attached evidence is kept until the run is deleted. Provide optional per-signal drop rules (e.g. drop debug-level logs) in config.
+- **Context attachment:** when a run closes, link the logs and metric series of the resources that served it (resources seen in its spans) within its time window, with a small padding (default 30 s before start, 5 s after end). Store the links, not copies.
 
 ### Concurrency model
 
@@ -187,7 +211,7 @@ Add indexes on `(workload, outcome, started_at)` for runs and on `run_id` for sp
 
 ### Evidence IDs
 
-Stable strings shown to users and cited by the agent: `span:<id>`, `event:<id>`, `metric:<run_id>/<name>@<ts>`, `config:<run_id>/<key>`, `artifact:<id>`.
+Stable strings shown to users and cited by the agent: `span:<id>`, `event:<id>`, `log:<id>`, `series:<series_id>@<ts>`, `metric:<run_id>/<name>@<ts>`, `config:<run_id>/<key>`, `artifact:<id>`.
 
 ## 6. Diff engine design
 
@@ -214,6 +238,8 @@ All scores are normalized to [0, 1] so they can be ranked together. Document for
 4. **Event ordering change**: for event/span pairs that always occur in one order in baseline, flag a reversed order. Score by baseline consistency.
 5. **Config/env difference**: for each key, if the failing value differs from the baseline mode, score = fraction of baseline sharing the mode. Also report when the change coincides with a commit.
 6. **Metric divergence**: change-point detection on metric series (start with CUSUM or a two-window mean shift), compared to baseline series. Report the step/time of divergence and its lead time before the failure marker.
+7. **Context metric difference**: for each context metric series (CPU, memory, pool in use, queue depth), compare summary statistics over the failing run's window (max, mean, last value) to the same statistic over the baseline runs' windows, using the robust approach from latency. Ignore series with too little variance or too few points.
+8. **Context log difference**: compare log templates (and severity levels) present in the failing run's context window to the baseline windows. A template that is new or much more frequent in the failing window scores like a presence/count difference. Common templates (e.g. present in 30% of baseline windows) rank low as decoys.
 
 ### Ranking rules
 
@@ -287,6 +313,8 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Decode into internal models; write via the single-writer goroutine to SQLite with embedded migrations.
 - Implement run grouping and outcome rules for the web profile (trace-based) and the ML profile (run-ID attribute).
 - Implement idle-timeout finalization of runs and late-data attachment.
+- Store **all** logs and metric points (not only run-attached ones) using the telemetry tables above, with resource tracking, log template normalization, and the retention cleanup goroutine.
+- Implement context attachment when a run closes.
 - Document how to point an OpenTelemetry Collector (or an SDK directly) at Signal Scout, with a sample Collector config.
 - CLI: `signalscout serve`, `signalscout runs list`, `signalscout runs show <run_id>`.
 
@@ -294,7 +322,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Replaying recorded OTLP fixtures from `testdata/` produces the expected runs, spans, events, and outcomes (golden-file tests).
 - Malformed payloads return 4xx and do not corrupt storage.
 - Backpressure works: when the write queue is full, intake returns 503 (tested).
-- Ingest throughput of at least 5,000 spans/sec on a laptop, measured with a Go benchmark or load script. Record the number; do not tune beyond this yet.
+- Ingest throughput of at least 5,000 spans/sec combined with 5,000 log records/sec and 10,000 metric points/sec on a laptop, measured with a Go benchmark or load script. Record the number; do not tune beyond this yet.
 
 ### M2: Web sample app and seeded failure #1
 
@@ -334,6 +362,25 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - From the run list, a user can open the failing run, open its diff, and click a difference to reach the span in the timeline, all in the browser.
 - A short screen capture of this walkthrough is saved in `docs/`.
 
+### M4b: Telemetry explorer and context telemetry
+
+**Tasks**
+- Implement `internal/telemetry`: a query layer over spans, logs, and metrics with filters (service, name, attribute, severity, status, duration range, time range, trace ID) and pagination.
+- Viewer pages:
+  - **Service overview**: per service and route, request rate, error rate, and p50/p95/p99 latency over a chosen time range.
+  - **Span search**: filter and open any trace, even if it is not a classified run.
+  - **Log search**: text and severity search, template grouping with counts, and a "logs for this trace" link.
+  - **Metrics browser**: pick a series, view it as a simple line chart (inline SVG or canvas, vanilla JS).
+  - **Run context panel** on the run page: correlated logs and metrics for the run's window, with the failure marker shown on the time axis.
+- Implement the **context metric** and **context log** difference types in the diff engine (section 6, items 7 and 8) and show them in the diff view.
+- Query results must be bounded (limits and time ranges are required) so the explorer never scans the whole database by accident.
+
+**Acceptance**
+- On the M2 sample, the explorer shows request/error/latency by service, and searching logs for the failing trace ID returns its logs.
+- The run context panel shows the connection-pool gauge (or equivalent) for the failing run's window.
+- Context difference types have table-driven and property tests, and decoy templates rank below true causes.
+- Explorer queries over 1M stored rows return in under 500 ms for typical filters (record the numbers).
+
 ### M5: Benchmark harness and web failures
 
 **Tasks**
@@ -341,6 +388,8 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Build `cmd/ssbench`: for each failure, generate 20 to 50 passing runs plus failing run(s) against a Signal Scout instance, run the diff engine, and score top-1/top-3/top-5 and precision@k.
 - Add workload variation noise so baselines are not artificially clean.
 - Seed 6 to 8 web failures, for example: slow query under load, retry storm, misconfigured timeout, race between two services, dependency version regression, pool exhaustion (from M2), cache stampede, slow downstream dependency.
+- Include at least 2 failures whose root cause is visible **only in context telemetry**, not in the failing run's own spans (for example, CPU saturation from a noisy co-located process, a memory-growth gauge preceding GC pauses, or a warning log from a neighboring service).
+- Support an **ablation flag** that disables context telemetry in the diff engine, so the benchmark can measure its contribution.
 - Output machine-readable results to `benchmark/results/` and a generated markdown summary table.
 
 **Acceptance**
@@ -377,7 +426,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 ### M8: Overhead, redaction, and write-up
 
 **Tasks**
-- Overhead measurements on the web and ML samples: added request latency p50/p99, CPU, memory, and bytes stored per run, with sampling on and off.
+- Overhead measurements on the web and ML samples: added request latency p50/p99, CPU, memory, and bytes stored per run, and storage growth per hour at a fixed ingest rate with the default retention policy, with sampling on and off.
 - Redaction: scrubbing rules for common secrets and PII (tokens, emails, card-like numbers, auth headers, SQL literals) applied at intake, before storage. Plant known secrets in sample traffic and measure the leak rate.
 - Finalize `docs/run-spec.md`, `docs/adapter-guide.md` (including the robotics design note: why spans fit high-rate streams poorly and how the spec handles it with metric streams, event markers, and linked bag files), and `docs/benchmark.md`.
 - Adapter conformance suite in `adapters/conformance/`: OTLP fixtures plus a checker that validates an adapter's output against the run spec. Run it against the web and ML adapters.
@@ -394,6 +443,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 |---|---|
 | Top-k accuracy | Fraction of seeded failures whose true root-cause difference appears in the top k (1, 3, 5) of the ranked diff |
 | Precision@k | Fraction of the top k differences that are true causes or direct evidence of one |
+| Context ablation | Top-k accuracy with context telemetry on vs. off, especially on the context-only failures. This measures whether collecting broad telemetry actually helps. |
 | Agent root-cause hit rate | Fraction of failures where the agent's hypothesis matches the labeled root cause, for Signal Scout-grounded vs. log-grep vs. logs-added-after |
 | Citation validity rate | Fraction of agent citations that exist and support the claim |
 | Overhead | Added latency (p50/p99), CPU %, bytes per run, with and without sampling |
@@ -429,22 +479,24 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 ## 12. Definition of done for the whole project
 
 - Web and ML sample apps, each with at least 6 seeded failures.
-- Diff engine with documented scoring, evaluated by top-k accuracy over multiple seeds.
+- A telemetry store and minimal explorer over all traces, logs, and metrics, with retention.
+- Diff engine with documented scoring, evaluated by top-k accuracy over multiple seeds, including a context-telemetry ablation.
 - Agent layer with a deterministic verifier and a measured comparison against two baselines.
 - Overhead and redaction numbers from real measurements.
 - Published run spec, adapter guide, and benchmark methodology.
 - One command per demo and per benchmark that works from a clean checkout.
 
-## Implementation decisions and deviations
+## Implementation decisions and deviations (maintained by Codex; recorded after M1)
 
-- The supplied file was named `plan (1).md`; `plan.md` is the working source of truth. The original is preserved.
-- The owner namespace is unspecified, so the provisional module is `github.com/signalscout/signalscout`.
+> These record what was actually built. Where this section conflicts with the design sketches above (for example the schema in section 5), this section and the migrations in `internal/store/` are authoritative.
+
+- The owner namespace is unspecified, so the provisional module is `github.com/signalscout/signalscout`. Change it to the real GitHub path before publishing.
 - CI uses Go 1.27 (within the Go 1.22+ requirement) and golangci-lint v2.14, matching the native development tools. Lint checks formatting without changing files.
-- M1 adds resource identity, raw OTLP/scope metadata, ambient evidence, context associations, receipt timestamps and persisted grouping state to the initial schema. Context attaches only on exact resource and evidence-interval match; ownership stays separate.
+- M1 adds resource identity, raw OTLP/scope metadata, ambient evidence, context associations, receipt timestamps and persisted grouping state to the initial schema. Context currently attaches only on exact resource and evidence-interval match, with ownership kept separate. **Pending follow-up:** also match on shared `host.name` or `service.instance.id`, record which rule produced each link, and test with a host-only resource.
 - Span IDs include trace ID; event and metric IDs use canonical content hashes so valid records cannot overwrite unrelated evidence. Missing web roots yield degraded, and histogram/summary point payloads are retained without scalar flattening.
-- The three signal collections use indexed common storage with SQL views named spans, events and metric_points, avoiding three divergent retention/context implementations. Original OTLP records remain JSON TEXT. All writes, including cleanup, share one writer.
+- The three signal collections use indexed common storage with SQL views named `spans`, `events` and `metric_points`, avoiding three divergent retention/context implementations. Original OTLP records remain JSON TEXT. All writes, including cleanup, share one writer.
 - OTLP JSON hex identifiers are converted to protobuf JSON byte encoding before protojson decoding. Official generated OTLP collector types bring gRPC/gateway modules transitively; no gRPC server or web framework is added.
 - The maintenance scheduler is a separate goroutine that coalesces timer ticks. The sole writer performs the actual idle closure and retention transactions. Open receipt timestamps are tracked in memory and recovered from persisted state.
 - Root selection and failure markers are deterministic across arrival order; unknown evidence timestamps do not widen a timed context interval. Resource identity normalizes top-level attribute order. Conflicting evidence ownership is rejected atomically.
-- M1 ingest acceptance is measured by scripts/ingestbench (`task benchmark-ingest`) with five deterministic seeds and separate span/log/scalar-point rates. Each HTTP acknowledgment follows commit; counts are verified independently. Benchmark methodology explicitly excludes startup, final closure and large-history context scans.
+- M1 ingest acceptance is measured by `scripts/ingestbench` (`task benchmark-ingest`) with five deterministic seeds and separate span/log/scalar-point rates. Each HTTP acknowledgment follows commit; counts are verified independently. The methodology excludes startup, final closure and large-history context scans.
 - To reach M1 throughput without changing correctness or durability, resources are inserted once per batch and stored once by content identity; reads restore complete metadata. Run-resource membership uses current-batch pairs instead of scanning stored history. Earlier failed measurements are preserved alongside the final passing run.
