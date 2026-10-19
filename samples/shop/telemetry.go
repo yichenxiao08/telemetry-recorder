@@ -49,7 +49,9 @@ func newTelemetry(ctx context.Context, c config, databaseVersion string) (*telem
 		_ = traceExporter.Shutdown(ctx)
 		return nil, fmt.Errorf("metric exporter: %w", err)
 	}
-	logExporter, err := otlploghttp.New(ctx, otlploghttp.WithEndpointURL(c.Endpoint))
+	// This log exporter version treats WithEndpointURL's path as exact, unlike
+	// the trace/metric exporters' default signal paths. Set it explicitly.
+	logExporter, err := otlploghttp.New(ctx, otlploghttp.WithEndpointURL(c.Endpoint), otlploghttp.WithURLPath("/v1/logs"))
 	if err != nil {
 		_ = traceExporter.Shutdown(ctx)
 		_ = metricExporter.Shutdown(ctx)
