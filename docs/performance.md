@@ -210,3 +210,89 @@ alongside the pre-index measurements. An inspection-only report's older zero
 generation duration means generation was not timed by that invocation; newer
 reports omit that field. The existing dataset was retained after the interrupted
 initial inspection; no row counts were extrapolated.
+
+## Final checks and remaining capacity miss
+
+The final 30-second mixed-load profile uses serving defaults, with five seeds
+and four bounded exporters. CPU samples attribute 82.00% to writeJobs, 45.38%
+to commit, 29.82% to Windows FlushFileBuffers, 24.46% to WriteFile and 9.64%
+to ReadFile. These cumulative costs overlap. Maintenance accounts for 2.66%;
+resource cleanup accounts for about 10 ms of 171.25 seconds of samples. The
+profile does **not** support blaming retention cleanup for the remaining miss.
+No retention, durability or checkpoint settings were changed. Cumulative sampled
+allocation is 9,506.64 MiB, including benchmark payload generation; this is not
+peak memory. Top-ten CPU/alloc summaries and I/O/source attribution are retained
+as `perf-05-live-*`, separately from the final unprofiled capacity check.
+
+Startup on fresh copies of the original 353,308,672-byte seed-1 file:
+
+| Normal store.Open | Before | Final schema |
+|---|---:|---:|
+| Native first upgrade | 67.634 s (profiled) | 0.460 s |
+| Race first upgrade | 455.885 s | 8.460 s |
+| Native unchanged restart | Full backfill on every open | 0.002172 s |
+
+Close and diagnostic row counts are timed/reported separately. The older M4
+600.923-second race timeout is retained; the fresh pre-change race measurement
+above completed without changing its ten-minute deadline. Both observations
+are real. Final logical counts remain 188,559 links and 690,921 provenance rows.
+The final native/race copies include migrations 005–007; ordinary restart does
+not scan history. Freed pages remain reusable inside the existing SQLite file.
+
+The million-record fixture occupies 1,149,222,912 bytes after checkpoint, with
+zero free pages. Lookup indexes add 40,103,936 bytes versus the measured
+pre-index file. Its physical context storage is 51,562 scope rows and 16,056,320
+bytes including the primary-key b-tree, plus one small settings page. Views
+represent 1,876,896 links and 3,484,277 provenance rows without materializing
+them. This is measured storage for this fixture, not a universal bytes/record
+estimate. The eleven-resource synthetic fixture does not validate arbitrary
+resource cardinality, longer ML runs, cold OS caches, or unbounded context
+enumeration. Global context counts still take seconds and are not explorer
+acceptance queries.
+
+Reproduce the final live capacity check and the bounded-query inspection:
+
+```powershell
+task benchmark-ingest -- -combined -serve-defaults -count 150000 -out benchmark/results/perf-05-final-live.json
+task benchmark-store -- -db .cache/performance/million.db -out benchmark/results/perf-05-million-indexes.json
+```
+
+To create a new million-record fixture, use a fresh destination with
+`task benchmark-store -- -create -count 1000000 -seed 1 -db .cache/performance/new-million.db -out benchmark/results/new-million.json`.
+Do not run these measurements concurrently. The generated
+`benchmark/results/performance-summary.md` records all stages, not only the
+fastest attempts. M4b has not been started.
+
+Final unprofiled five-seed rates (minimum / median, committed records/sec):
+
+| Signal | Separate diagnostic | Combined, 30s serving defaults | Target |
+|---|---:|---:|---:|
+| Spans | 18,247 / 22,222 | 1,308 / 2,317 | 5,000 |
+| Logs | 17,303 / 19,347 | 1,385 / 2,334 | 5,000 |
+| Scalar metric points | 17,565 / 19,760 | 2,651 / 4,652 | 10,000 |
+
+Every separate target passes. **Every combined target misses**, including every
+seed; the benchmark exits nonzero and its complete results are retained.
+The shorter diagnostic mixed run has different maintenance settings/window and
+is reported separately, not substituted for this result. Host load and filesystem
+variation are visible across attempts; read-only plan changes are not credited
+with causal improvements in fresh-database write speed.
+
+**Recommendation: no-go for M4b under the unchanged combined throughput gate.**
+Startup, logical-context preservation, physical growth measurement and the three
+bounded SQL checks are addressed. The remaining measured bottleneck is durable
+SQLite commit/file I/O on this native Windows setup. Further work needs a separate
+performance decision and another measured experiment; this task stops after the
+documented attempts rather than weakening durability, changing targets, or
+starting M4b. The supplied public GitHub repository is empty, so hosted Windows
+CI requires an initial publication; local Windows checks alone are not reported
+as a hosted Actions pass.
+
+Final local Windows validation passes: gofmt/checkfmt, go vet, golangci-lint
+(zero issues), `go test -race ./...`, and `task build`. Complete ordered seed-1
+SHA-256 audits of signals, resources, runs, links and provenance match the
+pre-change audit. The unchanged opt-in saved-data race viewer test now passes:
+both persisted baseline panels and all 46 evidence anchors resolve, with a
+1.39-second test body (`perf-05-viewer-seed1-race.txt`). Its former ten-minute
+timeout remains in the earlier failure log. Validation logs are retained in
+`perf-05-local-validation.txt`.

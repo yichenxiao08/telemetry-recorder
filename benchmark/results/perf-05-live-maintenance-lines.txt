@@ -1,0 +1,60 @@
+Total: 171.25s
+ROUTINE ======================== github.com/signalscout/signalscout/internal/store.(*Store).maintain in <repo>\internal\store\store.go
+         0      4.55s (flat, cum)  2.66% of Total
+         .          .    470:func (s *Store) maintain(ctx context.Context, now time.Time, force bool) error {
+         .       20ms    471:	tx, err := s.writer.BeginTx(ctx, nil)
+         .          .    472:	if err != nil {
+         .          .    473:		return fmt.Errorf("begin maintenance: %w", err)
+         .          .    474:	}
+         .          .    475:	defer func() { _ = tx.Rollback() }()
+         .          .    476:	cutoff := now.Add(-s.options.IdleTimeout).UnixNano()
+         .          .    477:	if force {
+         .          .    478:		cutoff = now.UnixNano()
+         .          .    479:	}
+         .          .    480:	var states []runs.State
+         .          .    481:	var closedIDs []string
+         .          .    482:	for id, last := range s.open {
+         .          .    483:		if force || last <= cutoff {
+         .      540ms    484:			state, err := loadState(ctx, tx, id)
+         .          .    485:			if err != nil {
+         .          .    486:				return err
+         .          .    487:			}
+         .          .    488:			states = append(states, state)
+         .          .    489:		}
+         .          .    490:	}
+         .          .    491:	for _, state := range states {
+         .          .    492:		state.Run.Closed = true
+         .      1.13s    493:		if err = saveState(ctx, tx, state); err != nil {
+         .          .    494:			return err
+         .          .    495:		}
+         .          .    496:		closedIDs = append(closedIDs, state.Run.ID)
+         .          .    497:	}
+         .      2.49s    498:	if err = s.refreshContext(ctx, tx, closedIDs); err != nil {
+         .          .    499:		return err
+         .          .    500:	}
+         .          .    501:	if s.options.Retention > 0 {
+         .          .    502:		cutoff = now.Add(-s.options.Retention).UnixNano()
+         .          .    503:		queries := []string{
+         .          .    504:			"DELETE FROM signals WHERE run_id IN (SELECT run_id FROM runs WHERE closed=1 AND last_seen<?)",
+         .          .    505:			"DELETE FROM runs WHERE closed=1 AND last_seen<?",
+         .          .    506:			"DELETE FROM signals WHERE run_id='' AND received_at<?",
+         .          .    507:		}
+         .          .    508:		for _, query := range queries {
+         .       60ms    509:			if _, err = tx.ExecContext(ctx, query, cutoff); err != nil {
+         .          .    510:				return fmt.Errorf("retention cleanup: %w", err)
+         .          .    511:			}
+         .          .    512:		}
+         .       10ms    513:		if _, err = tx.ExecContext(ctx, "DELETE FROM resources WHERE resource_id NOT IN (SELECT resource_id FROM signals) AND resource_id NOT IN (SELECT resource_id FROM run_resources)"); err != nil {
+         .          .    514:			return fmt.Errorf("resource cleanup: %w", err)
+         .          .    515:		}
+         .          .    516:	}
+         .      290ms    517:	if err = tx.Commit(); err != nil {
+         .          .    518:		return fmt.Errorf("commit maintenance: %w", err)
+         .          .    519:	}
+         .          .    520:	for _, state := range states {
+         .       10ms    521:		delete(s.open, state.Run.ID)
+         .          .    522:	}
+         .          .    523:	return nil
+         .          .    524:}
+         .          .    525:
+         .          .    526:func (s *Reader) List(ctx context.Context, workload, outcome string) ([]model.Run, error) {

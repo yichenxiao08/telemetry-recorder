@@ -1,0 +1,19 @@
+File: ingestbench.exe
+Build ID: <repo>\.cache\go-build\c5\c557d8d8e2379c7bd360b126c22eefea63e3a3c3570ba962f86be9a74b658da9-d\ingestbench.exe2026-10-19 16:53:23.6338793 -0400 EDT
+Type: cpu
+Time: 2026-10-19 16:57:24 EDT
+Duration: 154.15s, Total samples = 171.25s (111.09%)
+Showing nodes accounting for 114.81s, 67.04% of 171.25s total
+Dropped 1590 nodes (cum <= 0.86s)
+Showing top 10 nodes out of 222
+      flat  flat%   sum%        cum   cum%
+     0.01s 0.0058% 0.0058%    145.02s 84.68%  github.com/signalscout/signalscout/internal/store.(*Store).loop
+     0.02s 0.012% 0.018%    141.38s 82.56%  database/sql.withLock
+     0.02s 0.012% 0.029%    140.43s 82.00%  github.com/signalscout/signalscout/internal/store.(*Store).writeJobs
+         0     0% 0.029%    131.50s 76.79%  modernc.org/sqlite/lib.Xsqlite3_step
+     0.01s 0.0058% 0.035%    131.48s 76.78%  modernc.org/sqlite/lib._sqlite3Step
+   114.75s 67.01% 67.04%    115.07s 67.19%  runtime.cgocall
+         0     0% 67.04%    115.07s 67.19%  syscall.syscalln
+         0     0% 67.04%     77.71s 45.38%  database/sql.(*Tx).Commit
+         0     0% 67.04%     77.70s 45.37%  modernc.org/sqlite/lib.Xsqlite3_exec
+         0     0% 67.04%     77.69s 45.37%  modernc.org/sqlite.(*tx).exec

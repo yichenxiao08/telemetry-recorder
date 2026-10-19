@@ -1,0 +1,14 @@
+{
+  "database": ".cache/performance/seed1-final-race.db",
+  "go": "go1.27.0",
+  "startup_seconds": 8.4595528,
+  "close_seconds": 0.3704884,
+  "database_bytes": 353308672,
+  "counts": {
+    "context_links": 188559,
+    "context_matches": 690921,
+    "resources": 7,
+    "runs": 340,
+    "signals": 4057
+  }
+}

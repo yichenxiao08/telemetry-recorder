@@ -1,0 +1,22 @@
+File: ingestbench.exe
+Build ID: <repo>\.cache\go-build\c5\c557d8d8e2379c7bd360b126c22eefea63e3a3c3570ba962f86be9a74b658da9-d\ingestbench.exe2026-10-19 16:53:23.6338793 -0400 EDT
+Type: cpu
+Time: 2026-10-19 16:57:24 EDT
+Duration: 154.15s, Total samples = 171.25s (111.09%)
+Showing nodes accounting for 171.25s, 100% of 171.25s total
+----------------------------------------------------------+-------------
+      flat  flat%   sum%        cum   cum%   calls calls% + context
+----------------------------------------------------------+-------------
+                                            41.88s   100% |   modernc.org/sqlite/lib._winWrite
+     0.03s 0.018% 0.018%     41.88s 24.46%                | modernc.org/libc.XWriteFile
+                                            41.80s 99.81% |   syscall.Syscall6
+                                             0.05s  0.12% |   syscall.(*LazyProc).Addr (inline)
+----------------------------------------------------------+-------------
+                                            16.50s   100% |   modernc.org/sqlite/lib._winRead
+     0.02s 0.012% 0.029%     16.50s  9.64%                | modernc.org/libc.XReadFile
+                                            16.48s 99.88% |   syscall.Syscall6
+----------------------------------------------------------+-------------
+                                            51.06s   100% |   modernc.org/sqlite/lib._winSync
+         0     0% 0.029%     51.06s 29.82%                | modernc.org/libc.XFlushFileBuffers
+                                            51.06s   100% |   syscall.FlushFileBuffers
+----------------------------------------------------------+-------------
