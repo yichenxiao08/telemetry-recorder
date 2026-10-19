@@ -26,6 +26,18 @@ func readRun(ctx context.Context, tx *sql.Tx, id string) (model.Run, error) {
 // Comparison loads only M3's owned spans/events. Context is deliberately absent.
 // A single read transaction freezes selection and evidence at the same snapshot.
 func (r *Reader) Comparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
+	return r.comparison(ctx, id, options, false)
+}
+
+// ViewerComparison refuses oversized inputs instead of computing a partial diff.
+func (r *Reader) ViewerComparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
+	if options.N > 200 {
+		return model.Comparison{}, fmt.Errorf("viewer baseline limit is 200 runs")
+	}
+	return r.comparison(ctx, id, options, true)
+}
+
+func (r *Reader) comparison(ctx context.Context, id string, options model.BaselineOptions, bounded bool) (model.Comparison, error) {
 	result := model.Comparison{}
 	n := options.N
 	if !options.ExplicitN && n == 0 {
@@ -94,15 +106,26 @@ func (r *Reader) Comparison(ctx context.Context, id string, options model.Baseli
 		return result, fmt.Errorf("read baseline: %w", err)
 	}
 	const evidenceQuery = "SELECT s.data,r.attrs,r.raw FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE s.run_id=? AND s.kind IN ('span','event') ORDER BY s.ts_ns,s.evidence_id"
-	result.Failing.Signals, err = readSignals(ctx, tx, evidenceQuery, id)
+	load := func(runID string) ([]model.Signal, error) {
+		if bounded {
+			return readStructure(ctx, tx, runID, ViewerSignalLimit)
+		}
+		return readSignals(ctx, tx, evidenceQuery, runID)
+	}
+	result.Failing.Signals, err = load(id)
 	if err != nil {
 		return result, err
 	}
+	total := len(result.Failing.Signals)
 	for i := range result.Baseline {
 		b := &result.Baseline[i]
-		b.Signals, err = readSignals(ctx, tx, evidenceQuery, b.Run.ID)
+		b.Signals, err = load(b.Run.ID)
 		if err != nil {
 			return result, err
+		}
+		total += len(b.Signals)
+		if bounded && total > 50000 {
+			return result, EvidenceLimit
 		}
 	}
 	if err = tx.Commit(); err != nil {

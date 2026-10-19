@@ -673,8 +673,8 @@ func (s *Reader) Show(ctx context.Context, id string) (model.RunDetail, error) {
 	return result, nil
 }
 
-func readSignals(ctx context.Context, tx *sql.Tx, query, id string) ([]model.Signal, error) {
-	rows, err := tx.QueryContext(ctx, query, id)
+func readSignals(ctx context.Context, tx *sql.Tx, query string, args ...any) ([]model.Signal, error) {
+	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("query evidence: %w", err)
 	}

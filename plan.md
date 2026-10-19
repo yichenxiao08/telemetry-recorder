@@ -357,10 +357,19 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Pages (served by `signalscout serve`): run list (filter by workload, outcome, time), single-run timeline (span tree with durations, events as markers), diff view (ranked differences with drill-down to underlying spans and the baseline distribution).
 - Evidence IDs are clickable and jump to the item.
 - Keep it simple: `html/template`, embedded assets, no JS framework.
+- Serve the viewer from the existing `serve` listener (127.0.0.1 by default). Use auto-escaped templates, embedded assets, no external requests, and a strict Content-Security-Policy. Never treat stored telemetry as trusted HTML or script.
+- Run lists have workload/outcome/start-time filters, bounded time windows, and cursor pagination. Run pages show the span tree timeline, event markers, metadata, env and config. Offer recent and explicit before-phase baselines side by side, including mode, count, IDs, scores, raw rates and linked evidence. Numeric differences include inline SVG baseline distributions with the failing value marked.
+- Viewer reads use the read-only pool. On-demand diffs persist only through the serving store's existing writer queue. No context logs/metrics panels, service overview, search pages or ingest tuning in M4.
 
 **Acceptance**
 - From the run list, a user can open the failing run, open its diff, and click a difference to reach the span in the timeline, all in the browser.
-- A short screen capture of this walkthrough is saved in `docs/`.
+- `httptest` navigation tests walk run list -> run page -> diff view -> evidence link and assert the destination anchors exist, including span/event/config links. Tests cover filtering/pagination, escaped telemetry, CSP, and persistence through the existing writer.
+- `docs/viewer-walkthrough.md` gives exact PowerShell commands and browser steps. The owner will capture screenshots; a recording is not required from the agent.
+
+### Before M4b: planned ingest performance task
+
+- The unchanged pre-M3 preflight missed all separate targets: minimum/median spans 3,661/4,128 per second (target 5,000), logs 1,650/1,754 (target 5,000), scalar metric points 1,643/1,704 (target 10,000). Raw measurements remain in benchmark/results/m3-preflight-ingest.json.
+- Before starting M4b, profile the native intake/storage path, including decode, commit and run finalization/context costs; make separately tested performance changes and remeasure with the unchanged per-signal method and fixed seeds. Preserve every result and report remaining misses. Do not perform this tuning during M4.
 
 ### M4b: Telemetry explorer and context telemetry
 
@@ -385,6 +394,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 
 **Tasks**
 - Define the seeded-failure format in `benchmark/failures/<id>/`: `failure.yaml` (domain, root-cause label, expected evidence IDs or path keys, injection config), plus the injection config or code.
+- Label expected evidence as cause/mechanism or symptom. Retry and acquire-presence differences are failure symptoms; configuration and context differences speak to mechanism. Latency shows where time was spent and is not by itself proof of a cause. M5 scoring must distinguish these labels instead of counting every high-ranked symptom as a diagnosed root cause.
 - Build `cmd/ssbench`: for each failure, generate 20 to 50 passing runs plus failing run(s) against a Signal Scout instance, run the diff engine, and score top-1/top-3/top-5 and precision@k.
 - Add workload variation noise so baselines are not artificially clean.
 - Seed 6 to 8 web failures, for example: slow query under load, retry storm, misconfigured timeout, race between two services, dependency version regression, pool exhaustion (from M2), cache stampede, slow downstream dependency.
