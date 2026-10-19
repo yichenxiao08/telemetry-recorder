@@ -119,7 +119,7 @@ type report struct {
 	Seed                int64            `json:"seed"`
 	Go                  string           `json:"go"`
 	Method              string           `json:"method"`
-	GenerationSeconds   float64          `json:"generation_seconds_including_close"`
+	GenerationSeconds   *float64         `json:"generation_seconds_including_close,omitempty"`
 	Bytes               int64            `json:"database_bytes"`
 	PageSize            int64            `json:"page_size"`
 	FreePages           int64            `json:"free_pages"`
@@ -338,7 +338,9 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	r.GenerationSeconds = seconds
+	if *create {
+		r.GenerationSeconds = &seconds
+	}
 	data, err := json.MarshalIndent(r, "", "  ")
 	if err != nil {
 		return err

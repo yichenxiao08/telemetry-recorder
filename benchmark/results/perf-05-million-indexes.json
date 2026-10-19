@@ -1,0 +1,112 @@
+{
+  "database": ".cache/performance/million.db",
+  "seed": 1,
+  "go": "go1.27.0",
+  "method": "Seeded real-schema storage fixture (not an HTTP throughput measurement): 25% spans (10/trace), 25% logs (one quarter trace-correlated), 50% gauge points; ten services on two hosts, every fourth metric batch host-only. One-second event spacing, 30s/5s context padding. Full raw synthetic records, durable writer batches of 256 and shutdown finalization. Query clock includes query, row decoding, iteration and close, excludes EXPLAIN. Five repeats on one read-only connection; first is connection-cold, OS filesystem caches are not flushed. Required time windows and LIMIT 100. File size is after all writers close/checkpoint; free pages reported separately. Context view counts are logical links, scope counts are physical rows.",
+  "generation_seconds_including_close": 0,
+  "database_bytes": 1149222912,
+  "page_size": 4096,
+  "free_pages": 0,
+  "counts": {
+    "context_links": 1876896,
+    "context_matches": 3484277,
+    "context_scopes": 51562,
+    "resources": 11,
+    "runs": 25000,
+    "signals": 1000000
+  },
+  "context_links_object_type": "view",
+  "context_count_seconds": 14.629421299999999,
+  "queries": [
+    {
+      "name": "service_time",
+      "sql": "SELECT s.evidence_id,s.kind,s.ts_ns,s.data FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE json_extract(r.attrs,'$.\"service.name\"')=? AND s.ts_ns\u003e=? AND s.ts_ns\u003c? ORDER BY s.ts_ns,s.evidence_id LIMIT ?",
+      "arguments": [
+        "service-02",
+        1700123200000000000,
+        1700126800000000000,
+        100
+      ],
+      "query_plan": [
+        "SEARCH r USING INDEX resources_service (\u003cexpr\u003e=?)",
+        "SEARCH s USING INDEX signals_context (resource_id=?)",
+        "USE TEMP B-TREE FOR ORDER BY"
+      ],
+      "milliseconds": [
+        19.2589,
+        8.9638,
+        20.5819,
+        25.4945,
+        18.0291
+      ],
+      "rows": 100,
+      "all_under_500ms": true
+    },
+    {
+      "name": "trace_id",
+      "sql": "SELECT evidence_id,kind,ts_ns,data FROM signals WHERE kind IN ('span','log') AND json_extract(data,'$.trace_id')=? AND ts_ns\u003e=? AND ts_ns\u003c? ORDER BY ts_ns,evidence_id LIMIT ?",
+      "arguments": [
+        "000000000000000100000000000030d5",
+        1700123200000000000,
+        1700126800000000000,
+        100
+      ],
+      "query_plan": [
+        "SEARCH signals USING INDEX signals_trace_time (\u003cexpr\u003e=? AND ts_ns\u003e? AND ts_ns\u003c?)",
+        "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+      ],
+      "milliseconds": [
+        0,
+        0,
+        0.541,
+        0,
+        0
+      ],
+      "rows": 13,
+      "all_under_500ms": true
+    },
+    {
+      "name": "log_templates",
+      "sql": "SELECT json_extract(s.data,'$.template') AS template,count(*) FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE s.kind='log' AND json_extract(r.attrs,'$.\"service.name\"')=? AND s.ts_ns\u003e=? AND s.ts_ns\u003c? GROUP BY template ORDER BY count(*) DESC,template LIMIT ?",
+      "arguments": [
+        "service-02",
+        1700081800000000000,
+        1700168200000000000,
+        100
+      ],
+      "query_plan": [
+        "SEARCH r USING INDEX resources_service (\u003cexpr\u003e=?)",
+        "SEARCH s USING INDEX signals_log_resource_time (resource_id=? AND ts_ns\u003e? AND ts_ns\u003c?)",
+        "USE TEMP B-TREE FOR GROUP BY",
+        "USE TEMP B-TREE FOR ORDER BY"
+      ],
+      "milliseconds": [
+        29.6736,
+        30.8329,
+        35.6016,
+        29.9701,
+        28.3933
+      ],
+      "rows": 8,
+      "all_under_500ms": true
+    }
+  ],
+  "context_count_query_plan": [
+    "CO-ROUTINE context_matches",
+    "COMPOUND QUERY",
+    "LEFT-MOST SUBQUERY",
+    "SCAN c",
+    "SEARCH a USING COVERING INDEX sqlite_autoindex_resources_1 (resource_id=?)",
+    "SEARCH s USING INDEX signals_context (resource_id=? AND run_id=? AND ts_ns\u003e? AND ts_ns\u003c?)",
+    "UNION ALL",
+    "SCAN c",
+    "SCAN a",
+    "SEARCH s USING INDEX signals_context (resource_id=? AND run_id=? AND ts_ns\u003e? AND ts_ns\u003c?)",
+    "UNION ALL",
+    "SCAN c",
+    "SCAN a",
+    "SEARCH s USING INDEX signals_context (resource_id=? AND run_id=? AND ts_ns\u003e? AND ts_ns\u003c?)",
+    "SCAN context_matches"
+  ],
+  "context_btree_bytes": 16056320
+}

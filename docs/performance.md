@@ -189,3 +189,24 @@ trial regresses to roughly 2,001/2,001/3,977 records/sec. That trial is retained
 and counts as a failure, with no selective exclusion. Generated minimum/median
 tables report the variation; the read-only view-plan change is not claimed to
 explain changing fresh-database write speeds.
+
+### 5. Bounded lookup indexes (migration 007)
+
+Add a service-name resource index, a partial span/log trace/time index, and a
+partial log resource/time index. Plans first failed the new index assertions,
+then used the intended lookups. Keep the required run/context/retention indexes;
+do not add a general time index merely to improve a query already under budget.
+On the same million records, maxima across five repeats are 25.49 ms for
+service/time, 0.541 ms for trace lookup, and 35.60 ms for template grouping.
+All meet 500 ms, including the first read on a new SQLite connection. OS caches
+are not flushed. Zero readings in the sub-millisecond trace timings reflect
+clock resolution, not a claim of zero execution cost.
+
+The complete fixture has 25,000 runs, 11 resources, 51,562 physical scopes,
+1,876,896 logical links and 3,484,277 logical rule/source rows. Context scopes
+plus their primary-key b-tree occupy 16,056,320 bytes (dbstat); one small settings
+page is separate. File-size and ingest costs of the lookup indexes are retained
+alongside the pre-index measurements. An inspection-only report's older zero
+generation duration means generation was not timed by that invocation; newer
+reports omit that field. The existing dataset was retained after the interrupted
+initial inspection; no row counts were extrapolated.

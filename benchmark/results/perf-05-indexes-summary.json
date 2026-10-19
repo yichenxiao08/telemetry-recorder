@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "benchmark/results/perf-05-indexes-ingest.json"
+  ],
+  "method": "Minimum and median across all seed trials per signal in the listed unchanged task benchmark-ingest invocations. Signals measured separately; these rates are not simultaneous ingest capacity. Target is met only if every trial reaches it.",
+  "signals": {
+    "log": {
+      "trials": 5,
+      "minimum": 17302.76384833193,
+      "median": 19347.404313542487,
+      "target": 5000,
+      "all_trials_met_target": true
+    },
+    "metric": {
+      "trials": 5,
+      "minimum": 17565.20136878588,
+      "median": 19760.127855931278,
+      "target": 10000,
+      "all_trials_met_target": true
+    },
+    "span": {
+      "trials": 5,
+      "minimum": 18247.30111012018,
+      "median": 22221.849388971365,
+      "target": 5000,
+      "all_trials_met_target": true
+    }
+  }
+}
