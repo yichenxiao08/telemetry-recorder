@@ -1,6 +1,6 @@
 # Signal Scout
 
-Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0–M3 provide intake, run inspection, a seeded shop demo, and ranked differences against passing history. See [plan.md](plan.md) for the full milestone plan; the viewer and agent explanations belong to later milestones.
+Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0–M4 provide intake, a seeded shop demo, ranked differences against passing history, and a minimal local viewer. See [plan.md](plan.md) for the full milestone plan; context exploration and agent explanations belong to later milestones.
 
 ## Windows / PowerShell quick start
 
@@ -26,6 +26,20 @@ In another PowerShell window:
 ```powershell
 .\bin\signalscout.exe serve --threshold 'POST /checkout=2s'
 ```
+
+Open the viewer in another PowerShell window:
+
+```powershell
+Start-Process 'http://127.0.0.1:4318/runs'
+```
+
+It provides bounded run filters and pagination, span/event timelines, snapshots,
+two baseline diff panels, numeric distributions and highlighted evidence links.
+Templates escape telemetry; CSS is embedded and CSP disables scripts/external
+requests. On-demand diffs use the serving writer queue. See the full
+[PowerShell walkthrough](docs/viewer-walkthrough.md), including saved demo commands.
+Context logs/metrics, service overview and search remain M4b. The ingest
+throughput misses have a separate planned performance task before M4b.
 
 The queue is bounded in batches, each decoded request limited to 16 MiB. Success means the batch committed. Queue saturation or storage failure returns 503 with `Retry-After: 1`; malformed input returns 4xx. Retrying identical requests is idempotent. Processes with accepted batches can still lose them if killed before commit; the HTTP client receives no success in that case. WAL uses `synchronous=NORMAL`, which does not promise survival of the most recent commits after power loss.
 
