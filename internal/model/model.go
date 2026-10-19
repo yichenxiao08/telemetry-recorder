@@ -5,8 +5,8 @@ import "encoding/json"
 // Resource identifies the complete OTLP resource, including its schema URL.
 type Resource struct {
 	ID    string          `json:"resource_id"`
-	Attrs map[string]any  `json:"attrs"`
-	Raw   json.RawMessage `json:"raw"`
+	Attrs map[string]any  `json:"attrs,omitempty"`
+	Raw   json.RawMessage `json:"raw,omitempty"`
 }
 
 // Signal retains the original OTLP record as JSON as well as searchable fields.

@@ -308,6 +308,8 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 	}
 	defer func() { _ = tx.Rollback() }()
 	states := map[string]runs.State{}
+	resourcesWritten := map[string]bool{}
+	runResources := map[string]map[string]bool{}
 	resourceStmt, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO resources VALUES(?,?,?)")
 	if err != nil {
 		return fmt.Errorf("prepare resources: %w", err)
@@ -334,17 +336,30 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			}
 			state = runs.Observe(state, signal, now, 0)
 			// The root may have just supplied the workload for threshold lookup.
-			state = runs.Observe(state, signal, now, s.options.Thresholds[state.Run.Workload])
+			state.Run.Outcome = state.Outcome(s.options.Thresholds[state.Run.Workload])
 			states[id] = state
+			if runResources[id] == nil {
+				runResources[id] = map[string]bool{}
+			}
+			runResources[id][signal.Resource.ID] = true
 		}
-		attrs, err := json.Marshal(signal.Resource.Attrs)
-		if err != nil {
-			return fmt.Errorf("encode resource: %w", err)
+		// Resources are immutable by content identity. Write each once per batch,
+		// rather than doing the same insert for every span/log/point.
+		if !resourcesWritten[signal.Resource.ID] {
+			attrs, err := json.Marshal(signal.Resource.Attrs)
+			if err != nil {
+				return fmt.Errorf("encode resource: %w", err)
+			}
+			if _, err = resourceStmt.ExecContext(ctx, signal.Resource.ID, string(attrs), string(signal.Resource.Raw)); err != nil {
+				return fmt.Errorf("write resource: %w", err)
+			}
+			resourcesWritten[signal.Resource.ID] = true
 		}
-		if _, err = resourceStmt.ExecContext(ctx, signal.Resource.ID, string(attrs), string(signal.Resource.Raw)); err != nil {
-			return fmt.Errorf("write resource: %w", err)
-		}
-		data, err := json.Marshal(signal)
+		// Resource content already lives in resources. Persist its reference,
+		// then restore full resource metadata in readers instead of duplicating it.
+		stored := signal
+		stored.Resource = model.Resource{ID: signal.Resource.ID}
+		data, err := json.Marshal(stored)
 		if err != nil {
 			return fmt.Errorf("encode signal: %w", err)
 		}
@@ -365,8 +380,21 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			return err
 		}
 	}
-	if _, err = tx.ExecContext(ctx, `INSERT OR IGNORE INTO run_resources SELECT DISTINCT run_id,resource_id FROM signals WHERE run_id<>'' AND received_at=?`, now.UnixNano()); err != nil {
-		return fmt.Errorf("track run resources: %w", err)
+	// Track only pairs from this batch; scanning retained history on every
+	// commit would make ingest cost grow with database size.
+	if len(runResources) > 0 {
+		pairs, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO run_resources VALUES(?,?)")
+		if err != nil {
+			return fmt.Errorf("prepare resource links: %w", err)
+		}
+		defer func() { _ = pairs.Close() }()
+		for id, resources := range runResources {
+			for resourceID := range resources {
+				if _, err = pairs.ExecContext(ctx, id, resourceID); err != nil {
+					return fmt.Errorf("track run resource: %w", err)
+				}
+			}
+		}
 	}
 	if err = refreshContext(ctx, tx); err != nil {
 		return err
@@ -490,11 +518,11 @@ func (s *Reader) Show(ctx context.Context, id string) (model.RunDetail, error) {
 		return result, fmt.Errorf("decode run: %w", err)
 	}
 	result.Run = state.Run
-	result.Signals, err = readSignals(ctx, tx, "SELECT data FROM signals WHERE run_id=? ORDER BY ts_ns,evidence_id", id)
+	result.Signals, err = readSignals(ctx, tx, "SELECT s.data,r.attrs,r.raw FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE s.run_id=? ORDER BY s.ts_ns,s.evidence_id", id)
 	if err != nil {
 		return result, err
 	}
-	result.Context, err = readSignals(ctx, tx, "SELECT s.data FROM signals s JOIN context_links c ON c.evidence_id=s.evidence_id WHERE c.run_id=? ORDER BY s.ts_ns,s.evidence_id", id)
+	result.Context, err = readSignals(ctx, tx, "SELECT s.data,r.attrs,r.raw FROM signals s JOIN resources r ON r.resource_id=s.resource_id JOIN context_links c ON c.evidence_id=s.evidence_id WHERE c.run_id=? ORDER BY s.ts_ns,s.evidence_id", id)
 	if err != nil {
 		return result, err
 	}
@@ -512,14 +540,18 @@ func readSignals(ctx context.Context, tx *sql.Tx, query, id string) ([]model.Sig
 	defer func() { _ = rows.Close() }()
 	result := []model.Signal{}
 	for rows.Next() {
-		var data string
+		var data, attrs, raw string
 		var signal model.Signal
-		if err = rows.Scan(&data); err != nil {
+		if err = rows.Scan(&data, &attrs, &raw); err != nil {
 			return nil, fmt.Errorf("read evidence: %w", err)
 		}
 		if err = json.Unmarshal([]byte(data), &signal); err != nil {
 			return nil, fmt.Errorf("decode evidence: %w", err)
 		}
+		if err = json.Unmarshal([]byte(attrs), &signal.Resource.Attrs); err != nil {
+			return nil, fmt.Errorf("decode resource attributes: %w", err)
+		}
+		signal.Resource.Raw = json.RawMessage(raw)
 		result = append(result, signal)
 	}
 	if err = rows.Err(); err != nil {

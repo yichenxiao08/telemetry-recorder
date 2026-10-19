@@ -102,8 +102,12 @@ func Observe(state State, s model.Signal, now time.Time, thresholdMS float64) St
 			state.FailureTS = s.TS
 		}
 	}
-	state.Run.Outcome = Outcome(OutcomeInput{Domain: domain, RootSeen: state.RootID != "", RootError: state.RootError, HTTPStatus: state.HTTPStatus, DurationMS: state.DurationMS, ThresholdMS: thresholdMS, Failed: state.Failed})
+	state.Run.Outcome = state.Outcome(thresholdMS)
 	return state
+}
+
+func (s State) Outcome(thresholdMS float64) string {
+	return Outcome(OutcomeInput{Domain: s.Run.Domain, RootSeen: s.RootID != "", RootError: s.RootError, HTTPStatus: s.HTTPStatus, DurationMS: s.DurationMS, ThresholdMS: thresholdMS, Failed: s.Failed})
 }
 
 func Idle(state State, now time.Time, timeout time.Duration) bool {

@@ -56,6 +56,16 @@ func TestPersistFinalizeLateContextAndRetention(t *testing.T) {
 	if !detail.Run.Closed || len(detail.Signals) != 1 || len(detail.Context) != 1 || detail.Context[0].ID != ambient.ID {
 		t.Fatalf("close/context mismatch: %+v", detail)
 	}
+	if detail.Signals[0].Resource.Attrs["service.name"] != "shop" || string(detail.Signals[0].Resource.Raw) != "{}" || detail.Context[0].Resource.Attrs["service.name"] != "shop" {
+		t.Fatal("resource normalization lost original metadata")
+	}
+	var service string
+	if err = s.reader.QueryRowContext(ctx, "SELECT service FROM spans WHERE run_id='a'").Scan(&service); err != nil {
+		t.Fatal(err)
+	}
+	if service != "shop" {
+		t.Fatalf("span view service=%q", service)
+	}
 	root.Status = "error"
 	root.End = 22
 	late := fixture("log:late", "log", "", "r", 18, 18)
