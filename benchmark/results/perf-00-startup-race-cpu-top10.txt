@@ -1,0 +1,19 @@
+File: startup-before-race.exe
+Build ID: <repo>\.cache\performance\startup-before-race.exe2026-10-19 13:34:34.0801645 -0400 EDT
+Type: cpu
+Time: 2026-10-19 14:47:17 EDT
+Duration: 455.89s, Total samples = 444.91s (97.59%)
+Showing nodes accounting for 322.57s, 72.50% of 444.91s total
+Dropped 390 nodes (cum <= 2.22s)
+Showing top 10 nodes out of 136
+      flat  flat%   sum%        cum   cum%
+    97.78s 21.98% 21.98%    150.56s 33.84%  runtime.checkptrBase
+    68.21s 15.33% 37.31%     68.21s 15.33%  runtime._ExternalCode
+    30.51s  6.86% 44.17%    104.61s 23.51%  runtime.checkptrArithmetic
+    25.54s  5.74% 49.91%     26.48s  5.95%  runtime.spanOf (inline)
+    20.71s  4.65% 54.56%     47.19s 10.61%  runtime.findObject
+    20.45s  4.60% 59.16%     20.45s  4.60%  runtime.raceread
+    18.20s  4.09% 63.25%     18.50s  4.16%  runtime.cgocall
+    16.97s  3.81% 67.06%     96.05s 21.59%  runtime.checkptrStraddles
+    12.22s  2.75% 69.81%    109.51s 24.61%  runtime.checkptrAlignment
+    11.98s  2.69% 72.50%    359.25s 80.75%  modernc.org/sqlite/lib._sqlite3VdbeExec

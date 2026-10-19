@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "benchmark/results/perf-02-multirow-combined.json"
+  ],
+  "method": "Minimum and median per signal across all five seeds of the listed simultaneous combined-ingest reports. Rates include in-flight drain; missing/unsent work is a target miss. All signals in every seed must meet 5000/5000/10000 per second. These are not sums of separate-signal measurements.",
+  "signals": {
+    "log": {
+      "trials": 5,
+      "minimum": 2936.9567826651187,
+      "median": 3000.37241447193,
+      "target": 5000,
+      "all_trials_met_target": false
+    },
+    "metric": {
+      "trials": 5,
+      "minimum": 5844.803512059841,
+      "median": 6000.74482894386,
+      "target": 10000,
+      "all_trials_met_target": false
+    },
+    "span": {
+      "trials": 5,
+      "minimum": 2922.4017560299203,
+      "median": 3000.37241447193,
+      "target": 5000,
+      "all_trials_met_target": false
+    }
+  }
+}

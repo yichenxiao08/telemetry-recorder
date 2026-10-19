@@ -33,6 +33,10 @@ type combinedMeasurement struct {
 }
 
 func combinedTrial(ctx context.Context, count, batch int, seed int64) (result combinedMeasurement, resultErr error) {
+	return combinedTrialOptions(ctx, count, batch, seed, store.Options{QueueSize: 64, IdleTimeout: time.Hour, SweepInterval: time.Hour})
+}
+
+func combinedTrialOptions(ctx context.Context, count, batch int, seed int64, options store.Options) (result combinedMeasurement, resultErr error) {
 	if count <= 0 || batch <= 0 {
 		return result, fmt.Errorf("positive count and batch required")
 	}
@@ -54,7 +58,7 @@ func combinedTrial(ctx context.Context, count, batch int, seed int64) (result co
 			resultErr = errors.Join(resultErr, err)
 		}
 	}()
-	s, err := store.Open(ctx, filepath.Join(dir, "ingest.db"), store.Options{QueueSize: 64, IdleTimeout: time.Hour, SweepInterval: time.Hour})
+	s, err := store.Open(ctx, filepath.Join(dir, "ingest.db"), options)
 	if err != nil {
 		return result, err
 	}
@@ -159,7 +163,7 @@ func combinedTrial(ctx context.Context, count, batch int, seed int64) (result co
 	return result, nil
 }
 
-func runCombined(ctx context.Context, count, batch, seeds int, out string) error {
+func runCombined(ctx context.Context, count, batch, seeds int, out string, live bool) error {
 	if seeds < 5 {
 		return fmt.Errorf("at least five fixed seeds required")
 	}
@@ -171,10 +175,21 @@ func runCombined(ctx context.Context, count, batch, seeds int, out string) error
 		Measurements []combinedMeasurement `json:"measurements"`
 	}{At: time.Now().UTC(), Go: runtime.Version(), Batch: batch, Method: "Simultaneous loopback protobuf exporters paced at 5000 spans, 5000 logs, 10000 scalar points/sec. Four bounded exporters (one span, one log, two disjoint alternating metric batch streams) each await durable acknowledgment; metric concurrency matches its doubled offered rate. Fixed seeds 1..5, fresh shared on-disk WAL/NORMAL store each seed, same payload generator and batch size as separate benchmark. Stop offering at the window deadline: unsent records count as capacity misses. All acknowledged counts verified. Rate denominator is max(offered window, final acknowledgment); committed_in_window also records deadline capacity. Setup, verification and shutdown excluded."}
 	met := true
+	options := store.Options{QueueSize: 64, IdleTimeout: time.Hour, SweepInterval: time.Hour}
+	if live {
+		options.IdleTimeout = 5 * time.Second
+		options.SweepInterval = time.Second
+		options.ContextBefore = 30 * time.Second
+		options.ContextAfter = 5 * time.Second
+		options.Retention = 7 * 24 * time.Hour
+		r.Method += " Store uses serve defaults: idle 5s, sweep 1s, context 30s before/5s after, retention 7d, queue 64; finalization/cleanup run during intake."
+	} else {
+		r.Method += " Store uses unchanged diagnostic settings: idle/sweep 1h, zero padding/retention, queue 64; shutdown finalization excluded."
+	}
 	var md strings.Builder
 	fmt.Fprintln(&md, "# Simultaneous combined ingest\n\n"+r.Method+"\n\n| Seed | Seconds incl. drain | Spans/s | Logs/s | Points/s | All targets met |\n|---|---:|---:|---:|---:|---|")
 	for seed := int64(1); seed <= int64(seeds); seed++ {
-		m, err := combinedTrial(ctx, count, batch, seed)
+		m, err := combinedTrialOptions(ctx, count, batch, seed, options)
 		if err != nil {
 			m.Error = err.Error()
 			m.Met = false

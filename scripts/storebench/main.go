@@ -134,8 +134,8 @@ func queries(total int, seed int64) []query {
 	from := epoch + int64(max(0, middle-1800))*int64(time.Second)
 	to := epoch + int64(middle+1800)*int64(time.Second)
 	return []query{
-		{"service_time", `SELECT s.evidence_id,s.kind,s.ts_ns FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE json_extract(r.attrs,'$."service.name"')=? AND s.ts_ns>=? AND s.ts_ns<? ORDER BY s.ts_ns,s.evidence_id LIMIT ?`, []any{"service-02", from, to, 100}},
-		{"trace_id", `SELECT evidence_id,kind,ts_ns FROM signals WHERE kind IN ('span','log') AND json_extract(data,'$.trace_id')=? AND ts_ns>=? AND ts_ns<? ORDER BY ts_ns,evidence_id LIMIT ?`, []any{fmt.Sprintf("%016x%016x", seed, middle/10+1), from, to, 100}},
+		{"service_time", `SELECT s.evidence_id,s.kind,s.ts_ns,s.data FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE json_extract(r.attrs,'$."service.name"')=? AND s.ts_ns>=? AND s.ts_ns<? ORDER BY s.ts_ns,s.evidence_id LIMIT ?`, []any{"service-02", from, to, 100}},
+		{"trace_id", `SELECT evidence_id,kind,ts_ns,data FROM signals WHERE kind IN ('span','log') AND json_extract(data,'$.trace_id')=? AND ts_ns>=? AND ts_ns<? ORDER BY ts_ns,evidence_id LIMIT ?`, []any{fmt.Sprintf("%016x%016x", seed, middle/10+1), from, to, 100}},
 		{"log_templates", `SELECT json_extract(s.data,'$.template') AS template,count(*) FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE s.kind='log' AND json_extract(r.attrs,'$."service.name"')=? AND s.ts_ns>=? AND s.ts_ns<? GROUP BY template ORDER BY count(*) DESC,template LIMIT ?`, []any{"service-02", max(epoch, epoch+int64(middle-43200)*int64(time.Second)), epoch + int64(middle+43200)*int64(time.Second), 100}},
 	}
 }
@@ -192,6 +192,16 @@ func inspect(ctx context.Context, path string, total int, seed int64) (report, e
 		return r, err
 	}
 	for _, q := range queries(total, seed) {
+		// Each query starts with a new SQLite page cache. OS caches remain warm;
+		// the subsequent four repeats reuse this connection deliberately.
+		if err = db.Close(); err != nil {
+			return r, err
+		}
+		db, err = sql.Open("sqlite", u.String()+"?mode=ro&_pragma=query_only(1)")
+		if err != nil {
+			return r, err
+		}
+		db.SetMaxOpenConns(1)
 		t := timing{Name: q.Name, SQL: q.SQL, Args: q.Args, Met: true}
 		rows, err := db.QueryContext(ctx, "EXPLAIN QUERY PLAN "+q.SQL, q.Args...)
 		if err != nil {

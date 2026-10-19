@@ -4,6 +4,9 @@ import (
 	"context"
 	"reflect"
 	"testing"
+	"time"
+
+	"github.com/signalscout/signalscout/internal/store"
 )
 
 func TestPayloadGenerationIsSeeded(t *testing.T) {
@@ -52,5 +55,15 @@ func TestCombinedMeasurementVerifiesEverySignal(t *testing.T) {
 		if m.Counts[kind] <= 0 || m.Counts[kind] > int64(500*targets[kind]/5000) || m.Rates[kind] != float64(m.Counts[kind])/m.Elapsed || m.CommittedInWindow[kind] > int(m.Counts[kind]) {
 			t.Fatalf("invalid combined rate/count: %+v", m)
 		}
+	}
+}
+
+func TestCombinedMeasurementWithConcurrentMaintenance(t *testing.T) {
+	m, err := combinedTrialOptions(context.Background(), 500, 256, 1, store.Options{QueueSize: 64, IdleTimeout: 30 * time.Millisecond, SweepInterval: 5 * time.Millisecond, ContextBefore: 30 * time.Second, ContextAfter: 5 * time.Second, Retention: 7 * 24 * time.Hour})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if m.Counts["span"] <= 0 || m.Counts["log"] <= 0 || m.Counts["metric"] <= 0 {
+		t.Fatal("maintenance lost signal stream", m)
 	}
 }

@@ -50,6 +50,12 @@ that same method. Every completed/failed trial is now saved immediately, so a
 later HTTP error cannot erase earlier results. The 30-second request timeout and
 all target assertions are unchanged.
 
+Diagnostic combined comparisons use the unchanged benchmark store options (idle
+and sweep one hour, zero padding/retention). The additional final
+`-combined -serve-defaults` check uses idle 5s, sweep 1s, context 30s/5s and
+retention 7d, so finalization and cleanup actually run during the offered load.
+Neither case establishes a production SLO or unlimited-history capacity.
+
 Startup uses the normal intake `store.Open`, not the result-only writer. Copies
 refuse an existing destination or a source with a nonempty WAL. Open and Close
 are timed separately; database size and SQL row counts are outside those clocks.
@@ -112,3 +118,26 @@ no rebuild. As with other embedded migrations, normal startup must finish before
 serving readers; if interrupted, retry startup to complete derived scopes.
 
 Further measurements and independently measured changes follow below.
+
+The complete ordered SHA-256 audits match for signals, resources, run snapshots,
+logical links and every provenance row (`perf-00-context-audit` versus
+`perf-01-context-audit`). Fresh original-code startup under race instrumentation
+takes 455.8851 seconds, using the frozen pre-change binary and a new saved-data
+copy; it completes within the unchanged ten-minute deadline. First upgrade after
+the scope change takes 3.4938 seconds under race instrumentation. The older
+600.923-second saved-data test failure remains retained as a separate observation.
+
+### 2. Multi-row signal insertion
+
+The initial CPU profile attributes 30.05% to per-row inserts and 10.72% to SQLite
+preparation. Inspection of the pinned driver's `stmt.exec` confirms it prepares
+and finalizes SQLite bytecode on every execution, including database/sql prepared
+statements. Insert at most 128 rows (1,024 parameters) per SQL statement, within
+the same job transaction. The bound limits statement/argument size without
+changing the HTTP batch size or queue. A short affected-row count still rejects
+ownership/kind conflicts and rolls back the entire job. Tests cover conflicts
+before/at/after chunk boundaries and duplicate updates across chunks.
+
+The unchanged separate benchmark now has minimum rates of 20,011 spans, 17,164
+logs and 16,893 points/sec. Every separate target is met; this alone does not
+establish simultaneous capacity. All raw trials remain in `perf-02-multirow-ingest`.

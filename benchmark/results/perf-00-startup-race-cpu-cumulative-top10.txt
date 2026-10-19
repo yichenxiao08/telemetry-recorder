@@ -1,0 +1,19 @@
+File: startup-before-race.exe
+Build ID: <repo>\.cache\performance\startup-before-race.exe2026-10-19 13:34:34.0801645 -0400 EDT
+Type: cpu
+Time: 2026-10-19 14:47:17 EDT
+Duration: 455.89s, Total samples = 444.91s (97.59%)
+Showing nodes accounting for 11.98s, 2.69% of 444.91s total
+Dropped 390 nodes (cum <= 2.22s)
+Showing top 10 nodes out of 136
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%    360.88s 81.11%  database/sql.withLock
+         0     0%     0%    360.88s 81.11%  github.com/signalscout/signalscout/internal/store.(*Store).backfillContext
+         0     0%     0%    360.88s 81.11%  github.com/signalscout/signalscout/internal/store.(*Store).loop
+         0     0%     0%    360.85s 81.11%  modernc.org/sqlite/lib.Xsqlite3_step
+         0     0%     0%    360.85s 81.11%  modernc.org/sqlite/lib._sqlite3Step
+    11.98s  2.69%  2.69%    359.25s 80.75%  modernc.org/sqlite/lib._sqlite3VdbeExec
+         0     0%  2.69%    357.13s 80.27%  database/sql.(*DB).execDC
+         0     0%  2.69%    357.13s 80.27%  database/sql.(*DB).execDC.func2
+         0     0%  2.69%    357.13s 80.27%  database/sql.(*Tx).ExecContext
+         0     0%  2.69%    357.13s 80.27%  database/sql.ctxDriverExec

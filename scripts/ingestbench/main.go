@@ -252,6 +252,7 @@ func command() (resultErr error) {
 	profilePath := flag.String("cpuprofile", "", "Optional CPU profile path for diagnosing a failed measurement")
 	allocPath := flag.String("allocprofile", "", "Optional cumulative allocation profile (includes setup and shutdown)")
 	combined := flag.Bool("combined", false, "Offer all signals simultaneously at 5000/5000/10000 per second; metric count is twice count")
+	live := flag.Bool("serve-defaults", false, "Combined check with serve's idle finalization, context padding and retention enabled")
 	flag.Parse()
 	if *allocPath != "" {
 		defer func() {
@@ -277,7 +278,7 @@ func command() (resultErr error) {
 		defer pprof.StopCPUProfile()
 	}
 	if *combined {
-		return runCombined(context.Background(), *count, *batch, *seeds, *out)
+		return runCombined(context.Background(), *count, *batch, *seeds, *out, *live)
 	}
 	return run(context.Background(), *count, *batch, *seeds, *out)
 }

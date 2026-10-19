@@ -371,11 +371,7 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 		return fmt.Errorf("prepare resources: %w", err)
 	}
 	defer func() { _ = resourceStmt.Close() }()
-	signalStmt, err := tx.PrepareContext(ctx, `INSERT INTO signals VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(evidence_id) DO UPDATE SET data=excluded.data,received_at=excluded.received_at,ts_ns=excluded.ts_ns,end_ns=excluded.end_ns,resource_id=excluded.resource_id WHERE signals.run_id=excluded.run_id AND signals.kind=excluded.kind`)
-	if err != nil {
-		return fmt.Errorf("prepare signals: %w", err)
-	}
-	defer func() { _ = signalStmt.Close() }()
+	var inserts signalInsert
 	for _, signal := range batch.Signals {
 		id, domain := runs.Identity(signal)
 		signal.RunID = id
@@ -421,17 +417,12 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 		if err != nil {
 			return fmt.Errorf("encode signal: %w", err)
 		}
-		written, writeErr := signalStmt.ExecContext(ctx, signal.ID, signal.Kind, id, signal.Resource.ID, signal.TS, signal.End, now.UnixNano(), string(data))
-		if writeErr != nil {
-			return fmt.Errorf("write signal: %w", writeErr)
+		if err = inserts.add(ctx, tx, signal.ID, signal.Kind, id, signal.Resource.ID, signal.TS, signal.End, now.UnixNano(), string(data)); err != nil {
+			return err
 		}
-		changed, err := written.RowsAffected()
-		if err != nil {
-			return fmt.Errorf("check signal write: %w", err)
-		}
-		if changed == 0 {
-			return fmt.Errorf("evidence %q cannot change run ownership or kind", signal.ID)
-		}
+	}
+	if err = inserts.flush(ctx, tx); err != nil {
+		return err
 	}
 	for _, state := range states {
 		if err = saveState(ctx, tx, state); err != nil {

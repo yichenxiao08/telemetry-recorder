@@ -1,0 +1,17 @@
+File: startup-before-race.exe
+Build ID: <repo>\.cache\performance\startup-before-race.exe2026-10-19 13:34:34.0801645 -0400 EDT
+Type: alloc_space
+Time: 2026-10-19 14:54:53 EDT
+Showing nodes accounting for 22698.20kB, 95.68% of 23722.24kB total
+Showing top 10 nodes out of 103
+      flat  flat%   sum%        cum   cum%
+ 7750.24kB 32.67% 32.67%  7750.24kB 32.67%  runtime/pprof.(*profMap).lookup
+ 4096.94kB 17.27% 49.94%  4096.94kB 17.27%  runtime/pprof.allFrames
+ 2175.76kB  9.17% 59.11%  2175.76kB  9.17%  runtime/pprof.(*profileBuilder).emitLocation
+ 2048.05kB  8.63% 67.75%  2048.05kB  8.63%  modernc.org/memory.unmap
+    1539kB  6.49% 74.23%     1539kB  6.49%  runtime.mallocgc
+ 1536.05kB  6.48% 80.71%  1536.05kB  6.48%  modernc.org/memory.mmap
+ 1184.27kB  4.99% 85.70%  1184.27kB  4.99%  runtime/pprof.StartCPUProfile
+ 1024.05kB  4.32% 90.02%  1024.05kB  4.32%  internal/poll.init.func7
+  688.56kB  2.90% 92.92%   688.56kB  2.90%  compress/flate.(*fastGen).addBlock
+  655.29kB  2.76% 95.68%   655.29kB  2.76%  compress/flate.NewWriter
