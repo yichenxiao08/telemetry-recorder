@@ -15,3 +15,4 @@ Span evidence IDs include trace ID and span ID. Span events and log IDs are stab
 Zero timestamps remain in raw records but do not widen an otherwise timed run's interval. Resource identity sorts top-level attributes so SDK ordering changes do not break matching. Run ownership of an existing evidence ID cannot change; such a conflicting batch is rolled back.
 
 Resource content is stored once by identity and restored on reads. The span view joins resources to expose service name; the event view exposes original log body and derived template. An embedded second migration upgrades those views for existing M1 databases.
+

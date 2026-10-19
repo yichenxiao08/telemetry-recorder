@@ -35,7 +35,7 @@ func newServeCommand(database *string) *cobra.Command {
 			}
 			options.Thresholds[workload] = float64(parsed) / float64(time.Millisecond)
 		}
-		if options.QueueSize <= 0 || options.IdleTimeout <= 0 || options.SweepInterval <= 0 || options.Retention < 0 {
+		if options.QueueSize <= 0 || options.IdleTimeout <= 0 || options.SweepInterval <= 0 || options.Retention < 0 || options.ContextBefore < 0 || options.ContextAfter < 0 {
 			return fmt.Errorf("queue, idle timeout and sweep interval must be positive; retention cannot be negative")
 		}
 		logger := slog.New(slog.NewTextHandler(cmd.ErrOrStderr(), nil))
@@ -47,6 +47,8 @@ func newServeCommand(database *string) *cobra.Command {
 	flags.DurationVar(&options.IdleTimeout, "idle-timeout", 5*time.Second, "Close a run after inactivity")
 	flags.DurationVar(&options.Retention, "retention", 7*24*time.Hour, "Evidence retention; 0 disables cleanup")
 	flags.DurationVar(&options.SweepInterval, "sweep-interval", time.Second, "Idle and retention maintenance interval")
+	flags.DurationVar(&options.ContextBefore, "context-before", 30*time.Second, "Ambient context padding before the run")
+	flags.DurationVar(&options.ContextAfter, "context-after", 5*time.Second, "Ambient context padding after the run")
 	flags.StringArrayVar(&thresholds, "threshold", nil, "Degrade workload above duration, e.g. 'POST /checkout=2s'; repeatable")
 	return command
 }

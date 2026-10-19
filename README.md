@@ -46,7 +46,7 @@ otelcol --config .\docs\collector-config.yaml
 
 The Collector receives gRPC on 4317 and HTTP on 4319, forwarding every signal to Signal Scout on 4318. No sampling processor is configured. An SDK sending via this Collector should use port 4319 for HTTP. Signal Scout accepts protobuf and OTLP JSON at `/v1/traces`, `/v1/logs`, `/v1/metrics`, including gzip bodies. OTLP JSON trace/span IDs use hex; original decoded records, resources, scopes, exemplars, links and all metric point types are retained.
 
-Web runs are grouped by trace ID. ML runs require resource `signalscout.run.id` and can set `signalscout.workload`. Ambient logs and metrics are retained with no fabricated run. On close, matching-resource ambient evidence within the run interval is linked as context. Context does not change ownership or outcome. See [docs/run-spec.md](docs/run-spec.md) and [docs/open-questions.md](docs/open-questions.md) for the exact choices and remaining ambiguities.
+Web runs are grouped by trace ID. ML runs require resource `signalscout.run.id` and can set `signalscout.workload`. Ambient logs and metrics are retained with no fabricated run. On close, ambient evidence matching a span resource exactly or by host.name/service.instance.id is linked as context, with rule provenance. The default context window pads the run by 30 seconds before and 5 seconds after; use --context-before/--context-after to change it. Context does not change ownership or outcome. See [docs/run-spec.md](docs/run-spec.md) and [docs/open-questions.md](docs/open-questions.md) for the exact choices and remaining ambiguities.
 
 Raw telemetry is retained. Log template normalization is a derived field, not redaction; the broader redaction milestone is M8.
 
@@ -67,3 +67,4 @@ task benchmark-ingest
 ```
 
 See [docs/benchmark.md](docs/benchmark.md) for what is timed and [benchmark/results/ingest.md](benchmark/results/ingest.md) for the generated results. These are intake measurements, not the later failure-diff benchmark.
+

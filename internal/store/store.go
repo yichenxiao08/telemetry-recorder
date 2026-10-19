@@ -31,6 +31,8 @@ type Options struct {
 	Retention     time.Duration
 	SweepInterval time.Duration
 	Thresholds    map[string]float64
+	ContextBefore time.Duration
+	ContextAfter  time.Duration
 }
 
 type job struct {
@@ -58,7 +60,7 @@ type Store struct {
 }
 
 func Open(ctx context.Context, path string, options Options) (*Store, error) {
-	if options.QueueSize <= 0 || options.IdleTimeout <= 0 || options.Retention < 0 {
+	if options.QueueSize <= 0 || options.IdleTimeout <= 0 || options.Retention < 0 || options.ContextBefore < 0 || options.ContextAfter < 0 {
 		return nil, fmt.Errorf("queue size and idle timeout must be positive")
 	}
 	if options.SweepInterval <= 0 {
@@ -338,10 +340,12 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			// The root may have just supplied the workload for threshold lookup.
 			state.Run.Outcome = state.Outcome(s.options.Thresholds[state.Run.Workload])
 			states[id] = state
-			if runResources[id] == nil {
+			if signal.Kind == "span" && runResources[id] == nil {
 				runResources[id] = map[string]bool{}
 			}
-			runResources[id][signal.Resource.ID] = true
+			if signal.Kind == "span" {
+				runResources[id][signal.Resource.ID] = true
+			}
 		}
 		// Resources are immutable by content identity. Write each once per batch,
 		// rather than doing the same insert for every span/log/point.
@@ -396,7 +400,7 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			}
 		}
 	}
-	if err = refreshContext(ctx, tx); err != nil {
+	if err = s.refreshContext(ctx, tx); err != nil {
 		return err
 	}
 	if err = tx.Commit(); err != nil {
@@ -412,13 +416,26 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 	return nil
 }
 
-func refreshContext(ctx context.Context, tx *sql.Tx) error {
-	_, err := tx.ExecContext(ctx, `INSERT OR IGNORE INTO context_links
-	SELECT r.run_id,s.evidence_id FROM runs r JOIN run_resources rr ON rr.run_id=r.run_id
-	JOIN signals s ON s.resource_id=rr.resource_id AND s.run_id='' AND s.kind IN ('log','metric')
-	AND s.ts_ns>=r.started_at AND s.ts_ns<=r.ended_at WHERE r.closed=1`)
-	if err != nil {
-		return fmt.Errorf("attach context: %w", err)
+func (s *Store) refreshContext(ctx context.Context, tx *sql.Tx) error {
+	rules := []struct{ name, predicate string }{
+		{"exact_resource", "ambient.resource_id=source.resource_id"},
+		{"host.name", `json_type(source.attrs,'$."host.name"')='text' AND json_extract(source.attrs,'$."host.name"')<>'' AND json_type(ambient.attrs,'$."host.name"')='text' AND json_extract(ambient.attrs,'$."host.name"')=json_extract(source.attrs,'$."host.name"')`},
+		{"service.instance.id", `json_type(source.attrs,'$."service.instance.id"')='text' AND json_extract(source.attrs,'$."service.instance.id"')<>'' AND json_type(ambient.attrs,'$."service.instance.id"')='text' AND json_extract(ambient.attrs,'$."service.instance.id"')=json_extract(source.attrs,'$."service.instance.id"')`},
+	}
+	for _, rule := range rules {
+		// The predicate comes only from the fixed rules above, never from input.
+		from := ` FROM runs r JOIN run_resources rr ON rr.run_id=r.run_id
+		JOIN resources source ON source.resource_id=rr.resource_id
+		JOIN resources ambient ON ` + rule.predicate + `
+		JOIN signals signal ON signal.resource_id=ambient.resource_id AND signal.run_id='' AND signal.kind IN ('log','metric')
+		AND signal.ts_ns>=r.started_at-? AND signal.ts_ns<=r.ended_at+?
+		WHERE r.closed=1 AND EXISTS(SELECT 1 FROM signals span WHERE span.run_id=r.run_id AND span.kind='span' AND span.resource_id=source.resource_id)`
+		if _, err := tx.ExecContext(ctx, "INSERT OR IGNORE INTO context_links SELECT r.run_id,signal.evidence_id"+from, int64(s.options.ContextBefore), int64(s.options.ContextAfter)); err != nil {
+			return fmt.Errorf("attach context %s: %w", rule.name, err)
+		}
+		if _, err := tx.ExecContext(ctx, "INSERT OR IGNORE INTO context_matches SELECT r.run_id,signal.evidence_id,?,source.resource_id"+from, rule.name, int64(s.options.ContextBefore), int64(s.options.ContextAfter)); err != nil {
+			return fmt.Errorf("record context rule %s: %w", rule.name, err)
+		}
 	}
 	return nil
 }
@@ -449,7 +466,7 @@ func (s *Store) maintain(ctx context.Context, now time.Time, force bool) error {
 			return err
 		}
 	}
-	if err = refreshContext(ctx, tx); err != nil {
+	if err = s.refreshContext(ctx, tx); err != nil {
 		return err
 	}
 	if s.options.Retention > 0 {
@@ -525,6 +542,25 @@ func (s *Reader) Show(ctx context.Context, id string) (model.RunDetail, error) {
 	result.Context, err = readSignals(ctx, tx, "SELECT s.data,r.attrs,r.raw FROM signals s JOIN resources r ON r.resource_id=s.resource_id JOIN context_links c ON c.evidence_id=s.evidence_id WHERE c.run_id=? ORDER BY s.ts_ns,s.evidence_id", id)
 	if err != nil {
 		return result, err
+	}
+	for index := range result.Context {
+		matches, err := tx.QueryContext(ctx, "SELECT rule,matched_resource_id FROM context_matches WHERE run_id=? AND evidence_id=? ORDER BY rule,matched_resource_id", id, result.Context[index].ID)
+		if err != nil {
+			return result, fmt.Errorf("read context rules: %w", err)
+		}
+		for matches.Next() {
+			var match model.ContextMatch
+			if err = matches.Scan(&match.Rule, &match.ResourceID); err != nil {
+				_ = matches.Close()
+				return result, fmt.Errorf("decode context rule: %w", err)
+			}
+			result.Context[index].ContextMatches = append(result.Context[index].ContextMatches, match)
+		}
+		err = matches.Err()
+		_ = matches.Close()
+		if err != nil {
+			return result, fmt.Errorf("iterate context rules: %w", err)
+		}
 	}
 	if err = tx.Commit(); err != nil {
 		return result, fmt.Errorf("commit read: %w", err)

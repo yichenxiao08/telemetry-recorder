@@ -12,24 +12,30 @@ type Resource struct {
 // Signal retains the original OTLP record as JSON as well as searchable fields.
 // Non-finite numbers are represented in ValueText, never forced into JSON numbers.
 type Signal struct {
-	ID        string          `json:"id"`
-	Kind      string          `json:"kind"`
-	RunID     string          `json:"run_id,omitempty"`
-	TraceID   string          `json:"trace_id,omitempty"`
-	SpanID    string          `json:"span_id,omitempty"`
-	ParentID  string          `json:"parent_span_id,omitempty"`
-	Name      string          `json:"name"`
-	TS        int64           `json:"ts_ns"`
-	End       int64           `json:"end_ns"`
-	Status    string          `json:"status,omitempty"`
-	Attrs     map[string]any  `json:"attrs"`
-	Resource  Resource        `json:"resource"`
-	Scope     json.RawMessage `json:"scope"`
-	Raw       json.RawMessage `json:"raw"`
-	Body      string          `json:"body,omitempty"`
-	Template  string          `json:"template,omitempty"`
-	Value     *float64        `json:"value,omitempty"`
-	ValueText string          `json:"value_text,omitempty"`
+	ID             string          `json:"id"`
+	Kind           string          `json:"kind"`
+	RunID          string          `json:"run_id,omitempty"`
+	TraceID        string          `json:"trace_id,omitempty"`
+	SpanID         string          `json:"span_id,omitempty"`
+	ParentID       string          `json:"parent_span_id,omitempty"`
+	Name           string          `json:"name"`
+	TS             int64           `json:"ts_ns"`
+	End            int64           `json:"end_ns"`
+	Status         string          `json:"status,omitempty"`
+	Attrs          map[string]any  `json:"attrs"`
+	Resource       Resource        `json:"resource"`
+	Scope          json.RawMessage `json:"scope"`
+	Raw            json.RawMessage `json:"raw"`
+	Body           string          `json:"body,omitempty"`
+	Template       string          `json:"template,omitempty"`
+	Value          *float64        `json:"value,omitempty"`
+	ValueText      string          `json:"value_text,omitempty"`
+	ContextMatches []ContextMatch  `json:"context_matches,omitempty"`
+}
+
+type ContextMatch struct {
+	Rule       string `json:"rule"`
+	ResourceID string `json:"matched_resource_id"`
 }
 
 type Batch struct{ Signals []Signal }
