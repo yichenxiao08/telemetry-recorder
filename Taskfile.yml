@@ -39,3 +39,7 @@ tasks:
     desc: Remove the demo's Compose containers and network
     cmds:
       - docker compose --project-name signalscout-shop --file samples/shop/compose.yml down
+  diff-demo:
+    desc: Validate M3 rankings and timing on an existing M2 demo database
+    cmds:
+      - go run ./scripts/diffdemo {{.CLI_ARGS}}

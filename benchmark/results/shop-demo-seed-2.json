@@ -1,0 +1,55 @@
+{
+  "completed_at": "2026-10-19T16:22:56.8882787Z",
+  "revision": "feaff2809898353dc3943dbbdeb46d3e8a47ea61",
+  "source_dirty": false,
+  "database": ".cache/shop-demo/run-3490384829/signalscout.db",
+  "seed": 2,
+  "baseline_requests": 40,
+  "baseline_passing": 40,
+  "failure_requests": 300,
+  "failure_count": 9,
+  "failure_percent": 3,
+  "failure_run_ids": [
+    "13bd48578c81be3dcc15ca14eeed4154",
+    "3e41383e8cbf1c3c4d1f3717e73083a8",
+    "17d96dab208e29e6d826a49682063940",
+    "4b11f1f120518a8bfadb57b27bf1ad64",
+    "7efe8b040333201354eb6379b0359827",
+    "47c2f2f18321f8d54544a5379aa794f0",
+    "c354999411908c27ac1a86edae05c8d2",
+    "0ab20f66e6a76a3f0cf14a8d67c53970",
+    "cba01f083bafe7e557b0c71aed950409"
+  ],
+  "signals": {
+    "event": 376,
+    "log": 1029,
+    "metric": 581,
+    "span": 1964
+  },
+  "evidence": {
+    "run_id": "13bd48578c81be3dcc15ca14eeed4154",
+    "acquire_span_id": "span:13bd48578c81be3dcc15ca14eeed4154/fe1d7e29ec8d2376",
+    "acquire_ms": 100.442479,
+    "retry_event_id": "event:4e21482711d027d2abdae48a14a617336e2ef7e3a073854538e1198b5a2eefad/0",
+    "host_metric_id": "metric:f733756c9e0715583981e54d98c0b8ef359383aeb2f8b6b883697dbf5ad9be7b/0",
+    "host_metric_name": "system.memory.usage",
+    "host_resource_id": "056df8a3d274849bf84c06d59b944ac17c7a9554ed9150c645081d8819e6c772",
+    "host_matches": [
+      {
+        "rule": "host.name",
+        "matched_resource_id": "68b406ed55dcd3666dfb6a217cfdc8b15defeb3e9d6af5e49945454d21a57c97"
+      },
+      {
+        "rule": "host.name",
+        "matched_resource_id": "a3d3bbadafa8cd6088775ffca93920bb777c94af904030054ab83b531c84fab9"
+      },
+      {
+        "rule": "host.name",
+        "matched_resource_id": "dbf6b88f4a5fcb69719931839e55296270e496266a3b0402112255ae533ecdbe"
+      }
+    ],
+    "pool_gauge_id": "metric:e580069278ddf85103439d583c99f8dd8f29626b7abf7e34654fb060a339f54c/0",
+    "trace_log_id": "log:01b93c436910ebf02f73c53f70e7866ee241f7eddb9e7ff78ecd592ab71477b8/0"
+  },
+  "acceptance": true
+}
