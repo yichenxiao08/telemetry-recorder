@@ -12,15 +12,17 @@ type BaselineOptions struct {
 }
 
 type BaselineSpec struct {
-	Mode           string   `json:"mode"`
-	N              int      `json:"n"`
-	ExplicitN      bool     `json:"explicit_n"`
-	BeforeInput    string   `json:"before_input,omitempty"`
-	BeforeNS       int64    `json:"before_ns"`
-	Workload       string   `json:"workload"`
-	Minimum        int      `json:"minimum"`
-	RunIDs         []string `json:"run_ids"`
-	ScoringVersion string   `json:"scoring_version"`
+	ContextPolicy     string   `json:"context_policy,omitempty"`
+	ContextLookbackNS int64    `json:"context_lookback_ns,omitempty"`
+	Mode              string   `json:"mode"`
+	N                 int      `json:"n"`
+	ExplicitN         bool     `json:"explicit_n"`
+	BeforeInput       string   `json:"before_input,omitempty"`
+	BeforeNS          int64    `json:"before_ns"`
+	Workload          string   `json:"workload"`
+	Minimum           int      `json:"minimum"`
+	RunIDs            []string `json:"run_ids"`
+	ScoringVersion    string   `json:"scoring_version"`
 }
 
 type Comparison struct {

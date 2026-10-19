@@ -18,8 +18,12 @@ func typePriority(kind string) int {
 		return 3
 	case "env":
 		return 4
-	default:
+	case "context_metric":
 		return 5
+	case "context_log":
+		return 6
+	default:
+		return 7
 	}
 }
 

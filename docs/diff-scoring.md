@@ -147,3 +147,14 @@ persisted structured result (`status=insufficient_baseline`), not an empty succe
 ranking; the CLI prints its diagnostic and JSON consumers must check status.
 
 Property tests use the plan-approved [rapid package](https://pkg.go.dev/pgregory.net/rapid@v1.2.0).
+
+## M4b context extension
+
+`v1+context-v1` retains every M3 scoring constant. Context uses the fixed window,
+series identity, config-compatibility, minimum samples and 1% relative numeric
+floor/scale documented in docs/context-differences.md before validating demos.
+Metric summaries use the same MAD/effect formula, two-sided; log templates use
+the existing smoothed presence/count formula. Type ties place context metrics
+after env and context logs after metrics. Baseline specifications persist the
+policy version and configured lookback. Pure M3 comparison remains available
+for historical validation; CLI and viewer comparisons now include context.

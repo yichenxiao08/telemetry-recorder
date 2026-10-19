@@ -28,7 +28,12 @@ const InvalidCutoff queueError = "invalid baseline cutoff"
 // Comparison loads only M3's owned spans/events. Context is deliberately absent.
 // A single read transaction freezes selection and evidence at the same snapshot.
 func (r *Reader) Comparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
-	return r.comparison(ctx, id, options, false)
+	return r.comparison(ctx, id, options, false, false)
+}
+
+// ContextComparison retains selection and context on the same read snapshot.
+func (r *Reader) ContextComparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
+	return r.comparison(ctx, id, options, true, true)
 }
 
 // ViewerComparison refuses oversized inputs instead of computing a partial diff.
@@ -36,10 +41,10 @@ func (r *Reader) ViewerComparison(ctx context.Context, id string, options model.
 	if options.N > 200 {
 		return model.Comparison{}, fmt.Errorf("viewer baseline limit is 200 runs")
 	}
-	return r.comparison(ctx, id, options, true)
+	return r.comparison(ctx, id, options, true, true)
 }
 
-func (r *Reader) comparison(ctx context.Context, id string, options model.BaselineOptions, bounded bool) (model.Comparison, error) {
+func (r *Reader) comparison(ctx context.Context, id string, options model.BaselineOptions, bounded, withContext bool) (model.Comparison, error) {
 	result := model.Comparison{}
 	n := options.N
 	if !options.ExplicitN && n == 0 {
@@ -128,6 +133,32 @@ func (r *Reader) comparison(ctx context.Context, id string, options model.Baseli
 		total += len(b.Signals)
 		if bounded && total > 50000 {
 			return result, EvidenceLimit
+		}
+	}
+	if withContext {
+		var before int64
+		if err = tx.QueryRowContext(ctx, "SELECT before_ns FROM context_settings WHERE singleton=1").Scan(&before); err != nil {
+			return result, fmt.Errorf("read context settings (start serve once to upgrade older databases): %w", err)
+		}
+		result.Spec.ContextPolicy = "retrospective-config-v1"
+		result.Spec.ContextLookbackNS = before
+		result.Spec.ScoringVersion = "v1+context-v1"
+		loadContext := func(d *model.RunDetail) error {
+			var e error
+			d.Context, e = readContext(ctx, tx, d.Run.ID, d.Run.StartedAt-before, d.Run.EndedAt, 5000)
+			total += len(d.Context)
+			if total > 50000 {
+				return EvidenceLimit
+			}
+			return e
+		}
+		if err = loadContext(&result.Failing); err != nil {
+			return result, err
+		}
+		for i := range result.Baseline {
+			if err = loadContext(&result.Baseline[i]); err != nil {
+				return result, err
+			}
 		}
 	}
 	if err = tx.Commit(); err != nil {

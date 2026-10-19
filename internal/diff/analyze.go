@@ -18,7 +18,7 @@ func Analyze(ctx context.Context, path, id string, options model.BaselineOptions
 	if err != nil {
 		return result, err
 	}
-	input, readErr := reader.Comparison(ctx, id, options)
+	input, readErr := reader.ContextComparison(ctx, id, options)
 	if err = errors.Join(readErr, reader.Close()); err != nil {
 		return result, err
 	}

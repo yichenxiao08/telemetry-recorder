@@ -13,6 +13,8 @@ all runs before validating demo ranks, not expanded until a desired point is
 found. Require the metric resource's flat signalscout.config.* values, when
 present, to agree with that run's config. This prevents a pool=20 sample from
 the previous phase being attributed to a pool=5 run through a shared host.
+Unknown metric kinds, non-scalar points and monotonic counters are not scored;
+counters need a separately specified rate/delta policy. The browser retains them.
 Resources without config (host-only metrics) remain eligible. Padding and
 rejected records remain visible in the context panel with provenance.
 

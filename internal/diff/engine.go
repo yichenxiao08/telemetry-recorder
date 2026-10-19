@@ -120,6 +120,7 @@ func Compute(input model.Comparison) (model.DiffResult, error) {
 		return result, err
 	}
 	differences = append(differences, config...)
+	differences = append(differences, contextDifferences(input)...)
 	result.Differences = collapse(differences, failing)
 	return finish(result)
 }

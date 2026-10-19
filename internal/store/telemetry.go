@@ -107,7 +107,7 @@ func (r *Reader) ServiceOverview(ctx context.Context, f telemetry.Filter) ([]tel
 const contextQuery = `SELECT s.data,r.attrs,r.raw FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE s.evidence_id IN (SELECT c.evidence_id FROM context_matches c JOIN signals e ON e.evidence_id=c.evidence_id WHERE c.run_id=? AND e.ts_ns>=? AND e.ts_ns<=?) AND s.ts_ns>=? AND s.ts_ns<=? ORDER BY s.ts_ns,s.evidence_id LIMIT ?`
 
 func readContext(ctx context.Context, tx *sql.Tx, id string, from, to int64, limit int) ([]model.Signal, error) {
-	if from >= to || limit < 1 || limit > 5000 {
+	if from > to || limit < 1 || limit > 5000 {
 		return nil, fmt.Errorf("context requires valid bounds and limit 1..5000")
 	}
 	signals, err := readSignals(ctx, tx, contextQuery, id, from, to, from, to, limit+1)
