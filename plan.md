@@ -322,7 +322,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Replaying recorded OTLP fixtures from `testdata/` produces the expected runs, spans, events, and outcomes (golden-file tests).
 - Malformed payloads return 4xx and do not corrupt storage.
 - Backpressure works: when the write queue is full, intake returns 503 (tested).
-- Ingest throughput of at least 5,000 spans/sec combined with 5,000 log records/sec and 10,000 metric points/sec on a laptop, measured with a Go benchmark or load script. Record the number; do not tune beyond this yet.
+- Ingest throughput targets, measured **separately** on the same laptop: 5,000 spans/sec, 5,000 log records/sec, and 10,000 scalar metric points/sec. The existing `task benchmark-ingest` sends one signal kind at a time; it does not measure simultaneous combined capacity. Record minimum and median over all seed trials, retain misses, and do not tune during the three M1 review repeats. A target is met only when every trial reaches it. Simultaneous mixed-signal capacity remains unmeasured.
 
 ### M2: Web sample app and seeded failure #1
 
@@ -500,3 +500,4 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 - Root selection and failure markers are deterministic across arrival order; unknown evidence timestamps do not widen a timed context interval. Resource identity normalizes top-level attribute order. Conflicting evidence ownership is rejected atomically.
 - M1 ingest acceptance is measured by `scripts/ingestbench` (`task benchmark-ingest`) with five deterministic seeds and separate span/log/scalar-point rates. Each HTTP acknowledgment follows commit; counts are verified independently. The methodology excludes startup, final closure and large-history context scans.
 - To reach M1 throughput without changing correctness or durability, resources are inserted once per batch and stored once by content identity; reads restore complete metadata. Run-resource membership uses current-batch pairs instead of scanning stored history. Earlier failed measurements are preserved alongside the final passing run.
+- The M1 review requests three unchanged benchmark repetitions, with independent per-signal rates and all target misses retained. These are diagnostic review follow-ups; the owner explicitly requested proceeding to M2 after reporting them, without performance tuning even if the revised targets are missed. This does not claim that the revised M1 throughput targets passed.
