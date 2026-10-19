@@ -11,16 +11,18 @@ import (
 )
 
 type Cursor struct {
-	TS int64  `json:"ts"`
-	ID string `json:"id"`
+	Inclusive bool   `json:"inclusive,omitempty"`
+	TS        int64  `json:"ts"`
+	ID        string `json:"id"`
 }
 type Filter struct {
-	Kind, Service, TraceID, Name, Text, Status, Attribute, AttributeValue string
-	From, To                                                              int64
-	Limit                                                                 int
-	SeverityMin, SeverityMax                                              *int
-	DurationMin, DurationMax                                              *float64
-	After                                                                 *Cursor
+	NoService                                                                       bool
+	Kind, Service, TraceID, Name, Text, Template, Status, Attribute, AttributeValue string
+	From, To                                                                        int64
+	Limit                                                                           int
+	SeverityMin, SeverityMax                                                        *int
+	DurationMin, DurationMax                                                        *float64
+	After                                                                           *Cursor
 }
 type Page struct {
 	Signals []model.Signal
@@ -37,10 +39,13 @@ type ServiceStats struct {
 }
 
 func (f Filter) Validate() error {
-	if f.From <= 0 || f.From >= f.To || time.Unix(0, f.To).Sub(time.Unix(0, f.From)) > 31*24*time.Hour || f.Limit < 1 || f.Limit > 1000 {
+	if f.From < 0 || f.From >= f.To || time.Unix(0, f.To).Sub(time.Unix(0, f.From)) > 31*24*time.Hour || f.Limit < 1 || f.Limit > 1000 {
 		return fmt.Errorf("telemetry requires an explicit time range (max 31 days) and limit 1..1000")
 	}
-	if f.Service == "" && f.TraceID == "" {
+	if f.NoService && (f.Service != "" || f.TraceID != "") {
+		return fmt.Errorf("no-service partition cannot be combined with service or trace")
+	}
+	if f.Service == "" && f.TraceID == "" && !f.NoService {
 		return fmt.Errorf("select a service or trace ID for an indexed partition")
 	}
 	if f.Kind != "span" && f.Kind != "log" && f.Kind != "metric" {
@@ -68,7 +73,7 @@ func (f Filter) Validate() error {
 	if f.SeverityMin != nil && f.SeverityMax != nil && *f.SeverityMin > *f.SeverityMax {
 		return fmt.Errorf("reversed severity range")
 	}
-	for _, s := range []string{f.Service, f.TraceID, f.Name, f.Text, f.Status, f.Attribute, f.AttributeValue} {
+	for _, s := range []string{f.Service, f.TraceID, f.Name, f.Text, f.Template, f.Status, f.Attribute, f.AttributeValue} {
 		if len(s) > 2048 {
 			return fmt.Errorf("filter too long")
 		}
@@ -84,6 +89,10 @@ func query(f Filter, projection, tail string, limit int) (string, []any, error) 
 	}
 	base := ` FROM resources r INDEXED BY resources_service JOIN signals s INDEXED BY signals_resource_kind_time ON s.resource_id=r.resource_id WHERE json_extract(r.attrs,'$."service.name"')=?`
 	args := []any{f.Service}
+	if f.NoService {
+		base = strings.TrimSuffix(base, "=?") + " IS NULL"
+		args = nil
+	}
 	if f.Kind == "log" {
 		base = strings.Replace(base, "signals_resource_kind_time", "signals_log_resource_time", 1)
 	}
@@ -104,7 +113,7 @@ func query(f Filter, projection, tail string, limit int) (string, []any, error) 
 	if f.TraceID == "" && f.Kind != "log" {
 		base += ` AND s.kind IN ('span','metric')`
 	}
-	for _, p := range []struct{ column, value string }{{"name", f.Name}, {"status", f.Status}} {
+	for _, p := range []struct{ column, value string }{{"name", f.Name}, {"status", f.Status}, {"template", f.Template}} {
 		if p.value != "" {
 			base += ` AND json_extract(s.data,'$.` + p.column + `')=?`
 			args = append(args, p.value)
@@ -115,8 +124,8 @@ func query(f Filter, projection, tail string, limit int) (string, []any, error) 
 		args = append(args, f.Text)
 	}
 	if f.Attribute != "" {
-		base += ` AND EXISTS(SELECT 1 FROM json_each(s.data,'$.attrs') a WHERE a.key=? AND CAST(a.value AS TEXT)=?)`
-		args = append(args, f.Attribute, f.AttributeValue)
+		base += ` AND (EXISTS(SELECT 1 FROM json_each(s.data,'$.attrs') a WHERE a.key=? AND CAST(a.value AS TEXT)=?) OR EXISTS(SELECT 1 FROM json_each(r.attrs) a WHERE a.key=? AND CAST(a.value AS TEXT)=?))`
+		args = append(args, f.Attribute, f.AttributeValue, f.Attribute, f.AttributeValue)
 	}
 	for _, p := range []struct {
 		op string
@@ -137,7 +146,11 @@ func query(f Filter, projection, tail string, limit int) (string, []any, error) 
 		}
 	}
 	if f.After != nil {
-		base += ` AND (s.ts_ns>? OR (s.ts_ns=? AND s.evidence_id>?))`
+		op := ">"
+		if f.After.Inclusive {
+			op = ">="
+		}
+		base += ` AND (s.ts_ns>? OR (s.ts_ns=? AND s.evidence_id` + op + `?))`
 		args = append(args, f.After.TS, f.After.TS, f.After.ID)
 	}
 	args = append(args, limit)
@@ -147,13 +160,13 @@ func Query(f Filter) (string, []any, error) {
 	return query(f, "s.data,r.attrs,r.raw", " ORDER BY s.ts_ns,s.evidence_id", f.Limit+1)
 }
 func OverviewQuery(f Filter) (string, []any, error) {
-	if f.Kind != "span" {
+	if f.Kind != "span" || f.Service == "" || f.After != nil {
 		return "", nil, fmt.Errorf("overview requires spans")
 	}
 	return query(f, "s.data,r.attrs,r.raw", ` AND json_extract(s.data,'$.attrs."http.route"') IS NOT NULL ORDER BY s.ts_ns,s.evidence_id`, 50001)
 }
 func TemplateQuery(f Filter) (string, []any, error) {
-	if f.Kind != "log" {
+	if f.Kind != "log" || f.After != nil {
 		return "", nil, fmt.Errorf("templates require logs")
 	}
 	return query(f, `coalesce(json_extract(s.data,'$.template'),''),`+severitySQL()+`,count(*)`, " GROUP BY 1,2 ORDER BY count(*) DESC,1,2", f.Limit)

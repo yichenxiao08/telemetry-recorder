@@ -33,6 +33,9 @@ func (r *Reader) Comparison(ctx context.Context, id string, options model.Baseli
 
 // ContextComparison retains selection and context on the same read snapshot.
 func (r *Reader) ContextComparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
+	if options.N > 200 {
+		return model.Comparison{}, fmt.Errorf("context baseline limit is 200 runs")
+	}
 	return r.comparison(ctx, id, options, true, true)
 }
 

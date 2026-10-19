@@ -80,6 +80,9 @@ type runView struct {
 	Spans                     []spanView
 	Orphans                   []eventView
 	Panels                    []panel
+	Context                   []contextRow
+	ContextCharts             []seriesChart
+	ContextFrom, ContextTo    string
 }
 type runRow struct {
 	Run model.Run
@@ -211,8 +214,10 @@ func panelView(title string, input model.Comparison, result model.DiffResult) (p
 	locations := map[string]string{}
 	runs := append([]model.RunDetail{input.Failing}, input.Baseline...)
 	for _, run := range runs {
-		for _, s := range run.Signals {
-			locations[s.ID] = runURL(run.Run.ID) + "#" + anchor(s.ID)
+		for _, s := range append(append([]model.Signal(nil), run.Signals...), run.Context...) {
+			if _, exists := locations[s.ID]; !exists {
+				locations[s.ID] = runURL(run.Run.ID) + "#" + anchor(s.ID)
+			}
 		}
 	}
 	location := func(id string) string {

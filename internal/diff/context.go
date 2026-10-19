@@ -86,7 +86,7 @@ func contextFeatures(d model.RunDetail, lookback int64) contextWindow {
 			out.metrics[key] = m
 		}
 		if s.Kind == "log" && s.TS >= d.Run.StartedAt {
-			identity, _ := json.Marshal([]any{service, host, s.Template, telemetry.Severity(s), s.Name})
+			identity, _ := json.Marshal([]any{service, host, s.Template, telemetry.Severity(s)})
 			key := string(identity)
 			l := out.logs[key]
 			l.name = s.Template
@@ -211,6 +211,7 @@ func contextDifferences(input model.Comparison) []model.Difference {
 			sort.Strings(baseIDs)
 			ids = baseIDs[:1]
 			l = keys[key]
+			l.first = input.Failing.Run.StartedAt
 		}
 		method := "presence"
 		rate := float64(count) / float64(len(baseline))

@@ -12,13 +12,29 @@ import (
 // Analyze includes reading, computation, persistence and connection closure in
 // the reported time. Compilation and process startup are outside this interval.
 func Analyze(ctx context.Context, path, id string, options model.BaselineOptions) (model.DiffResult, error) {
+	return analyze(ctx, path, id, options, true)
+}
+
+// AnalyzeStructural preserves the accepted M3-only benchmark. It is not a
+// separate writer path or a new CLI mode; current CLI analysis includes context.
+func AnalyzeStructural(ctx context.Context, path, id string, options model.BaselineOptions) (model.DiffResult, error) {
+	return analyze(ctx, path, id, options, false)
+}
+
+func analyze(ctx context.Context, path, id string, options model.BaselineOptions, withContext bool) (model.DiffResult, error) {
 	start := time.Now()
 	var result model.DiffResult
 	reader, err := store.OpenReader(ctx, path)
 	if err != nil {
 		return result, err
 	}
-	input, readErr := reader.ContextComparison(ctx, id, options)
+	var input model.Comparison
+	var readErr error
+	if withContext {
+		input, readErr = reader.ContextComparison(ctx, id, options)
+	} else {
+		input, readErr = reader.Comparison(ctx, id, options)
+	}
 	if err = errors.Join(readErr, reader.Close()); err != nil {
 		return result, err
 	}

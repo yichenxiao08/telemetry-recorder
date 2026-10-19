@@ -15,6 +15,9 @@ import (
 
 func Compute(input model.Comparison) (model.DiffResult, error) {
 	result := model.DiffResult{FailingRunID: input.Failing.Run.ID, BaselineSpec: input.Spec, Status: "ok", Differences: []model.Difference{}}
+	if input.Spec.ContextPolicy != "" && (input.Spec.ContextPolicy != "retrospective-config-v1" || input.Spec.ContextLookbackNS < 0) {
+		return result, fmt.Errorf("invalid context policy or lookback")
+	}
 	if !input.Failing.Run.Closed || input.Failing.Run.Outcome != "fail" {
 		return result, fmt.Errorf("diff requires a closed failing run")
 	}

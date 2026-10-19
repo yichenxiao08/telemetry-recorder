@@ -157,3 +157,9 @@ func (r *Reader) RunContext(ctx context.Context, id string, from, to int64, limi
 	}
 	return out, tx.Commit()
 }
+
+func (r *Reader) ContextRange(ctx context.Context, id string) (int64, int64, error) {
+	var from, to sql.NullInt64
+	err := r.reader.QueryRowContext(ctx, "SELECT min(start_ns),max(end_ns) FROM context_scopes WHERE run_id=? LIMIT 1", id).Scan(&from, &to)
+	return from.Int64, to.Int64, err
+}

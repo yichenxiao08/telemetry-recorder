@@ -10,7 +10,7 @@ import (
 func TestExplorerQueryPlans(t *testing.T) {
 	s := testStore(t, 0)
 	for _, kind := range []string{"span", "log", "metric"} {
-		for _, mode := range []string{"service", "trace", "templates", "overview"} {
+		for _, mode := range []string{"service", "no-service", "trace", "templates", "overview"} {
 			if mode == "trace" && kind == "metric" || mode == "templates" && kind != "log" || mode == "overview" && kind != "span" {
 				continue
 			}
@@ -18,6 +18,10 @@ func TestExplorerQueryPlans(t *testing.T) {
 				f := telemetry.Filter{Kind: kind, Service: "shop", From: 1, To: 1000, Limit: 100}
 				if mode == "trace" {
 					f.TraceID = "t"
+				}
+				if mode == "no-service" {
+					f.Service = ""
+					f.NoService = true
 				}
 				q, args, err := telemetry.Query(f)
 				if mode == "templates" {
@@ -61,5 +65,33 @@ func TestExplorerQueryPlans(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestRunContextQueryPlan(t *testing.T) {
+	s := testStore(t, 0)
+	rows, err := s.reader.Query("EXPLAIN QUERY PLAN "+contextQuery, "r", int64(1), int64(1000), int64(1), int64(1000), 100)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = rows.Close() }()
+	bounded := 0
+	var plan strings.Builder
+	for rows.Next() {
+		var a, b, c int
+		var text string
+		if err = rows.Scan(&a, &b, &c, &text); err != nil {
+			t.Fatal(err)
+		}
+		plan.WriteString(text + "\n")
+		if strings.Contains(text, "signals_context (resource_id=? AND run_id=? AND ts_ns>") {
+			bounded++
+		}
+	}
+	if err = rows.Err(); err != nil {
+		t.Fatal(err)
+	}
+	if bounded != 3 || strings.Contains(plan.String(), "SCAN s") {
+		t.Fatal(plan.String())
 	}
 }

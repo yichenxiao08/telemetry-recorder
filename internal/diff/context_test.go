@@ -157,3 +157,53 @@ func TestContextLogsDecoyAndCommonBaseline(t *testing.T) {
 		}
 	})
 }
+
+func TestPartialContextDecoyAndProperty(t *testing.T) {
+	build := func() model.Comparison {
+		in := contextFixture(0)
+		log := func(id, name string, ts int64) model.Signal {
+			return model.Signal{ID: id, Kind: "log", Template: name, TS: ts, Resource: model.Resource{Attrs: map[string]any{"service.name": "inventory"}}}
+		}
+		in.Failing.Context = []model.Signal{log("log:rare", "rare", 200e9), log("log:common", "common", 200e9)}
+		for i := range in.Baseline {
+			in.Baseline[i].Context = nil
+			if i < 12 {
+				in.Baseline[i].Context = []model.Signal{log(fmt.Sprintf("log:base-%d", i), "common", 100e9)}
+			}
+		}
+		return in
+	}
+	score := func(in model.Comparison, name string) (float64, error) {
+		r, err := Compute(in)
+		if err != nil {
+			return 0, err
+		}
+		for _, d := range r.Differences {
+			if d.Type == "context_log" && d.Name == name {
+				return d.Score, nil
+			}
+		}
+		return 0, nil
+	}
+	common, err := score(build(), "common")
+	if err != nil {
+		t.Fatal(err)
+	}
+	rare, err := score(build(), "rare")
+	if err != nil || common >= rare {
+		t.Fatalf("decoy %.3f >= rare %.3f: %v", common, rare, err)
+	}
+	rapid.Check(t, func(t *rapid.T) {
+		in := build()
+		n := rapid.IntRange(1, 30).Draw(t, "identicalCommonRuns")
+		for i := range n {
+			b := in.Baseline[0]
+			b.Run.ID = fmt.Sprintf("copy-%d", i)
+			in.Baseline = append(in.Baseline, b)
+		}
+		after, err := score(in, "common")
+		if err != nil || after < 0 || after > 1 || math.IsNaN(after) || after > common+1e-12 {
+			t.Fatalf("common %.4f after %.4f error %v", common, after, err)
+		}
+	})
+}

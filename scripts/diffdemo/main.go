@@ -213,7 +213,7 @@ func validate(ctx context.Context, source string) (result report, resultErr erro
 			if err != nil {
 				return result, err
 			}
-			computed, err := diff.Analyze(ctx, result.Database, run.ID, options)
+			computed, err := diff.AnalyzeStructural(ctx, result.Database, run.ID, options)
 			if err != nil {
 				return result, err
 			}

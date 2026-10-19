@@ -18,7 +18,7 @@ counters need a separately specified rate/delta policy. The browser retains them
 Resources without config (host-only metrics) remain eligible. Padding and
 rejected records remain visible in the context panel with provenance.
 
-Series identity is service + metric name + point attributes + unit/kind from
+Series identity is service + host + metric name + point attributes + unit/kind from
 the original metric, excluding resource phase/config/instance IDs. Otherwise a
 changed config would make comparable gauges disappear into different series.
 Summarize max, mean and last; compare with the identical summary in each
@@ -46,3 +46,16 @@ The gauge is evidence about pool state, not proof that configuration caused a
 failure. M5 must distinguish mechanism and symptoms. Sampling can miss peaks;
 report absence honestly instead of synthesizing a sample or expanding the
 window after seeing results.
+
+## Saved-data validation limitation
+
+Seed 1's recorded db.pool.in_use values are all zero, even with the original
+future padding. Its 1 Hz sampler missed the short bursts; the in-use difference
+is absent, not a successful detection. Seed 2 recorded a value of 5: its latest
+pre-change comparison ranks that series #3, behind DB_POOL_SIZE and retry.
+Earlier failures before the sample do not show it; the latest recent baseline
+also shares the peak and correctly removes the difference. The owner delegated
+handling this gap; retain the original datasets and report a data-limited
+acceptance exception. No window, constant or stored value was changed to force
+seed 1 to pass. Host memory can rank as an incidental change; broader causal
+accuracy and sampling coverage belong to M5/M8.
