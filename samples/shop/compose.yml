@@ -1,0 +1,86 @@
+name: signalscout-shop
+
+x-shop: &shop
+  image: signalscout-shop:m2
+  build:
+    context: ../../.cache/shop-build
+  init: true
+  stop_grace_period: 15s
+  healthcheck:
+    test: [CMD, /shop, -healthcheck]
+    interval: 2s
+    timeout: 2s
+    retries: 30
+
+x-environment: &environment
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://collector:4318
+  SHOP_HOST_NAME: ${SHOP_HOST_NAME:-docker-desktop}
+  SHOP_PHASE: ${SHOP_PHASE:-baseline}
+  DB_POOL_SIZE: ${DB_POOL_SIZE:-20}
+  GIT_COMMIT: ${GIT_COMMIT:-unknown}
+  GIT_DIRTY: ${GIT_DIRTY:-unknown}
+
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: shop-local-demo
+      POSTGRES_DB: shop
+    tmpfs:
+      - /var/lib/postgresql/data
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/01-inventory.sql:ro
+    healthcheck:
+      test: [CMD, pg_isready, -h, 127.0.0.1, -U, shop, -d, shop]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.147.0
+    command: [--config=/etc/otelcol-contrib/shop.yaml]
+    environment:
+      SHOP_HOST_NAME: ${SHOP_HOST_NAME:-docker-desktop}
+    volumes:
+      - ./collector.yaml:/etc/otelcol-contrib/shop.yaml:ro
+    ports:
+      - 127.0.0.1:13133:13133
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  inventory-service:
+    <<: *shop
+    environment:
+      <<: *environment
+      SERVICE_NAME: inventory-service
+      DATABASE_URL: postgres://shop:shop-local-demo@postgres:5432/shop?sslmode=disable
+    ports:
+      - 127.0.0.1:18082:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      collector:
+        condition: service_started
+
+  checkout-service:
+    <<: *shop
+    environment:
+      <<: *environment
+      SERVICE_NAME: checkout-service
+      DOWNSTREAM_URL: http://inventory-service:8080/reserve
+    depends_on:
+      inventory-service:
+        condition: service_healthy
+
+  frontend:
+    <<: *shop
+    environment:
+      <<: *environment
+      SERVICE_NAME: frontend
+      DOWNSTREAM_URL: http://checkout-service:8080/checkout
+    ports:
+      - 127.0.0.1:18080:8080
+    depends_on:
+      checkout-service:
+        condition: service_healthy

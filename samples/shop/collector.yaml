@@ -1,0 +1,45 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+  hostmetrics:
+    collection_interval: 1s
+    scrapers:
+      load: {}
+      memory: {}
+processors:
+  batch:
+    timeout: 200ms
+    send_batch_size: 256
+  resource/host:
+    attributes:
+      - key: host.name
+        value: ${env:SHOP_HOST_NAME}
+        action: upsert
+exporters:
+  otlp_http/signalscout:
+    endpoint: http://host.docker.internal:14318
+    compression: gzip
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp_http/signalscout]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp_http/signalscout]
+    metrics/apps:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp_http/signalscout]
+    metrics/host:
+      receivers: [hostmetrics]
+      processors: [resource/host, batch]
+      exporters: [otlp_http/signalscout]

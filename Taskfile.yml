@@ -26,3 +26,16 @@ tasks:
       CGO_ENABLED: '0'
     cmds:
       - go run ./scripts/ingestbench
+  shop-demo:
+    desc: Build and verify the shop pool-exhaustion demo with native intake
+    deps: [build]
+    cmds:
+      - go run ./scripts/shopdemo {{.CLI_ARGS}}
+  shop-load:
+    desc: Send fixed-seed checkout traffic to an already running shop
+    cmds:
+      - go run ./scripts/shopload {{.CLI_ARGS}}
+  shop-down:
+    desc: Remove the demo's Compose containers and network
+    cmds:
+      - docker compose --project-name signalscout-shop --file samples/shop/compose.yml down

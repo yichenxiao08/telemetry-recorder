@@ -1,0 +1,4 @@
+FROM alpine:3.22
+COPY shop /shop
+STOPSIGNAL SIGINT
+ENTRYPOINT ["/shop"]

@@ -68,3 +68,14 @@ task benchmark-ingest
 
 See [docs/benchmark.md](docs/benchmark.md) for what is timed and [benchmark/results/ingest.md](benchmark/results/ingest.md) for the generated results. These are intake measurements, not the later failure-diff benchmark.
 
+
+## M2 shop demo
+
+```powershell
+task shop-demo
+$demo = Get-Content -Raw .\benchmark\results\shop-demo.json | ConvertFrom-Json
+.\bin\signalscout.exe runs list --db $demo.database --workload 'POST /checkout' --outcome fail
+.\bin\signalscout.exe runs show $demo.evidence.run_id --db $demo.database
+```
+
+Requires a running Docker Desktop Linux engine. The task produces 40 passing baselines, changes the pool from 20 to 5, sends 300 loaded requests, and verifies actual failure evidence plus separate host-resource context. It stops its stack and native intake before returning; the database remains for CLI inspection. See [samples/shop/README.md](samples/shop/README.md) for topology, seeded workload, manual commands and limitations.
