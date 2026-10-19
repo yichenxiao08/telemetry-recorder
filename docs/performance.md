@@ -172,3 +172,20 @@ template grouping up to 1,177.22 ms; both miss 500 ms and scan signals. Service
 and time filtering already meets the target. SQL, arguments, all five repeat
 timings and plans are retained in `perf-02-million-before-indexes` and
 `perf-03-million-context-plan`. No timings were substituted for the failures.
+
+### 4. Coalesce already-queued transactions
+
+The measured FlushFileBuffers/WriteFile cost supports sharing a commit across at
+most four intake jobs already waiting. There is no timer wait or acknowledgment
+before commit. Keep each receipt timestamp and savepoint, retain maintenance/diff
+ordering barriers, and publish the open-run cache only after commit. Tests first
+cover a conflicting middle job, deferred-FK commit failure/recovery, exact receipt
+times, barrier ordering and draining accepted jobs. WAL, synchronous NORMAL and
+the 1,000-page autocheckpoint policy have explicit regression tests.
+
+All separate targets pass in this attempt, but combined capacity still misses.
+Its first four mixed trials improve over the context-plan attempt; the fifth
+trial regresses to roughly 2,001/2,001/3,977 records/sec. That trial is retained
+and counts as a failure, with no selective exclusion. Generated minimum/median
+tables report the variation; the read-only view-plan change is not claimed to
+explain changing fresh-database write speeds.

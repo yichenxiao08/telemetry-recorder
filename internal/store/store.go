@@ -234,47 +234,65 @@ func (s *Store) Errors() <-chan error { return s.errors }
 
 func (s *Store) loop(startup context.Context) {
 	defer close(s.done)
-	// One startup backfill upgrades older stores. After that, context work is
-	// scoped to changed runs/new ambient evidence, not every retained record.
 	if s.resultsOnly {
 		s.ready <- nil
 	} else {
 		s.ready <- s.backfillContext(startup)
 	}
+	var pending *job
 	for {
-		select {
-		case j, ok := <-s.queue:
-			if !ok {
-				if !s.resultsOnly {
-					s.closeErr = s.maintain(context.Background(), time.Now(), true)
+		var j job
+		if pending != nil {
+			j = *pending
+			pending = nil
+		} else {
+			select {
+			case next, ok := <-s.queue:
+				if !ok {
+					if !s.resultsOnly {
+						s.closeErr = s.maintain(context.Background(), time.Now(), true)
+					}
+					return
 				}
-				return
-			}
-			var err error
-			if j.result != nil {
-				err = s.writeDiff(context.Background(), *j.result)
-			} else if j.batch != nil {
-				err = s.write(context.Background(), *j.batch, j.now)
-			} else {
-				err = s.maintain(context.Background(), j.now, false)
-			}
-			// A late update/deletion can invalidate an analysis snapshot. Report
-			// that conflict to its caller without stopping healthy intake.
-			if err != nil && !errors.Is(err, RunChanged) {
-				select {
-				case s.errors <- err:
-				default:
-				}
-			}
-			j.done <- err
-		case now := <-s.maintenance:
-			if err := s.maintain(context.Background(), now, false); err != nil {
-				select {
-				case s.errors <- err:
-				default:
-				}
+				j = next
+			case now := <-s.maintenance:
+				s.reportError(s.maintain(context.Background(), now, false))
+				continue
 			}
 		}
+		if j.batch != nil {
+			jobs := []job{j}
+			// Drain only already-queued intake jobs: no timer or added wait. A
+			// result/maintenance job is an ordering barrier, retained as pending.
+		collect:
+			for len(jobs) < maxIngestJobsPerCommit {
+				select {
+				case next, ok := <-s.queue:
+					if !ok {
+						break collect
+					}
+					if next.batch == nil {
+						pending = &next
+						break collect
+					}
+					jobs = append(jobs, next)
+				default:
+					break collect
+				}
+			}
+			errs := s.writeJobs(context.Background(), jobs)
+			for i, j := range jobs {
+				s.completeJob(j, errs[i])
+			}
+			continue
+		}
+		var err error
+		if j.result != nil {
+			err = s.writeDiff(context.Background(), *j.result)
+		} else {
+			err = s.maintain(context.Background(), j.now, false)
+		}
+		s.completeJob(j, err)
 	}
 }
 
@@ -356,19 +374,14 @@ func saveState(ctx context.Context, tx *sql.Tx, state runs.State) error {
 	return nil
 }
 
-func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) error {
-	tx, err := s.writer.BeginTx(ctx, nil)
-	if err != nil {
-		return fmt.Errorf("begin ingest: %w", err)
-	}
-	defer func() { _ = tx.Rollback() }()
+func (s *Store) writeBatch(ctx context.Context, tx *sql.Tx, batch model.Batch, now time.Time) (map[string]runs.State, error) {
 	states := map[string]runs.State{}
 	resourcesWritten := map[string]bool{}
 	runResources := map[string]map[string]bool{}
 	var closedIDs []string
 	resourceStmt, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO resources VALUES(?,?,?)")
 	if err != nil {
-		return fmt.Errorf("prepare resources: %w", err)
+		return nil, fmt.Errorf("prepare resources: %w", err)
 	}
 	defer func() { _ = resourceStmt.Close() }()
 	var inserts signalInsert
@@ -380,11 +393,11 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			if !ok {
 				state, err = loadState(ctx, tx, id)
 				if err != nil {
-					return err
+					return nil, err
 				}
 			}
 			if state.Run.ID != "" && state.Run.Domain != domain {
-				return fmt.Errorf("run ID %q has conflicting domains", id)
+				return nil, fmt.Errorf("run ID %q has conflicting domains", id)
 			}
 			state = runs.Observe(state, signal, now, 0)
 			// The root may have just supplied the workload for threshold lookup.
@@ -402,10 +415,10 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 		if !resourcesWritten[signal.Resource.ID] {
 			attrs, err := json.Marshal(signal.Resource.Attrs)
 			if err != nil {
-				return fmt.Errorf("encode resource: %w", err)
+				return nil, fmt.Errorf("encode resource: %w", err)
 			}
 			if _, err = resourceStmt.ExecContext(ctx, signal.Resource.ID, string(attrs), string(signal.Resource.Raw)); err != nil {
-				return fmt.Errorf("write resource: %w", err)
+				return nil, fmt.Errorf("write resource: %w", err)
 			}
 			resourcesWritten[signal.Resource.ID] = true
 		}
@@ -415,18 +428,18 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 		stored.Resource = model.Resource{ID: signal.Resource.ID}
 		data, err := json.Marshal(stored)
 		if err != nil {
-			return fmt.Errorf("encode signal: %w", err)
+			return nil, fmt.Errorf("encode signal: %w", err)
 		}
 		if err = inserts.add(ctx, tx, signal.ID, signal.Kind, id, signal.Resource.ID, signal.TS, signal.End, now.UnixNano(), string(data)); err != nil {
-			return err
+			return nil, err
 		}
 	}
 	if err = inserts.flush(ctx, tx); err != nil {
-		return err
+		return nil, err
 	}
 	for _, state := range states {
 		if err = saveState(ctx, tx, state); err != nil {
-			return err
+			return nil, err
 		}
 		if state.Run.Closed {
 			closedIDs = append(closedIDs, state.Run.ID)
@@ -437,31 +450,21 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 	if len(runResources) > 0 {
 		pairs, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO run_resources VALUES(?,?)")
 		if err != nil {
-			return fmt.Errorf("prepare resource links: %w", err)
+			return nil, fmt.Errorf("prepare resource links: %w", err)
 		}
 		defer func() { _ = pairs.Close() }()
 		for id, resources := range runResources {
 			for resourceID := range resources {
 				if _, err = pairs.ExecContext(ctx, id, resourceID); err != nil {
-					return fmt.Errorf("track run resource: %w", err)
+					return nil, fmt.Errorf("track run resource: %w", err)
 				}
 			}
 		}
 	}
 	if err = s.refreshContext(ctx, tx, closedIDs); err != nil {
-		return err
+		return nil, err
 	}
-	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("commit ingest: %w", err)
-	}
-	for id, state := range states {
-		if state.Run.Closed {
-			delete(s.open, id)
-		} else {
-			s.open[id] = state.LastSeen
-		}
-	}
-	return nil
+	return states, nil
 }
 
 func (s *Store) maintain(ctx context.Context, now time.Time, force bool) error {

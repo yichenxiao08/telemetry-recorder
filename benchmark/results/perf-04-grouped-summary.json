@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "benchmark/results/perf-04-grouped-ingest.json"
+  ],
+  "method": "Minimum and median across all seed trials per signal in the listed unchanged task benchmark-ingest invocations. Signals measured separately; these rates are not simultaneous ingest capacity. Target is met only if every trial reaches it.",
+  "signals": {
+    "log": {
+      "trials": 5,
+      "minimum": 20495.73652812676,
+      "median": 21645.347262258598,
+      "target": 5000,
+      "all_trials_met_target": true
+    },
+    "metric": {
+      "trials": 5,
+      "minimum": 20504.963431448217,
+      "median": 20830.319446488418,
+      "target": 10000,
+      "all_trials_met_target": true
+    },
+    "span": {
+      "trials": 5,
+      "minimum": 23789.08219104108,
+      "median": 26326.378913202323,
+      "target": 5000,
+      "all_trials_met_target": true
+    }
+  }
+}
