@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -11,6 +12,22 @@ import (
 
 	"github.com/signalscout/signalscout/internal/model"
 )
+
+func TestDiffRunChangeDoesNotStopIntake(t *testing.T) {
+	s := testStore(t, 0)
+	err := s.SaveDiff(context.Background(), model.DiffResult{ID: "diff:stale", FailingRunID: "removed", CreatedAt: time.Now()})
+	if !errors.Is(err, RunChanged) {
+		t.Fatalf("got %v", err)
+	}
+	select {
+	case err = <-s.Errors():
+		t.Fatalf("state change reported as fatal storage failure: %v", err)
+	default:
+	}
+	if err = s.Submit(context.Background(), model.Batch{}); err != nil {
+		t.Fatal(err)
+	}
+}
 
 func TestBaselineModesUseEarlierClosedPassesAndOwnedStructure(t *testing.T) {
 	ctx := context.Background()

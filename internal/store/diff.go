@@ -23,6 +23,8 @@ func readRun(ctx context.Context, tx *sql.Tx, id string) (model.Run, error) {
 	return state.Run, nil
 }
 
+const InvalidCutoff queueError = "invalid baseline cutoff"
+
 // Comparison loads only M3's owned spans/events. Context is deliberately absent.
 // A single read transaction freezes selection and evidence at the same snapshot.
 func (r *Reader) Comparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
@@ -69,7 +71,7 @@ func (r *Reader) comparison(ctx context.Context, id string, options model.Baseli
 		if timestamp, parseErr := time.Parse(time.RFC3339Nano, options.Before); parseErr == nil {
 			cutoff = timestamp.UnixNano()
 			if !time.Unix(0, cutoff).Equal(timestamp) {
-				return result, fmt.Errorf("baseline-before timestamp outside nanosecond range")
+				return result, fmt.Errorf("%w: timestamp outside nanosecond range", InvalidCutoff)
 			}
 		} else {
 			anchor, err := readRun(ctx, tx, options.Before)
@@ -139,6 +141,8 @@ type storedDiff struct {
 	createdAt                int64
 }
 
+const RunChanged queueError = "failing run no longer exists or is not closed/failing"
+
 // SaveDiff encodes before enqueueing so cancellation cannot leave mutable caller
 // slices in the writer queue. Accepted writes drain even if the caller leaves.
 func (s *Store) SaveDiff(ctx context.Context, result model.DiffResult) error {
@@ -174,7 +178,7 @@ func (s *Store) writeDiff(ctx context.Context, result storedDiff) error {
 		return fmt.Errorf("count diff writes: %w", err)
 	}
 	if count != 1 {
-		return fmt.Errorf("failing run no longer exists or is not closed/failing")
+		return RunChanged
 	}
 	if err = tx.Commit(); err != nil {
 		return fmt.Errorf("commit diff: %w", err)

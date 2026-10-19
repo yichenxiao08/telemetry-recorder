@@ -12,6 +12,7 @@ import (
 
 	"github.com/signalscout/signalscout/internal/intake"
 	"github.com/signalscout/signalscout/internal/store"
+	"github.com/signalscout/signalscout/internal/viewer"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ func newServeCommand(database *string) *cobra.Command {
 	options := store.Options{}
 	var address string
 	var thresholds []string
-	command := &cobra.Command{Use: "serve", Short: "Receive OTLP HTTP telemetry", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error {
+	command := &cobra.Command{Use: "serve", Short: "Receive OTLP telemetry and serve the local viewer", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error {
 		options.Thresholds = map[string]float64{}
 		for _, value := range thresholds {
 			workload, duration, ok := strings.Cut(value, "=")
@@ -42,7 +43,7 @@ func newServeCommand(database *string) *cobra.Command {
 		return serve(cmd.Context(), *database, address, options, logger)
 	}}
 	flags := command.Flags()
-	flags.StringVar(&address, "listen", "127.0.0.1:4318", "OTLP HTTP listen address")
+	flags.StringVar(&address, "listen", "127.0.0.1:4318", "OTLP and viewer HTTP listen address")
 	flags.IntVar(&options.QueueSize, "queue-size", 64, "Maximum queued batches")
 	flags.DurationVar(&options.IdleTimeout, "idle-timeout", 5*time.Second, "Close a run after inactivity")
 	flags.DurationVar(&options.Retention, "retention", 7*24*time.Hour, "Evidence retention; 0 disables cleanup")
@@ -59,15 +60,22 @@ func serve(ctx context.Context, database, address string, options store.Options,
 		return err
 	}
 	defer func() { result = errors.Join(result, s.Close()) }()
+	view, err := viewer.New(s.Reader, s, logger)
+	if err != nil {
+		return err
+	}
+	mux := http.NewServeMux()
+	mux.Handle("/v1/", intake.New(s))
+	mux.Handle("/", view)
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		return fmt.Errorf("listen: %w", err)
 	}
-	server := &http.Server{Handler: intake.New(s), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 30 * time.Second, MaxHeaderBytes: 1 << 20}
+	server := &http.Server{Handler: mux, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 30 * time.Second, WriteTimeout: 30 * time.Second, MaxHeaderBytes: 1 << 20}
 	// A buffered result channel lets Serve finish even if shutdown wins the select.
 	finished := make(chan error, 1)
 	go func() { finished <- server.Serve(listener) }()
-	logger.Info("OTLP HTTP listening", "address", listener.Addr().String(), "database", database, "queue_size", options.QueueSize)
+	logger.Info("OTLP and viewer HTTP listening", "address", listener.Addr().String(), "viewer", "http://"+listener.Addr().String()+"/runs", "database", database, "queue_size", options.QueueSize)
 	select {
 	case <-ctx.Done():
 	case err = <-s.Errors():

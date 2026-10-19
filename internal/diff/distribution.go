@@ -13,10 +13,29 @@ type NumericDistribution struct {
 	Unit    string
 }
 
+type Distributions struct {
+	baseline []features
+	ids      []string
+}
+
+// NewDistributions extracts each baseline once for all charts in a diff panel.
+func NewDistributions(input model.Comparison) Distributions {
+	result := Distributions{}
+	for _, run := range input.Baseline {
+		result.baseline = append(result.baseline, extract(run))
+		result.ids = append(result.ids, run.Run.ID)
+	}
+	return result
+}
+
 // Distribution uses the exact selected snapshot and feature aggregation used by
 // Compute. Latency excludes absent paths; counts include absent runs as zeros.
 // It is display-only and does not change scoring or persisted result identity.
 func Distribution(input model.Comparison, d model.Difference) (NumericDistribution, error) {
+	return NewDistributions(input).ForDifference(d)
+}
+
+func (samples Distributions) ForDifference(d model.Difference) (NumericDistribution, error) {
 	result := NumericDistribution{Failing: d.Value, Unit: "occurrences"}
 	if d.Type != "latency" && d.Type != "count" {
 		return result, fmt.Errorf("difference is not numeric")
@@ -24,8 +43,7 @@ func Distribution(input model.Comparison, d model.Difference) (NumericDistributi
 	if d.Type == "latency" {
 		result.Unit = "ms"
 	}
-	for _, run := range input.Baseline {
-		f := extract(run)
+	for index, f := range samples.baseline {
 		observed := f.items[d.Feature]
 		if strings.HasPrefix(d.Feature, "path:") {
 			observed = f.paths[strings.TrimPrefix(d.Feature, "path:")]
@@ -38,7 +56,7 @@ func Distribution(input model.Comparison, d model.Difference) (NumericDistributi
 			value = observed.maximum
 		}
 		result.Values = append(result.Values, value)
-		result.RunIDs = append(result.RunIDs, run.Run.ID)
+		result.RunIDs = append(result.RunIDs, samples.ids[index])
 	}
 	return result, nil
 }

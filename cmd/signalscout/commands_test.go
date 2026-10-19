@@ -106,6 +106,17 @@ func TestServeGracefulShutdown(t *testing.T) {
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
+	for _, path := range []string{"/runs", "/assets/viewer.css"} {
+		response, err := client.Get("http://" + address + path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, readErr := io.Copy(io.Discard, response.Body)
+		_ = response.Body.Close()
+		if readErr != nil || response.StatusCode != 200 || !bytes.Contains([]byte(response.Header.Get("Content-Security-Policy")), []byte("default-src 'none'")) {
+			t.Fatalf("serve viewer route %s failed", path)
+		}
+	}
 	cancel()
 	select {
 	case err = <-done:

@@ -258,7 +258,9 @@ func (s *Store) loop(startup context.Context) {
 			} else {
 				err = s.maintain(context.Background(), j.now, false)
 			}
-			if err != nil {
+			// A late update/deletion can invalidate an analysis snapshot. Report
+			// that conflict to its caller without stopping healthy intake.
+			if err != nil && !errors.Is(err, RunChanged) {
 				select {
 				case s.errors <- err:
 				default:

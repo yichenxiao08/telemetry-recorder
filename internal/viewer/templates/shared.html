@@ -1,0 +1,18 @@
+{{define "head"}}<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{.Title}} · Signal Scout</title><link rel="stylesheet" href="/assets/viewer.css"></head>
+<body><header class="site-header"><a href="/runs">Signal Scout</a><span>Run evidence and baseline differences</span></header><main>
+{{end}}
+{{define "foot"}}</main><footer>Signal Scout · local telemetry</footer></body></html>{{end}}
+{{define "event"}}<li class="event evidence" id="{{.Anchor}}"><strong>◆ {{.Signal.Name}}</strong> <span>{{.Offset}}</span><br><code>{{.Signal.ID}}</code><details><summary>Event attributes</summary><pre>{{json .Signal.Attrs}}</pre></details></li>{{end}}
+{{define "difference"}}<article class="difference">
+<header><span class="badge">{{.Difference.Type}}</span> <strong>{{.Difference.Name}}</strong><span>Score {{num .Difference.Score}}</span></header>
+<p>{{.Difference.Summary}}</p><p class="muted">Raw baseline rate: {{num .Difference.BaselineRate}} · {{.Difference.Observations}} observations</p>
+<ul class="evidence-links">{{range .Links}}<li>{{if .URL}}<a class="evidence-link" href="{{.URL}}"><code>{{.ID}}</code></a>{{else}}<code>{{.ID}}</code> (unavailable){{end}}</li>{{end}}</ul>
+{{with .Plot}}<details class="distribution"><summary>Inspect baseline distribution</summary><figure>
+<svg viewBox="0 0 640 100" role="img" aria-label="Baseline values with failing value marked"><line class="axis" x1="20" y1="76" x2="620" y2="76"></line>
+{{range .Points}}<circle class="sample" cx="{{.X}}" cy="{{.Y}}" r="4"><title>{{.RunID}}: {{.Value}}</title></circle>{{end}}
+<line class="failing" x1="{{.FailingX}}" x2="{{.FailingX}}" y1="15" y2="76"></line><text x="20" y="95">{{.Min}}</text><text x="620" y="95" text-anchor="end">{{.Max}}</text></svg>
+<figcaption>Blue dots: baseline runs. Red line: failing value {{.Failing}} {{.Unit}}.</figcaption></figure>
+<table><thead><tr><th>Baseline run</th><th>Value ({{.Unit}})</th></tr></thead><tbody>{{range .Points}}<tr><td><a href="{{.URL}}">{{.RunID}}</a></td><td>{{.Value}}</td></tr>{{end}}</tbody></table></details>{{end}}
+{{if .Related}}<details><summary>Related evidence ({{len .Related}})</summary>{{range .Related}}{{template "difference" .}}{{end}}</details>{{end}}
+</article>{{end}}

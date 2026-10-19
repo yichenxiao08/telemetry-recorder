@@ -1,0 +1,9 @@
+{{template "head" .}}<h1>Runs</h1>
+<form method="get" action="/runs" class="filters"><label>Workload<input name="workload" value="{{.Workload}}" maxlength="512" placeholder="POST /checkout"></label>
+<label>Outcome<select name="outcome"><option value="">All</option><option value="pass" {{if eq .Outcome "pass"}}selected{{end}}>Pass</option><option value="fail" {{if eq .Outcome "fail"}}selected{{end}}>Fail</option><option value="degraded" {{if eq .Outcome "degraded"}}selected{{end}}>Degraded</option></select></label>
+<label>From (RFC3339, inclusive)<input name="from" value="{{.From}}" required></label><label>To (RFC3339, exclusive)<input name="to" value="{{.To}}" required></label>
+<label>Rows (1–100)<input type="number" name="limit" value="{{.Limit}}" min="1" max="100"></label><button type="submit">Filter runs</button></form>
+<p class="muted">Time filters use run start times. Default window: seven days; maximum window: 31 days.</p>
+<div class="table-scroll"><table><thead><tr><th>Run</th><th>Workload</th><th>Outcome</th><th>Started (UTC)</th><th>State</th></tr></thead><tbody>
+{{range .Rows}}<tr><td><a href="{{.URL}}">{{.Run.ID}}</a></td><td>{{.Run.Workload}}</td><td>{{.Run.Outcome}}</td><td>{{time .Run.StartedAt}}</td><td>{{if .Run.Closed}}Closed{{else}}Open{{end}}</td></tr>{{else}}<tr><td colspan="5">No runs in this window. Adjust the filters to inspect older history.</td></tr>{{end}}
+</tbody></table></div><nav class="pagination"><a href="{{.First}}">First page</a>{{if .Next}}<a rel="next" href="{{.Next}}">Next page →</a>{{end}}</nav>{{template "foot" .}}
