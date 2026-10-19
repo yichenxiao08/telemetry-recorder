@@ -59,6 +59,18 @@ type runner struct {
 	log         *os.File
 }
 
+// resultPath keeps generated reports usable from any checkout location.
+func resultPath(root, path string) (string, error) {
+	relative, err := filepath.Rel(root, path)
+	if err != nil {
+		return "", fmt.Errorf("relative database path: %w", err)
+	}
+	if relative == ".." || strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
+		return "", fmt.Errorf("database is outside repository: %s", path)
+	}
+	return filepath.ToSlash(relative), nil
+}
+
 func (r runner) command(ctx context.Context, name string, args ...string) error {
 	fmt.Println(name, strings.Join(args, " "))
 	cmd := exec.CommandContext(ctx, name, args...)
@@ -238,7 +250,10 @@ func demo(ctx context.Context, seed int64, failureCount int) (result report, res
 	if err != nil {
 		return result, fmt.Errorf("isolated demo directory: %w", err)
 	}
-	result.Database = filepath.Join(directory, "signalscout.db")
+	result.Database, err = resultPath(root, filepath.Join(directory, "signalscout.db"))
+	if err != nil {
+		return result, err
+	}
 	logFile, err := os.Create(filepath.Join(directory, "commands.log"))
 	if err != nil {
 		return result, fmt.Errorf("command log: %w", err)

@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "benchmark/results/m3-preflight-ingest.json"
+  ],
+  "method": "Minimum and median across all seed trials per signal in the listed unchanged task benchmark-ingest invocations. Signals measured separately; these rates are not simultaneous ingest capacity. Target is met only if every trial reaches it.",
+  "signals": {
+    "log": {
+      "trials": 5,
+      "minimum": 1650.0051348159795,
+      "median": 1754.2206680840652,
+      "target": 5000,
+      "all_trials_met_target": false
+    },
+    "metric": {
+      "trials": 5,
+      "minimum": 1643.0180641538914,
+      "median": 1703.6737398685611,
+      "target": 10000,
+      "all_trials_met_target": false
+    },
+    "span": {
+      "trials": 5,
+      "minimum": 3660.806977673818,
+      "median": 4127.630291126718,
+      "target": 5000,
+      "all_trials_met_target": false
+    }
+  }
+}

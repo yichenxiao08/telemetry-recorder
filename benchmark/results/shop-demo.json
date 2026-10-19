@@ -2,7 +2,7 @@
   "completed_at": "2026-10-19T08:58:03.7434173Z",
   "revision": "e0097edea656a73432c9e784d30ad2d22516efa0",
   "source_dirty": false,
-  "database": "C:\\Users\\yiche\\telemetry-project\\.cache\\shop-demo\\run-73122371\\signalscout.db",
+  "database": ".cache/shop-demo/run-73122371/signalscout.db",
   "seed": 1,
   "baseline_requests": 40,
   "baseline_passing": 40,

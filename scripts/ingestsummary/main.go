@@ -4,10 +4,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 type trial struct {
@@ -40,11 +42,10 @@ func summarize(values []float64, target float64) (rates, error) {
 	return rates{Trials: len(ordered), Minimum: ordered[0], Median: median, Target: target, Met: ordered[0] >= target}, nil
 }
 
-func run() error {
-	result := report{Method: "Minimum and median across all 15 seed trials per signal from three unchanged task benchmark-ingest invocations. Signals measured separately; these rates are not simultaneous ingest capacity. Target is met only if every trial reaches it.", Signals: map[string]rates{}}
+func run(inputs []string, base, title string) error {
+	result := report{Method: "Minimum and median across all seed trials per signal in the listed unchanged task benchmark-ingest invocations. Signals measured separately; these rates are not simultaneous ingest capacity. Target is met only if every trial reaches it.", Signals: map[string]rates{}}
 	values := map[string][]float64{}
-	for repetition := 1; repetition <= 3; repetition++ {
-		path := filepath.Join("benchmark", "results", fmt.Sprintf("m1-review-%d.json", repetition))
+	for _, path := range inputs {
 		data, err := os.ReadFile(path)
 		if err != nil {
 			return fmt.Errorf("read repetition: %w", err)
@@ -82,12 +83,11 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("encode summary: %w", err)
 	}
-	base := filepath.Join("benchmark", "results", "m1-review-summary")
 	if err = os.WriteFile(base+".json", append(data, '\n'), 0644); err != nil {
 		return fmt.Errorf("write summary: %w", err)
 	}
 	var table bytes.Buffer
-	fmt.Fprintf(&table, "# M1 review: three unchanged repetitions\n\n%s\n\n| Signal | Trials | Minimum /s | Median /s | Target /s | All trials met target |\n|---|---:|---:|---:|---:|---|\n", result.Method)
+	fmt.Fprintf(&table, "# %s\n\n%s\n\n| Signal | Trials | Minimum /s | Median /s | Target /s | All trials met target |\n|---|---:|---:|---:|---:|---|\n", title, result.Method)
 	for _, kind := range []string{"span", "log", "metric"} {
 		s := result.Signals[kind]
 		fmt.Fprintf(&table, "| %s | %d | %.0f | %.0f | %.0f | %v |\n", kind, s.Trials, s.Minimum, s.Median, s.Target, s.Met)
@@ -100,7 +100,11 @@ func run() error {
 }
 
 func main() {
-	if err := run(); err != nil {
+	inputs := flag.String("inputs", "benchmark/results/m1-review-1.json,benchmark/results/m1-review-2.json,benchmark/results/m1-review-3.json", "Comma-separated input reports")
+	out := flag.String("out", "benchmark/results/m1-review-summary", "Output path without extension")
+	title := flag.String("title", "M1 review: three unchanged repetitions", "Generated table title")
+	flag.Parse()
+	if err := run(strings.Split(*inputs, ","), *out, *title); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

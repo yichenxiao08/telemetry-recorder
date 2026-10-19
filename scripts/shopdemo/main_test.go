@@ -1,11 +1,23 @@
 package main
 
 import (
+	"path/filepath"
 	"testing"
 	"time"
 
 	"github.com/signalscout/signalscout/internal/model"
 )
+
+func TestResultDatabasePathIsPortable(t *testing.T) {
+	root := t.TempDir()
+	got, err := resultPath(root, filepath.Join(root, ".cache", "demo", "signalscout.db"))
+	if err != nil || got != ".cache/demo/signalscout.db" || filepath.IsAbs(got) {
+		t.Fatalf("path = %q, error = %v", got, err)
+	}
+	if _, err := resultPath(root, filepath.Join(root, "..", "outside.db")); err == nil {
+		t.Fatal("outside path accepted")
+	}
+}
 
 func acceptedDetail() model.RunDetail {
 	value := 5.0
