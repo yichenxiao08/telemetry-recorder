@@ -21,3 +21,11 @@ The complete generated reports `ingest-before-batching`, `ingest-batched`, and `
 Profiling showed substantial cost in SQLite writes/checkpoints. The implementation removes repeated resource inserts and a growing history scan, stores resource content once, and restores it through the reader. Signal counts, raw evidence, WAL synchronous mode, fixture expectations, and the 5,000/sec threshold are unchanged.
 
 The M1 review repeats run the unchanged task three times, preserving m1-review-1/2/3 JSON and Markdown reports. scripts/ingestsummary generates the minimum and median across all 15 seed trials for each signal and compares every-trial minimum against the revised independent targets (5,000 spans/sec, 5,000 logs/sec, 10,000 scalar points/sec). These are separate measurements, not combined concurrent rates. No tuning is performed during the repetitions.
+
+## M2 sample acceptance
+
+The successful native Windows/Docker Desktop run is recorded in `benchmark/results/shop-demo.json`, including the committed source revision and source dirty status, seed, actual request counts, database path, evidence IDs, measured pool wait and host-link provenance. Its `signals` counts are the snapshot at verification, before final Collector shutdown; the database can contain later host points as shutdown drains exports. The local database is not committed.
+
+The first attempt failed the 45-second finalization check despite collecting 40 passing baselines and 9/300 loaded failures. A scoped context-refresh fix removed the repeated full-history rescan. The second attempt then exposed dropped logs caused by an SDK endpoint-path mismatch; the explicit `/v1/logs` setting and a real three-signal SDK regression test fixed that. Neither acceptance timeout nor evidence predicate was relaxed. Local failed-attempt databases and command logs remain under `.cache/shop-demo` for diagnosis.
+
+M2 uses deliberate seeded cart bursts to validate a known failure mechanism. Its approximately-3% frequency is not an unbiased production failure estimate or the later multi-failure benchmark. Three unchanged M1 review repetitions were committed before these M2 fixes; no updated ingest-target success is claimed.

@@ -1,0 +1,55 @@
+{
+  "completed_at": "2026-10-19T08:58:03.7434173Z",
+  "revision": "e0097edea656a73432c9e784d30ad2d22516efa0",
+  "source_dirty": false,
+  "database": "C:\\Users\\yiche\\telemetry-project\\.cache\\shop-demo\\run-73122371\\signalscout.db",
+  "seed": 1,
+  "baseline_requests": 40,
+  "baseline_passing": 40,
+  "failure_requests": 300,
+  "failure_count": 9,
+  "failure_percent": 3,
+  "failure_run_ids": [
+    "100daf6b520c3fe4bac166cb49bf89dd",
+    "39815e2a82e0fa4227612d242db60679",
+    "78689eba5892f10825d2315d2e4c174e",
+    "b89b39104d5d27232e3c404ef8a8b0db",
+    "521a541bb362b93d55272760cf86dc3f",
+    "b98ef50b5ee825243baa0c2e2b56bb32",
+    "c779cc44e52e5af434d9ce3e2d2b465f",
+    "da0cd0313bb5c6da62732e5302c5995a",
+    "bacb3e98faf20115e0bbdeff5ecc9ff1"
+  ],
+  "signals": {
+    "event": 376,
+    "log": 1029,
+    "metric": 567,
+    "span": 1960
+  },
+  "evidence": {
+    "run_id": "100daf6b520c3fe4bac166cb49bf89dd",
+    "acquire_span_id": "span:100daf6b520c3fe4bac166cb49bf89dd/7166f6ac87ccab51",
+    "acquire_ms": 100.964332,
+    "retry_event_id": "event:c1924777ab06fa7741385431c1752b22ed725fc08720a19a28a584acd2708cf9/0",
+    "host_metric_id": "metric:dcfe452b4fd7ae8428a4d273d0610523b71a832e1ea8d48e5f57cc5946917743/0",
+    "host_metric_name": "system.memory.usage",
+    "host_resource_id": "056df8a3d274849bf84c06d59b944ac17c7a9554ed9150c645081d8819e6c772",
+    "host_matches": [
+      {
+        "rule": "host.name",
+        "matched_resource_id": "2ca945e5aa676c3bf330c247ca331956438a59c91c8098f0c256a05287b73542"
+      },
+      {
+        "rule": "host.name",
+        "matched_resource_id": "47c6bebd6f329d725867ac754f365225f9d5591435681717025b851b9a82005f"
+      },
+      {
+        "rule": "host.name",
+        "matched_resource_id": "dd55ef75b455a9f974bac115419487f397d46c816bbd610e0873e748a989c1e3"
+      }
+    ],
+    "pool_gauge_id": "metric:7cd60b6c0209de3850743339a9df2ecef0402ba10e866993826af2ba88384962/0",
+    "trace_log_id": "log:761ec93298d8596238cf2819e3166d9e3fdf176d38f0309c66f64227a357aab3/0"
+  },
+  "acceptance": true
+}
