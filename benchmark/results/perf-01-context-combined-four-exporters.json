@@ -1,0 +1,113 @@
+{
+  "measured_at": "2026-10-19T18:44:31.2792766Z",
+  "go": "go1.27.0",
+  "method": "Simultaneous loopback protobuf exporters paced at 5000 spans, 5000 logs, 10000 scalar points/sec. Four bounded exporters (one span, one log, two disjoint alternating metric batch streams) each await durable acknowledgment; metric concurrency matches its doubled offered rate. Fixed seeds 1..5, fresh shared on-disk WAL/NORMAL store each seed, same payload generator and batch size as separate benchmark. Stop offering at the window deadline: unsent records count as capacity misses. All acknowledged counts verified. Rate denominator is max(offered window, final acknowledgment); committed_in_window also records deadline capacity. Setup, verification and shutdown excluded.",
+  "batch_size": 256,
+  "measurements": [
+    {
+      "seed": 1,
+      "offered_window_seconds": 10,
+      "seconds_including_drain": 10.0884164,
+      "per_second": {
+        "log": 2664.441963359086,
+        "metric": 5303.508288971894,
+        "span": 2639.0663256128087
+      },
+      "committed_in_window": {
+        "log": 26624,
+        "metric": 52992,
+        "span": 26368
+      },
+      "persisted": {
+        "log": 26880,
+        "metric": 53504,
+        "span": 26624
+      },
+      "all_targets_met": false
+    },
+    {
+      "seed": 2,
+      "offered_window_seconds": 10,
+      "seconds_including_drain": 10.1090268,
+      "per_second": {
+        "log": 2659.0096684677897,
+        "metric": 5292.695435331124,
+        "span": 2633.6857668633343
+      },
+      "committed_in_window": {
+        "log": 26624,
+        "metric": 52992,
+        "span": 26368
+      },
+      "persisted": {
+        "log": 26880,
+        "metric": 53504,
+        "span": 26624
+      },
+      "all_targets_met": false
+    },
+    {
+      "seed": 3,
+      "offered_window_seconds": 10,
+      "seconds_including_drain": 10.1155585,
+      "per_second": {
+        "log": 2201.756828355053,
+        "metric": 4352.898557207691,
+        "span": 2201.756828355053
+      },
+      "committed_in_window": {
+        "log": 22016,
+        "metric": 43520,
+        "span": 22016
+      },
+      "persisted": {
+        "log": 22272,
+        "metric": 44032,
+        "span": 22272
+      },
+      "all_targets_met": false
+    },
+    {
+      "seed": 4,
+      "offered_window_seconds": 10,
+      "seconds_including_drain": 10.0912957,
+      "per_second": {
+        "log": 2207.050577261352,
+        "metric": 4414.101154522704,
+        "span": 2207.050577261352
+      },
+      "committed_in_window": {
+        "log": 22016,
+        "metric": 44032,
+        "span": 22016
+      },
+      "persisted": {
+        "log": 22272,
+        "metric": 44544,
+        "span": 22272
+      },
+      "all_targets_met": false
+    },
+    {
+      "seed": 5,
+      "offered_window_seconds": 10,
+      "seconds_including_drain": 10.1053866,
+      "per_second": {
+        "log": 2634.634482959811,
+        "metric": 5269.268965919622,
+        "span": 2659.9675068344245
+      },
+      "committed_in_window": {
+        "log": 26368,
+        "metric": 52736,
+        "span": 26624
+      },
+      "persisted": {
+        "log": 26624,
+        "metric": 53248,
+        "span": 26880
+      },
+      "all_targets_met": false
+    }
+  ]
+}

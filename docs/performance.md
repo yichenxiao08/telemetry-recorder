@@ -29,9 +29,10 @@ argument forwarding are instrumentation, not a workload change. Profiled rates
 are retained separately from unprofiled comparison rates.
 
 The new combined measurement uses the same payload generator and batch size.
-Three exporters share one store and offer 5,000 spans, 5,000 logs, and 10,000
+Four exporters share one store and offer 5,000 spans, 5,000 logs, and 10,000
 scalar points per second concurrently for ten seconds, for each seed 1–5. Each
-exporter has one outstanding acknowledged request; absolute pacing exposes
+exporter has one outstanding acknowledged request (one span, one log, two
+alternating metric batch streams, matching its doubled target); absolute pacing exposes
 backlog rather than allocating an unbounded client queue. Stop offering at the
 deadline; unsent work is a capacity miss. Report both records committed during the
 ten-second window and throughput including the final in-flight drain. Every
@@ -40,6 +41,14 @@ signal in every seed to commit within the offered window. Separate rates are
 diagnostics, not combined capacity. An incomplete first harness attempt that kept
 sending unsent work after the window was aborted after 365 seconds; its failure
 record is retained as `perf-00-combined-incomplete.json`, without invented rates.
+The first completed combined helper used only one metric exporter. Its reports
+are retained, but the final method uses two to avoid imposing equal per-kind
+queue shares on a 1:1:2 offered load. The context-only code was remeasured with
+this four-exporter method before further storage changes
+(`perf-01-context-combined-four-exporters`). Subsequent combined comparisons use
+that same method. Every completed/failed trial is now saved immediately, so a
+later HTTP error cannot erase earlier results. The 30-second request timeout and
+all target assertions are unchanged.
 
 Startup uses the normal intake `store.Open`, not the result-only writer. Copies
 refuse an existing destination or a source with a nonempty WAL. Open and Close

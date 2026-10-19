@@ -53,10 +53,28 @@ func run(inputs []string, base, title string) error {
 		var source struct {
 			Measurements []trial `json:"measurements"`
 		}
-		if err = json.Unmarshal(data, &source); err != nil {
-			return fmt.Errorf("decode repetition: %w", err)
-		}
 		counts := map[string]int{}
+		if err = json.Unmarshal(data, &source); err != nil {
+			source.Measurements = nil // Unmarshal may have partially filled the slice.
+			var combined struct {
+				Measurements []struct {
+					PerSecond map[string]float64 `json:"per_second"`
+				} `json:"measurements"`
+			}
+			if err = json.Unmarshal(data, &combined); err != nil {
+				return fmt.Errorf("decode repetition: %w", err)
+			}
+			for _, m := range combined.Measurements {
+				for _, kind := range []string{"span", "log", "metric"} {
+					if m.PerSecond[kind] <= 0 {
+						return fmt.Errorf("invalid/missing combined %s rate", kind)
+					}
+					values[kind] = append(values[kind], m.PerSecond[kind])
+					counts[kind]++
+				}
+			}
+			result.Method = "Minimum and median per signal across all five seeds of the listed simultaneous combined-ingest reports. Rates include in-flight drain; missing/unsent work is a target miss. All signals in every seed must meet 5000/5000/10000 per second. These are not sums of separate-signal measurements."
+		}
 		for _, m := range source.Measurements {
 			if m.PerSecond <= 0 {
 				return fmt.Errorf("invalid %s rate", m.Kind)
