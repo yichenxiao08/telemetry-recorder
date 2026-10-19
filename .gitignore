@@ -1,0 +1,12 @@
+# Binaries
+/bin/
+*.exe
+*.test
+*.out
+.drafts/
+.cache/
+
+# Local database
+*.db
+*.db-shm
+*.db-wal

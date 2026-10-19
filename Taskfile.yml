@@ -1,0 +1,20 @@
+version: '3'
+
+vars:
+  BINARY: bin/signalscout.exe
+
+tasks:
+  build:
+    cmds:
+      - go build -o {{.BINARY}} ./cmd/signalscout
+  test:
+    cmds:
+      - go test -race ./...
+  lint:
+    cmds:
+      - go run ./scripts/checkfmt
+      - go vet ./...
+      - golangci-lint run
+  run:
+    cmds:
+      - go run ./cmd/signalscout serve

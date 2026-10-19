@@ -1,0 +1,2 @@
+// Package redaction is reserved for the corresponding Signal Scout component.
+package redaction
