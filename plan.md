@@ -440,3 +440,5 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 - The supplied file was named `plan (1).md`; `plan.md` is the working source of truth. The original is preserved.
 - The owner namespace is unspecified, so the provisional module is `github.com/signalscout/signalscout`.
 - CI uses Go 1.27 (within the Go 1.22+ requirement) and golangci-lint v2.14, matching the native development tools. Lint checks formatting without changing files.
+- M1 adds resource identity, raw OTLP/scope metadata, ambient evidence, context associations, receipt timestamps and persisted grouping state to the initial schema. Context attaches only on exact resource and evidence-interval match; ownership stays separate.
+- Span IDs include trace ID; event and metric IDs use canonical content hashes so valid records cannot overwrite unrelated evidence. Missing web roots yield degraded, and histogram/summary point payloads are retained without scalar flattening.
