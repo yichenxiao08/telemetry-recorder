@@ -1,6 +1,7 @@
 package runs
 
 import (
+	"math"
 	"strings"
 	"time"
 
@@ -81,7 +82,7 @@ func Observe(state State, s model.Signal, now time.Time, thresholdMS float64) St
 		}
 		if loss, ok := s.Attrs["ml.loss"]; ok {
 			v := numeric(loss)
-			failed = failed || v != v || text(loss) == "Infinity" || text(loss) == "-Infinity"
+			failed = failed || math.IsNaN(v) || math.IsInf(v, 0)
 		}
 	} else {
 		failed = s.ID == state.RootID && (state.RootError || state.HTTPStatus >= 500)

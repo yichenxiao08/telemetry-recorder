@@ -1,0 +1,6 @@
+[
+  {"id":"00000000000000000000000000000001","workload":"POST /checkout","domain":"web","outcome":"pass","closed":true,"spans":1,"events":1,"logs":0,"metrics":0,"context":2},
+  {"id":"00000000000000000000000000000002","workload":"GET /fail","domain":"web","outcome":"fail","closed":true,"spans":1,"events":0,"logs":1,"metrics":0,"context":0},
+  {"id":"00000000000000000000000000000003","workload":"unknown","domain":"web","outcome":"degraded","closed":true,"spans":1,"events":0,"logs":0,"metrics":0,"context":0},
+  {"id":"ml-run","workload":"train/small","domain":"ml","outcome":"fail","closed":true,"spans":1,"events":0,"logs":1,"metrics":1,"context":0}
+]

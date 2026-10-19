@@ -21,3 +21,5 @@ The choices below are implemented unless marked pending validation. Product choi
 | Durability vs throughput measurement | Benchmark complete HTTP decode, queue admission and SQLite commit, with WAL synchronous NORMAL. Record mode and hardware. Report spans, logs and scalar metric points separately; do not substitute queue admission for persisted throughput. |
 | Local tools | Go 1.27.0, Task 3.54.0 and golangci-lint 2.14.0 were located and run. Use workspace caches within the sandbox. Race detector needs a native C toolchain even though production SQLite is pure Go; production build disables cgo. |
 | Secret handling | Broad redaction is M8. Raw evidence is deliberately retained in M1; use only local trusted telemetry until that milestone. |
+
+Identical logs/points have no source-issued unique ID. Occurrence suffixes preserve duplicates inside a request; identical repeated requests are treated as exporter retries. Rebatching identical records can therefore change duplicate interpretation. This remains an OTLP identity ambiguity.
