@@ -34,10 +34,12 @@ func (i *inventory) reserve(ctx context.Context, cart workload.Cart) error {
 	trace.SpanFromContext(ctx).AddEvent("cache.miss")
 	var conn connection
 	for attempt := 0; attempt < 2; attempt++ {
-		acquireCtx, cancel := context.WithTimeout(ctx, i.AcquireTimeout)
-		spanCtx, span := i.Tracer.Start(acquireCtx, "db.pool.acquire", trace.WithAttributes(attribute.Int("retry.attempt", attempt)))
+		// Start evidence before the timed operation so span setup cannot consume
+		// part of the acquire budget outside the recorded wait.
+		spanCtx, span := i.Tracer.Start(ctx, "db.pool.acquire", trace.WithAttributes(attribute.Int("retry.attempt", attempt)))
+		acquireCtx, cancel := context.WithTimeout(spanCtx, i.AcquireTimeout)
 		var err error
-		conn, err = i.Acquire(spanCtx)
+		conn, err = i.Acquire(acquireCtx)
 		cancel()
 		if err == nil {
 			span.End()
