@@ -59,3 +59,11 @@ task build
 ```
 
 CI runs formatting, vet, lint, race tests and build on Ubuntu and Windows. Synthetic OTLP recordings in `testdata/otlp` cover both run profiles and ambient data; replay results are checked against a hand-authored golden summary.
+
+To reproduce M1 ingest measurements:
+
+```powershell
+task benchmark-ingest
+```
+
+See [docs/benchmark.md](docs/benchmark.md) for what is timed and [benchmark/results/ingest.md](benchmark/results/ingest.md) for the generated results. These are intake measurements, not the later failure-diff benchmark.

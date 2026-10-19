@@ -20,3 +20,9 @@ tasks:
   run:
     cmds:
       - go run ./cmd/signalscout serve
+  benchmark-ingest:
+    desc: Measure persisted OTLP HTTP ingest for all three signals with five seeds
+    env:
+      CGO_ENABLED: '0'
+    cmds:
+      - go run ./scripts/ingestbench

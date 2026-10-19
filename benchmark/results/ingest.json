@@ -1,0 +1,138 @@
+{
+  "measured_at": "2026-10-19T08:07:40.7208486Z",
+  "go_version": "go1.27.0",
+  "os": "windows",
+  "arch": "amd64",
+  "logical_cpus": 16,
+  "cpu": "Intel64 Family 6 Model 197 Stepping 2, GenuineIntel",
+  "batch_size": 256,
+  "method": "Loopback HTTP protobuf, sequential batches, unique records, ten spans/trace, ambient logs and gauge points; includes decode, grouping and WAL SQLite commit (synchronous=NORMAL). Excludes payload generation, database setup, count verification and shutdown. Fresh temporary on-disk database per signal and seed.",
+  "measurements": [
+    {
+      "kind": "span",
+      "seed": 1,
+      "records": 20000,
+      "seconds": 1.5119482,
+      "per_second": 13227.966407843867
+    },
+    {
+      "kind": "span",
+      "seed": 2,
+      "records": 20000,
+      "seconds": 1.8051686,
+      "per_second": 11079.297523788082
+    },
+    {
+      "kind": "span",
+      "seed": 3,
+      "records": 20000,
+      "seconds": 3.6868434,
+      "per_second": 5424.694740221405
+    },
+    {
+      "kind": "span",
+      "seed": 4,
+      "records": 20000,
+      "seconds": 3.694552,
+      "per_second": 5413.376236144464
+    },
+    {
+      "kind": "span",
+      "seed": 5,
+      "records": 20000,
+      "seconds": 3.5973686000000002,
+      "per_second": 5559.619328416888
+    },
+    {
+      "kind": "log",
+      "seed": 1,
+      "records": 20000,
+      "seconds": 3.7607038,
+      "per_second": 5318.153479675799
+    },
+    {
+      "kind": "log",
+      "seed": 2,
+      "records": 20000,
+      "seconds": 3.5659244,
+      "per_second": 5608.643862444195
+    },
+    {
+      "kind": "log",
+      "seed": 3,
+      "records": 20000,
+      "seconds": 3.8810522,
+      "per_second": 5153.241690487956
+    },
+    {
+      "kind": "log",
+      "seed": 4,
+      "records": 20000,
+      "seconds": 3.8917479999999998,
+      "per_second": 5139.078892055703
+    },
+    {
+      "kind": "log",
+      "seed": 5,
+      "records": 20000,
+      "seconds": 3.8134665,
+      "per_second": 5244.572097329294
+    },
+    {
+      "kind": "metric",
+      "seed": 1,
+      "records": 20000,
+      "seconds": 3.983901,
+      "per_second": 5020.205070356919
+    },
+    {
+      "kind": "metric",
+      "seed": 2,
+      "records": 20000,
+      "seconds": 4.093893,
+      "per_second": 4885.325532445524
+    },
+    {
+      "kind": "metric",
+      "seed": 3,
+      "records": 20000,
+      "seconds": 4.0609208,
+      "per_second": 4924.991396040031
+    },
+    {
+      "kind": "metric",
+      "seed": 4,
+      "records": 20000,
+      "seconds": 3.7294801,
+      "per_second": 5362.677763047992
+    },
+    {
+      "kind": "metric",
+      "seed": 5,
+      "records": 20000,
+      "seconds": 4.1412917,
+      "per_second": 4829.411074810306
+    }
+  ],
+  "summary": {
+    "log": {
+      "mean": 5292.738004398589,
+      "min": 5139.078892055703,
+      "max": 5608.643862444195,
+      "stddev": 170.78217502746753
+    },
+    "metric": {
+      "mean": 5004.522167340154,
+      "min": 4829.411074810306,
+      "max": 5362.677763047992,
+      "stddev": 189.5881115812185
+    },
+    "span": {
+      "mean": 8140.990847282941,
+      "min": 5413.376236144464,
+      "max": 13227.966407843867,
+      "stddev": 3346.418724711103
+    }
+  },
+  "span_acceptance": true
+}
