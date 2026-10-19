@@ -322,7 +322,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Replaying recorded OTLP fixtures from `testdata/` produces the expected runs, spans, events, and outcomes (golden-file tests).
 - Malformed payloads return 4xx and do not corrupt storage.
 - Backpressure works: when the write queue is full, intake returns 503 (tested).
-- Ingest throughput targets on the same laptop are **simultaneous combined capacity**: 5,000 spans/sec plus 5,000 log records/sec plus 10,000 scalar metric points/sec. Retain the unchanged separate-signal `task benchmark-ingest` as a diagnostic (20,000 records/kind, batches of 256, seeds 1–5), and additionally measure all signals concurrently with `-combined`. Record minimum and median per signal, retain every miss, and require every signal in every seed to reach its target. Earlier separate-signal review results do not establish combined capacity; the three M1 review repeats were performed without tuning.
+- The owner replaced the original round-number simultaneous 5,000 spans + 5,000 logs + 10,000 scalar points/sec gate after reviewing its measured miss. Keep those original results and separate diagnostics unchanged. Current combined profiles: twice the maximum sliding-one-second emitted record count across the saved shop-demo load phases for seeds 1 and 2 (2,304 spans + 1,212 logs + 72 scalar points/sec), and a second **estimated**, not measured, 60 fps x 50 values/frame pipeline budget of 3,000 scalar points/sec alongside that same shop span/log budget. Use serving defaults, 30-second offered windows, seeds 1–5, durable acknowledgments and verified counts; report pass/fail for every profile and seed, including unsent work. Measurement boundaries, averages and peak counts are in benchmark/results/m4b-workload-rates.json. This is an explicit workload-based target change, not a pass against the original targets.
 
 ### M2: Web sample app and seeded failure #1
 
@@ -436,6 +436,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 ### M8: Overhead, redaction, and write-up
 
 **Tasks**
+- Measure scalar-point bytes/record and hourly storage specifically: the mixed 1M fixture's roughly 1.1 KB/record extrapolates to about 12 GB/hour at 3,000 points/sec before retention, but is not a scalar-only measurement.
 - Overhead measurements on the web and ML samples: added request latency p50/p99, CPU, memory, and bytes stored per run, and storage growth per hour at a fixed ingest rate with the default retention policy, with sampling on and off.
 - Redaction: scrubbing rules for common secrets and PII (tokens, emails, card-like numbers, auth headers, SQL literals) applied at intake, before storage. Plant known secrets in sample traffic and measure the leak rate.
 - Finalize `docs/run-spec.md`, `docs/adapter-guide.md` (including the robotics design note: why spans fit high-rate streams poorly and how the spec handles it with metric streams, event markers, and linked bag files), and `docs/benchmark.md`.

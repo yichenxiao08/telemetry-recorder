@@ -37,12 +37,21 @@ func combinedTrial(ctx context.Context, count, batch int, seed int64) (result co
 }
 
 func combinedTrialOptions(ctx context.Context, count, batch int, seed int64, options store.Options) (result combinedMeasurement, resultErr error) {
+	counts := map[string]int{}
+	for kind, rate := range targets {
+		counts[kind] = count * rate / 5000
+	}
+	return combinedTrialRates(ctx, counts, time.Duration(float64(count)/5000*float64(time.Second)), targets, batch, seed, options)
+}
+
+func combinedTrialRates(ctx context.Context, counts map[string]int, window time.Duration, targets map[string]int, batch int, seed int64, options store.Options) (result combinedMeasurement, resultErr error) {
+	count := counts["span"]
 	if count <= 0 || batch <= 0 {
 		return result, fmt.Errorf("positive count and batch required")
 	}
 	data := map[string][][]byte{}
 	for _, kind := range []string{"span", "log", "metric"} {
-		n := count * targets[kind] / 5000
+		n := counts[kind]
 		var err error
 		data[kind], err = payloads(kind, n, batch, seed)
 		if err != nil {
@@ -71,7 +80,6 @@ func combinedTrialOptions(ctx context.Context, count, batch int, seed int64, opt
 	defer server.Close()
 	client := server.Client()
 	client.Timeout = 30 * time.Second
-	window := time.Duration(float64(count) / 5000 * float64(time.Second))
 	type completion struct {
 		kind      string
 		inWindow  int
@@ -126,10 +134,10 @@ func combinedTrialOptions(ctx context.Context, count, batch int, seed int64, opt
 						return
 					}
 					if time.Since(start) <= window {
-						n := min(batch, count*targets[kind]/5000-index*batch)
+						n := min(batch, counts[kind]-index*batch)
 						c.inWindow += n
 					}
-					c.committed += min(batch, count*targets[kind]/5000-index*batch)
+					c.committed += min(batch, counts[kind]-index*batch)
 				}
 			}()
 		}
@@ -152,8 +160,8 @@ func combinedTrialOptions(ctx context.Context, count, batch int, seed int64, opt
 	if err != nil {
 		return result, err
 	}
-	for kind, target := range targets {
-		n := count * target / 5000
+	for kind := range targets {
+		n := counts[kind]
 		if result.Counts[kind] != int64(acknowledged[kind]) {
 			return result, fmt.Errorf("%s persisted %d of %d acknowledged", kind, result.Counts[kind], acknowledged[kind])
 		}

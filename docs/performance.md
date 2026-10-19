@@ -299,3 +299,36 @@ both persisted baseline panels and all 46 evidence anchors resolve, with a
 1.39-second test body (`perf-05-viewer-seed1-race.txt`). Its former ten-minute
 timeout remains in the earlier failure log. Validation logs are retained in
 `perf-05-local-validation.txt`.
+
+## Owner-approved gate replacement before M4b
+
+The owner explicitly overrode the no-go: the original 5,000/5,000/10,000
+simultaneous targets were round numbers, not derived from workloads. **Targets
+have changed.** The original misses above are retained and remain misses.
+
+`go run ./scripts/workloadrates` measures the saved seed-1 and seed-2 load
+phases. Phase boundaries are earliest run start through latest run end. Count
+all resources by event timestamp, including host-only metrics; count only
+scalar metric values. Report phase averages and sliding-one-second peaks in
+`m4b-workload-rates.json`. Event-time rates do not establish exporter burst rate.
+Maximum peaks are 1,152 spans, 606 logs and 36 points/sec; twice each maximum
+gives 2,304/1,212/72 concurrently. The second profile is an **estimate**:
+60 fps x 50 scalar values/frame = 3,000 points/sec, with the same shop span/log
+budget retained concurrently. It is not a measured pipeline workload.
+
+Run `task benchmark-ingest -- -profiles benchmark/results/m4b-ingest-targets.json -out benchmark/results/m4b-combined-profiles.json`.
+This uses serving defaults, the same payload generator and batch size, five
+seeds and 30-second windows. No ingestion tuning accompanies this gate change.
+The first custom-profile harness attempt retained an old ratio in its count
+accounting; it was stopped and its failure log retained as
+`m4b-profile-harness-failed.txt`. Unequal-count persistence now has a regression
+test. That failed accounting attempt is not a throughput measurement.
+
+The corrected run passes seeds 1/4/5 for shop and 1/3/5 for the pipeline
+estimate. Both profiles therefore **miss the every-seed gate**. Shop seed 2's
+last eight logs finish after the deadline; seed 3 also misses the strict edge.
+Pipeline seed 2 measures 2,010/1,132/2,728 records/sec and seed 4 measures
+2,287/1,207/2,984. The full per-seed generated table is
+`m4b-combined-profiles.md`; it is not rounded into a pass. The owner requested
+continuing with M4b after recording per-profile outcomes. No further target
+reduction or throughput experiment accompanies M4b.

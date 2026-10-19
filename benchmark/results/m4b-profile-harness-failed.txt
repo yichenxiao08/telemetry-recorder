@@ -1,0 +1,2 @@
+task: [benchmark-ingest] go run ./scripts/ingestbench -profiles benchmark/results/m4b-ingest-targets.json -out benchmark/results/m4b-combined-profiles.json
+shop-2x-peak seed=1 met=false
