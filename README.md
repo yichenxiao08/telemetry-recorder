@@ -1,6 +1,6 @@
 # Signal Scout
 
-Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0 and M1 provide intake and run inspection. See [plan.md](plan.md) for the full milestone plan; diffing and explanations belong to later milestones.
+Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0–M3 provide intake, run inspection, a seeded shop demo, and ranked differences against passing history. See [plan.md](plan.md) for the full milestone plan; the viewer and agent explanations belong to later milestones.
 
 ## Windows / PowerShell quick start
 
@@ -66,7 +66,7 @@ To reproduce M1 ingest measurements:
 task benchmark-ingest
 ```
 
-See [docs/benchmark.md](docs/benchmark.md) for what is timed and [benchmark/results/ingest.md](benchmark/results/ingest.md) for the generated results. These are intake measurements, not the later failure-diff benchmark.
+See [docs/benchmark.md](docs/benchmark.md) for what is timed and [the unchanged pre-M3 measurement](benchmark/results/m3-preflight-ingest-summary.md) for current separate-signal target misses. Older reports are retained. These are intake measurements, not the later multi-failure benchmark.
 
 
 ## M2 shop demo
@@ -79,3 +79,50 @@ $demo = Get-Content -Raw .\benchmark\results\shop-demo.json | ConvertFrom-Json
 ```
 
 Requires a running Docker Desktop Linux engine. The task produces 40 passing baselines, changes the pool from 20 to 5, sends 300 loaded requests, and verifies actual failure evidence plus separate host-resource context. It stops its stack and native intake before returning; the database remains for CLI inspection. See [samples/shop/README.md](samples/shop/README.md) for topology, seeded workload, manual commands and limitations.
+
+## M3 diff (PowerShell)
+
+Run from the repository root after intake has stopped. The accepted seed reports
+reference local databases under ignored `.cache/`; regenerate with `task shop-demo`
+on a fresh checkout. `task diff-demo` validates all failing runs in both modes and
+generates the cutoff and representative run ID used below.
+
+```powershell
+task build
+task diff-demo -- -demo benchmark/results/shop-demo-seed-1.json -out benchmark/results/diff-seed-1
+$demo = Get-Content -Raw .\benchmark\results\shop-demo-seed-1.json | ConvertFrom-Json
+$check = Get-Content -Raw .\benchmark\results\diff-seed-1.json | ConvertFrom-Json
+
+# Default: recent passing runs strictly before this failure
+.\bin\signalscout.exe --db $demo.database diff $check.representative_run_id
+
+# Explicit count (recorded as count mode)
+.\bin\signalscout.exe --db $demo.database diff $check.representative_run_id --baseline-n 40
+
+# Pre-change window (a run ID can also be supplied as the cutoff)
+.\bin\signalscout.exe --db $demo.database diff $check.representative_run_id --baseline-before $check.failure_phase_start
+```
+
+Add `--json` for the exact baseline specification, evidence IDs, related
+differences and scores. Fewer than 10 passes produces an explicit
+`insufficient_baseline` status and diagnostic. Results are persisted without
+changing run finalization or context links. The standalone CLI follows the
+existing one-writer-process agreement; stop `serve` before persisted analysis.
+
+The pre-change window ranks the pool config, retry and acquire latency in the
+top three for all failures in both [seed 1](benchmark/results/diff-seed-1.md) and
+[seed 2](benchmark/results/diff-seed-2.md). For the latest failure, default mode
+uses recent pool=5 passes, so the pool-size difference correctly disappears.
+The common cache miss then ranks third, behind retry and latency; its presence
+is not proof of a cause. See [scoring formulas](docs/diff-scoring.md).
+
+To generate and validate a new seed-2 database (updates the seed-2 reports):
+
+```powershell
+task shop-demo -- -seed 2
+Copy-Item .\benchmark\results\shop-demo.json .\benchmark\results\shop-demo-seed-2.json
+task diff-demo -- -demo benchmark/results/shop-demo-seed-2.json -out benchmark/results/diff-seed-2
+```
+
+Context metrics and logs remain stored and inspectable through `runs show`;
+their difference types belong to M4b and are not scored in M3.
