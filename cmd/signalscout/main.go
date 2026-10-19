@@ -4,18 +4,26 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/signal"
 
 	"github.com/spf13/cobra"
 )
 
 func newRootCommand() *cobra.Command {
-	return &cobra.Command{Use: "signalscout", Short: "Store telemetry and inspect workload runs", SilenceUsage: true, SilenceErrors: true,
+	root := &cobra.Command{Use: "signalscout", Short: "Store telemetry and inspect workload runs", SilenceUsage: true, SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, _ []string) error { return cmd.Help() },
 	}
+	var database string
+	root.PersistentFlags().StringVar(&database, "db", "signalscout.db", "SQLite database path")
+	root.AddCommand(newServeCommand(&database), newRunsCommand(&database))
+	root.CompletionOptions.DisableDefaultCmd = true
+	return root
 }
 
 func main() {
-	if err := newRootCommand().ExecuteContext(context.Background()); err != nil {
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
+	if err := newRootCommand().ExecuteContext(ctx); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

@@ -1,0 +1,29 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 127.0.0.1:4317
+      http:
+        endpoint: 127.0.0.1:4319
+processors:
+  batch:
+    send_batch_size: 256
+    timeout: 1s
+exporters:
+  otlphttp/signalscout:
+    endpoint: http://127.0.0.1:4318
+    compression: gzip
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/signalscout]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/signalscout]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/signalscout]

@@ -6,8 +6,6 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"net/url"
-	"path/filepath"
 	"sort"
 	"sync"
 	"time"
@@ -42,12 +40,16 @@ type job struct {
 }
 
 type Store struct {
-	writer  *sql.DB
-	reader  *sql.DB
-	options Options
-	queue   chan job
-	done    chan struct{}
-	errors  chan error
+	*Reader
+	writer          *sql.DB
+	options         Options
+	queue           chan job
+	done            chan struct{}
+	errors          chan error
+	open            map[string]int64
+	maintenance     chan time.Time
+	stopMaintenance chan struct{}
+	maintenanceDone chan struct{}
 	// Admission lock prevents sending to the channel after Close closes it.
 	mu        sync.RWMutex
 	closed    bool
@@ -56,22 +58,17 @@ type Store struct {
 }
 
 func Open(ctx context.Context, path string, options Options) (*Store, error) {
-	if options.QueueSize <= 0 || options.IdleTimeout <= 0 {
+	if options.QueueSize <= 0 || options.IdleTimeout <= 0 || options.Retention < 0 {
 		return nil, fmt.Errorf("queue size and idle timeout must be positive")
 	}
 	if options.SweepInterval <= 0 {
 		options.SweepInterval = time.Second
 	}
-	absolute, err := filepath.Abs(path)
+	uri, err := databaseURI(path)
 	if err != nil {
-		return nil, fmt.Errorf("database path: %w", err)
+		return nil, err
 	}
-	u := url.URL{Scheme: "file", Path: filepath.ToSlash(absolute)}
-	// SQLite URI paths on Windows need a leading slash before the drive letter.
-	if filepath.VolumeName(absolute) != "" {
-		u.Path = "/" + u.Path
-	}
-	writer, err := sql.Open("sqlite", u.String()+"?mode=rwc&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)")
+	writer, err := sql.Open("sqlite", uri+"?mode=rwc&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)")
 	if err != nil {
 		return nil, fmt.Errorf("open writer: %w", err)
 	}
@@ -88,20 +85,37 @@ func Open(ctx context.Context, path string, options Options) (*Store, error) {
 	if err = migrate(ctx, writer); err != nil {
 		return nil, err
 	}
-	reader, err := sql.Open("sqlite", u.String()+"?mode=ro&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)")
+	reader, err := OpenReader(ctx, path)
 	if err != nil {
 		return nil, fmt.Errorf("open reader: %w", err)
 	}
-	reader.SetMaxOpenConns(4)
-	if err = reader.PingContext(ctx); err != nil {
+	s := &Store{Reader: reader, writer: writer, options: options, queue: make(chan job, options.QueueSize), done: make(chan struct{}), errors: make(chan error, 1), open: map[string]int64{}, maintenance: make(chan time.Time, 1), stopMaintenance: make(chan struct{}), maintenanceDone: make(chan struct{})}
+	rows, err := writer.QueryContext(ctx, "SELECT run_id,last_seen FROM runs WHERE closed=0")
+	if err != nil {
 		_ = reader.Close()
-		return nil, fmt.Errorf("connect reader: %w", err)
+		return nil, fmt.Errorf("recover open runs: %w", err)
 	}
-	s := &Store{writer: writer, reader: reader, options: options, queue: make(chan job, options.QueueSize), done: make(chan struct{}), errors: make(chan error, 1)}
+	for rows.Next() {
+		var id string
+		var last int64
+		if err = rows.Scan(&id, &last); err != nil {
+			break
+		}
+		s.open[id] = last
+	}
+	if err == nil {
+		err = rows.Err()
+	}
+	_ = rows.Close()
+	if err != nil {
+		_ = reader.Close()
+		return nil, fmt.Errorf("read open runs: %w", err)
+	}
 	failed = false
 	// The writer goroutine owns every operational write, including timer work.
 	// It drains accepted jobs before closing connections; callers never write SQL.
 	go s.loop()
+	go s.scheduleMaintenance()
 	return s, nil
 }
 
@@ -178,8 +192,6 @@ func (s *Store) Errors() <-chan error { return s.errors }
 
 func (s *Store) loop() {
 	defer close(s.done)
-	ticker := time.NewTicker(s.options.SweepInterval)
-	defer ticker.Stop()
 	for {
 		select {
 		case j, ok := <-s.queue:
@@ -200,7 +212,7 @@ func (s *Store) loop() {
 				}
 			}
 			j.done <- err
-		case now := <-ticker.C:
+		case now := <-s.maintenance:
 			if err := s.maintain(context.Background(), now, false); err != nil {
 				select {
 				case s.errors <- err:
@@ -211,8 +223,29 @@ func (s *Store) loop() {
 	}
 }
 
+// The scheduler never writes SQL. Coalescing ticks bounds maintenance backlog;
+// the writer serializes idle finalization and retention with incoming batches.
+func (s *Store) scheduleMaintenance() {
+	defer close(s.maintenanceDone)
+	ticker := time.NewTicker(s.options.SweepInterval)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-s.stopMaintenance:
+			return
+		case now := <-ticker.C:
+			select {
+			case s.maintenance <- now:
+			default:
+			}
+		}
+	}
+}
+
 func (s *Store) Close() error {
 	s.closeOnce.Do(func() {
+		close(s.stopMaintenance)
+		<-s.maintenanceDone
 		s.mu.Lock()
 		s.closed = true
 		close(s.queue)
@@ -333,6 +366,13 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 	if err = tx.Commit(); err != nil {
 		return fmt.Errorf("commit ingest: %w", err)
 	}
+	for id, state := range states {
+		if state.Run.Closed {
+			delete(s.open, id)
+		} else {
+			s.open[id] = state.LastSeen
+		}
+	}
 	return nil
 }
 
@@ -357,28 +397,15 @@ func (s *Store) maintain(ctx context.Context, now time.Time, force bool) error {
 	if force {
 		cutoff = now.UnixNano()
 	}
-	rows, err := tx.QueryContext(ctx, "SELECT state FROM runs WHERE closed=0 AND last_seen<=?", cutoff)
-	if err != nil {
-		return fmt.Errorf("find idle runs: %w", err)
-	}
 	var states []runs.State
-	for rows.Next() {
-		var data string
-		if err = rows.Scan(&data); err != nil {
-			_ = rows.Close()
-			return fmt.Errorf("read idle state: %w", err)
+	for id, last := range s.open {
+		if force || last <= cutoff {
+			state, err := loadState(ctx, tx, id)
+			if err != nil {
+				return err
+			}
+			states = append(states, state)
 		}
-		var state runs.State
-		if err = json.Unmarshal([]byte(data), &state); err != nil {
-			_ = rows.Close()
-			return fmt.Errorf("decode idle state: %w", err)
-		}
-		states = append(states, state)
-	}
-	err = rows.Err()
-	_ = rows.Close()
-	if err != nil {
-		return fmt.Errorf("iterate idle runs: %w", err)
 	}
 	for _, state := range states {
 		state.Run.Closed = true
@@ -408,10 +435,13 @@ func (s *Store) maintain(ctx context.Context, now time.Time, force bool) error {
 	if err = tx.Commit(); err != nil {
 		return fmt.Errorf("commit maintenance: %w", err)
 	}
+	for _, state := range states {
+		delete(s.open, state.Run.ID)
+	}
 	return nil
 }
 
-func (s *Store) List(ctx context.Context, workload, outcome string) ([]model.Run, error) {
+func (s *Reader) List(ctx context.Context, workload, outcome string) ([]model.Run, error) {
 	rows, err := s.reader.QueryContext(ctx, "SELECT state FROM runs WHERE (?='' OR workload=?) AND (?='' OR outcome=?) ORDER BY started_at DESC,run_id", workload, workload, outcome, outcome)
 	if err != nil {
 		return nil, fmt.Errorf("list runs: %w", err)
@@ -435,7 +465,7 @@ func (s *Store) List(ctx context.Context, workload, outcome string) ([]model.Run
 	return result, nil
 }
 
-func (s *Store) Show(ctx context.Context, id string) (model.RunDetail, error) {
+func (s *Reader) Show(ctx context.Context, id string) (model.RunDetail, error) {
 	var result model.RunDetail
 	var state runs.State
 	var data string

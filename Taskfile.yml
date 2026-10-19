@@ -5,6 +5,8 @@ vars:
 
 tasks:
   build:
+    env:
+      CGO_ENABLED: '0'
     cmds:
       - go build -o {{.BINARY}} ./cmd/signalscout
   test:

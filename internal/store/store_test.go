@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"database/sql"
 	"path/filepath"
 	"sync"
 	"testing"
@@ -197,5 +198,73 @@ func TestRestartAndMigrations(t *testing.T) {
 	}
 	if !detail.Run.Closed || len(detail.Signals) != 2 {
 		t.Fatalf("restart lost closed run: %+v", detail)
+	}
+}
+
+func TestMaintenanceSchedulerAndOpenRunRecovery(t *testing.T) {
+	ctx := context.Background()
+	path := filepath.Join(t.TempDir(), "recovery.db")
+	options := Options{QueueSize: 2, IdleTimeout: 50 * time.Millisecond, SweepInterval: 10 * time.Millisecond}
+	s, err := Open(ctx, path, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = s.Submit(ctx, model.Batch{Signals: []model.Signal{fixture("s", "span", "a", "r", 1, 2)}}); err != nil {
+		t.Fatal(err)
+	}
+	deadline := time.Now().Add(2 * time.Second)
+	for {
+		detail, err := s.Show(ctx, "a")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if detail.Run.Closed {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("scheduler did not close idle run")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	if err = s.Close(); err != nil {
+		t.Fatal(err)
+	}
+	// Simulate durable open state left by an interrupted process using test-only SQL.
+	uri, err := databaseURI(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	db, err := sql.Open("sqlite", uri+"?mode=rw")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = db.ExecContext(ctx, `UPDATE runs SET closed=0,state=json_set(state,'$.Run.closed',json('false'))`); err != nil {
+		t.Fatal(err)
+	}
+	if err = db.Close(); err != nil {
+		t.Fatal(err)
+	}
+	s, err = Open(ctx, path, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := s.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
+	deadline = time.Now().Add(2 * time.Second)
+	for {
+		detail, err := s.Show(ctx, "a")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if detail.Run.Closed {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("recovered open run not finalized")
+		}
+		time.Sleep(10 * time.Millisecond)
 	}
 }
