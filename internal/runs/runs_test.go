@@ -70,6 +70,17 @@ func TestGroupingAndLateData(t *testing.T) {
 	}
 }
 
+func TestSpanResourceConfigIsFlatWithoutMetrics(t *testing.T) {
+	span := model.Signal{ID: "span:root", Kind: "span", TraceID: "run", Name: "work", TS: 1, End: 2, Resource: model.Resource{Attrs: map[string]any{"signalscout.config.DB_POOL_SIZE": 5, "vcs.revision": "commit"}}}
+	got := Observe(State{}, span, time.Now(), 0)
+	if got.Run.Config["DB_POOL_SIZE"] != 5 || got.Run.Env["vcs.revision"] != "commit" {
+		t.Fatalf("snapshot %+v", got.Run)
+	}
+	if _, nested := got.Run.Config["signalscout.config.DB_POOL_SIZE"]; nested {
+		t.Fatal("config prefix was not removed")
+	}
+}
+
 func TestContextAttachment(t *testing.T) {
 	run := model.Run{StartedAt: 10, EndedAt: 20}
 	for _, tc := range []struct {
