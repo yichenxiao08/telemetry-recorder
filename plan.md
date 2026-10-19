@@ -220,8 +220,8 @@ Stable strings shown to users and cited by the agent: `span:<id>`, `event:<id>`,
 
 ### Baseline selection
 
-- Default: the most recent N passing runs of the same workload (N=40), optionally filtered to the same environment where possible.
-- Configurable, and recorded in `diff_results.baseline_spec`.
+- Default: the most recent N closed passing runs of the same workload (N=40) whose start times are strictly before the failing run. No implicit environment filter hides configuration changes.
+- Support default mode, explicit `--baseline-n` (count mode), and `--baseline-before <run-id or RFC3339 time>` (before mode). The explicit cutoff is exclusive and capped at the failing run's start; a run ID resolves to its start. The count may also limit before mode. Record mode, count, original/resolved cutoff, selected run IDs and scoring version in `diff_results.baseline_spec`.
 - Require a minimum baseline size (default 10); otherwise return a clear "insufficient baseline" result.
 
 ### Structural alignment
@@ -343,12 +343,12 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Implement `internal/stats`, feature extraction, alignment, and the latency, presence/absence, count, and config difference types from section 6.
 - Implement baseline selection and the insufficient-baseline case.
 - Implement ranking, redundancy collapsing, and decoy checks.
-- CLI: `signalscout diff <failing_run_id> [--baseline-n 40]` printing the ranked list in the explanation format.
+- CLI: `signalscout diff <failing_run_id> [--baseline-n 40] [--baseline-before <run-id or RFC3339 time>]` printing the ranked list in the explanation format, with optional JSON output. Persist the selection mode and exact baseline IDs.
 - Write `docs/diff-scoring.md`.
 - Property tests with `rapid`: scores always in [0, 1]; scores monotone in effect size; adding identical baseline runs never raises the score of a feature that is common in baseline.
 
 **Acceptance**
-- On the M2 sample, the pool-acquire latency outlier, the retry presence difference, and the pool-size config difference all rank in the top 3. The cache-miss decoy ranks below them.
+- On the M2 sample with a cutoff at the start of the failure phase, the pool-acquire latency outlier, the retry presence difference, and the pool-size config difference all rank in the top 3. The cache-miss decoy ranks below them. Also report default-mode rankings on the same failing run: for a late failure the recent passes also have pool=5, so the pool-size difference correctly disappears. Validate both modes on seed 1 and a new seed 2, without changing documented scoring constants to fit the demo. Confirm flat pool config and cache misses in passing runs. Context metric/log differences remain M4b.
 - Diff computation for a 40-run baseline completes in under 1 second on a laptop.
 
 ### M4: Minimal viewer

@@ -1,2 +1,2 @@
-// Package stats is reserved for the corresponding Signal Scout component.
+// Package stats provides deterministic sample statistics without mutating input.
 package stats

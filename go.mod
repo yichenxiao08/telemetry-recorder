@@ -19,6 +19,7 @@ require (
 	go.opentelemetry.io/proto/otlp v1.3.1
 	google.golang.org/protobuf v1.34.2
 	modernc.org/sqlite v1.33.1
+	pgregory.net/rapid v1.2.0
 )
 
 require (

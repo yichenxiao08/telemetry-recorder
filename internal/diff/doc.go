@@ -1,2 +1,2 @@
-// Package diff is reserved for the corresponding Signal Scout component.
+// Package diff extracts and ranks run differences against passing baselines.
 package diff
