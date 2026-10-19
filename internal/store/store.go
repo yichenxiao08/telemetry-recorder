@@ -37,9 +37,10 @@ type Options struct {
 }
 
 type job struct {
-	batch *model.Batch
-	now   time.Time
-	done  chan error
+	batch  *model.Batch
+	result *storedDiff
+	now    time.Time
+	done   chan error
 }
 
 type Store struct {
@@ -55,13 +56,24 @@ type Store struct {
 	stopMaintenance chan struct{}
 	maintenanceDone chan struct{}
 	// Admission lock prevents sending to the channel after Close closes it.
-	mu        sync.RWMutex
-	closed    bool
-	closeOnce sync.Once
-	closeErr  error
+	mu          sync.RWMutex
+	closed      bool
+	closeOnce   sync.Once
+	closeErr    error
+	resultsOnly bool
 }
 
 func Open(ctx context.Context, path string, options Options) (*Store, error) {
+	return open(ctx, path, options, false)
+}
+
+// OpenResultWriter uses the same serialized writer queue for analysis results.
+// It requires an existing schema and never runs intake maintenance or backfill.
+func OpenResultWriter(ctx context.Context, path string) (*Store, error) {
+	return open(ctx, path, Options{QueueSize: 1, IdleTimeout: time.Hour}, true)
+}
+
+func open(ctx context.Context, path string, options Options, resultsOnly bool) (*Store, error) {
 	if options.QueueSize <= 0 || options.IdleTimeout <= 0 || options.Retention < 0 || options.ContextBefore < 0 || options.ContextAfter < 0 {
 		return nil, fmt.Errorf("queue size and idle timeout must be positive")
 	}
@@ -72,7 +84,11 @@ func Open(ctx context.Context, path string, options Options) (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
-	writer, err := sql.Open("sqlite", uri+"?mode=rwc&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)")
+	mode := "rwc"
+	if resultsOnly {
+		mode = "rw"
+	}
+	writer, err := sql.Open("sqlite", uri+"?mode="+mode+"&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)")
 	if err != nil {
 		return nil, fmt.Errorf("open writer: %w", err)
 	}
@@ -86,40 +102,53 @@ func Open(ctx context.Context, path string, options Options) (*Store, error) {
 	if _, err = writer.ExecContext(ctx, "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL;"); err != nil {
 		return nil, fmt.Errorf("configure SQLite: %w", err)
 	}
-	if err = migrate(ctx, writer); err != nil {
-		return nil, err
+	if resultsOnly {
+		var count int
+		if err = writer.QueryRowContext(ctx, "SELECT EXISTS(SELECT 1 FROM diff_results LIMIT 1)").Scan(&count); err != nil {
+			return nil, fmt.Errorf("existing diff schema: %w", err)
+		}
+	} else {
+		if err = migrate(ctx, writer); err != nil {
+			return nil, err
+		}
 	}
 	reader, err := OpenReader(ctx, path)
 	if err != nil {
 		return nil, fmt.Errorf("open reader: %w", err)
 	}
-	s := &Store{Reader: reader, writer: writer, options: options, queue: make(chan job, options.QueueSize), done: make(chan struct{}), errors: make(chan error, 1), ready: make(chan error, 1), open: map[string]int64{}, maintenance: make(chan time.Time, 1), stopMaintenance: make(chan struct{}), maintenanceDone: make(chan struct{})}
-	rows, err := writer.QueryContext(ctx, "SELECT run_id,last_seen FROM runs WHERE closed=0")
-	if err != nil {
-		_ = reader.Close()
-		return nil, fmt.Errorf("recover open runs: %w", err)
-	}
-	for rows.Next() {
-		var id string
-		var last int64
-		if err = rows.Scan(&id, &last); err != nil {
-			break
+	s := &Store{Reader: reader, writer: writer, options: options, queue: make(chan job, options.QueueSize), done: make(chan struct{}), errors: make(chan error, 1), ready: make(chan error, 1), open: map[string]int64{}, maintenance: make(chan time.Time, 1), stopMaintenance: make(chan struct{}), maintenanceDone: make(chan struct{}), resultsOnly: resultsOnly}
+	if !resultsOnly {
+		rows, err := writer.QueryContext(ctx, "SELECT run_id,last_seen FROM runs WHERE closed=0")
+		if err != nil {
+			_ = reader.Close()
+			return nil, fmt.Errorf("recover open runs: %w", err)
 		}
-		s.open[id] = last
-	}
-	if err == nil {
-		err = rows.Err()
-	}
-	_ = rows.Close()
-	if err != nil {
-		_ = reader.Close()
-		return nil, fmt.Errorf("read open runs: %w", err)
+		for rows.Next() {
+			var id string
+			var last int64
+			if err = rows.Scan(&id, &last); err != nil {
+				break
+			}
+			s.open[id] = last
+		}
+		if err == nil {
+			err = rows.Err()
+		}
+		_ = rows.Close()
+		if err != nil {
+			_ = reader.Close()
+			return nil, fmt.Errorf("read open runs: %w", err)
+		}
 	}
 	failed = false
 	// The writer goroutine owns every operational write, including timer work.
 	// It drains accepted jobs before closing connections; callers never write SQL.
 	go s.loop(ctx)
-	go s.scheduleMaintenance()
+	if resultsOnly {
+		close(s.maintenanceDone)
+	} else {
+		go s.scheduleMaintenance()
+	}
 	if err = <-s.ready; err != nil {
 		return nil, fmt.Errorf("backfill context: %w", errors.Join(err, s.Close()))
 	}
@@ -166,9 +195,15 @@ func migrate(ctx context.Context, db *sql.DB) error {
 
 // Submit returns only after commit. Cancellation stops waiting, not an accepted job.
 func (s *Store) Submit(ctx context.Context, batch model.Batch) error {
+	if s.resultsOnly {
+		return fmt.Errorf("result-only writer cannot ingest")
+	}
 	return s.submit(ctx, job{batch: &batch, now: time.Now(), done: make(chan error, 1)})
 }
 func (s *Store) Maintain(ctx context.Context, now time.Time) error {
+	if s.resultsOnly {
+		return fmt.Errorf("result-only writer cannot maintain runs")
+	}
 	return s.submit(ctx, job{now: now, done: make(chan error, 1)})
 }
 func (s *Store) submit(ctx context.Context, j job) error {
@@ -201,16 +236,24 @@ func (s *Store) loop(startup context.Context) {
 	defer close(s.done)
 	// One startup backfill upgrades older stores. After that, context work is
 	// scoped to changed runs/new ambient evidence, not every retained record.
-	s.ready <- s.backfillContext(startup)
+	if s.resultsOnly {
+		s.ready <- nil
+	} else {
+		s.ready <- s.backfillContext(startup)
+	}
 	for {
 		select {
 		case j, ok := <-s.queue:
 			if !ok {
-				s.closeErr = s.maintain(context.Background(), time.Now(), true)
+				if !s.resultsOnly {
+					s.closeErr = s.maintain(context.Background(), time.Now(), true)
+				}
 				return
 			}
 			var err error
-			if j.batch != nil {
+			if j.result != nil {
+				err = s.writeDiff(context.Background(), *j.result)
+			} else if j.batch != nil {
 				err = s.write(context.Background(), *j.batch, j.now)
 			} else {
 				err = s.maintain(context.Background(), j.now, false)

@@ -138,4 +138,12 @@ scoring, ranking and result persistence, excluding Go compilation and process
 startup. Generated results retain each ranking; acceptance failures must remain
 visible. No scoring constants may be changed to improve these demo rankings.
 
+The returned CLI timing is filled after persistence and connection closure; the
+stored computation payload has zero caller-side elapsed time. Standalone CLI
+analysis should run after stopping intake under the local single-writer process
+agreement. In-process callers can persist through the serving store's SaveDiff
+queue without opening a second operational writer. Insufficient baseline is a
+persisted structured result (`status=insufficient_baseline`), not an empty success
+ranking; the CLI prints its diagnostic and JSON consumers must check status.
+
 Property tests use the plan-approved [rapid package](https://pkg.go.dev/pgregory.net/rapid@v1.2.0).
