@@ -284,9 +284,12 @@ bounded SQL checks are addressed. The remaining measured bottleneck is durable
 SQLite commit/file I/O on this native Windows setup. Further work needs a separate
 performance decision and another measured experiment; this task stops after the
 documented attempts rather than weakening durability, changing targets, or
-starting M4b. The supplied public GitHub repository is empty, so hosted Windows
-CI requires an initial publication; local Windows checks alone are not reported
-as a hosted Actions pass.
+starting M4b. The supplied public GitHub repository was initially empty. After
+the owner's explicit approval, the committed project was pushed to `main`.
+Hosted `ubuntu-latest` and `windows-latest` jobs both passed for the complete
+implementation at `a16740f`: lint, formatting, vet, race tests and build.
+The verified [Actions run](https://github.com/yichenxiao08/telemetry-recorder/actions/runs/39325377076)
+and its per-step status are recorded in `perf-05-hosted-ci.json`.
 
 Final local Windows validation passes: gofmt/checkfmt, go vet, golangci-lint
 (zero issues), `go test -race ./...`, and `task build`. Complete ordered seed-1
