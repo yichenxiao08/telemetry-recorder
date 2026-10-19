@@ -1,0 +1,106 @@
+Command: go test -race ./internal/viewer -run '^TestStoredM2Walkthrough$' -count=1 -v
+Dataset report: benchmark/results/shop-demo-seed-1.json
+Source roots normalized to repository-relative paths and GOROOT/.
+No timeout or startup behavior was changed. HTTP navigation had not started.
+
+panic: test timed out after 10m0s
+	running tests:
+		TestStoredM2Walkthrough (10m0s)
+
+goroutine 22 [running]:
+testing.(*M).startAlarm.func1()
+	GOROOT/src/testing/testing.go:2959 +0x605
+created by time.goFunc
+	GOROOT/src/time/sleep.go:182 +0x45
+
+goroutine 1 [chan receive]:
+testing.(*T).Run(0xc0001a4000, {0x140e403a8, 0x17}, 0x1414c68b8)
+	GOROOT/src/testing/testing.go:2266 +0xb56
+testing.runTests.func1(0xc0001a4000)
+	GOROOT/src/testing/testing.go:2742 +0x85
+testing.tRunner(0xc0001a4000, 0xc00016ba40)
+	GOROOT/src/testing/testing.go:2193 +0x1cb
+testing.runTests({0x140e482ec, 0x22}, {0x140e50f94, 0x32}, 0xc000112468, {0x140e20420, 0x8, 0x8}, {0xc2adb13a55e7e518, 0x8bb30e75ed, ...})
+	GOROOT/src/testing/testing.go:2740 +0x9f8
+testing.(*M).Run(0xc000110e60)
+	GOROOT/src/testing/testing.go:2600 +0xf45
+main.main()
+	_testmain.go:60 +0x165
+
+goroutine 20 [chan receive]:
+github.com/signalscout/signalscout/internal/store.open({0x1414c50e8, 0x141548800}, {0xc00013a5c0, 0x32}, {0x4, 0x34630b8a000, 0x0, 0x34630b8a000, 0x0, 0x6fc23ac00, ...}, ...)
+	internal/store/store.go:152 +0x171e
+github.com/signalscout/signalscout/internal/store.Open(...)
+	internal/store/store.go:67
+github.com/signalscout/signalscout/internal/viewer.TestStoredM2Walkthrough(0xc0001a4200)
+	internal/viewer/demo_test.go:44 +0x45e
+testing.tRunner(0xc0001a4200, 0x1414c68b8)
+	GOROOT/src/testing/testing.go:2193 +0x1cb
+created by testing.(*T).Run in goroutine 1
+	GOROOT/src/testing/testing.go:2258 +0xb2b
+
+goroutine 21 [select]:
+database/sql.(*DB).connectionOpener(0xc000127860, {0x1414c5238, 0xc0001742d0})
+	GOROOT/src/database/sql/sql.go:1266 +0xed
+created by database/sql.OpenDB in goroutine 20
+	GOROOT/src/database/sql/sql.go:846 +0x287
+
+goroutine 6 [select]:
+database/sql.(*DB).connectionOpener(0xc0000380d0, {0x1414c5238, 0xc0000a8190})
+	GOROOT/src/database/sql/sql.go:1266 +0xed
+created by database/sql.OpenDB in goroutine 20
+	GOROOT/src/database/sql/sql.go:846 +0x287
+
+goroutine 7 [runnable]:
+modernc.org/sqlite/lib._btreeCursor(0xc000134480, 0x47880528, 0x5, 0x0, 0x47a8b1c8, 0x47a81cd8)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:125210 +0x3ad
+modernc.org/sqlite/lib._sqlite3BtreeCursor(0xc000134480, 0x47880528, 0x5, 0x0, 0x47a8b1c8, 0x47a81cd8)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:125241 +0xd9
+modernc.org/sqlite/lib._sqlite3VdbeExec(0xc000134480, 0x478c4428)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:146154 +0x167d9
+modernc.org/sqlite/lib._sqlite3Step(0xc000134480, 0x478c4428)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:140153 +0x1b5
+modernc.org/sqlite/lib.Xsqlite3_step(0xc000134480, 0x478c4428)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:140216 +0x1cb
+modernc.org/sqlite.(*conn).step(0xc00011ce80, 0x478c4428)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:1027 +0x49
+modernc.org/sqlite.(*stmt).exec.func2(0xc0001147c0, 0xc0000cb2e0, {0xc000142480, 0x3, 0x3}, 0xc0000cb360)
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:552 +0x2a5
+modernc.org/sqlite.(*stmt).exec(0xc0001147c0, {0x1414c50e8, 0x141548800}, {0xc000142480, 0x3, 0x3})
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:565 +0x42b
+modernc.org/sqlite.(*conn).exec(0xc00011ce80, {0x1414c50e8, 0x141548800}, {0xc00036a000, 0x334}, {0xc000142480, 0x3, 0x3})
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:1686 +0x17a
+modernc.org/sqlite.(*conn).ExecContext(0xc00011ce80, {0x1414c50e8, 0x141548800}, {0xc00036a000, 0x334}, {0xc000142480, 0x3, 0x3})
+	.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite_go18.go:53 +0x95
+database/sql.ctxDriverExec({0x1414c50e8, 0x141548800}, {0x473b5cf0, 0xc00011ce80}, {0x0, 0x0}, {0xc00036a000, 0x334}, {0xc000142480, 0x3, ...})
+	GOROOT/src/database/sql/ctxutil.go:31 +0xeb
+database/sql.(*DB).execDC.func2()
+	GOROOT/src/database/sql/sql.go:1718 +0x266
+database/sql.withLock({0x1414c3d00, 0xc000142400}, 0xc0000cb960)
+	GOROOT/src/database/sql/sql.go:3615 +0xa3
+database/sql.(*DB).execDC(0x1?, {0x1414c50e8, 0x141548800}, 0xc000142400, 0xc0001147b0, {0xc00036a000, 0x334}, {0xc00019c7b0, 0x3, 0x3})
+	GOROOT/src/database/sql/sql.go:1713 +0x405
+database/sql.(*Tx).ExecContext(0xc0000ac090, {0x1414c50e8, 0x141548800}, {0xc00036a000, 0x334}, {0xc00019c7b0, 0x3, 0x3})
+	GOROOT/src/database/sql/sql.go:2521 +0x129
+github.com/signalscout/signalscout/internal/store.(*Store).refreshContextWhere(0xc000038340, {0x1414c50e8, 0x141548800}, 0xc0000ac090, {0x140e6d598, 0x1}, {0x0, 0x0, 0x0?})
+	internal/store/store.go:541 +0x585
+github.com/signalscout/signalscout/internal/store.(*Store).backfillContext(0xc000038340, {0x1414c50e8, 0x141548800})
+	internal/store/store.go:514 +0x3b9
+github.com/signalscout/signalscout/internal/store.(*Store).loop(0xc000038340, {0x1414c50e8, 0x141548800})
+	internal/store/store.go:242 +0x13d
+created by github.com/signalscout/signalscout/internal/store.open in goroutine 20
+	internal/store/store.go:146 +0x1637
+
+goroutine 8 [select]:
+github.com/signalscout/signalscout/internal/store.(*Store).scheduleMaintenance(0xc000038340)
+	internal/store/store.go:288 +0x2b9
+created by github.com/signalscout/signalscout/internal/store.open in goroutine 20
+	internal/store/store.go:150 +0x16eb
+
+goroutine 9 [chan receive]:
+database/sql.(*Tx).awaitDone(0xc0000ac090)
+	GOROOT/src/database/sql/sql.go:2217 +0x4a
+created by database/sql.(*DB).beginDC in goroutine 7
+	GOROOT/src/database/sql/sql.go:1930 +0x428
+FAIL	github.com/signalscout/signalscout/internal/viewer	600.923s
+FAIL

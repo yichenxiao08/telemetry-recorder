@@ -314,6 +314,10 @@ func TestEscapingCSPFiltersBoundsAndSameOrigin(t *testing.T) {
 	if !strings.Contains(page.Body.String(), "&lt;img") {
 		t.Fatal("telemetry missing rather than escaped")
 	}
+	epoch := request(t, h, "GET", "/runs?from=1970-01-01T00:00:00Z&to=1970-01-02T00:00:00Z", "")
+	if epoch.Code != 200 || !strings.Contains(epoch.Body.String(), `value="1970-01-01T00:00:00Z"`) {
+		t.Fatal("epoch filter was replaced by unknown telemetry time")
+	}
 	for _, path := range []string{"/runs?limit=101", "/runs?cursor=bad", "/runs?from=invalid", "/runs?outcome=invalid", "/runs?from=2026-01-01T00:00:00Z&to=2026-04-01T00:00:00Z"} {
 		if w := request(t, h, "GET", path, ""); w.Code != 400 {
 			t.Fatalf("invalid filter returned %d: %s", w.Code, path)

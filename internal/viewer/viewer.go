@@ -43,7 +43,7 @@ type viewer struct {
 }
 
 func New(read reader, write writer, logger *slog.Logger) (http.Handler, error) {
-	templates, err := template.New("viewer").Funcs(template.FuncMap{"json": jsonText, "time": timestamp, "runURL": runURL, "num": number}).ParseFS(assets, "templates/*.html")
+	templates, err := template.New("viewer").Funcs(template.FuncMap{"json": jsonText, "time": timestamp, "cutoff": timeValue, "runURL": runURL, "num": number}).ParseFS(assets, "templates/*.html")
 	if err != nil {
 		return nil, fmt.Errorf("parse viewer templates: %w", err)
 	}
@@ -185,7 +185,7 @@ func (v *viewer) list(w http.ResponseWriter, r *http.Request) {
 		v.failure(w, err)
 		return
 	}
-	view := listView{Title: "Runs", Workload: filter.Workload, Outcome: filter.Outcome, From: timestamp(filter.From), To: timestamp(filter.To), Limit: filter.Limit}
+	view := listView{Title: "Runs", Workload: filter.Workload, Outcome: filter.Outcome, From: timeValue(filter.From), To: timeValue(filter.To), Limit: filter.Limit}
 	for _, run := range page.Runs {
 		view.Rows = append(view.Rows, runRow{Run: run, URL: runURL(run.ID)})
 	}

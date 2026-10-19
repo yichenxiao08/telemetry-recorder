@@ -33,8 +33,11 @@ func timestamp(ns int64) string {
 	if ns == 0 {
 		return "unknown"
 	}
-	return time.Unix(0, ns).UTC().Format(time.RFC3339Nano)
+	return timeValue(ns)
 }
+
+// Filter/cutoff zero is the Unix epoch; telemetry zero can mean unknown.
+func timeValue(ns int64) string   { return time.Unix(0, ns).UTC().Format(time.RFC3339Nano) }
 func number(value float64) string { return fmt.Sprintf("%.3f", value) }
 
 type eventView struct {
