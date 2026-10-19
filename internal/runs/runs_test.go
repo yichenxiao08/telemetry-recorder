@@ -104,3 +104,46 @@ func TestTemplates(t *testing.T) {
 		}
 	}
 }
+
+func TestRootSelectionIgnoresArrivalOrderAndChildErrors(t *testing.T) {
+	root := model.Signal{ID: "span:earlier", Kind: "span", TraceID: "trace", Name: "earlier", TS: 1, End: 10, Resource: model.Resource{Attrs: map[string]any{}}, Attrs: map[string]any{}}
+	later := root
+	later.ID = "span:later"
+	later.Name = "later"
+	later.TS = 2
+	later.Status = "error"
+	for _, signals := range [][]model.Signal{{later, root}, {root, later}} {
+		state := State{}
+		for _, signal := range signals {
+			state = Observe(state, signal, time.Now(), 0)
+		}
+		if state.Run.Workload != "earlier" || state.Run.Outcome != "pass" || state.Run.FailureMarker != "" {
+			t.Fatalf("arrival order changed selected root: %+v", state)
+		}
+		child := later
+		child.ParentID = "earlier"
+		child.ID = "span:child"
+		state = Observe(state, child, time.Now(), 0)
+		if state.Run.Outcome != "pass" {
+			t.Fatal("child error failed a successful web request")
+		}
+	}
+}
+
+func TestUnknownEventTimeDoesNotExpandRunToEpoch(t *testing.T) {
+	root := model.Signal{ID: "s", Kind: "span", TraceID: "trace", TS: 100, End: 200, Resource: model.Resource{Attrs: map[string]any{}}}
+	event := root
+	event.ID = "event"
+	event.Kind = "event"
+	event.TS = 0
+	event.End = 0
+	for _, signals := range [][]model.Signal{{root, event}, {event, root}} {
+		state := State{}
+		for _, s := range signals {
+			state = Observe(state, s, time.Now(), 0)
+		}
+		if state.Run.StartedAt != 100 {
+			t.Fatalf("unknown time changed interval: %+v", state)
+		}
+	}
+}

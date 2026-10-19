@@ -11,3 +11,5 @@ Resources use a SHA-256 identity over their complete OTLP resource and schema UR
 Ambient logs and metrics are stored with empty run ownership. On run close, same-resource ambient records inside its inclusive start/end interval become context links. Links are many-to-many and refresh for late evidence. Explicitly owned evidence is never reassigned as ambient context.
 
 Span evidence IDs include trace ID and span ID. Span events and log IDs are stable content hashes. Metric records have a stable content hash, retaining separate series at identical names/timestamps. These extend the draft IDs to avoid collisions. The store keeps every point type in its original JSON; scalar values are also indexed as REAL, with non-finite representations stored separately.
+
+Zero timestamps remain in raw records but do not widen an otherwise timed run's interval. Resource identity sorts top-level attributes so SDK ordering changes do not break matching. Run ownership of an existing evidence ID cannot change; such a conflicting batch is rolled back.

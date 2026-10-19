@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
 
 	"github.com/signalscout/signalscout/internal/model"
@@ -24,7 +25,6 @@ import (
 type decoder struct {
 	batch       model.Batch
 	err         error
-	normalizer  *runs.Normalizer
 	occurrences map[string]int
 }
 
@@ -97,7 +97,27 @@ func (d *decoder) makeResource(r *resource.Resource, schema string) model.Resour
 		d.err = err
 		return model.Resource{}
 	}
-	hash := sha256.Sum256(wrapped)
+	identity := wrapped
+	if r != nil {
+		// Attribute order has no resource meaning. Keep original order in Raw,
+		// but hash a sorted copy so SDK ordering cannot break context matching.
+		ordered := proto.Clone(r).(*resource.Resource)
+		sort.SliceStable(ordered.Attributes, func(i, j int) bool { return ordered.Attributes[i].GetKey() < ordered.Attributes[j].GetKey() })
+		orderedRaw, err := canonical(ordered)
+		if err != nil {
+			d.err = err
+			return model.Resource{}
+		}
+		identity, err = json.Marshal(struct {
+			Schema   string          `json:"schema_url"`
+			Resource json.RawMessage `json:"resource"`
+		}{schema, orderedRaw})
+		if err != nil {
+			d.err = err
+			return model.Resource{}
+		}
+	}
+	hash := sha256.Sum256(identity)
 	return model.Resource{ID: hex.EncodeToString(hash[:]), Attrs: attributes(r.GetAttributes()), Raw: wrapped}
 }
 
@@ -182,7 +202,7 @@ func (d *decoder) add(signal model.Signal, message proto.Message) {
 }
 
 func decode(message proto.Message, n *runs.Normalizer) (model.Batch, error) {
-	d := &decoder{normalizer: n, occurrences: map[string]int{}}
+	d := &decoder{occurrences: map[string]int{}}
 	switch request := message.(type) {
 	case *tracescol.ExportTraceServiceRequest:
 		for _, rs := range request.GetResourceSpans() {

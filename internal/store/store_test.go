@@ -122,6 +122,18 @@ func TestTransactionRollbackAndDuplicates(t *testing.T) {
 	if len(detail.Signals) != 1 {
 		t.Fatal("duplicate replay created records")
 	}
+	conflict := root
+	conflict.Resource.Attrs = map[string]any{"signalscout.run.id": "ml-run"}
+	if err = s.Submit(ctx, model.Batch{Signals: []model.Signal{conflict}}); err == nil {
+		t.Fatal("evidence changed run ownership")
+	}
+	list, err = s.List(ctx, "", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(list) != 1 {
+		t.Fatal("ownership conflict left a phantom run")
+	}
 }
 
 func TestQueueFullAndConcurrentClose(t *testing.T) {
@@ -266,5 +278,70 @@ func TestMaintenanceSchedulerAndOpenRunRecovery(t *testing.T) {
 			t.Fatal("recovered open run not finalized")
 		}
 		time.Sleep(10 * time.Millisecond)
+	}
+}
+
+func TestRetentionPreservesOpenRuns(t *testing.T) {
+	ctx := context.Background()
+	s, err := Open(ctx, filepath.Join(t.TempDir(), "retention.db"), Options{QueueSize: 2, IdleTimeout: 24 * time.Hour, Retention: time.Hour, SweepInterval: time.Hour})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := s.Close(); err != nil {
+			t.Error(err)
+		}
+	}()
+	first := fixture("s1", "span", "a", "r", 10, 20)
+	second := fixture("s2", "span", "b", "r", 12, 22)
+	ambient := fixture("ambient", "metric", "", "r", 15, 15)
+	if err := s.Submit(ctx, model.Batch{Signals: []model.Signal{first, second, ambient}}); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Maintain(ctx, time.Now().Add(2*time.Hour)); err != nil {
+		t.Fatal(err)
+	}
+	list, err := s.List(ctx, "", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(list) != 2 || list[0].Closed || list[1].Closed {
+		t.Fatal("retention removed or closed open runs")
+	}
+	// Re-ingest ambient evidence after its independent retention interval expired.
+	if err = s.Submit(ctx, model.Batch{Signals: []model.Signal{ambient}}); err != nil {
+		t.Fatal(err)
+	}
+	if err = s.Maintain(ctx, time.Now().Add(25*time.Hour)); err != nil {
+		t.Fatal(err)
+	}
+	// The run and signal retention horizons intentionally expire here as well.
+	list, err = s.List(ctx, "", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(list) != 0 {
+		t.Fatal("expired closed runs survived retention")
+	}
+}
+
+func TestContextCanBeSharedByOverlappingRuns(t *testing.T) {
+	s := testStore(t, 0)
+	ctx := context.Background()
+	batch := model.Batch{Signals: []model.Signal{fixture("s1", "span", "a", "r", 10, 20), fixture("s2", "span", "b", "r", 12, 22), fixture("ambient", "metric", "", "r", 15, 15)}}
+	if err := s.Submit(ctx, batch); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Maintain(ctx, time.Now().Add(2*time.Second)); err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"a", "b"} {
+		detail, err := s.Show(ctx, id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(detail.Context) != 1 || detail.Context[0].RunID != "" {
+			t.Fatalf("context was reassigned instead of linked: %+v", detail)
+		}
 	}
 }

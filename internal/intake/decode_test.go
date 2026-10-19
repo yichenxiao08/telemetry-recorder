@@ -7,6 +7,8 @@ import (
 
 	"github.com/signalscout/signalscout/internal/runs"
 	metricscol "go.opentelemetry.io/proto/otlp/collector/metrics/v1"
+	common "go.opentelemetry.io/proto/otlp/common/v1"
+	resource "go.opentelemetry.io/proto/otlp/resource/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -46,6 +48,22 @@ func TestMetricVariantsAndMetadata(t *testing.T) {
 	}
 	if batch.Signals[5].Value != nil || batch.Signals[5].ValueText != "Infinity" {
 		t.Fatal("lost nonfinite value")
+	}
+}
+
+func TestResourceAttributeOrderDoesNotBreakContext(t *testing.T) {
+	attrs := []*common.KeyValue{{Key: "service.name", Value: &common.AnyValue{Value: &common.AnyValue_StringValue{StringValue: "shop"}}}, {Key: "host.name", Value: &common.AnyValue{Value: &common.AnyValue_StringValue{StringValue: "localhost"}}}}
+	d := &decoder{}
+	first := d.makeResource(&resource.Resource{Attributes: attrs}, "schema")
+	second := d.makeResource(&resource.Resource{Attributes: []*common.KeyValue{attrs[1], attrs[0]}}, "schema")
+	if d.err != nil {
+		t.Fatal(d.err)
+	}
+	if first.ID != second.ID {
+		t.Fatal("resource identity depends on attribute order")
+	}
+	if bytes.Equal(first.Raw, second.Raw) {
+		t.Fatal("raw metadata order was not preserved")
 	}
 }
 

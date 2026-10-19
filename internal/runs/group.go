@@ -38,7 +38,7 @@ func Observe(state State, s model.Signal, now time.Time, thresholdMS float64) St
 		state.Run = model.Run{ID: id, Domain: domain, Workload: "unknown", StartedAt: s.TS, EndedAt: s.End, Env: map[string]any{}, Config: map[string]any{}}
 	}
 	state.LastSeen = now.UnixNano()
-	if s.TS < state.Run.StartedAt {
+	if s.TS > 0 && (state.Run.StartedAt == 0 || s.TS < state.Run.StartedAt) {
 		state.Run.StartedAt = s.TS
 	}
 	if s.End > state.Run.EndedAt {
@@ -75,7 +75,7 @@ func Observe(state State, s model.Signal, now time.Time, thresholdMS float64) St
 	}
 	failed := false
 	if domain == "ml" {
-		failed = truth(s.Resource.Attrs["signalscout.run.failed"]) || truth(s.Attrs["signalscout.run.failed"]) || truth(s.Attrs["signalscout.run.outcome"])
+		failed = truth(s.Resource.Attrs["signalscout.run.failed"]) || truth(s.Resource.Attrs["signalscout.run.outcome"]) || truth(s.Attrs["signalscout.run.failed"]) || truth(s.Attrs["signalscout.run.outcome"])
 		failed = failed || s.Name == "exception" || s.Name == "job.failed" || s.Kind == "span" && s.Status == "error"
 		if s.Name == "ml.loss" {
 			failed = failed || s.ValueText == "NaN" || s.ValueText == "Infinity" || s.ValueText == "-Infinity"
@@ -84,10 +84,18 @@ func Observe(state State, s model.Signal, now time.Time, thresholdMS float64) St
 			v := numeric(loss)
 			failed = failed || math.IsNaN(v) || math.IsInf(v, 0)
 		}
-	} else {
-		failed = s.ID == state.RootID && (state.RootError || state.HTTPStatus >= 500)
 	}
-	if failed {
+	if domain == "web" {
+		// Root choice can change with arrival order. The marker must always
+		// describe the selected root, not a previously selected later root.
+		state.Failed = state.RootError || state.HTTPStatus >= 500
+		state.Run.FailureMarker = ""
+		state.FailureTS = 0
+		if state.Failed {
+			state.Run.FailureMarker = state.RootID
+			state.FailureTS = state.RootTS
+		}
+	} else if failed {
 		state.Failed = true
 		if state.Run.FailureMarker == "" || s.TS < state.FailureTS || s.TS == state.FailureTS && s.ID < state.Run.FailureMarker {
 			state.Run.FailureMarker = s.ID

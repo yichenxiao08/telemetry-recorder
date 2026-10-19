@@ -23,3 +23,5 @@ The choices below are implemented unless marked pending validation. Product choi
 | Secret handling | Broad redaction is M8. Raw evidence is deliberately retained in M1; use only local trusted telemetry until that milestone. |
 
 Identical logs/points have no source-issued unique ID. Occurrence suffixes preserve duplicates inside a request; identical repeated requests are treated as exporter retries. Rebatching identical records can therefore change duplicate interpretation. This remains an OTLP identity ambiguity.
+
+Additional operational limits: run one serving process per local SQLite file. Context refresh currently joins retained closed runs and ambient evidence; its large-history cost is not measured by the fresh-database throughput benchmark. Retention bounds history, but longer-history tuning is deferred. Resource identity ignores top-level attribute order while preserving the original raw metadata. Unknown (zero) evidence timestamps do not widen an otherwise timed run's context interval.
