@@ -262,8 +262,12 @@ func run() error {
 	count := flag.Int("count", 1000000, "Signal count (multiple of four)")
 	seed := flag.Int64("seed", 1, "Published fixture seed")
 	create := flag.Bool("create", false, "Generate fixture; refuses existing destination")
+	audit := flag.Bool("audit-context", false, "Hash complete raw data and context sets in an existing closed database; do not migrate")
 	flag.Parse()
 	ctx := context.Background()
+	if *audit {
+		return auditContext(ctx, *path, *out)
+	}
 	var seconds float64
 	var err error
 	if *create {

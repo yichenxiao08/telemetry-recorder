@@ -1,0 +1,22 @@
+{
+  "links": {
+    "rows": 188559,
+    "sha256": "3ef99b95ee7f6dfc46ee0b8992c74caab49a8e3f968c79a505b86ffb12c8e12e"
+  },
+  "matches": {
+    "rows": 690921,
+    "sha256": "1244024874a3351e6ce15f84b172a89a4c82d436169385d4e81e8fba2f5746b7"
+  },
+  "resources": {
+    "rows": 7,
+    "sha256": "5c705c98c179784e22c2ac8dd1e07181a30ddbc18a8e735745c132d2b69ccb13"
+  },
+  "runs": {
+    "rows": 340,
+    "sha256": "af411b7416db2f94a08b9f7bc94163a3b8e98528a739ee4522451b6a765303a5"
+  },
+  "signals": {
+    "rows": 4057,
+    "sha256": "c550ed83e2b0d7869b99dd7403f6999ba82364ffe4a6f4b9edb4c06a22ce5a4e"
+  }
+}

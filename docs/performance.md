@@ -75,5 +75,31 @@ saved-data race test timed out after 600.923 seconds before HTTP navigation
 
 ## Changes and final measurements
 
-Pending measured changes and acceptance. Keep each attempt's five-seed results,
-including regressions, and do not change constants or workloads between attempts.
+### 1. Context scopes (migration 005)
+
+Persist at most three interval/rule/value rows per qualifying span resource in
+each closed run. Resolve evidence and every matching source/rule via compatible
+SQL views. Ambient writes do no context SQL. Closed-run changes refresh only that
+run's scopes atomically; updated ambient timestamps/resources cannot leave stale
+links. A padding checkpoint avoids any history scan on unchanged startup. An
+upgrade or padding change rebuilds only run/resource scopes. This follows the
+measured context cost and multiplicative row counts, rather than assuming JSON
+encoding was the main bottleneck.
+
+Unchanged separate benchmark minimum/median: spans 8,706/8,943, logs 8,676/9,522,
+points 8,674/8,958 per second (`perf-01-context-summary`). Point target still
+missed. First-upgrade native Open on seed 1: 0.4155 seconds versus profiled
+67.6339 before; both produce exactly 188,559 logical links and 690,921 matches.
+The original combined attempt completed only one trial (rounded console rates
+1,047/1,071/1,095), then a later trial hit the unchanged 30-second HTTP timeout;
+its raw console is retained, not presented as five completed trials. After the
+scope change all five combined trials complete, but still miss all targets;
+`perf-01-context-combined` retains the measured rates.
+
+Migration keeps raw telemetry and snapshots. Existing files retain freed pages
+for reuse rather than automatically shrinking; fresh-file growth and freelist
+measurements distinguish this from live allocated storage. Existing data needs
+no rebuild. As with other embedded migrations, normal startup must finish before
+serving readers; if interrupted, retry startup to complete derived scopes.
+
+Further measurements and independently measured changes follow below.

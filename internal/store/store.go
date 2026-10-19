@@ -365,7 +365,7 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 	states := map[string]runs.State{}
 	resourcesWritten := map[string]bool{}
 	runResources := map[string]map[string]bool{}
-	var ambientIDs, closedIDs []string
+	var closedIDs []string
 	resourceStmt, err := tx.PrepareContext(ctx, "INSERT OR IGNORE INTO resources VALUES(?,?,?)")
 	if err != nil {
 		return fmt.Errorf("prepare resources: %w", err)
@@ -379,9 +379,6 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 	for _, signal := range batch.Signals {
 		id, domain := runs.Identity(signal)
 		signal.RunID = id
-		if id == "" && (signal.Kind == "log" || signal.Kind == "metric") {
-			ambientIDs = append(ambientIDs, signal.ID)
-		}
 		if id != "" {
 			state, ok := states[id]
 			if !ok {
@@ -460,7 +457,7 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			}
 		}
 	}
-	if err = s.refreshContext(ctx, tx, closedIDs, ambientIDs); err != nil {
+	if err = s.refreshContext(ctx, tx, closedIDs); err != nil {
 		return err
 	}
 	if err = tx.Commit(); err != nil {
@@ -471,75 +468,6 @@ func (s *Store) write(ctx context.Context, batch model.Batch, now time.Time) err
 			delete(s.open, id)
 		} else {
 			s.open[id] = state.LastSeen
-		}
-	}
-	return nil
-}
-
-func (s *Store) refreshContext(ctx context.Context, tx *sql.Tx, runIDs, signalIDs []string) error {
-	for _, scope := range []struct {
-		column string
-		ids    []string
-	}{{"r.run_id", runIDs}, {"signal.evidence_id", signalIDs}} {
-		if len(scope.ids) == 0 {
-			continue
-		}
-		data, err := json.Marshal(scope.ids)
-		if err != nil {
-			return fmt.Errorf("encode context scope: %w", err)
-		}
-		if scope.column == "r.run_id" {
-			// A late span can change the qualifying resources. Rebuild only those
-			// runs so provenance cannot keep a resource that no longer served it.
-			if _, err = tx.ExecContext(ctx, "DELETE FROM context_links WHERE run_id IN (SELECT value FROM json_each(?))", string(data)); err != nil {
-				return fmt.Errorf("refresh changed run context: %w", err)
-			}
-		}
-		if err = s.refreshContextWhere(ctx, tx, scope.column+" IN (SELECT value FROM json_each(?))", []any{string(data)}); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (s *Store) backfillContext(ctx context.Context) error {
-	tx, err := s.writer.BeginTx(ctx, nil)
-	if err != nil {
-		return fmt.Errorf("begin context backfill: %w", err)
-	}
-	defer func() { _ = tx.Rollback() }()
-	if _, err = tx.ExecContext(ctx, "DELETE FROM context_links"); err != nil {
-		return fmt.Errorf("reset startup context: %w", err)
-	}
-	if err = s.refreshContextWhere(ctx, tx, "1", nil); err != nil {
-		return err
-	}
-	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("commit context backfill: %w", err)
-	}
-	return nil
-}
-
-func (s *Store) refreshContextWhere(ctx context.Context, tx *sql.Tx, scope string, scopeArgs []any) error {
-	rules := []struct{ name, predicate string }{
-		{"exact_resource", "ambient.resource_id=source.resource_id"},
-		{"host.name", `json_type(source.attrs,'$."host.name"')='text' AND json_extract(source.attrs,'$."host.name"')<>'' AND json_type(ambient.attrs,'$."host.name"')='text' AND json_extract(ambient.attrs,'$."host.name"')=json_extract(source.attrs,'$."host.name"')`},
-		{"service.instance.id", `json_type(source.attrs,'$."service.instance.id"')='text' AND json_extract(source.attrs,'$."service.instance.id"')<>'' AND json_type(ambient.attrs,'$."service.instance.id"')='text' AND json_extract(ambient.attrs,'$."service.instance.id"')=json_extract(source.attrs,'$."service.instance.id"')`},
-	}
-	for _, rule := range rules {
-		// The predicate comes only from the fixed rules above, never from input.
-		from := ` FROM runs r JOIN run_resources rr ON rr.run_id=r.run_id
-		JOIN resources source ON source.resource_id=rr.resource_id
-		JOIN resources ambient ON ` + rule.predicate + `
-		JOIN signals signal ON signal.resource_id=ambient.resource_id AND signal.run_id='' AND signal.kind IN ('log','metric')
-		AND signal.ts_ns>=r.started_at-? AND signal.ts_ns<=r.ended_at+?
-		WHERE r.closed=1 AND (` + scope + `) AND EXISTS(SELECT 1 FROM signals span WHERE span.run_id=r.run_id AND span.kind='span' AND span.resource_id=source.resource_id)`
-		args := append([]any{int64(s.options.ContextBefore), int64(s.options.ContextAfter)}, scopeArgs...)
-		if _, err := tx.ExecContext(ctx, "INSERT OR IGNORE INTO context_links SELECT r.run_id,signal.evidence_id"+from, args...); err != nil {
-			return fmt.Errorf("attach context %s: %w", rule.name, err)
-		}
-		if _, err := tx.ExecContext(ctx, "INSERT OR IGNORE INTO context_matches SELECT r.run_id,signal.evidence_id,?,source.resource_id"+from, append([]any{rule.name}, args...)...); err != nil {
-			return fmt.Errorf("record context rule %s: %w", rule.name, err)
 		}
 	}
 	return nil
@@ -573,7 +501,7 @@ func (s *Store) maintain(ctx context.Context, now time.Time, force bool) error {
 		}
 		closedIDs = append(closedIDs, state.Run.ID)
 	}
-	if err = s.refreshContext(ctx, tx, closedIDs, nil); err != nil {
+	if err = s.refreshContext(ctx, tx, closedIDs); err != nil {
 		return err
 	}
 	if s.options.Retention > 0 {
