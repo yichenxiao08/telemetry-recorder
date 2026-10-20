@@ -105,6 +105,17 @@ origin. In harder, stale age is an associated minority mechanism label, not
 proof that removing staleness alone fixes a left output while the prior lane
 and gate remain unchanged.
 
+More precisely, the plain target uses gap and previous_lane to choose lane;
+previous_frame is only copied to previous_version in its return metadata.
+Changing that version alone cannot change lane in this target. The stale-age
+label is therefore a declared freshness violation/associated marker, not an
+experimentally established cause of the lane choice. This additional **(d)**
+fixture-validity limitation applies in all seeds of both variants. It does not
+erase the separate mathematical finding that the median hides a recorded
+minority, nor justify counting its future detection as demonstrated causal
+diagnosis. No counterfactual target run is needed for this source-level fact;
+the diagnostic executes only saved-data comparisons.
+
 The saved rows rule out the suggested *different sessions/time ranges* explanation:
 both labels occur in all ten sessions in every case, 6–14 examples per label
 per session. Both labels occur in every consecutive 50-frame time block

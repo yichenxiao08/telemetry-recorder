@@ -277,3 +277,7 @@ This section supersedes the earlier unresolved full-history-backfill and materia
 - Seeds 710021/710023/710027/710029/710033 are reserved in a design-only fresh
   preregistration proposal. No data generation or engine run on them occurred.
   Need approval for implementation and the final generator equations/contract.
+- The plain target consults gap/previous_lane for lane, but only returns the
+  supplied previous_frame as metadata. Changing its version alone cannot fix
+  lane. Keep the stale-age mechanism label as an asserted freshness violation,
+  not a verified causal effect; future sequential histories must establish use.
