@@ -82,10 +82,13 @@ func Decode(signal model.Signal, profile model.AnalysisProfile) (model.DecisionO
 			Capture string
 			Inline  json.RawMessage
 		} `json:"inputs"`
-		Output  struct{ Inline json.RawMessage } `json:"output"`
-		Verdict *string                          `json:"verdict"`
-		Reason  *string                          `json:"reason_code"`
-		Chosen  map[string]any                   `json:"chosen"`
+		Output struct {
+			Inline  json.RawMessage
+			Capture string
+		} `json:"output"`
+		Verdict *string        `json:"verdict"`
+		Reason  *string        `json:"reason_code"`
+		Chosen  map[string]any `json:"chosen"`
 	}
 	if json.Unmarshal([]byte(body), &env) != nil || env.Version != 1 || env.Profile.ID != profile.EnvelopeProfile || env.Profile.Version != profile.EnvelopeVersion || env.Step.ID != profile.Step || len(env.Inputs) > 32 {
 		return out, false
@@ -106,7 +109,7 @@ func Decode(signal model.Signal, profile model.AnalysisProfile) (model.DecisionO
 		}
 	}
 	out.Values["inputs"] = inputs
-	if len(env.Output.Inline) > 0 {
+	if env.Output.Capture == "allowed" && len(env.Output.Inline) > 0 {
 		var output any
 		if json.Unmarshal(env.Output.Inline, &output) == nil {
 			out.Values["output"] = output

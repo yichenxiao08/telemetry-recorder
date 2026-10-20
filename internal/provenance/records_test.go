@@ -23,3 +23,15 @@ func TestCaptureMissingUnknownVersionsAndArrays(t *testing.T) {
 		t.Fatal("unknown version captured")
 	}
 }
+
+func TestOutputDeclaredOffIsUnknown(t *testing.T) {
+	p := model.AnalysisProfile{Step: "toy", EnvelopeProfile: "synthetic", EnvelopeVersion: "1"}
+	s := model.Signal{Kind: "event", Attrs: map[string]any{"signalscout.record.kind": "decision", "signalscout.record.json": `{"version":1,"profile":{"id":"synthetic","version":"1"},"step":{"id":"toy"},"output":{"capture":"off","inline":{"option":"contradictory"}}}`}}
+	observation, ok := Decode(s, p)
+	if !ok {
+		t.Fatal("metadata should remain inspectable")
+	}
+	if _, ok := Get(observation.Values, "output.option"); ok {
+		t.Fatal("declared-off capture treated as observed")
+	}
+}
