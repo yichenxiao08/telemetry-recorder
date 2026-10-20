@@ -151,3 +151,44 @@ This section supersedes the earlier unresolved full-history-backfill and materia
 - Capture fidelity is an independent risk: a producer can record incomplete or
   incorrect inputs even with a complete-looking graph. Invariants validate
   declared provenance, not arbitrary code or causes. Report coverage and trust.
+
+## S0 executable probe spike (2026-10-20)
+
+- The latest request makes external config/import probes primary; record_decision
+  is retained as an optional semantic tier. Target source must stay unchanged.
+  No P0–P4 or M5–M8 implementation is authorized.
+- Stage 0 pins uv 0.13.3, CPython 3.12.12, OTel SDK/exporter/proto 1.28.2 and
+  matching instrumentation 0.49b2. PyYAML 6.0.3 parses safe config; uv.lock pins
+  transitives. Native Python 3.14 only bootstrapped uv.
+- S0a safety checkpoint passes 15 tests, including the real Go intake. Thirty
+  cost trials retain all misses: zero reachable 60 Hz trials meet 100/250 us.
+  Budget failure is separate from host-safety failure and does not authorize
+  performance tuning or hiding dropped provenance.
+- Probes observe call boundaries, not actual variable reads or hidden rules.
+  Treat their lineage/completeness as scoped observations, never as proof of
+  full data dependence. Standard logging supplies correlation only; body export
+  is OFF. Async/generators/descriptors/custom signatures/reloads are unsupported.
+- Doctor metadata is bounded to one current status per configured probe.
+  Reload is explicitly unsupported; aliases held elsewhere cannot be retroactively
+  patched. The timed wrapper/recorder methods were unchanged by this importer-only
+  correction after the measurement.
+
+- S0b's ordinary shop replay preserves all 4,057 original native evidence IDs
+  (1,960 spans, 376 events, 1,029 logs, 692 points). The saved database has more
+  metric points than its older 567-point report; current stored data, not the
+  stale summary, defines replay coverage. Do not silently discard the difference.
+- Plain A/B require zero target-source edits, with 11/26 nonblank config lines.
+  Optional B adds two lines for hidden selection semantics. Other internal policy,
+  actual variable reads and cross-run value identity remain outside probe coverage.
+- The measured late-label run/context ends both extend 60 seconds while outcome
+  stays pass. Independent annotation time and mark/reference UI are deferred;
+  a successful marked turn still gets 409 from failing-only diff.
+- Windows wall timestamps can collapse short calls to zero. The synthetic helper
+  now anchors UTC once and uses monotonic elapsed time; a failing regression test
+  and a second full, unchanged-budget cost measurement are retained. Cross-process
+  clock synchronization and complete semantic lineage remain unknown.
+- Final duration-corrected cost pass still misses every 60 Hz budget trial:
+  reachable median p50/p99 205.15/390.31 us; unreachable 197.45/593.31 us;
+  saturated 272.15/708.41 us. Tight loops meet timing only with substantial loss.
+  The final 19-test safety checkpoint passes. Budget/privacy/semantic-coverage
+  gaps remain; no P0 implementation or production rollout is authorized.

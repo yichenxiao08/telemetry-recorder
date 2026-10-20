@@ -1,0 +1,16 @@
+{
+  "synthetic_only": true,
+  "safety_tests_passed": 19,
+  "safety_checkpoint_passed": true,
+  "overhead_trials": 30,
+  "budget_p50_us": 100,
+  "budget_p99_us": 250,
+  "budget_trials_passed": 15,
+  "all_60hz_trials_missed": true,
+  "recording_cost_gate_passed": false,
+  "s0b_completed": true,
+  "go_engine_changed": false,
+  "migrations_added": false,
+  "production_work_started": false,
+  "p0_recommendation": "NO-GO on current acceptance; retained cost and provenance gaps need review"
+}

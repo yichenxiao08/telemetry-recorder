@@ -1,0 +1,16 @@
+test_duration_survives_coarse_wall_clock (test_breadth.Breadth.test_duration_survives_coarse_wall_clock) ... FAIL
+test_optional_fault_never_escapes (test_breadth.Breadth.test_optional_fault_never_escapes) ... ok
+test_plain_and_optional_preserve_replies (test_breadth.Breadth.test_plain_and_optional_preserve_replies) ... ok
+
+======================================================================
+FAIL: test_duration_survives_coarse_wall_clock (test_breadth.Breadth.test_duration_survives_coarse_wall_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_breadth.py", line 26, in test_duration_survives_coarse_wall_clock
+    self.assertGreater(child["end"]-child["start"], 0)
+AssertionError: 0 not greater than 0
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.042s
+
+FAILED (failures=1)

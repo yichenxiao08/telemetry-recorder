@@ -1,0 +1,10 @@
+{
+  "source": "frame_target.py",
+  "source_sha256": "0bf74b5cedd5a4b84466095e7f376e55b2c881da264a6d0a706c05ba627bb1a8",
+  "source_lines_changed": 0,
+  "instrumentation_lines": 0,
+  "config": "signalscout.yaml",
+  "config_physical_lines": 11,
+  "config_nonblank_noncomment_lines": 11,
+  "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+}

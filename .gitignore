@@ -10,3 +10,7 @@
 *.db
 *.db-shm
 *.db-wal
+
+# Local Python spike environments
+**/.venv/
+**/__pycache__/

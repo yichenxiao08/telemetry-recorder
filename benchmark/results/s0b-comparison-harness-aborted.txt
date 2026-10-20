@@ -1,0 +1,1 @@
+Stopped only owned spike processes after full C intake: comparison harness repeatedly decoded the source snapshot (quadratic CPU). Cached resource IDs once and repeated every assertion in a new fresh store. No recorder/engine change.
