@@ -81,3 +81,14 @@ and growth per hour rather than assume this extrapolation is accurate.
 - Potential later uncertainty calibration, cluster-aware resampling, automated
   control selection, conditional tails and interventions require separate review.
   They are not additional proposed v1 features to implement in this task.
+
+## Owner-deferred conditional comparison
+
+Conditional comparison is **deferred, not part of the approved lane-02 work**.
+It requires developer-declared pre-output controls, cannot provide an aggregate
+on disjoint support, and adds sparse-stratum, selection and presentation
+complexity. Do not implement controls, conditional scores, or conditional-comparison
+variants. Preserve the prior proposal as history; roles and reference-tail
+coverage are the only approved additions, and Task B still awaits contract review.
+The within-range subgroup miss stays visible rather than being rescued with
+conditional applicability filtering. See benchmark/problems/lane-02/contract.md.

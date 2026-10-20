@@ -206,7 +206,19 @@ arithmetic, preserving observed counts and avoiding NaN or a false no-difference
 association. This guard changes no formula/constants or valid lane-01 score;
 all 15 complete reports were recomputed from pinned evidence and remain identical.
 
-## Proposed v1 (analysis only; not authorized for implementation)
+## Owner decision: v1 narrowed, Task A review checkpoint
+
+Symptom/candidate roles and the separate reference-tail list below are approved
+in principle, with implementation gated on review of the docs-only lane-02
+contract in benchmark/problems/lane-02/contract.md. Task A writes and commits
+that contract first; Task B has NOT started and needs a separate owner approval.
+Conditional comparison is **deferred**, including its control fields and variants.
+The earlier two-addition proposal and variant table below are historical design,
+superseded for execution by lane-02's six-variant contract. Do not implement or
+run its session-adjustment/disjoint-support variants. No M5–M8 or P0 starts.
+Frozen lane-01 source, profiles, constants and results remain unchanged.
+
+## Proposed v1 (historical proposal; narrowed by owner decision above)
 
 The lane-01 diagnostic is in docs/lane-01-diagnostic.md and generated raw tables
 in benchmark/results/lane-01-diagnostic.md/.json. Heavy-case decoys have genuine
