@@ -1,0 +1,19 @@
+File: viewer.test.exe
+Build ID: <temp>\go-build2668003885\b001\viewer.test.exe2026-10-19 19:09:24.5248582 -0400 EDT
+Type: cpu
+Time: 2026-10-19 19:09:25 EDT
+Duration: 11.42s, Total samples = 11.18s (97.87%)
+Showing nodes accounting for 0.01s, 0.089% of 11.18s total
+Dropped 392 nodes (cum <= 0.06s)
+Showing top 10 nodes out of 187
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      8.08s 72.27%  github.com/signalscout/signalscout/internal/viewer.TestStoredM2Walkthrough
+         0     0%     0%      8.08s 72.27%  testing.tRunner
+         0     0%     0%      8.06s 72.09%  github.com/signalscout/signalscout/internal/viewer.New.func3
+         0     0%     0%      8.06s 72.09%  github.com/signalscout/signalscout/internal/viewer.request
+         0     0%     0%      8.06s 72.09%  net/http.(*ServeMux).ServeHTTP
+         0     0%     0%      8.06s 72.09%  net/http.HandlerFunc.ServeHTTP
+         0     0%     0%      7.73s 69.14%  github.com/signalscout/signalscout/internal/store.readContext
+         0     0%     0%      7.35s 65.74%  github.com/signalscout/signalscout/internal/viewer.(*viewer).compare
+         0     0%     0%      6.96s 62.25%  modernc.org/sqlite.(*conn).step
+     0.01s 0.089% 0.089%      6.96s 62.25%  modernc.org/sqlite/lib.Xsqlite3_step

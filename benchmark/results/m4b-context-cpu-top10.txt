@@ -1,0 +1,19 @@
+File: viewer.test.exe
+Build ID: <temp>\go-build2668003885\b001\viewer.test.exe2026-10-19 19:09:24.5248582 -0400 EDT
+Type: cpu
+Time: 2026-10-19 19:09:25 EDT
+Duration: 11.42s, Total samples = 11180ms (97.87%)
+Showing nodes accounting for 8070ms, 72.18% of 11180ms total
+Dropped 392 nodes (cum <= 55.90ms)
+Showing top 10 nodes out of 187
+      flat  flat%   sum%        cum   cum%
+    2600ms 23.26% 23.26%     3810ms 34.08%  runtime.checkptrBase
+    2420ms 21.65% 44.90%     2420ms 21.65%  runtime._ExternalCode
+     550ms  4.92% 49.82%      600ms  5.37%  runtime.spanOf (inline)
+     520ms  4.65% 54.47%     1120ms 10.02%  runtime.findObject
+     460ms  4.11% 58.59%      460ms  4.11%  racecall
+     380ms  3.40% 61.99%     3050ms 27.28%  runtime.checkptrAlignment
+     330ms  2.95% 64.94%     6910ms 61.81%  modernc.org/sqlite/lib._sqlite3VdbeExec
+     310ms  2.77% 67.71%     1870ms 16.73%  runtime.checkptrArithmetic
+     310ms  2.77% 70.48%     2570ms 22.99%  runtime.checkptrStraddles
+     190ms  1.70% 72.18%      190ms  1.70%  runtime.raceread

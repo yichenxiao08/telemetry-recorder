@@ -1,0 +1,18 @@
+File: viewer.test.exe
+Build ID: <temp>\go-build2668003885\b001\viewer.test.exe2026-10-19 19:09:24.5248582 -0400 EDT
+Type: alloc_space
+Time: 2026-10-19 19:09:37 EDT
+Showing nodes accounting for 85.89MB, 77.26% of 111.17MB total
+Dropped 38 nodes (cum <= 0.56MB)
+Showing top 10 nodes out of 120
+      flat  flat%   sum%        cum   cum%
+   26.75MB 24.06% 24.06%    26.75MB 24.06%  bytes.growSlice
+   14.01MB 12.60% 36.67%    14.01MB 12.60%  modernc.org/sqlite.(*conn).columnText
+   12.12MB 10.90% 47.57%    44.69MB 40.20%  github.com/signalscout/signalscout/internal/store.readSignals
+   11.55MB 10.39% 57.96%    14.05MB 12.64%  encoding/json/v2.makeStringArshaler.func2
+    4.53MB  4.08% 62.04%     4.53MB  4.08%  strings.(*Builder).WriteString
+    4.02MB  3.62% 65.65%     5.53MB  4.97%  encoding/json/jsontext.AppendFormat[go.shape.[]uint8]
+    4.02MB  3.61% 69.27%    12.55MB 11.29%  github.com/signalscout/signalscout/internal/viewer.jsonText
+    3.37MB  3.03% 72.30%     3.37MB  3.03%  bytes.(*Buffer).String
+       3MB  2.70% 75.00%        3MB  2.70%  reflect.mapassign_faststr0
+    2.51MB  2.26% 77.26%     2.51MB  2.26%  internal/bytealg.MakeNoZero

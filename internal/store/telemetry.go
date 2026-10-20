@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"sort"
 
@@ -104,47 +105,222 @@ func (r *Reader) ServiceOverview(ctx context.Context, f telemetry.Filter) ([]tel
 	return out, nil
 }
 
-const contextQuery = `SELECT s.data,r.attrs,r.raw FROM signals s JOIN resources r ON r.resource_id=s.resource_id WHERE s.evidence_id IN (SELECT c.evidence_id FROM context_matches c JOIN signals e ON e.evidence_id=c.evidence_id WHERE c.run_id=? AND e.ts_ns>=? AND e.ts_ns<=?) AND s.ts_ns>=? AND s.ts_ns<=? ORDER BY s.ts_ns,s.evidence_id LIMIT ?`
+// Unary + removes the scope column's TEXT affinity so SQLite can seek the
+// existing JSON expression indexes. Both matched values are still strings:
+// match_value is TEXT and each shared-key branch requires json_type='text'.
+const contextResourcesQuery = `SELECT c.run_id,a.resource_id,a.attrs,a.raw,c.rule,c.matched_resource_id,c.start_ns,c.end_ns
+ FROM context_scopes c CROSS JOIN resources a ON a.resource_id=c.match_value
+ WHERE c.run_id IN (SELECT value FROM json_each(?)) AND c.rule='exact_resource' AND c.start_ns<=? AND c.end_ns>=?
+ UNION ALL
+ SELECT c.run_id,a.resource_id,a.attrs,a.raw,c.rule,c.matched_resource_id,c.start_ns,c.end_ns
+ FROM context_scopes c CROSS JOIN resources a ON json_extract(a.attrs,'$."host.name"')=+c.match_value
+ WHERE c.run_id IN (SELECT value FROM json_each(?)) AND c.rule='host.name' AND json_type(a.attrs,'$."host.name"')='text' AND c.start_ns<=? AND c.end_ns>=?
+ UNION ALL
+ SELECT c.run_id,a.resource_id,a.attrs,a.raw,c.rule,c.matched_resource_id,c.start_ns,c.end_ns
+ FROM context_scopes c CROSS JOIN resources a ON json_extract(a.attrs,'$."service.instance.id"')=+c.match_value
+ WHERE c.run_id IN (SELECT value FROM json_each(?)) AND c.rule='service.instance.id' AND json_type(a.attrs,'$."service.instance.id"')='text' AND c.start_ns<=? AND c.end_ns>=?
+ ORDER BY 1,2,5,6 LIMIT 50001`
+
+const contextQuery = `SELECT s.data,s.ts_ns FROM signals s INDEXED BY signals_context
+ WHERE s.resource_id=? AND s.run_id='' AND s.kind IN ('log','metric')
+ AND s.ts_ns>=? AND s.ts_ns<=? ORDER BY s.ts_ns,s.evidence_id LIMIT ?`
+
+type contextBounds struct{ from, to int64 }
+type contextRule struct {
+	match    model.ContextMatch
+	from, to int64
+}
+type contextResource struct {
+	resource  model.Resource
+	rules     map[string][]contextRule
+	intervals []contextBounds
+}
+
+func mergeContextBounds(bounds []contextBounds) []contextBounds {
+	sort.Slice(bounds, func(i, j int) bool {
+		if bounds[i].from == bounds[j].from {
+			return bounds[i].to < bounds[j].to
+		}
+		return bounds[i].from < bounds[j].from
+	})
+	out := []contextBounds{}
+	for _, b := range bounds {
+		if len(out) == 0 || b.from > out[len(out)-1].to {
+			out = append(out, b)
+		} else {
+			out[len(out)-1].to = max(out[len(out)-1].to, b.to)
+		}
+	}
+	return out
+}
 
 func readContext(ctx context.Context, tx *sql.Tx, id string, from, to int64, limit int) ([]model.Signal, error) {
-	if from > to || limit < 1 || limit > 5000 {
-		return nil, fmt.Errorf("context requires valid bounds and limit 1..5000")
-	}
-	signals, err := readSignals(ctx, tx, contextQuery, id, from, to, from, to, limit+1)
+	result, err := readContextWindows(ctx, tx, map[string]contextBounds{id: {from, to}}, limit, limit)
 	if err != nil {
 		return nil, err
 	}
-	if len(signals) > limit {
-		return nil, EvidenceLimit
-	}
-	// Fetch provenance once for the bounded run/window, not once per record.
-	rows, err := tx.QueryContext(ctx, `SELECT c.evidence_id,c.rule,c.matched_resource_id FROM context_matches c JOIN signals e ON e.evidence_id=c.evidence_id WHERE c.run_id=? AND e.ts_ns>=? AND e.ts_ns<=? ORDER BY c.evidence_id,c.rule,c.matched_resource_id LIMIT 50001`, id, from, to)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = rows.Close() }()
-	byID := map[string][]model.ContextMatch{}
-	count := 0
-	for rows.Next() {
-		var evidence string
-		var match model.ContextMatch
-		if err = rows.Scan(&evidence, &match.Rule, &match.ResourceID); err != nil {
-			return nil, err
-		}
-		count++
-		if count > 50000 {
-			return nil, EvidenceLimit
-		}
-		byID[evidence] = append(byID[evidence], match)
-	}
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-	for i := range signals {
-		signals[i].ContextMatches = byID[signals[i].ID]
-	}
-	return signals, nil
+	return result[id], nil
 }
+
+// Cache only inside this read transaction. Overlapping windows read and decode
+// each physical record once; each run still receives its exact interval/rule
+// membership. Resource metadata/raw payloads are shared read-only snapshots.
+// Disjoint intervals remain disjoint, so sparse baselines never fetch the gaps.
+func readContextWindows(ctx context.Context, tx *sql.Tx, windows map[string]contextBounds, perRun, totalLimit int) (map[string][]model.Signal, error) {
+	if len(windows) == 0 || len(windows) > 201 || perRun < 1 || perRun > 5000 || totalLimit < 0 || totalLimit > 50000 {
+		return nil, fmt.Errorf("invalid context window bounds or limits")
+	}
+	ids := []string{}
+	result := map[string][]model.Signal{}
+	var first, last int64
+	for id, b := range windows {
+		if b.from > b.to {
+			return nil, fmt.Errorf("invalid context time range")
+		}
+		if len(ids) == 0 {
+			first, last = b.from, b.to
+		}
+		first = min(first, b.from)
+		last = max(last, b.to)
+		ids = append(ids, id)
+		result[id] = []model.Signal{}
+	}
+	sort.Strings(ids)
+	encoded, err := json.Marshal(ids)
+	if err != nil {
+		return nil, err
+	}
+	input := string(encoded)
+	rows, err := tx.QueryContext(ctx, contextResourcesQuery, input, last, first, input, last, first, input, last, first)
+	if err != nil {
+		return nil, fmt.Errorf("resolve context resources: %w", err)
+	}
+	resources := map[string]*contextResource{}
+	metadataCount := 0
+	for rows.Next() {
+		var runID, resourceID, attrs, raw string
+		var rule contextRule
+		if err = rows.Scan(&runID, &resourceID, &attrs, &raw, &rule.match.Rule, &rule.match.ResourceID, &rule.from, &rule.to); err != nil {
+			break
+		}
+		metadataCount++
+		if metadataCount > 50000 {
+			err = EvidenceLimit
+			break
+		}
+		window, ok := windows[runID]
+		if !ok {
+			continue
+		}
+		rule.from = max(rule.from, window.from)
+		rule.to = min(rule.to, window.to)
+		if rule.from > rule.to {
+			continue
+		}
+		resource, ok := resources[resourceID]
+		if !ok {
+			resource = &contextResource{resource: model.Resource{ID: resourceID, Raw: json.RawMessage(raw)}, rules: map[string][]contextRule{}}
+			if err = json.Unmarshal([]byte(attrs), &resource.resource.Attrs); err != nil {
+				break
+			}
+			resources[resourceID] = resource
+		}
+		resource.rules[runID] = append(resource.rules[runID], rule)
+		resource.intervals = append(resource.intervals, contextBounds{rule.from, rule.to})
+	}
+	if err == nil {
+		err = rows.Err()
+	}
+	closeErr := rows.Close()
+	if err != nil {
+		return nil, err
+	}
+	if closeErr != nil {
+		return nil, closeErr
+	}
+	keys := []string{}
+	for key := range resources {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	scanned, total := 0, 0
+	matches := map[string]int{}
+	for _, key := range keys {
+		resource := resources[key]
+		for _, interval := range mergeContextBounds(resource.intervals) {
+			records, e := tx.QueryContext(ctx, contextQuery, key, interval.from, interval.to, 50001-scanned)
+			if e != nil {
+				return nil, e
+			}
+			for records.Next() {
+				var data string
+				var timestamp int64
+				var signal model.Signal
+				if e = records.Scan(&data, &timestamp); e != nil {
+					break
+				}
+				scanned++
+				if scanned > 50000 {
+					e = EvidenceLimit
+					break
+				}
+				if e = json.Unmarshal([]byte(data), &signal); e != nil {
+					break
+				}
+				signal.Resource = resource.resource
+				for runID, rules := range resource.rules {
+					record := signal
+					record.ContextMatches = nil
+					for _, rule := range rules {
+						if timestamp >= rule.from && timestamp <= rule.to {
+							record.ContextMatches = append(record.ContextMatches, rule.match)
+						}
+					}
+					if len(record.ContextMatches) == 0 {
+						continue
+					}
+					sort.Slice(record.ContextMatches, func(i, j int) bool {
+						a, b := record.ContextMatches[i], record.ContextMatches[j]
+						if a.Rule == b.Rule {
+							return a.ResourceID < b.ResourceID
+						}
+						return a.Rule < b.Rule
+					})
+					matches[runID] += len(record.ContextMatches)
+					total++
+					if matches[runID] > 50000 || total > totalLimit || len(result[runID]) >= perRun {
+						e = EvidenceLimit
+						break
+					}
+					result[runID] = append(result[runID], record)
+				}
+				if e != nil {
+					break
+				}
+			}
+			if e == nil {
+				e = records.Err()
+			}
+			closeErr = records.Close()
+			if e != nil {
+				return nil, e
+			}
+			if closeErr != nil {
+				return nil, closeErr
+			}
+		}
+	}
+	for _, signals := range result {
+		sort.Slice(signals, func(i, j int) bool {
+			if signals[i].TS == signals[j].TS {
+				return signals[i].ID < signals[j].ID
+			}
+			return signals[i].TS < signals[j].TS
+		})
+	}
+	return result, nil
+}
+
 func (r *Reader) RunContext(ctx context.Context, id string, from, to int64, limit int) ([]model.Signal, error) {
 	tx, err := r.reader.BeginTx(ctx, &sql.TxOptions{ReadOnly: true})
 	if err != nil {

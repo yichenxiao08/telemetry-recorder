@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/signalscout/signalscout/internal/model"
 	"github.com/signalscout/signalscout/internal/telemetry"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -56,7 +57,10 @@ func TestBoundedContextIncludesRulesAndRefusesTruncation(t *testing.T) {
 	ctx := context.Background()
 	s := testStore(t, 0)
 	root := fixture("span:root", "span", "trace", "r", 10, 100)
+	root.Resource.Attrs["host.name"] = "host"
+	root.Resource.Attrs["service.instance.id"] = "instance"
 	ambient := fixture("log:ambient", "log", "", "r", 20, 20)
+	ambient.Resource = root.Resource
 	other := ambient
 	other.ID = "log:other"
 	if err := s.Submit(ctx, model.Batch{Signals: []model.Signal{root, ambient, other}}); err != nil {
@@ -68,6 +72,16 @@ func TestBoundedContextIncludesRulesAndRefusesTruncation(t *testing.T) {
 	signals, err := s.RunContext(ctx, "trace", 1, 101, 2)
 	if err != nil || len(signals) != 2 || len(signals[0].ContextMatches) == 0 {
 		t.Fatalf("%+v %v", signals, err)
+	}
+	legacy, err := s.Show(ctx, "trace")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(legacy.Context, signals) {
+		t.Fatalf("bounded context changed records or provenance: old=%+v new=%+v", legacy.Context, signals)
+	}
+	if len(signals[0].ContextMatches) != 3 {
+		t.Fatal("lost context rules")
 	}
 	if _, err = s.RunContext(ctx, "trace", 1, 101, 1); err != EvidenceLimit {
 		t.Fatal(err)

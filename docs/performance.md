@@ -332,3 +332,28 @@ Pipeline seed 2 measures 2,010/1,132/2,728 records/sec and seed 4 measures
 `m4b-combined-profiles.md`; it is not rounded into a pass. The owner requested
 continuing with M4b after recording per-profile outcomes. No further target
 reduction or throughput experiment accompanies M4b.
+
+## M4b read-path deadline regression
+
+The saved seed-1 race walkthrough initially hit the viewer's unchanged
+10-second comparison-request deadline (11.46 s test body), separately from the
+historical startup timeout. Its CPU profile attributes 69.14% to readContext
+and 62.25% to SQLite stepping. Cumulative allocation is 111.17 MiB, not peak RAM.
+Top-ten CPU/allocation summaries and failed logs are retained as m4b-context-*
+and m4b-viewer-seed-1-race-*.
+
+Combining record/provenance queries still hit the deadline, as did a per-run
+resource reader; retained review diffs show both attempts. The final approach
+resolves matching resource/rule metadata for the selected runs on one snapshot,
+merges only overlapping intervals, fetches/decodes each physical record once,
+then assigns exact per-run time/rule membership. Limits remain 5,000 context
+records per run, 50,000 total comparison records, and bounded metadata/provenance
+work; oversized inputs fail visibly. No history gaps are fetched. The next
+snapshot sees late updates. Read-only sharing is confined to that transaction.
+
+Resource plan tests exposed scans despite migration 003's existing JSON
+indexes: removing the scope TEXT affinity with unary + allows index seeks.
+Text-only guards retain the original matching semantics. No new resource index,
+ingest tuning, durability change, scoring adjustment or deadline extension was
+made for this regression. Unit tests compare complete records/provenance with
+the legacy views and cover separate windows, gaps, caps and late updates.

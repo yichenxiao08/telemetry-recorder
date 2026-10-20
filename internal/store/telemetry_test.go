@@ -70,7 +70,7 @@ func TestExplorerQueryPlans(t *testing.T) {
 
 func TestRunContextQueryPlan(t *testing.T) {
 	s := testStore(t, 0)
-	rows, err := s.reader.Query("EXPLAIN QUERY PLAN "+contextQuery, "r", int64(1), int64(1000), int64(1), int64(1000), 100)
+	rows, err := s.reader.Query("EXPLAIN QUERY PLAN "+contextQuery, "r", int64(1), int64(1000), 100)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -91,7 +91,36 @@ func TestRunContextQueryPlan(t *testing.T) {
 	if err = rows.Err(); err != nil {
 		t.Fatal(err)
 	}
-	if bounded != 3 || strings.Contains(plan.String(), "SCAN s") {
+	if bounded != 1 || strings.Contains(plan.String(), "SCAN s") {
 		t.Fatal(plan.String())
+	}
+}
+
+func TestContextResourcesUseIndexedLookups(t *testing.T) {
+	s := testStore(t, 0)
+	rows, err := s.reader.Query("EXPLAIN QUERY PLAN "+contextResourcesQuery, `["r"]`, 1000, 1, `["r"]`, 1000, 1, `["r"]`, 1000, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = rows.Close() }()
+	var plan strings.Builder
+	scopeSearches := 0
+	for rows.Next() {
+		var a, b, c int
+		var text string
+		if err = rows.Scan(&a, &b, &c, &text); err != nil {
+			t.Fatal(err)
+		}
+		plan.WriteString(text + "\n")
+		if strings.Contains(text, "SEARCH c ") && strings.Contains(text, "run_id=?") {
+			scopeSearches++
+		}
+	}
+	if err = rows.Err(); err != nil {
+		t.Fatal(err)
+	}
+	p := plan.String()
+	if scopeSearches != 3 || strings.Contains(p, "SCAN a") || !strings.Contains(p, "resources_host") || !strings.Contains(p, "resources_instance") {
+		t.Fatal(p)
 	}
 }

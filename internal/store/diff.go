@@ -146,22 +146,17 @@ func (r *Reader) comparison(ctx context.Context, id string, options model.Baseli
 		result.Spec.ContextPolicy = "retrospective-config-v1"
 		result.Spec.ContextLookbackNS = before
 		result.Spec.ScoringVersion = "v1+context-v1"
-		loadContext := func(d *model.RunDetail) error {
-			var e error
-			d.Context, e = readContext(ctx, tx, d.Run.ID, d.Run.StartedAt-before, d.Run.EndedAt, 5000)
-			total += len(d.Context)
-			if total > 50000 {
-				return EvidenceLimit
-			}
-			return e
+		windows := map[string]contextBounds{id: {result.Failing.Run.StartedAt - before, result.Failing.Run.EndedAt}}
+		for _, b := range result.Baseline {
+			windows[b.Run.ID] = contextBounds{b.Run.StartedAt - before, b.Run.EndedAt}
 		}
-		if err = loadContext(&result.Failing); err != nil {
-			return result, err
+		contexts, e := readContextWindows(ctx, tx, windows, 5000, 50000-total)
+		if e != nil {
+			return result, e
 		}
+		result.Failing.Context = contexts[id]
 		for i := range result.Baseline {
-			if err = loadContext(&result.Baseline[i]); err != nil {
-				return result, err
-			}
+			result.Baseline[i].Context = contexts[result.Baseline[i].Run.ID]
 		}
 	}
 	if err = tx.Commit(); err != nil {
