@@ -1,8 +1,8 @@
 # Performance task before M4b
 
-This task changes storage performance only. It does not add explorer pages,
+The original performance task changes storage performance only. It does not add explorer pages,
 context difference types, or change diff scoring. All rates require committed
-SQLite data (WAL, synchronous NORMAL), with one operational writer.
+SQLite data (WAL, synchronous NORMAL), with one operational writer. Later sections record the owner's gate change and M4b read-path validation.
 
 ## Reproducible measurements
 
@@ -324,12 +324,12 @@ accounting; it was stopped and its failure log retained as
 `m4b-profile-harness-failed.txt`. Unequal-count persistence now has a regression
 test. That failed accounting attempt is not a throughput measurement.
 
-The corrected run passes seeds 1/4/5 for shop and 1/3/5 for the pipeline
+The corrected pre-explorer run passes seeds 1/4/5 for shop and 1/3/5 for the pipeline
 estimate. Both profiles therefore **miss the every-seed gate**. Shop seed 2's
 last eight logs finish after the deadline; seed 3 also misses the strict edge.
 Pipeline seed 2 measures 2,010/1,132/2,728 records/sec and seed 4 measures
 2,287/1,207/2,984. The full per-seed generated table is
-`m4b-combined-profiles.md`; it is not rounded into a pass. The owner requested
+`m4b-combined-profiles-before-explorer.md`; it is not rounded into a pass. The owner requested
 continuing with M4b after recording per-profile outcomes. No further target
 reduction or throughput experiment accompanies M4b.
 
@@ -365,7 +365,8 @@ save time falls from 1,000.50 to 48.87 ms for before mode and from 2,964.39 to
 not throughput measurements; the raw before/after records are in
 `m4b-reader-result-equivalence.json`. The full saved seed-1 race walkthrough
 resolves 513 evidence links in 453.45 seconds, within the unchanged ten-minute
-test limit. Earlier aggregation, per-run and non-indexed snapshot attempts remain
+test limit. Seed 2 resolves 379 links in 298.49 seconds. Both include both persisted
+baseline panels and full navigation. Earlier aggregation, per-run and non-indexed snapshot attempts remain
 as failures, including the latter's ten-minute navigation timeout.
 
 Final explorer API measurements over the same 1M-row fixture include decoding
@@ -374,3 +375,41 @@ and aggregation: five-repeat maxima range from 1.0572 to 5.4773 ms, all below
 The fixture has eleven resources, small payloads and unflushed OS caches; this
 does not validate arbitrary cardinality or cold-disk latency. See the generated
 `benchmark/results/m4b-summary.md` and raw `m4b-million-queries-final.json`.
+
+## Final M4b schema validation
+
+The revised combined profiles are repeated after migration 008, using identical
+targets, payload generation, five seeds, thirty-second windows and serving
+defaults. No throughput knob is changed. The original revised-profile JSON and
+generated table are retained as `m4b-combined-profiles-before-explorer.*`; the
+final schema results use `m4b-combined-profiles.*` and the generated M4b summary.
+Keep the earlier misses even if a later run passes: these short local trials do
+not establish sustained production capacity.
+
+Final schema outcomes: shop passes seeds 1–5 at 2,304/1,212/72 records/sec.
+The mixed pipeline estimate misses every seed. Its minimum/median rates are
+spans 1,548/1,800, logs 1,065/1,208 and scalar points 2,543/2,731 per second.
+The command returns exit 1 for the target miss after retaining all measurements
+and verified counts; this is not a passing benchmark. Per-seed values and exact
+unrounded summaries are generated in `m4b-combined-profiles.md` and
+`m4b-final-capacity-summary.json`. The earlier revised profiles passed 3/5 each;
+the final outcome is not a controlled attribution to index cost rather than run
+variation. No new profile of this rerun was taken, and no new cause is claimed.
+The shop budget is supported by these short trials; the estimated mixed
+pipeline budget remains unsupported. Targets are not lowered again.
+
+The closed 1M-record fixture now occupies 1,217,073,152 bytes after the new
+span/metric lookup index, versus 1,149,222,912 before it. The raw file-size
+measurement is `m4b-million-storage.json`; no VACUUM or compact scalar experiment
+was performed. The roughly 12 GB/hour extrapolation above comes from the earlier
+mixed fixture and remains an estimate. M8 must measure scalar storage directly.
+
+M4b's original saved datasets are retained. Seed 1 did not sample an in-use
+spike and cannot meet that detection expectation; this is the explicitly
+documented data-limited exception, not a scoring pass. Seed 2's representative
+pre-change comparison ranks in-use third behind config and retry. The latest
+recent baselines share the changed pool configuration and peak, so that
+difference correctly disappears. Context logs have controlled rare/common
+template tests; the saved shop does not supply a new context-log root cause.
+Host memory can rank incidentally. These observations do not establish causal
+accuracy, and no constants were fitted to either database.

@@ -1,0 +1,240 @@
+[
+  {
+    "profile": {
+      "name": "shop-2x-peak",
+      "rationale": "Measured saved seeds 1 and 2; twice each maximum sliding-one-second signal count.",
+      "targets": {
+        "log": 1212,
+        "metric": 72,
+        "span": 2304
+      }
+    },
+    "method": "30-second offered window; seeds 1..5; same payload generator, batch 256, four bounded exporters (1 span, 1 log, 2 metric). Serve defaults: queue64, idle5s, sweep1s, context30s/5s, retention7d; WAL/NORMAL, acknowledgment after commit. Every intended record must commit before deadline; unsent work is a miss. All acknowledged counts verified; rate denominator includes final drain.",
+    "measurements": [
+      {
+        "seed": 1,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30,
+        "per_second": {
+          "log": 1212,
+          "metric": 72,
+          "span": 2304
+        },
+        "committed_in_window": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "all_targets_met": true
+      },
+      {
+        "seed": 2,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30.1045077,
+        "per_second": {
+          "log": 1207.7925459648025,
+          "metric": 71.75005223553282,
+          "span": 2296.0016715370502
+        },
+        "committed_in_window": {
+          "log": 36352,
+          "metric": 2160,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "all_targets_met": false
+      },
+      {
+        "seed": 3,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30.0031085,
+        "per_second": {
+          "log": 1211.8744296111852,
+          "metric": 71.99254037294169,
+          "span": 2303.761291934134
+        },
+        "committed_in_window": {
+          "log": 36352,
+          "metric": 2160,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "all_targets_met": false
+      },
+      {
+        "seed": 4,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30,
+        "per_second": {
+          "log": 1212,
+          "metric": 72,
+          "span": 2304
+        },
+        "committed_in_window": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "all_targets_met": true
+      },
+      {
+        "seed": 5,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30,
+        "per_second": {
+          "log": 1212,
+          "metric": 72,
+          "span": 2304
+        },
+        "committed_in_window": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 2160,
+          "span": 69120
+        },
+        "all_targets_met": true
+      }
+    ]
+  },
+  {
+    "profile": {
+      "name": "pipeline-60fps-estimate",
+      "rationale": "Estimate, not a measured workload: 60 frames/sec x 50 scalar values = 3000 points/sec; retain shop 2x span/log traffic concurrently, and use the larger metric budget.",
+      "targets": {
+        "log": 1212,
+        "metric": 3000,
+        "span": 2304
+      }
+    },
+    "method": "30-second offered window; seeds 1..5; same payload generator, batch 256, four bounded exporters (1 span, 1 log, 2 metric). Serve defaults: queue64, idle5s, sweep1s, context30s/5s, retention7d; WAL/NORMAL, acknowledgment after commit. Every intended record must commit before deadline; unsent work is a miss. All acknowledged counts verified; rate denominator includes final drain.",
+    "measurements": [
+      {
+        "seed": 1,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30,
+        "per_second": {
+          "log": 1212,
+          "metric": 3000,
+          "span": 2304
+        },
+        "committed_in_window": {
+          "log": 36360,
+          "metric": 90000,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 90000,
+          "span": 69120
+        },
+        "all_targets_met": true
+      },
+      {
+        "seed": 2,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30.305676300000002,
+        "per_second": {
+          "log": 1131.9331619733562,
+          "metric": 2728.4657560999553,
+          "span": 2010.448451863125
+        },
+        "committed_in_window": {
+          "log": 34048,
+          "metric": 82176,
+          "span": 60672
+        },
+        "persisted": {
+          "log": 34304,
+          "metric": 82688,
+          "span": 60928
+        },
+        "all_targets_met": false
+      },
+      {
+        "seed": 3,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30,
+        "per_second": {
+          "log": 1212,
+          "metric": 3000,
+          "span": 2304
+        },
+        "committed_in_window": {
+          "log": 36360,
+          "metric": 90000,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 90000,
+          "span": 69120
+        },
+        "all_targets_met": true
+      },
+      {
+        "seed": 4,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30.1156167,
+        "per_second": {
+          "log": 1207.0813744949808,
+          "metric": 2983.701143998157,
+          "span": 2286.6541530926047
+        },
+        "committed_in_window": {
+          "log": 36096,
+          "metric": 89344,
+          "span": 68608
+        },
+        "persisted": {
+          "log": 36352,
+          "metric": 89856,
+          "span": 68864
+        },
+        "all_targets_met": false
+      },
+      {
+        "seed": 5,
+        "offered_window_seconds": 30,
+        "seconds_including_drain": 30,
+        "per_second": {
+          "log": 1212,
+          "metric": 3000,
+          "span": 2304
+        },
+        "committed_in_window": {
+          "log": 36360,
+          "metric": 90000,
+          "span": 69120
+        },
+        "persisted": {
+          "log": 36360,
+          "metric": 90000,
+          "span": 69120
+        },
+        "all_targets_met": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+task: [benchmark-ingest] go run ./scripts/ingestbench -profiles benchmark/results/m4b-ingest-targets.json -out benchmark/results/m4b-combined-profiles.json
+shop-2x-peak seed=1 met=true
+shop-2x-peak seed=2 met=true
+shop-2x-peak seed=3 met=true
+shop-2x-peak seed=4 met=true
+shop-2x-peak seed=5 met=true
+pipeline-60fps-estimate seed=1 met=false
+pipeline-60fps-estimate seed=2 met=false
+pipeline-60fps-estimate seed=3 met=false
+pipeline-60fps-estimate seed=4 met=false
+pipeline-60fps-estimate seed=5 met=false
+revised combined targets missed; results retained
+exit status 1
+task: Failed to run task "benchmark-ingest": exit status 1

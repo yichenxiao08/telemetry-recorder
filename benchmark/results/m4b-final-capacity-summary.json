@@ -1,0 +1,72 @@
+{
+  "Revision": "75138f7746829b561ade529cd3e35ff58920cde9",
+  "SchemaThrough": "008",
+  "Results": "benchmark/results/m4b-combined-profiles.json",
+  "TaskExitCode": 1,
+  "ExitReason": "Revised combined targets missed; all ten measurements and verified counts were retained.",
+  "RecordedAtUTC": "2026-10-20T02:09:36.7942939Z",
+  "Summary": [
+    {
+      "Profile": "shop-2x-peak",
+      "PassedSeeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "FailedSeeds": [],
+      "Signals": [
+        {
+          "Signal": "span",
+          "Minimum": 2304,
+          "Median": 2304,
+          "Target": 2304
+        },
+        {
+          "Signal": "log",
+          "Minimum": 1212,
+          "Median": 1212,
+          "Target": 1212
+        },
+        {
+          "Signal": "metric",
+          "Minimum": 72,
+          "Median": 72,
+          "Target": 72
+        }
+      ]
+    },
+    {
+      "Profile": "pipeline-60fps-estimate",
+      "PassedSeeds": [],
+      "FailedSeeds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "Signals": [
+        {
+          "Signal": "span",
+          "Minimum": 1548.1512143141626,
+          "Median": 1799.8012613818416,
+          "Target": 2304
+        },
+        {
+          "Signal": "log",
+          "Minimum": 1064.6711687047514,
+          "Median": 1207.56265805504,
+          "Target": 1212
+        },
+        {
+          "Signal": "metric",
+          "Minimum": 2543.3811252391283,
+          "Median": 2730.5304384332208,
+          "Target": 3000
+        }
+      ]
+    }
+  ]
+}

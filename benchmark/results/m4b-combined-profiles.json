@@ -35,14 +35,14 @@
       {
         "seed": 2,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30.1045077,
+        "seconds_including_drain": 30,
         "per_second": {
-          "log": 1207.7925459648025,
-          "metric": 71.75005223553282,
-          "span": 2296.0016715370502
+          "log": 1212,
+          "metric": 72,
+          "span": 2304
         },
         "committed_in_window": {
-          "log": 36352,
+          "log": 36360,
           "metric": 2160,
           "span": 69120
         },
@@ -51,19 +51,19 @@
           "metric": 2160,
           "span": 69120
         },
-        "all_targets_met": false
+        "all_targets_met": true
       },
       {
         "seed": 3,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30.0031085,
+        "seconds_including_drain": 30,
         "per_second": {
-          "log": 1211.8744296111852,
-          "metric": 71.99254037294169,
-          "span": 2303.761291934134
+          "log": 1212,
+          "metric": 72,
+          "span": 2304
         },
         "committed_in_window": {
-          "log": 36352,
+          "log": 36360,
           "metric": 2160,
           "span": 69120
         },
@@ -72,7 +72,7 @@
           "metric": 2160,
           "span": 69120
         },
-        "all_targets_met": false
+        "all_targets_met": true
       },
       {
         "seed": 4,
@@ -133,107 +133,107 @@
       {
         "seed": 1,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30,
+        "seconds_including_drain": 30.0952514,
         "per_second": {
-          "log": 1212,
-          "metric": 3000,
-          "span": 2304
+          "log": 1208.1640228464748,
+          "metric": 2730.5304384332208,
+          "span": 1548.1512143141626
         },
         "committed_in_window": {
-          "log": 36360,
-          "metric": 90000,
-          "span": 69120
+          "log": 36352,
+          "metric": 81664,
+          "span": 46336
         },
         "persisted": {
           "log": 36360,
-          "metric": 90000,
-          "span": 69120
+          "metric": 82176,
+          "span": 46592
         },
-        "all_targets_met": true
+        "all_targets_met": false
       },
       {
         "seed": 2,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30.305676300000002,
+        "seconds_including_drain": 30.2966784,
         "per_second": {
-          "log": 1131.9331619733562,
-          "metric": 2728.4657560999553,
-          "span": 2010.448451863125
+          "log": 1064.6711687047514,
+          "metric": 2543.3811252391283,
+          "span": 1799.8012613818416
         },
         "committed_in_window": {
-          "log": 34048,
-          "metric": 82176,
-          "span": 60672
+          "log": 32000,
+          "metric": 76544,
+          "span": 54272
         },
         "persisted": {
-          "log": 34304,
-          "metric": 82688,
-          "span": 60928
+          "log": 32256,
+          "metric": 77056,
+          "span": 54528
         },
         "all_targets_met": false
       },
       {
         "seed": 3,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30,
+        "seconds_including_drain": 30.0990105,
         "per_second": {
-          "log": 1212,
-          "metric": 3000,
-          "span": 2304
+          "log": 1199.2420813966626,
+          "metric": 2951.326257054198,
+          "span": 2151.83153612309
         },
         "committed_in_window": {
-          "log": 36360,
-          "metric": 90000,
-          "span": 69120
+          "log": 35840,
+          "metric": 88320,
+          "span": 64512
         },
         "persisted": {
-          "log": 36360,
-          "metric": 90000,
-          "span": 69120
+          "log": 36096,
+          "metric": 88832,
+          "span": 64768
         },
-        "all_targets_met": true
+        "all_targets_met": false
       },
       {
         "seed": 4,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30.1156167,
+        "seconds_including_drain": 30.1102388,
         "per_second": {
-          "log": 1207.0813744949808,
-          "metric": 2983.701143998157,
-          "span": 2286.6541530926047
+          "log": 1207.56265805504,
+          "metric": 2729.1713143105326,
+          "span": 1759.9329036208107
         },
         "committed_in_window": {
-          "log": 36096,
-          "metric": 89344,
-          "span": 68608
+          "log": 36352,
+          "metric": 81664,
+          "span": 52736
         },
         "persisted": {
-          "log": 36352,
-          "metric": 89856,
-          "span": 68864
+          "log": 36360,
+          "metric": 82176,
+          "span": 52992
         },
         "all_targets_met": false
       },
       {
         "seed": 5,
         "offered_window_seconds": 30,
-        "seconds_including_drain": 30,
+        "seconds_including_drain": 30.1067862,
         "per_second": {
-          "log": 1212,
-          "metric": 3000,
-          "span": 2304
+          "log": 1207.7011394859542,
+          "metric": 2959.0670823576647,
+          "span": 2227.8033780968626
         },
         "committed_in_window": {
-          "log": 36360,
-          "metric": 90000,
-          "span": 69120
+          "log": 36352,
+          "metric": 88576,
+          "span": 66816
         },
         "persisted": {
           "log": 36360,
-          "metric": 90000,
-          "span": 69120
+          "metric": 89088,
+          "span": 67072
         },
-        "all_targets_met": true
+        "all_targets_met": false
       }
     ]
   }

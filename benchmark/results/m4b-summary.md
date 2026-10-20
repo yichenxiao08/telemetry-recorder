@@ -20,15 +20,15 @@ Peak means count in a sliding one-second window; averages use actual phase lengt
 | Profile | Targets spans/logs/points per sec | Seed | Measured spans/logs/points per sec | Pass |
 |---|---|---:|---|---|
 | shop-2x-peak | 2304 / 1212 / 72 | 1 | 2304.00 / 1212.00 / 72.00 | true |
-| shop-2x-peak | 2304 / 1212 / 72 | 2 | 2296.00 / 1207.79 / 71.75 | false |
-| shop-2x-peak | 2304 / 1212 / 72 | 3 | 2303.76 / 1211.87 / 71.99 | false |
+| shop-2x-peak | 2304 / 1212 / 72 | 2 | 2304.00 / 1212.00 / 72.00 | true |
+| shop-2x-peak | 2304 / 1212 / 72 | 3 | 2304.00 / 1212.00 / 72.00 | true |
 | shop-2x-peak | 2304 / 1212 / 72 | 4 | 2304.00 / 1212.00 / 72.00 | true |
 | shop-2x-peak | 2304 / 1212 / 72 | 5 | 2304.00 / 1212.00 / 72.00 | true |
-| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 1 | 2304.00 / 1212.00 / 3000.00 | true |
-| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 2 | 2010.45 / 1131.93 / 2728.47 | false |
-| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 3 | 2304.00 / 1212.00 / 3000.00 | true |
-| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 4 | 2286.65 / 1207.08 / 2983.70 | false |
-| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 5 | 2304.00 / 1212.00 / 3000.00 | true |
+| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 1 | 1548.15 / 1208.16 / 2730.53 | false |
+| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 2 | 1799.80 / 1064.67 / 2543.38 | false |
+| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 3 | 2151.83 / 1199.24 / 2951.33 | false |
+| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 4 | 1759.93 / 1207.56 / 2729.17 | false |
+| pipeline-60fps-estimate | 2304 / 1212 / 3000 | 5 | 2227.80 / 1207.70 / 2959.07 | false |
 
 ## Saved-demo ranks
 
