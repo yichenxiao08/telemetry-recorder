@@ -247,3 +247,33 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   observation, with observed counts retained. Formula constants are unchanged;
   wide-magnitude rapid and exact formula tests pass. Recomputing all 15 complete
   reports from pinned evidence yields identical results. The failed test is retained.
+
+## Lane-01 diagnostic and proposed v1 (2026-10-20)
+
+- Slice 1 is not merged into refreshed main 859487c; this analysis branches from
+  origin/codex/slice1-lane at 05e9add as requested. Existing lane-01 artifacts,
+  formulas, profiles and results remain immutable. Only new diagnostic outputs
+  and review design are added; no M5–M8, P0, migration or difference type starts.
+- Decoy-heavy intentionally shifts every unused noise input +10 for constructed
+  problem examples. Both labels share all sessions/time blocks; the artifact is
+  selection-correlated input construction, not references from another phase.
+  Fair as an adversarial association test; unfair as causal-recovery acceptance
+  from marginal values alone. Keep this limitation and every original miss.
+- Harder has complete capture but its median erases the 20% stale subgroup in
+  every seed. The existing declared-use invariant reports 20/100 violations.
+  The statistic is responsible for this miss; actual historical reads remain
+  unverified. No scoring-constant change follows from this diagnostic.
+- Positive scores in heavy are distinct: exponential compression exists but
+  did not decide the mechanism ranks; shared e=0 multiplies all by 101/102.
+  Zero-score observations are unranked, not discoveries resolved by names.
+- Proposed conditional comparisons need reviewed pre-output controls and common
+  support; fully separating controls yield unsupported, never an adjusted cause
+  claim. Tail contrast is descriptive and may also flag unused decoys. Sample
+  minima, interval padding and support thresholds require owner review before
+  a separately frozen evaluation; two lists are not fused opportunistically.
+- Symptom roles must be declared/versioned before evaluation. Hidden benchmark
+  decoy labels must never select or weight the candidate list. Historical ranks
+  stay visible. Real-world mechanism identification is still unvalidated.
+- Seeds 710021/710023/710027/710029/710033 are reserved in a design-only fresh
+  preregistration proposal. No data generation or engine run on them occurred.
+  Need approval for implementation and the final generator equations/contract.
