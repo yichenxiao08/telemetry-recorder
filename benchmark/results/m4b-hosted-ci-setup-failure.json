@@ -1,0 +1,216 @@
+{
+  "RunID": 39355835186,
+  "URL": "https://github.com/yichenxiao08/telemetry-recorder/actions/runs/39355835186",
+  "Revision": "f65f3e51be8761200c95044aad38768a033b5c86",
+  "Failure": "Both Task setup steps hit the unauthenticated GitHub API rate limit, before project checks. Connector rerun request returned 403; subsequent commit supplies the action repo-token input.",
+  "Jobs": [
+    {
+      "id": 118410270505,
+      "name": "test (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-20T01:52:36Z",
+          "completed_at": "2026-10-20T01:52:38Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-20T01:52:38Z",
+          "completed_at": "2026-10-20T01:52:39Z"
+        },
+        {
+          "name": "Run actions/setup-go@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-20T01:52:39Z",
+          "completed_at": "2026-10-20T01:52:55Z"
+        },
+        {
+          "name": "Run arduino/setup-task@v2",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 4,
+          "started_at": "2026-10-20T01:52:55Z",
+          "completed_at": "2026-10-20T01:52:55Z"
+        },
+        {
+          "name": "Run golangci/golangci-lint-action@v8",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-20T01:52:55Z",
+          "completed_at": "2026-10-20T01:52:55Z"
+        },
+        {
+          "name": "Check formatting",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-10-20T01:52:55Z",
+          "completed_at": "2026-10-20T01:52:55Z"
+        },
+        {
+          "name": "Run go vet ./...",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-10-20T01:52:55Z",
+          "completed_at": "2026-10-20T01:52:55Z"
+        },
+        {
+          "name": "Run go test -race ./...",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-10-20T01:52:55Z",
+          "completed_at": "2026-10-20T01:52:56Z"
+        },
+        {
+          "name": "Run task build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-20T01:52:56Z",
+          "completed_at": "2026-10-20T01:52:56Z"
+        },
+        {
+          "name": "Post Run actions/setup-go@v5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-10-20T01:52:56Z",
+          "completed_at": "2026-10-20T01:52:56Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-20T01:52:56Z",
+          "completed_at": "2026-10-20T01:52:56Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-20T01:52:56Z",
+          "completed_at": "2026-10-20T01:52:56Z"
+        }
+      ]
+    },
+    {
+      "id": 118410270748,
+      "name": "test (windows-latest)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-20T01:52:36Z",
+          "completed_at": "2026-10-20T01:52:39Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-20T01:52:39Z",
+          "completed_at": "2026-10-20T01:52:44Z"
+        },
+        {
+          "name": "Run actions/setup-go@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-20T01:52:44Z",
+          "completed_at": "2026-10-20T01:53:32Z"
+        },
+        {
+          "name": "Run arduino/setup-task@v2",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 4,
+          "started_at": "2026-10-20T01:53:32Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Run golangci/golangci-lint-action@v8",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Check formatting",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Run go vet ./...",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Run go test -race ./...",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Run task build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Post Run actions/setup-go@v5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:33Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-20T01:53:33Z",
+          "completed_at": "2026-10-20T01:53:35Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-20T01:53:35Z",
+          "completed_at": "2026-10-20T01:53:35Z"
+        }
+      ]
+    }
+  ]
+}
