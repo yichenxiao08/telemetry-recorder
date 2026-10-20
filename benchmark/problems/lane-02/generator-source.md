@@ -88,9 +88,12 @@ Execution is at most 60 calls/sec with recording enabled. Set each case's
 synthetic UTC root timestamp origin from its fixed index (seed order, then
 variant order as listed in contract.md), not from cohort label. Frame slots
 in session/slot order are 16,666,667 ns apart; origin is
-1792627200000000000 + case_index * 60,000,000,000 ns. Use one explicit 60 s
+1767225600000000000 (2026-01-01 UTC) + case_index * 60,000,000,000 ns. Use one explicit 60 s
 selection window per case and eligible-population limit 800; reject overflow.
 Late annotations must not affect these execution timestamps.
+Synthetic timestamps are supplied by a harness clock to the probe/exporter,
+never by the target. If this requires changing the target or any equation,
+stop and ask the owner before proceeding.
 
 ## Plain target source specification
 
