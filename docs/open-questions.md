@@ -108,3 +108,46 @@ This section supersedes the earlier unresolved full-history-backfill and materia
 - Saved seed 1 contains only zero-valued db.pool.in_use samples through the padded failure window; no scorer can recover its unsampled bursts. The owner delegated the choice after this was reported. Keep both saved datasets, report the seed-1 absence as a data-limited acceptance exception, and validate the mechanism on seed 2 plus controlled tests. Do not regenerate a better-looking seed or tune constants. Seed 2's latest pre-change comparison ranks in-use #3 behind pool config and retry; recent baselines already share pool=5 and its sampled peak, so the difference disappears. First-burst seed-2 failures also precede the nonzero sample. Incidental host-memory differences can rank highly and are not proven causes. M5/M8 must measure sampling coverage and cause-vs-symptom accuracy.
 - Saved-data race navigation required a bounded read optimization: resolve indexed resource/rule metadata once, merge overlapping intervals inside the read snapshot, and preserve exact per-run membership/provenance. No cross-request cache hides late updates. Caps remain 5,000 context records per run, 50,000 comparison records and bounded metadata/provenance; very large or high-cardinality windows are rejected visibly. Saved-data navigation remains expensive under the race detector; the small-resource 1M fixture does not establish cold-cache or large-payload performance.
 - Final schema combined trials pass the measured shop budget in all five seeds but miss the estimated mixed pipeline budget in all five. Earlier revised trials passed only three of five for each profile and remain retained. Treat the 3,000-point mixed profile as unsupported; do not reduce its target or execute parked experiments during M4b. A real pipeline workload and sustained capacity/storage measurements remain future work. The new explorer index's write cost is included in the final run, but the change in outcomes is not a controlled causal attribution.
+
+## Provenance design and feasibility choices (2026-10-20)
+
+- M4b is not merged; PR #1 preserves it. The provenance branch is based on M4b,
+  not stale main; a later PR must disclose this dependency. Do not merge either
+  without owner direction. M5–M8 remain unstarted.
+- Real Flèche code/data is not available in this checkout. Both new producers
+  are entirely synthetic; simulated review labels are not real human judgments
+  or real M5 failures. No question blocks the design/spike.
+- Generic run units are not implemented: use one trace per frame/turn and retain
+  today's web classification. Do not misuse signalscout.run.id to label frames
+  as ML or mark HTTP errors to force quality-based comparisons.
+- Logical decision/lineage/annotation IDs are proposed aliases over native evidence,
+  not working resolvers. Capture completeness, graph validation and append-only
+  annotation semantics require later work; OTLP preservation alone supplies none.
+- Value capture remains synthetic-only until P0 recursive redaction/allowlisting
+  covers raw copies and nested record JSON. Hashes are not anonymization or a way
+  to inspect missing inputs. Sensitive low-entropy values default to omission.
+- Prefer a bounded redacted detail buffer plus independent reference promotion,
+  with coverage metadata for all runs. Label delay/eviction and selection bias
+  are the riskiest assumption; no buffer or sampling implementation is authorized.
+- Cohort formulas are design-only with existing M3 constants unchanged. Unknown
+  labels/detail stay unknown; correlated frames/turns require cluster counts.
+  Invariants require declared completeness and can work without references.
+
+- Expanded request supersedes the earlier deferrable-ML wording: the ML adapter
+  role is absorbed into a general OTLP helper. Throughput profiles are historical
+  measurements only; per-call budget is fixed before measuring. Service overview
+  and metrics browser are frozen. A/B synthetic structures plus real shop C
+  validate representational breadth, not three real defects or causal accuracy.
+
+- The expanded Part 4 is deferred at the owner's explicit fallback boundary:
+  Parts 1–3 and a source audit are complete. A/B generators, Python helper,
+  fresh A/B/C replay/browser checks and five-trial cheapness/safety measurements
+  remain pending. No synthetic transport or overhead result is claimed.
+  uv was not found on PATH; locate/provision it before that separately scoped spike.
+- The p50 <=100 us / p99 <=250 us small-record budget is provisional and fixed
+  before any helper measurement. OS scheduling and runtime locks cannot provide
+  a hard real-time guarantee; distinguish no intentional I/O/capacity wait from
+  zero wall-time stalls, and report full/drop/no-op paths separately.
+- Capture fidelity is an independent risk: a producer can record incomplete or
+  incorrect inputs even with a complete-looking graph. Invariants validate
+  declared provenance, not arbitrary code or causes. Report coverage and trust.

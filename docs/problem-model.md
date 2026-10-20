@@ -150,3 +150,8 @@ trimmed pre-registered M5 -> adapted M7 reports -> remaining M8 measurements.
 M6's adapter role is absorbed into the general helper; training breadth is optional.
 Each requires authorization. This pass completes design and the source audit;
 the executable helper/replays remain pending under the explicit fallback. No M5–M8 starts.
+
+Structured report types permit only observation, association and hypothesis.
+A verifier can reject an unsupported type, missing denominator or wrong evidence
+membership. It cannot guarantee detection of every causal overinterpretation in
+free text or settle subjective quality. Keep that limitation visible.

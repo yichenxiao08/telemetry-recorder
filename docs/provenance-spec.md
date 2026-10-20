@@ -122,8 +122,7 @@ Human labels record judgments; no built-in quality judge is implied.
 ## Volume policy: design only
 
 A. Retain small coverage metadata for every run plus a bounded, already-redacted
-full-detail recent buffer; promote selected problem AND reference examples on
-labeling. Eviction is explicit and irreversible.
+full-detail recent buffer; promote selected problem AND reference examples on a mark or label. Eviction is explicit and irreversible.
 B. Always export a deterministic detail sample independently of labels; retain
 capture probability and missing-edge information.
 
@@ -176,3 +175,10 @@ with a deadline and terminate owned intake. Preserve existing OTel providers and
 allow explicit attachment to an existing recorder; no silent source mutation.
 Unsupported frameworks are named, not called automatically instrumented.
 The wrapper does not execute stored inputs or infer semantics. It is not built.
+
+For comparable cheapness trials, fix the small payload before implementation:
+four allowed scalar inputs, two scored alternatives and <=2 KiB envelope, plus
+a stable step/output/config reference. Record payload bytes. Measure run-context
+entry/exit separately and retain saturation/drop/no-op-path costs separately.
+Large artifact hashing/I/O is explicitly outside this API and must not be
+silently charged to or hidden inside a "nonblocking" recording call.

@@ -361,6 +361,8 @@ claimed merged. The new branch codex/provenance-spec starts from that commit.
 | Order | Scope/status | Acceptance before the next slice |
 |---|---|---|
 | M0–M4b | Built foundation; retain historical criteria/results below, including seed-1 sampling exception and pipeline capacity miss. | Existing regression suite and Windows/Ubuntu CI remain green. |
+| S0a (pending) | Synthetic Python helper safety and A recording spike only. | Bounded queue/drop/no-op behavior, host-exception preservation, instrumentation LOC and five-trial 60 Hz/tight-loop p50/p99, retaining misses. |
+| S0b (pending) | Plain OTLP A/B generators and A/B/C fresh-store replay with existing views. | Verify facts/refs and native anchors; report manual workflow gaps; simulated labels explicit; no schema/diff changes. |
 | P0 | Capture contract and privacy gate; synthetic data until complete. | Allowlisted values round-trip; planted secrets absent from body/attrs/raw/nested envelopes/URIs; unknown schemas fail closed; capture omissions visible; no default conversation text. |
 | P1 | One tiny provenance helper and guided setup for one actual supported runtime; framework coverage is explicit. | Under 15 minutes on a prepared clean fixture; repeated setup idempotent; no duplicate OTel providers/spans; decision IDs/conflicts and coverage inspectable; default-off field capture. |
 | P2 | Problem records, append-only annotations and bounded explicit cohorts. | HTTP-200 problem marks do not change outcome/times; disagreement/retractions/rubric versions survive; unlabeled stays unknown; exact selected IDs/label revisions persist; same-core comparison works. |
