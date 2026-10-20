@@ -1,0 +1,16 @@
+SQL logic error: no such table: context_scopes (1)
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\breadth.py", line 143, in <module>
+    main()
+  File "<repo>\adapters\provenance-python\breadth.py", line 43, in main
+    source_snapshot = inspect(repo, source)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\adapters\provenance-python\breadth.py", line 27, in inspect
+    return json.loads(subprocess.check_output([str(repo/"bin/provenancespike.exe"), "-db", str(db)]))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['<repo>\\bin\\provenancespike.exe', '-db', '<repo>\\.cache\\shop-demo\\run-73122371\\signalscout.db']' returned non-zero exit status 1.

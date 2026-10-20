@@ -23,8 +23,13 @@ def examples(snapshot):
     def stages(index):
         run_id=turns[index]["run_id"]
         return [d for d in decisions if d["run_id"]==run_id]
-    return {"frame_absence":frames[2],"frame_stale_previous":frames[7],
-        "frame_actual_previous":frames[6],"near_threshold_before":frames[3],"near_threshold_after":frames[4],
+    runs=snapshot["runs"]
+    c_fail=next(r for r in runs if r["workload"]=="POST /checkout" and r["outcome"]=="fail")
+    c_reference=next(r for r in runs if r["workload"]=="POST /checkout" and str(json.loads(r["config"]).get("DB_POOL_SIZE"))=="20")
+    return {"C_before_after":{"failing":c_fail,"reference":c_reference},
+        "frame_absence":frames[2],"frame_stale_previous":frames[42],
+        "frame_actual_previous":frames[41],"stale_version_without_lane_value_change":frames[7],
+        "near_threshold_before":frames[4],"near_threshold_after":frames[5],
         "legitimate_decline_stages":stages(0),"successful_repair_stages":stages(1),
         "deliberate_truncation_stages":stages(2),"unrepaired_decline_stages":stages(3),
         "optional_semantics":[d for d in decisions if d["envelope"]["step"]["id"]=="selection-semantics"]}

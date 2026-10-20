@@ -113,19 +113,33 @@ def main():
                     if path.startswith("/run?"):
                         assert 'id="'+anchor+'"' in body
                     report["http"].append({"behavior":name,"path":path,"status":200,"evidence":evidence["id"],"anchor":anchor})
-        # One later simulated review targets a real HTTP-200 success, without relabeling outcome.
+        # Separate, explicitly simulated reviews; unlabeled turns stay unknown.
         b_runs=[r for r in snapshot["runs"] if r["workload"]=="pipeline_target.turn"]
         chosen=b_runs[3]
         before_scopes=[s for s in snapshot["scopes"] if s["run_id"]==chosen["run_id"]]
-        detail=serving.show(chosen["run_id"])
-        owned=next(s for s in detail["signals"] if s["kind"]=="span")
-        resource=json.loads(json.dumps(owned["resource"]["raw"]))
         stamp=chosen["ended_at"]+60_000_000_000
-        label={"version":1,"kind":"label","synthetic":True,"reviewer":"simulated-reviewer", "rubric":"synthetic-coaching-v1", "label":"too-strict", "target":owned["id"],"created_at_ns":str(stamp)}
-        record={"timeUnixNano":str(stamp),"traceId":chosen["run_id"],"spanId":owned["span_id"],"severityNumber":9,
-            "body":{"stringValue":"synthetic review"},"attributes":[{"key":"signalscout.record.kind","value":{"stringValue":"label"}},
-            {"key":"signalscout.record.json","value":{"stringValue":json.dumps(label)}}]}
-        post(serving.endpoint,"/v1/logs",{"resourceLogs":[{"resource":resource["resource"],"scopeLogs":[{"logRecords":[record]}]}]})
+        labels=[]
+        for reviewed,value in zip(b_runs[:4], ["legitimate-decline", "successful-repair", "deliberate-truncation", "too-strict"]):
+            detail=serving.show(reviewed["run_id"])
+            owned=next(s for s in detail["signals"] if s["kind"]=="span")
+            decision=next(s for s in detail["signals"] if s.get("attrs",{}).get("signalscout.step.id")=="pipeline_target.turn")
+            resource=owned["resource"]["raw"]
+            created=reviewed["ended_at"]+60_000_000_000
+            label={"version":1,"kind":"label","id":"annotation:"+reviewed["run_id"]+"/review-1", "synthetic":True,
+                "source":"simulated-reviewer", "source_version":"1", "reviewer":"synthetic-reviewer", "rubric_id":"synthetic-coaching", "rubric_version":"1",
+                "dimension":"synthetic-review", "value":value, "target_run_ref":reviewed["run_id"],
+                "target_output_ref":decision["attrs"]["signalscout.output.ref"], "evidence_refs":[decision["id"]],
+                "created_at_ns":str(created), "recorded_at_ns":str(time.time_ns())}
+            labels.append(label)
+            record={"timeUnixNano":str(created),"traceId":reviewed["run_id"],"spanId":owned["span_id"],"severityNumber":9,
+                "body":{"stringValue":"synthetic review"},"attributes":[{"key":"signalscout.record.version","value":{"intValue":"1"}},
+                {"key":"signalscout.record.kind","value":{"stringValue":"label"}},
+                {"key":"signalscout.record.id","value":{"stringValue":label["id"]}},
+                {"key":"signalscout.synthetic","value":{"boolValue":True}},
+                {"key":"signalscout.record.json","value":{"stringValue":json.dumps(label)}}]}
+            post(serving.endpoint,"/v1/logs",{"resourceLogs":[{"resource":resource["resource"],"scopeLogs":[{"logRecords":[record]}]}]})
+        label=labels[-1]
+        report["simulated_labels"]=labels
         after=inspect(repo,serving.database)
         after_run=next(r for r in after["runs"] if r["run_id"]==chosen["run_id"])
         after_scopes=[s for s in after["scopes"] if s["run_id"]==chosen["run_id"]]

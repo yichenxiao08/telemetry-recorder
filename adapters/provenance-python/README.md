@@ -102,3 +102,34 @@ count_instrumentation.py counts AST source spans of recorder imports, calls and
 run-context headers, excluding original application bodies. It compares a
 pre-run source snapshot to post-run source and reports physical plus nonblank
 config lines. No source modification is inferred merely from in-memory wrapping.
+## Reproduce synthetic breadth (PowerShell, repository root)
+
+The source shop database must already exist at the path in breadth.py. This is
+a replay of saved synthetic shop OTLP, not a live shop execution or copied diff.
+Use a fresh output directory each time. Only Go tools open SQLite, read-only.
+
+```powershell
+task build
+go build -o bin/provenancespike.exe ./scripts/provenancespike
+go run ./scripts/framefixture -out .cache/provenance/frame-go
+$env:UV_PYTHON_INSTALL_DIR = Join-Path (Get-Location) '.cache/uv-python'
+$env:UV_CACHE_DIR = Join-Path (Get-Location) '.cache/uv-cache'
+$uv = Join-Path (Get-Location) '.cache/uv-tool/bin/uv.exe'
+$spikeOut = Join-Path (Get-Location) ('.cache/provenance/replay-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+& $uv run --directory adapters/provenance-python --frozen python -m unittest discover -s tests -v
+& $uv run --directory adapters/provenance-python --frozen python breadth.py --out $spikeOut
+$snapshot = Join-Path $spikeOut 'snapshot.json'
+$examples = Join-Path $spikeOut 'examples.json'
+& $uv run --directory adapters/provenance-python --frozen python report_s0b.py --input $snapshot --out $examples
+.\bin\signalscout.exe --db (Join-Path $spikeOut 'fresh.db') serve --listen 127.0.0.1:4318 --retention 0
+```
+
+Open http://127.0.0.1:4318/runs. Copy a run ID from report.json or examples.json,
+open its run page, expand event attributes and inspect signalscout.record.json.
+For review logs, use the logs explorer with trace ID, explicit October 2026 time
+bounds and limit 100. Copy logical refs manually; only native evidence anchors
+resolve. Mark/reference/semantic explain controls are design only.
+
+The overhead harness has no concurrent replay workload. Use a separate fresh DB
+and absolute output paths; run measure.py only after safety tests pass. Original
+and monotonic-duration results retain the same rates, five seeds and budget.

@@ -42,3 +42,16 @@ and growth per hour rather than assume this extrapolation is accurate.
   privacy/safety tests. The spike only bridges requests traces and logging context.
 - Diagnose the measured probe cost before production rollout. Do not change the
   100/250 us budget or use fast cooldown/drop paths as full-capture performance.
+
+- Keep annotation execution time separate from review/ingestion time: the real
+  S0 replay confirms a trace-owned review log extends run end and context scope.
+  Fix only in a separately authorized production slice; do not change today's
+  web/ML grouping or relabel successes to access the failing-only diff.
+- Add bounded logical-ref resolution and selection/mark UI before claiming a
+  low-effort diagnosis experience. Boundary argument edges cannot establish actual
+  reads or cross-step object identity; profile assertions and internal alternatives
+  may still require optional explicit calls.
+- Keep monotonic durations anchored to UTC in future recorders. Measure clock
+  uncertainty across runtimes/processes rather than infer sub-tick order from
+  coincident wall-clock timestamps. S0 keeps the original failed fidelity test
+  and both unchanged-budget cost passes.

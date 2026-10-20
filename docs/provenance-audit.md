@@ -1,5 +1,9 @@
 # Provenance feasibility audit (current M4b; no engine changes)
 
+Current execution supersedes the historical pending plan: see **Current executable
+status** and **S0b breadth findings** below. All examples/reviewers are synthetic;
+M5–M8 and P0–P4 production work remain stopped.
+
 ## Current representation
 
 | Layer / source | What works | Loss or missing behavior |
@@ -43,9 +47,7 @@ Measured results, exact PowerShell commands and observations will be added after
 the replay, including tests that explicitly demonstrate unsupported operations.
 ## Current executable status (2026-10-20)
 
-S0a is now executed. Historical pending/fallback statements below describe the
-accepted source audit, not today's executable status. S0b results follow below
-when validated; no production milestone or engine change is implied.
+S0a is executed; S0b findings are below. Historical pending/fallback statements describe the accepted source audit. No production milestone or engine change is implied.
 
 - uv 0.13.3 provisions CPython 3.12.12; OTel 1.28.2 / instrumentation 0.49b2
   and all transitives are locked. Native Python 3.14 only bootstrapped uv.
@@ -57,7 +59,7 @@ when validated; no production milestone or engine change is implied.
   queue/cooldown, bounded values and metadata, unavailable/blocked exporter,
   invalid values, original exception identity, context cleanup, actual OTLP
   decoding, unsupported callables, default capture OFF and standard integrations.
-- Cost budget MISSED. The unchanged budget is p50 <=100 us / p99 <=250 us.
+- FIRST candidate cost budget MISSED. The unchanged budget is p50 <=100 us / p99 <=250 us.
   See [all 30 trials](../benchmark/results/s0a-probe-overhead.json) and the
   [generated cost/context/flush tables](../benchmark/results/s0a-probe-overhead.md).
   Reachable 60 Hz median trial p50/p99 = 252.20/818.49 us (0/5 pass); worst
@@ -170,3 +172,147 @@ Publish instrumentation LOC and accepted/exported/dropped counts. Keep any miss.
 No claims about B/C breadth until separate S0b replay/browser validation completes.
 This is a feasibility prototype, not P1 production onboarding or permission to
 capture real personal data. P0 privacy remains required before that.
+
+## S0b breadth findings (synthetic replay; no engine changes)
+
+The replay driver is adapters/provenance-python/breadth.py. It launches the real
+signalscout serve binary with a fresh database, default grouping/idle/context
+settings and retention disabled to preserve the deliberately old C timestamps.
+Only Go read-only tools inspect SQLite; Python sends ordinary OTLP/HTTP.
+[Raw replay evidence](../benchmark/results/s0b-replay.json) and
+[manual evidence examples](../benchmark/results/s0b-examples.json) retain exact
+native IDs, inputs, outputs, selected references, counters and scope timestamps.
+
+| Behavior | What a developer can inspect | Manual work and limits |
+|---|---|---|
+| A, frame loop | 60 frame runs, four captured arguments, returned lane/maneuver/used_previous_frame, argument-boundary edges and native event anchors. Go and probe envelopes match field by field after generated identity normalization. | Configure one function (11 lines), identify the suspicious frame from a declared expectation, inspect its event JSON, copy refs and pick adjacent reference frames. No automatic previous-version resolver, hidden threshold/alternative capture or invariant engine. |
+| B, one staged core | 12 HTTP-200 turns, nested context/retrieve/select/draft/review/repair calls; repair loops, declines with/without evidence, input history and selected context. Four simulated reviews arrive separately; eight turns remain unlabeled/unknown. | Configure seven functions (26 nonblank lines). Find a run, inspect stages/events and log-explorer labels, copy output/native refs and choose reference IDs outside the product. No Mark UI, quality badge, cohort selection or human-quality inference. A client HTTP span is a separate trace; the stdlib server is not auto-instrumented. |
+| B, optional semantic tier | Same replies, plus a declared first-retrieval selection rule and explicitly rejected candidate IDs. | Two added source/instrumentation lines (import + call), separate enriched copy; 26 nonblank / 27 physical config lines. This does not expose the outer context-limit/strictness policy. Producer assertions are not independent proof. |
+| C, existing shop | Ordinary original OTLP replay preserves 1,960 spans, 376 embedded events, 1,029 logs and 692 metric points, all 4,057 native IDs. Config/env, acquire/retry structure and available host context remain inspectable. | Existing Go application instrumentation is reused; zero source changes in this spike does NOT mean C was automatically instrumented. Saved diffs are never copied. The saved source currently has 692 metrics versus 567 in the older report; export includes all 692, without inferring the reason for the discrepancy. Seed-1 gauge sampling gap remains. |
+
+A/B source snapshots and AST/diff counters prove zero target edits for the plain
+variants, not a hypothetical integration LOC estimate. B's optional two lines are
+counted against the plain original. The injector itself changes zero source bytes
+in either variant. Its setup/config is explicit; discovering useful function names
+and capture fields remains developer work. Body capture defaults OFF.
+
+### Absence, before/after, and coverage
+
+- Manual absence A: frame 2 returns keep with gap 0.48 and the captured prior
+  lane. There is no change maneuver in that observed output. This establishes
+  an observed absence at that call, not why an arbitrary hidden branch was skipped.
+- Stale state A: frame 42 receives previous_frame=40, while adjacent frame 41 is
+  recorded. Given the fixture's declared N-1 expectation this is a suspicious
+  supplied version. The probe cannot prove who wrote/read the stale value.
+- Near-threshold A: adjacent observed inputs/returned lanes can be compared using
+  the generated before/after examples. The hidden exact 0.5 threshold is NOT
+  recovered by observing a few values. No rule or rejected option is invented.
+- Legitimate decline B: turn 0 receives empty retrieval evidence and returns a
+  decline, without a repair call. Repair was attached and observed in other
+  turns; this absence has explicit scope (one captured turn, seven attached
+  functions, zero reported loss). It does not establish global coverage.
+- Successful repair B: turn 1 records draft decline -> review repair -> repair
+  answer -> review accept. This within-turn before/after is not a causal estimate
+  or a separate independent sample per stage. Turn 2 deliberately truncates
+  context; that negative control must not be called an accidental context bug.
+- Unrepaired decline B: turn 3 has supplied synthetic relevant-evidence IDs but
+  still declines. Relevance and too-strictness are the fixture/reviewer's declared
+  judgments; neither follows from a 200 status or document ID alone.
+- C's before/after config example selects an actual earlier pool=20 pass and a
+  pool=5 failure. This is an association with acquire/retry evidence, not proof
+  that configuration caused the failure. No new experiment was secretly run.
+
+Every example includes its native event/span evidence in s0b-examples.json.
+No A/B calls were dropped in the reachable replay. There is one synthetic session
+per fixture; frames/turns are correlated and the sample is too thin for population
+quality rates or calibrated causal claims. Rules hidden in bodies, actual reads,
+external state, multi-session generalization and real reviewer validity remain
+unknown. Optional semantics improve coverage, not truth guarantees.
+
+### Late reviews and existing diff boundary
+
+After default idle finalization, separate simulated label logs use review time
+60 seconds after their target run end. The measured too-strict run's ended_at
+and exact-resource context-scope end both increase by exactly 60 seconds; its
+start and operational pass outcome remain unchanged. The original span timings
+remain execution evidence, but the run-level interval is contaminated by review
+arrival. This confirms the source audit prediction. Independent annotation time
+is a future P2 requirement, not fixed by special-casing this fixture.
+
+POST /run/diff for that actual HTTP-200 passing turn returns 409, "Comparison
+requires a closed failing run." We do not change its outcome to bypass the guard.
+Operational comparison C remains the already implemented subset; labels and
+boundary values do not become scored features or automatic explanations.
+
+### Fidelity correction, retained misses and decision
+
+The first replay exposed identical wall-clock timestamps on sub-tick Windows
+calls. A new test with a constant wall clock initially fails with zero duration;
+monotonic elapsed time anchored to UTC fixes probe/root durations and nested
+order. The failed regression log, first replay, and both full 30-trial overhead
+passes are retained. The first inspector attempt also failed on the legacy
+source context schema; a later comparison harness attempt was stopped for
+quadratic snapshot decoding. Those harness failures are retained and corrected,
+not asserted to have passed. No engine, schema, scoring, timeout or assertion
+was weakened.
+
+The production CLI record/probe add/mark/explain and viewer marking remain
+DESIGN ONLY, with shapes in provenance-spec.md. No arbitrary command injector,
+privacy gate, label store, reference-cohort UI, graph resolver or causal agent
+was built. Logging only adds context correlation, not automatic log-body export.
+
+Riskiest assumption: call-boundary arguments/returns could be mistaken for complete
+semantic provenance. A supplied argument edge does not prove an actual read, and
+operational success does not validate a review label. Current capture must be
+presented as scoped observations with unknown internal dependence.
+
+Recommendation: NO-GO for advancing on the claim that the recorder is cheap and
+production-ready. The fixed cost gate has misses and P0 privacy is unimplemented.
+Any P0 implementation requires separate authorization and an explicit decision
+about the retained cost/coverage gaps; this spike does not start it.
+
+One unchanged Go core stores A, B and C and serves their ordinary evidence.
+A/B need zero target changes for useful boundary observations; B needs two optional
+lines for otherwise hidden selection semantics. C reuses existing OTLP rather
+than demonstrating Go zero-code injection. No behavior-specific server path was
+needed. This supports representational breadth, not automatic diagnosis of any
+codebase, cheap sustained capture, causal truth or production privacy.
+
+## Corrected-duration candidate: final cost result
+
+[All 30 final trials](../benchmark/results/s0a-probe-overhead-monotonic.json) and
+[generated quantile/context/flush table](../benchmark/results/s0a-probe-overhead-monotonic.md)
+use the SAME fixed payload, seeds, rates and 100/250 us budget as the first pass.
+This rerun follows a timestamp-fidelity correction, not a budget or scoring change.
+Do not attribute all timing variation to that correction; no CPU profile isolates it.
+
+| Condition / rate | Median trial p50 / p99 us | Trials within budget | Exported / attempted native items |
+|---|---:|---:|---:|
+| reachable / 60 Hz | 205.15 / 390.31 | 0/5 | 18,000 / 18,000 |
+| reachable / tight | 43.30 / 129.10 | 5/5 | 1,888 / 100,000 |
+| unreachable / 60 Hz | 197.45 / 593.31 | 0/5 | 0 / 18,000 |
+| unreachable / tight | 42.90 / 135.20 | 5/5 | 0 / 100,000 |
+| saturated / 60 Hz | 272.15 / 708.41 | 0/5 | 0 / 18,000 |
+| saturated / tight | 42.90 / 135.31 | 5/5 | 0 / 100,000 |
+
+Reachable tight loops drop 98,112 full; unreachable 60 Hz drops 11,796 during
+cooldown and fails all 6,204 accepted exports; unreachable tight loops drop
+98,560 full and fail 1,440 exports (no cooldown calls in those fast trials).
+Saturation accepts one pending item per trial, dropping the other 17,995/99,995
+items; exporter is deliberately disabled and flush times out as expected.
+A native item is a root or decision span, not a decision-only count.
+
+Context entry/exit median p50 at reachable 60 Hz is 39.30/3.50 us; worst trial
+p99 is 147.51/9.30 us. Explicit flush maximum is 0.091942 s there and 0.498532 s
+in reachable tight loops. The saturated 0.01 s deadline returns within 0.025612 s
+on this OS (scheduler granularity is not a hard real-time guarantee).
+Full per-trial counts, context quantiles, failed exports and payload bytes are
+retained in JSON. Safety checkpoint passes 19 tests. Cost acceptance FAILS:
+all 60 Hz trials miss, even when delivery succeeds. Fast loss paths are not
+full-capture throughput. No target, timeout, assertion or scoring constant moved.
+
+Measurements cover the fixed probe payload and its automatic run context, not
+end-to-end HTTP instrumentation cost or all B stages as one transaction. Those
+costs are unmeasured, not assumed equal. Absolute cross-process clock order and
+real reviewer validity also remain unestablished. The replay keeps the current
+web/ML run classifications; no lane/coaching-specific engine behavior was added.

@@ -144,7 +144,7 @@ P0: a synthetic-first capture contract and privacy gate; P1 then adds one tiny p
 helper for one supported runtime/profile. Acceptance: plain OTLP preserves allowed
 fields/IDs; conflict and truncation are visible; planted secrets reach no stored
 raw/indexed field; default capture contains no user text; M4b ownership,
-navigation, durability and scoring tests remain unchanged. The synthetic helper remains pending under the explicit fallback.
+navigation, durability and scoring tests remain unchanged. The synthetic helper and external probes now exist only as the S0 feasibility spike; P0/P1 production gates remain unimplemented.
 
 ## Recorder safety and per-call cost contract
 
@@ -162,7 +162,7 @@ Budget fixed before measurement: p50 <=100 us, p99 <=250 us for small records
 at 60 calls/sec and tight-loop load, reachable/unreachable, five trials.
 Report serialization/enqueue wall time, counts, p50/p99 and drops. Keep misses.
 The synthetic-only Python spike may demonstrate transport/safety; it does not
-claim a production privacy gate or automatic instrumentation.
+claim a production privacy gate or instrumentation beyond explicitly supported probes/libraries.
 
 ## Proposed record -- command wrapper (design only)
 
@@ -215,3 +215,30 @@ A future viewer Mark action would append an annotation through the existing
 writer, showing reviewer/rubric, dimension and evidence refs. It must not rewrite
 outcome/timestamps or manufacture a satisfactory reference. No marking UI or
 these production CLI commands are built during S0.
+
+### Executed probe boundary and clock policy
+
+The synthetic CLI accepts a module:function entry point, not an arbitrary child
+command. It neither edits source nor installs sitecustomize globally. Configuration
+must identify every supported function and explicitly allow its argument names
+and/or return. Doctor is required output, including unsupported targets and loss.
+Safe support is limited to directly defined synchronous Python module functions.
+Framework discovery, aliases already held elsewhere, async/generators, descriptors,
+reload and native functions remain unsupported.
+
+Short Windows wall-clock samples can be identical. The spike anchors each run to
+UTC once, then uses monotonic elapsed nanoseconds for probe timestamps/durations
+and run exit. Explicit supplied fixture timestamps remain explicit. This preserves
+within-run order and durations; it does not synchronize clocks across processes
+or establish sub-tick absolute order across independent runs. Standard SDK spans
+keep their SDK's clock behavior. A constant-wall-clock regression test covers this.
+Both original and corrected-candidate cost trials are retained with the SAME budget.
+
+The optional call tier shares the exact recorder/queue used by probes. A missing
+output ref can receive a unique run/span-local versioned ref; explicit refs remain
+unchanged. Only explicit calls supply hidden rule/alternative declarations. These
+are producer assertions, not independent proof that the producer's rule is true.
+The minimal enriched B adds an import and a selection-semantic call (two lines);
+all ordinary A/B capture works without those edits. Body capture remains OFF
+unless the corresponding field is explicitly allowed. This is synthetic-only,
+not a replacement for P0 recursive privacy/secret tests.

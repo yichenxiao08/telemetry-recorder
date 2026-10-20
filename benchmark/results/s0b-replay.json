@@ -1,0 +1,964 @@
+{
+  "synthetic_only": true,
+  "engine_changed": false,
+  "fixtures": {
+    "A": {
+      "doctor": {
+        "privacy": "synthetic-only; per-field capture default OFF; NOT P0",
+        "probes": [
+          {
+            "module": "frame_target",
+            "function": "choose_lane",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "gap",
+                "previous_lane",
+                "previous_frame",
+                "frame"
+              ],
+              "return": true
+            }
+          }
+        ],
+        "counters": {
+          "captured_args": 240,
+          "serialized": 60,
+          "envelope_bytes": 69454,
+          "attempted": 120,
+          "accepted": 120,
+          "network_requests": 4,
+          "exported": 120,
+          "queue_size": 0,
+          "capacity": 256,
+          "cooldown_active": false
+        },
+        "auto_otel": {
+          "provider": "SDK -> same bounded OTLP queue",
+          "http": "standard requests instrumentation; other HTTP libraries unsupported",
+          "logging": "standard context correlation; log body export OFF"
+        },
+        "elapsed_seconds": 0.09652750000532251,
+        "flush_seconds": 0.09271849999640835,
+        "drained": true
+      },
+      "application": [
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": -1
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 0
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 1
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 2
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 3
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 4
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 5
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 5
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 7
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 8
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 9
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 10
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 11
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 12
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 12
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 14
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 15
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 16
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 17
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 18
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 19
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 19
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 21
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 22
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 23
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 24
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 25
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 26
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 26
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 28
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 29
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 30
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 31
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 32
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 33
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 33
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 35
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 36
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 37
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 38
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 39
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 40
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 40
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 42
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 43
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 44
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 45
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 46
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 47
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 47
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 49
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 50
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 51
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 52
+        },
+        {
+          "lane": "right",
+          "maneuver": "keep",
+          "used_previous_frame": 53
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 54
+        },
+        {
+          "lane": "left",
+          "maneuver": "change_left",
+          "used_previous_frame": 54
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 56
+        },
+        {
+          "lane": "left",
+          "maneuver": "keep",
+          "used_previous_frame": 57
+        },
+        {
+          "lane": "right",
+          "maneuver": "change_right",
+          "used_previous_frame": 58
+        }
+      ],
+      "instrumentation": {
+        "source": "frame_target.py",
+        "source_sha256": "0bf74b5cedd5a4b84466095e7f376e55b2c881da264a6d0a706c05ba627bb1a8",
+        "source_lines_changed": 0,
+        "instrumentation_lines": 0,
+        "config": "signalscout.yaml",
+        "config_physical_lines": 11,
+        "config_nonblank_noncomment_lines": 11,
+        "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+      }
+    },
+    "B": {
+      "doctor": {
+        "privacy": "synthetic-only; per-field capture default OFF; NOT P0",
+        "probes": [
+          {
+            "module": "pipeline_target",
+            "function": "turn",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "index"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_target",
+            "function": "context_select",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "history",
+                "limit"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_target",
+            "function": "retrieve",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "question"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_target",
+            "function": "select_evidence",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "candidates"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_target",
+            "function": "draft",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "evidence",
+                "context",
+                "strict"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_target",
+            "function": "review",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "reply"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_target",
+            "function": "repair",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "reply",
+                "evidence"
+              ],
+              "return": true
+            }
+          }
+        ],
+        "counters": {
+          "captured_args": 117,
+          "serialized": 78,
+          "envelope_bytes": 64048,
+          "attempted": 102,
+          "accepted": 102,
+          "network_requests": 24,
+          "exported": 102,
+          "queue_size": 0,
+          "capacity": 256,
+          "cooldown_active": false
+        },
+        "auto_otel": {
+          "provider": "SDK -> same bounded OTLP queue",
+          "http": "standard requests instrumentation; other HTTP libraries unsupported",
+          "logging": "standard context correlation; log body export OFF"
+        },
+        "elapsed_seconds": 1.7479363000020385,
+        "flush_seconds": 0.00010029999975813553,
+        "drained": true
+      },
+      "application": [
+        {
+          "index": 0,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "reply": "synthetic repaired answer"
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "reply": "synthetic answer using synthetic-followup"
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 4,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 5,
+          "status": 200,
+          "reply": "synthetic repaired answer"
+        },
+        {
+          "index": 6,
+          "status": 200,
+          "reply": "synthetic answer using synthetic-followup"
+        },
+        {
+          "index": 7,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 8,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 9,
+          "status": 200,
+          "reply": "synthetic repaired answer"
+        },
+        {
+          "index": 10,
+          "status": 200,
+          "reply": "synthetic answer using synthetic-followup"
+        },
+        {
+          "index": 11,
+          "status": 200,
+          "reply": "decline"
+        }
+      ],
+      "instrumentation": {
+        "source": "pipeline_target.py",
+        "source_sha256": "4bab612e3af70a3b6365df3a22dde7ad1f53d218805eea7f4367b9473c68f33b",
+        "source_lines_changed": 0,
+        "instrumentation_lines": 0,
+        "config": "pipeline.yaml",
+        "config_physical_lines": 26,
+        "config_nonblank_noncomment_lines": 26,
+        "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+      }
+    },
+    "B_optional": {
+      "doctor": {
+        "privacy": "synthetic-only; per-field capture default OFF; NOT P0",
+        "probes": [
+          {
+            "module": "pipeline_enriched",
+            "function": "turn",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "index"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_enriched",
+            "function": "context_select",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "history",
+                "limit"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_enriched",
+            "function": "retrieve",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "question"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_enriched",
+            "function": "select_evidence",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "candidates"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_enriched",
+            "function": "draft",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "evidence",
+                "context",
+                "strict"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_enriched",
+            "function": "review",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "reply"
+              ],
+              "return": true
+            }
+          },
+          {
+            "module": "pipeline_enriched",
+            "function": "repair",
+            "status": "attached",
+            "capture": {
+              "args": [
+                "reply",
+                "evidence"
+              ],
+              "return": true
+            }
+          }
+        ],
+        "counters": {
+          "captured_args": 117,
+          "serialized": 90,
+          "envelope_bytes": 73462,
+          "attempted": 114,
+          "accepted": 114,
+          "network_requests": 24,
+          "exported": 114,
+          "queue_size": 0,
+          "capacity": 256,
+          "cooldown_active": false
+        },
+        "auto_otel": {
+          "provider": "SDK -> same bounded OTLP queue",
+          "http": "standard requests instrumentation; other HTTP libraries unsupported",
+          "logging": "standard context correlation; log body export OFF"
+        },
+        "elapsed_seconds": 1.766678599997249,
+        "flush_seconds": 5.650000093737617e-05,
+        "drained": true
+      },
+      "application": [
+        {
+          "index": 0,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "reply": "synthetic repaired answer"
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "reply": "synthetic answer using synthetic-followup"
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 4,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 5,
+          "status": 200,
+          "reply": "synthetic repaired answer"
+        },
+        {
+          "index": 6,
+          "status": 200,
+          "reply": "synthetic answer using synthetic-followup"
+        },
+        {
+          "index": 7,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 8,
+          "status": 200,
+          "reply": "decline"
+        },
+        {
+          "index": 9,
+          "status": 200,
+          "reply": "synthetic repaired answer"
+        },
+        {
+          "index": 10,
+          "status": 200,
+          "reply": "synthetic answer using synthetic-followup"
+        },
+        {
+          "index": 11,
+          "status": 200,
+          "reply": "decline"
+        }
+      ],
+      "instrumentation": {
+        "source": "pipeline_enriched.py",
+        "source_sha256": "304eadf9421d40d2dcd78b268a3ed9633f5b68ad79b21dc47b2d2f4e7beeea34",
+        "source_lines_changed": 0,
+        "instrumentation_lines": 2,
+        "config": "pipeline-enriched.yaml",
+        "config_physical_lines": 27,
+        "config_nonblank_noncomment_lines": 26,
+        "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+      },
+      "added_instrumentation": {
+        "source": "pipeline_enriched.py",
+        "source_sha256": "304eadf9421d40d2dcd78b268a3ed9633f5b68ad79b21dc47b2d2f4e7beeea34",
+        "source_lines_changed": 2,
+        "instrumentation_lines": 2,
+        "config": "pipeline-enriched.yaml",
+        "config_physical_lines": 27,
+        "config_nonblank_noncomment_lines": 26,
+        "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+      }
+    }
+  },
+  "endpoint": "http://127.0.0.1:49898",
+  "C": {
+    "source_counts": {
+      "metric": 692,
+      "span": 1960,
+      "event": 376,
+      "log": 1029
+    },
+    "replay_counts": {
+      "metric": 692,
+      "span": 1960,
+      "event": 376,
+      "log": 1029
+    },
+    "ordinary_otlp_requests": {
+      "/v1/metrics": 692,
+      "/v1/traces": 1960,
+      "/v1/logs": 1029
+    },
+    "native_id_overlap": 4057,
+    "source_ids": 4057,
+    "saved_diff_results_copied": 0
+  },
+  "http": [
+    {
+      "behavior": "A",
+      "path": "/runs",
+      "status": 200,
+      "evidence": "span:fda2d18f3e40ba3aeadee5849a369741/0000000000000001",
+      "anchor": "e-cc7d175d1bd923498501ec4466ce31dcf085d0e150b00dadf0f809f6052a7982"
+    },
+    {
+      "behavior": "A",
+      "path": "/run?id=fda2d18f3e40ba3aeadee5849a369741",
+      "status": 200,
+      "evidence": "span:fda2d18f3e40ba3aeadee5849a369741/0000000000000001",
+      "anchor": "e-cc7d175d1bd923498501ec4466ce31dcf085d0e150b00dadf0f809f6052a7982"
+    },
+    {
+      "behavior": "A",
+      "path": "/telemetry?mode=spans&trace=fda2d18f3e40ba3aeadee5849a369741&from=2026-10-01T00%3A00%3A00Z&to=2026-10-31T00%3A00%3A00Z&limit=100",
+      "status": 200,
+      "evidence": "span:fda2d18f3e40ba3aeadee5849a369741/0000000000000001",
+      "anchor": "e-cc7d175d1bd923498501ec4466ce31dcf085d0e150b00dadf0f809f6052a7982"
+    },
+    {
+      "behavior": "B",
+      "path": "/runs",
+      "status": 200,
+      "evidence": "span:64ba3d3fec094c65a27c395c68ee304b/0000000000000001",
+      "anchor": "e-5c69a5c3aff4e462df4fab83d9eaaa858f7b93a7b5b93049d989b523bac8c07d"
+    },
+    {
+      "behavior": "B",
+      "path": "/run?id=64ba3d3fec094c65a27c395c68ee304b",
+      "status": 200,
+      "evidence": "span:64ba3d3fec094c65a27c395c68ee304b/0000000000000001",
+      "anchor": "e-5c69a5c3aff4e462df4fab83d9eaaa858f7b93a7b5b93049d989b523bac8c07d"
+    },
+    {
+      "behavior": "B",
+      "path": "/telemetry?mode=spans&trace=64ba3d3fec094c65a27c395c68ee304b&from=2026-10-01T00%3A00%3A00Z&to=2026-10-31T00%3A00%3A00Z&limit=100",
+      "status": 200,
+      "evidence": "span:64ba3d3fec094c65a27c395c68ee304b/0000000000000001",
+      "anchor": "e-5c69a5c3aff4e462df4fab83d9eaaa858f7b93a7b5b93049d989b523bac8c07d"
+    },
+    {
+      "behavior": "C",
+      "path": "/runs",
+      "status": 200,
+      "evidence": "span:7dc24f217cafedaa762f1e5e9dacefcc/dec5498e62077b86",
+      "anchor": "e-22dbb7277ef67d52ce33cf92ad7776e55ad6992627f3e8b37bd3b6c65676d008"
+    },
+    {
+      "behavior": "C",
+      "path": "/run?id=7dc24f217cafedaa762f1e5e9dacefcc",
+      "status": 200,
+      "evidence": "span:7dc24f217cafedaa762f1e5e9dacefcc/dec5498e62077b86",
+      "anchor": "e-22dbb7277ef67d52ce33cf92ad7776e55ad6992627f3e8b37bd3b6c65676d008"
+    },
+    {
+      "behavior": "C",
+      "path": "/telemetry?mode=spans&trace=7dc24f217cafedaa762f1e5e9dacefcc&from=2026-10-01T00%3A00%3A00Z&to=2026-10-31T00%3A00%3A00Z&limit=100",
+      "status": 200,
+      "evidence": "span:7dc24f217cafedaa762f1e5e9dacefcc/dec5498e62077b86",
+      "anchor": "e-22dbb7277ef67d52ce33cf92ad7776e55ad6992627f3e8b37bd3b6c65676d008"
+    }
+  ],
+  "simulated_labels": [
+    {
+      "version": 1,
+      "kind": "label",
+      "id": "annotation:64ba3d3fec094c65a27c395c68ee304b/review-1",
+      "synthetic": true,
+      "source": "simulated-reviewer",
+      "source_version": "1",
+      "reviewer": "synthetic-reviewer",
+      "rubric_id": "synthetic-coaching",
+      "rubric_version": "1",
+      "dimension": "synthetic-review",
+      "value": "legitimate-decline",
+      "target_run_ref": "64ba3d3fec094c65a27c395c68ee304b",
+      "target_output_ref": "value:64ba3d3fec094c65a27c395c68ee304b/0000000000000002.return@1",
+      "evidence_refs": [
+        "event:ea60f497c0c0a232cde73e36ef3dbbea451f1813e046f64455fdbf494b1d9ede/0"
+      ],
+      "created_at_ns": "1792478904354344100",
+      "recorded_at_ns": "1792478954885346400"
+    },
+    {
+      "version": 1,
+      "kind": "label",
+      "id": "annotation:45c32049d8a4f37b0c915ac1b6678d74/review-1",
+      "synthetic": true,
+      "source": "simulated-reviewer",
+      "source_version": "1",
+      "reviewer": "synthetic-reviewer",
+      "rubric_id": "synthetic-coaching",
+      "rubric_version": "1",
+      "dimension": "synthetic-review",
+      "value": "successful-repair",
+      "target_run_ref": "45c32049d8a4f37b0c915ac1b6678d74",
+      "target_output_ref": "value:45c32049d8a4f37b0c915ac1b6678d74/0000000000000002.return@1",
+      "evidence_refs": [
+        "event:8970244247b651d397af97c6eb712073cf8b086e30775bd01d156be130c0d27d/0"
+      ],
+      "created_at_ns": "1792478904475853000",
+      "recorded_at_ns": "1792478954954401000"
+    },
+    {
+      "version": 1,
+      "kind": "label",
+      "id": "annotation:0b06aabf50c93e1614d1a48156795da4/review-1",
+      "synthetic": true,
+      "source": "simulated-reviewer",
+      "source_version": "1",
+      "reviewer": "synthetic-reviewer",
+      "rubric_id": "synthetic-coaching",
+      "rubric_version": "1",
+      "dimension": "synthetic-review",
+      "value": "deliberate-truncation",
+      "target_run_ref": "0b06aabf50c93e1614d1a48156795da4",
+      "target_output_ref": "value:0b06aabf50c93e1614d1a48156795da4/0000000000000002.return@1",
+      "evidence_refs": [
+        "event:1ea44afa087b14bec02af683bef1adaa47eddc2342f29f19f8f042b6d1086246/0"
+      ],
+      "created_at_ns": "1792478904590438100",
+      "recorded_at_ns": "1792478955028538600"
+    },
+    {
+      "version": 1,
+      "kind": "label",
+      "id": "annotation:6b6a250184175636380efbcff544a551/review-1",
+      "synthetic": true,
+      "source": "simulated-reviewer",
+      "source_version": "1",
+      "reviewer": "synthetic-reviewer",
+      "rubric_id": "synthetic-coaching",
+      "rubric_version": "1",
+      "dimension": "synthetic-review",
+      "value": "too-strict",
+      "target_run_ref": "6b6a250184175636380efbcff544a551",
+      "target_output_ref": "value:6b6a250184175636380efbcff544a551/0000000000000002.return@1",
+      "evidence_refs": [
+        "event:a961667bd05c750797dc5cc90fcdcda8f2334f04657d6eaa1d0f2b8c29ac05dd/0"
+      ],
+      "created_at_ns": "1792478904706267100",
+      "recorded_at_ns": "1792478955108249200"
+    }
+  ],
+  "late_label": {
+    "label": {
+      "version": 1,
+      "kind": "label",
+      "id": "annotation:6b6a250184175636380efbcff544a551/review-1",
+      "synthetic": true,
+      "source": "simulated-reviewer",
+      "source_version": "1",
+      "reviewer": "synthetic-reviewer",
+      "rubric_id": "synthetic-coaching",
+      "rubric_version": "1",
+      "dimension": "synthetic-review",
+      "value": "too-strict",
+      "target_run_ref": "6b6a250184175636380efbcff544a551",
+      "target_output_ref": "value:6b6a250184175636380efbcff544a551/0000000000000002.return@1",
+      "evidence_refs": [
+        "event:a961667bd05c750797dc5cc90fcdcda8f2334f04657d6eaa1d0f2b8c29ac05dd/0"
+      ],
+      "created_at_ns": "1792478904706267100",
+      "recorded_at_ns": "1792478955108249200"
+    },
+    "before_run": {
+      "config": "{}",
+      "ended_at": 1792478844706267100,
+      "outcome": "pass",
+      "run_id": "6b6a250184175636380efbcff544a551",
+      "started_at": 1792478844705623400,
+      "workload": "pipeline_target.turn"
+    },
+    "after_run": {
+      "config": "{}",
+      "ended_at": 1792478904706267100,
+      "outcome": "pass",
+      "run_id": "6b6a250184175636380efbcff544a551",
+      "started_at": 1792478844705623400,
+      "workload": "pipeline_target.turn"
+    },
+    "before_scopes": [
+      {
+        "end_ns": 1792478849706267100,
+        "rule": "exact_resource",
+        "run_id": "6b6a250184175636380efbcff544a551",
+        "start_ns": 1792478814705623400
+      }
+    ],
+    "after_scopes": [
+      {
+        "end_ns": 1792478909706267100,
+        "rule": "exact_resource",
+        "run_id": "6b6a250184175636380efbcff544a551",
+        "start_ns": 1792478814705623400
+      }
+    ]
+  },
+  "successful_mark_diff": {
+    "status": 409,
+    "body": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Conflict \u00b7 Signal Scout</title><link rel=\"stylesheet\" href=\"/assets/viewer.css\"></head>\n<body><header class=\"site-header\"><a href=\"/runs\">Signal Scout</a><a href=\"/telemetry\">Telemetry explorer</a><span>Run evidence and baseline differences</span></header><main>\n<h1>Conflict</h1><p>Comparison requires a closed failing run.</p><a href=\"/runs\">Return to runs</a></main><footer>Signal Scout \u00b7 local telemetry</footer></body></html>\n"
+  },
+  "run_counts": {
+    "POST /checkout": 340,
+    "frame_target.choose_lane": 60,
+    "GET": 24,
+    "pipeline_target.turn": 12,
+    "pipeline_enriched.turn": 12
+  }
+}

@@ -17,7 +17,7 @@ def retrieve(question):
 
 def select_evidence(candidates):
     selected = candidates[:1]
-    record_decision("selection-semantics", output={"ref": "synthetic:selected", "value": selected}, inputs={"candidates": {"value": candidates}}, chosen={"option": "first"}, alternatives=[{"option": item, "rejected": True} for item in candidates[1:]], rule={"id": "synthetic-first-retrieval", "version": "1"})
+    record_decision("selection-semantics", output={"value": selected}, inputs={"candidates": {"value": candidates}}, chosen={"option": "first"}, alternatives=[{"option": item, "rejected": True} for item in candidates[1:]], rule={"id": "synthetic-first-retrieval", "version": "1"})
     return selected
 
 

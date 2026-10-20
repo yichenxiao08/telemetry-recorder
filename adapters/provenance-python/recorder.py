@@ -73,6 +73,7 @@ class Run:
                 if stamp is not None and (type(stamp) is not int or not 0 < stamp < 2**63):
                     raise ValueError("invalid timestamp")
             self.start_ns = self.start_ns or time.time_ns()
+            self.monotonic_start = time.perf_counter_ns()
             self.valid = True
             self.token = self.recorder._active.set(self)
         except Exception:
@@ -84,7 +85,8 @@ class Run:
             if self.valid:
                 self.recorder._enqueue(self.recorder._span(
                     self, self.span_id, "", self.name, self.start_ns,
-                    self.end_ns or time.time_ns(), self.attributes, [], typ is not None))
+                    self.end_ns or self.start_ns + time.perf_counter_ns() - self.monotonic_start,
+                    self.attributes, [], typ is not None))
         except Exception:
             self.recorder._count("drop_invalid")
         finally:

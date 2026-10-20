@@ -172,3 +172,23 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   Reload is explicitly unsupported; aliases held elsewhere cannot be retroactively
   patched. The timed wrapper/recorder methods were unchanged by this importer-only
   correction after the measurement.
+
+- S0b's ordinary shop replay preserves all 4,057 original native evidence IDs
+  (1,960 spans, 376 events, 1,029 logs, 692 points). The saved database has more
+  metric points than its older 567-point report; current stored data, not the
+  stale summary, defines replay coverage. Do not silently discard the difference.
+- Plain A/B require zero target-source edits, with 11/26 nonblank config lines.
+  Optional B adds two lines for hidden selection semantics. Other internal policy,
+  actual variable reads and cross-run value identity remain outside probe coverage.
+- The measured late-label run/context ends both extend 60 seconds while outcome
+  stays pass. Independent annotation time and mark/reference UI are deferred;
+  a successful marked turn still gets 409 from failing-only diff.
+- Windows wall timestamps can collapse short calls to zero. The synthetic helper
+  now anchors UTC once and uses monotonic elapsed time; a failing regression test
+  and a second full, unchanged-budget cost measurement are retained. Cross-process
+  clock synchronization and complete semantic lineage remain unknown.
+- Final duration-corrected cost pass still misses every 60 Hz budget trial:
+  reachable median p50/p99 205.15/390.31 us; unreachable 197.45/593.31 us;
+  saturated 272.15/708.41 us. Tight loops meet timing only with substantial loss.
+  The final 19-test safety checkpoint passes. Budget/privacy/semantic-coverage
+  gaps remain; no P0 implementation or production rollout is authorized.

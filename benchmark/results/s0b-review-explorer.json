@@ -1,0 +1,6 @@
+{
+  "status": 200,
+  "label_visible": true,
+  "run_id": "6b6a250184175636380efbcff544a551",
+  "path": "/telemetry?mode=logs&trace=6b6a250184175636380efbcff544a551&from=2026-10-20T00%3A00%3A00Z&to=2026-10-21T00%3A00%3A00Z&limit=100&attribute=signalscout.record.kind&value=label"
+}

@@ -28,6 +28,10 @@ def record_decision(step_id, **fields):
     try:
         if _optional is None:
             return False
+        output = fields.get("output")
+        run = _optional.recorder._active.get()
+        if type(output) is dict and "ref" not in output and run and run.valid:
+            fields["output"] = {"ref": f"value:{run.trace_id}/{run.next_id}.return@1", **output}
         return _optional.recorder.record_decision(
             step_id, _parent_id=_optional.parent.get(), **fields)
     except Exception:
@@ -128,8 +132,10 @@ class Probe:
             except Exception:
                 recorder._count("probe_bind_failed")
                 fields = {"unavailable": {"ref": "value:unknown/unavailable@1"}}
-            wall_start = time.time_ns()
             body_start = time.perf_counter_ns()
+            # One UTC anchor per run; elapsed monotonic time retains sub-tick
+            # Windows call durations and nested ordering even on a coarse wall clock.
+            wall_start = run.start_ns + body_start - run.monotonic_start if run and run.valid else time.time_ns()
             error = None
             try:
                 try:
@@ -140,7 +146,7 @@ class Probe:
                 return result
             finally:
                 body_ns = time.perf_counter_ns() - body_start
-                wall_end = time.time_ns()
+                wall_end = wall_start + body_ns
                 # Capture failures must not change the host's result or exception.
                 try:
                     output = {"ref": f"value:{run.trace_id}/{sid}.return@1"}
