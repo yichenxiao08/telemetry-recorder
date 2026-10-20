@@ -1,0 +1,290 @@
+[
+  {
+    "Seed": 1,
+    "RunID": "100daf6b520c3fe4bac166cb49bf89dd",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:52457cddf755472f34c576a2b612b25ffb6c4af165df400de9bc2216cbb00e04",
+    "BeforeMS": 299.2493,
+    "AfterMS": 44.0226
+  },
+  {
+    "Seed": 1,
+    "RunID": "100daf6b520c3fe4bac166cb49bf89dd",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:193fc2625e1c7e1df659b9839307f18586ab421da60698eac4b180f112b85240",
+    "BeforeMS": 352.6242,
+    "AfterMS": 45.8728
+  },
+  {
+    "Seed": 1,
+    "RunID": "39815e2a82e0fa4227612d242db60679",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:91a9dfb33099e25756a97ea2058bdf97eee97469b647962ec68c34c233eeb59d",
+    "BeforeMS": 275.5958,
+    "AfterMS": 39.6249
+  },
+  {
+    "Seed": 1,
+    "RunID": "39815e2a82e0fa4227612d242db60679",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:a8bc00b44774c63f5aa16b2fbbc58fd3558a727338596c33b28a902517c674bd",
+    "BeforeMS": 337.9118,
+    "AfterMS": 45.2526
+  },
+  {
+    "Seed": 1,
+    "RunID": "78689eba5892f10825d2315d2e4c174e",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:b83d4b72566006ebaa16da3a53419f434dcecc909cd99f4ca82aa64902199c3f",
+    "BeforeMS": 274.6938,
+    "AfterMS": 39.4222
+  },
+  {
+    "Seed": 1,
+    "RunID": "78689eba5892f10825d2315d2e4c174e",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:31ae6e7521d0fa73580698949cb95c70287a04b607f966af9be9ef56b0675009",
+    "BeforeMS": 345.4742,
+    "AfterMS": 42.6971
+  },
+  {
+    "Seed": 1,
+    "RunID": "b89b39104d5d27232e3c404ef8a8b0db",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:843bd6feb633c935458888e10912d372ef48a97d2143de2f079eef3bbb136c57",
+    "BeforeMS": 283.6577,
+    "AfterMS": 37.4726
+  },
+  {
+    "Seed": 1,
+    "RunID": "b89b39104d5d27232e3c404ef8a8b0db",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:3eb46b1829c5dcbd542d0b5275b5fb17b6ce641c96c005d54ba0a923f2ea5e28",
+    "BeforeMS": 1444.9425,
+    "AfterMS": 63.3012
+  },
+  {
+    "Seed": 1,
+    "RunID": "521a541bb362b93d55272760cf86dc3f",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:d16f928fef5ec2f1b0a24d8308c10bf1f52661fa2546ce63c4ecf6369f0e4e1f",
+    "BeforeMS": 939.9508,
+    "AfterMS": 37.4168
+  },
+  {
+    "Seed": 1,
+    "RunID": "521a541bb362b93d55272760cf86dc3f",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:47a8e1512fe9c65a40b8f6e3c2c776b9d5d62bfb4d2bf9c0eada90c9a3ed3a42",
+    "BeforeMS": 2529.1295,
+    "AfterMS": 63.8016
+  },
+  {
+    "Seed": 1,
+    "RunID": "b98ef50b5ee825243baa0c2e2b56bb32",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:dc96121ba9384b8bd09502868cfd80c7ac934d7d01fc1448a2e024a68e55a9e5",
+    "BeforeMS": 818.5909,
+    "AfterMS": 42.7872
+  },
+  {
+    "Seed": 1,
+    "RunID": "b98ef50b5ee825243baa0c2e2b56bb32",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:1fb71fd8f5fcf8e44753b4fea2b9c946dca88951abdee8ec74b07a34de5753cb",
+    "BeforeMS": 2709.3107,
+    "AfterMS": 62.072
+  },
+  {
+    "Seed": 1,
+    "RunID": "c779cc44e52e5af434d9ce3e2d2b465f",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:fe607ba27f9be35807fbaf0f340871af722e7748563a9b20c44c3ec2d46d3537",
+    "BeforeMS": 740.6382,
+    "AfterMS": 35.5133
+  },
+  {
+    "Seed": 1,
+    "RunID": "c779cc44e52e5af434d9ce3e2d2b465f",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:1d18bde66765d51cef3122245f34d22e4b954c2fb042812f4c60bb15150f6f2f",
+    "BeforeMS": 2877.9027,
+    "AfterMS": 67.7823
+  },
+  {
+    "Seed": 1,
+    "RunID": "da0cd0313bb5c6da62732e5302c5995a",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:5d74efe6b81c417ecca00c93ce46d6ae28926616110fd39edc6db2d4f9f3b7ca",
+    "BeforeMS": 860.1835,
+    "AfterMS": 31.3531
+  },
+  {
+    "Seed": 1,
+    "RunID": "da0cd0313bb5c6da62732e5302c5995a",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:2d56ede265b5197ff7a8008d90684761446db7c9df2d8a9ab8f7e395b81f1c84",
+    "BeforeMS": 2888.1288,
+    "AfterMS": 63.2623
+  },
+  {
+    "Seed": 1,
+    "RunID": "bacb3e98faf20115e0bbdeff5ecc9ff1",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:26d56467073ab2139307b044dd73bf610a9e49b6a55116ddd431d3e1a16b86e5",
+    "BeforeMS": 898.9334,
+    "AfterMS": 46.5848
+  },
+  {
+    "Seed": 1,
+    "RunID": "bacb3e98faf20115e0bbdeff5ecc9ff1",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:70a2ed334dd4225da5d3f0559e1561c9682df8048a532f9b5ce1aba905da4085",
+    "BeforeMS": 2884.2862,
+    "AfterMS": 61.7682
+  },
+  {
+    "Seed": 2,
+    "RunID": "13bd48578c81be3dcc15ca14eeed4154",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:62af7b6460c22dd59d88f5ed1805f44a27ac654be51e6f3eb3ce7420cf005376",
+    "BeforeMS": 938.3157,
+    "AfterMS": 43.0197
+  },
+  {
+    "Seed": 2,
+    "RunID": "13bd48578c81be3dcc15ca14eeed4154",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:aa722be0f694af5ba4b83c47e822257f50488cbe6a646d0a62216c2709dfdf70",
+    "BeforeMS": 1128.0316,
+    "AfterMS": 47.7236
+  },
+  {
+    "Seed": 2,
+    "RunID": "3e41383e8cbf1c3c4d1f3717e73083a8",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:482f1848dc00c3cadc0315b003c6c010d14d8ede896b5cf79896c69a774c445d",
+    "BeforeMS": 861.1802,
+    "AfterMS": 42.7846
+  },
+  {
+    "Seed": 2,
+    "RunID": "3e41383e8cbf1c3c4d1f3717e73083a8",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:04fe392ba5bc8876c321ef7a6a5ade4d129787517447a0bf11dd56a1aab6cfca",
+    "BeforeMS": 1119.7097,
+    "AfterMS": 43.6844
+  },
+  {
+    "Seed": 2,
+    "RunID": "17d96dab208e29e6d826a49682063940",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:931400d0e63ab1b0e0988d5faea170600f3352010f92ba07b6d02b8b4cedea12",
+    "BeforeMS": 838.7412,
+    "AfterMS": 48.8713
+  },
+  {
+    "Seed": 2,
+    "RunID": "17d96dab208e29e6d826a49682063940",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:ed3256a3e56cb9e3d61e63c59dbb8f39de4cf0618b6081316290719f622a3967",
+    "BeforeMS": 1061.4614,
+    "AfterMS": 42.8601
+  },
+  {
+    "Seed": 2,
+    "RunID": "4b11f1f120518a8bfadb57b27bf1ad64",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:480a2261e4442f6db44c8b67b7ec1ea53bbcd8538897f08489e6771ff1a15da0",
+    "BeforeMS": 870.5816,
+    "AfterMS": 39.5983
+  },
+  {
+    "Seed": 2,
+    "RunID": "4b11f1f120518a8bfadb57b27bf1ad64",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:5573f3f71e0e341a1c3eb47cee1361d0da7604e6f7d08456469a9b4982eeda13",
+    "BeforeMS": 2670.2784,
+    "AfterMS": 65.8063
+  },
+  {
+    "Seed": 2,
+    "RunID": "7efe8b040333201354eb6379b0359827",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:949d03aac7c65c1c8ed00de1df9b49652127aa2aea909cef285e7bb65112d476",
+    "BeforeMS": 977.2524,
+    "AfterMS": 36.0473
+  },
+  {
+    "Seed": 2,
+    "RunID": "7efe8b040333201354eb6379b0359827",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:e2379cf879f6f773c9289cf7cdc9a9ea66e5e747ec8057dc08f0f45d690be65f",
+    "BeforeMS": 2964.3942,
+    "AfterMS": 60.9795
+  },
+  {
+    "Seed": 2,
+    "RunID": "47c2f2f18321f8d54544a5379aa794f0",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:e5d4ae7bfc6224e92a520ee13cefd738147f208a8648284c76116d44f059820a",
+    "BeforeMS": 898.5356,
+    "AfterMS": 41.0061
+  },
+  {
+    "Seed": 2,
+    "RunID": "47c2f2f18321f8d54544a5379aa794f0",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:dd2ba867872a4971f63092452986493725352c8d98b6ecfa18c46770e181d762",
+    "BeforeMS": 2797.4653,
+    "AfterMS": 61.205
+  },
+  {
+    "Seed": 2,
+    "RunID": "c354999411908c27ac1a86edae05c8d2",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:ca7df1f796ce789efbe1a95f18d027ed23ebad4c126eb90e1100a9ba45adcfa4",
+    "BeforeMS": 1000.5035,
+    "AfterMS": 36.3834
+  },
+  {
+    "Seed": 2,
+    "RunID": "c354999411908c27ac1a86edae05c8d2",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:a3609f34d40f23cb7781aacf929caace6d45aefaa9e8a99af7fc26d706962f12",
+    "BeforeMS": 2922.5648,
+    "AfterMS": 61.8862
+  },
+  {
+    "Seed": 2,
+    "RunID": "0ab20f66e6a76a3f0cf14a8d67c53970",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:a0fed2686eeda6045324d7cea925d930df7a9e090fccdba41add22db8fd5ae8c",
+    "BeforeMS": 948.5068,
+    "AfterMS": 41.1787
+  },
+  {
+    "Seed": 2,
+    "RunID": "0ab20f66e6a76a3f0cf14a8d67c53970",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:01343ca963f1e4551a56070885eef3ffafa438aa675caf4094d1c75948542db7",
+    "BeforeMS": 2881.4111,
+    "AfterMS": 56.5076
+  },
+  {
+    "Seed": 2,
+    "RunID": "cba01f083bafe7e557b0c71aed950409",
+    "Mode": "before",
+    "UnchangedDiffID": "diff:24e0ea5aa2847b46b5b580c2d395e238d3141e2d39787d4f8fb63801bf99a7d5",
+    "BeforeMS": 911.4764,
+    "AfterMS": 38.2538
+  },
+  {
+    "Seed": 2,
+    "RunID": "cba01f083bafe7e557b0c71aed950409",
+    "Mode": "default",
+    "UnchangedDiffID": "diff:a12a1a0e2b91b98649f00e97eae4c3fdaaae4e28382961e1c864aa432c305aee",
+    "BeforeMS": 2925.3568,
+    "AfterMS": 63.7799
+  }
+]

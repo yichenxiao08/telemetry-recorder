@@ -30,10 +30,11 @@ Ctrl+C when finished. The before-phase suggestion comes from explicit stored
 phase metadata; no benchmark JSON is loaded by the viewer.
 
 Wait for the **OTLP and viewer HTTP listening** message before opening the
-browser. Normal store startup rebuilds context links before listening; this can
-be slow on retained demo data, especially under `-race`. Startup backfill and
-context-link storage growth are part of the planned performance task before
-M4b. No startup or ingest tuning is included in M4.
+browser. The completed pre-M4b performance task replaces materialized context
+links with compact scopes and a persisted padding checkpoint; an unchanged
+restart skips history. See docs/performance.md for first-upgrade/restart/race
+measurements and retained original failures. M4 itself did not tune startup or
+intake. The current explorer/context walkthrough is docs/explorer-walkthrough.md.
 
 ## 2. Run list → failing run
 
@@ -169,7 +170,7 @@ No stored telemetry is inserted as trusted HTML, CSS or script. CSS `:target`
 implements highlighting without JavaScript.
 
 Limits: 25 rows by default/100 maximum per list page; 5,000 structural records
-per timeline; 200 baseline runs and 50,000 structural records per comparison;
+per timeline; 200 baseline runs and 50,000 total records per context comparison;
 two simultaneous computations. Oversized comparisons return a visible error
 instead of a partial ranking. Requests have a ten-second deadline.
 

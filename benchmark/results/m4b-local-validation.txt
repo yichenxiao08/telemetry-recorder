@@ -1,0 +1,34 @@
+ok  	github.com/signalscout/signalscout/cmd/signalscout	5.039s
+?   	github.com/signalscout/signalscout/internal/agent	[no test files]
+?   	github.com/signalscout/signalscout/internal/config	[no test files]
+ok  	github.com/signalscout/signalscout/internal/diff	4.422s
+ok  	github.com/signalscout/signalscout/internal/intake	4.862s
+?   	github.com/signalscout/signalscout/internal/model	[no test files]
+?   	github.com/signalscout/signalscout/internal/redaction	[no test files]
+ok  	github.com/signalscout/signalscout/internal/runs	1.495s
+ok  	github.com/signalscout/signalscout/internal/stats	1.521s
+ok  	github.com/signalscout/signalscout/internal/store	12.683s
+ok  	github.com/signalscout/signalscout/internal/telemetry	1.356s
+ok  	github.com/signalscout/signalscout/internal/viewer	13.771s
+ok  	github.com/signalscout/signalscout/samples/shop	3.136s
+ok  	github.com/signalscout/signalscout/samples/shop/load	1.917s
+ok  	github.com/signalscout/signalscout/samples/shop/workload	1.483s
+?   	github.com/signalscout/signalscout/scripts/checkfmt	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/contextdemo	1.946s
+ok  	github.com/signalscout/signalscout/scripts/diffdemo	1.785s
+?   	github.com/signalscout/signalscout/scripts/explorerbench	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/ingestbench	5.435s
+ok  	github.com/signalscout/signalscout/scripts/ingestsummary	1.711s
+ok  	github.com/signalscout/signalscout/scripts/m4breport	1.436s
+ok  	github.com/signalscout/signalscout/scripts/perfreport	1.430s
+ok  	github.com/signalscout/signalscout/scripts/shopdemo	2.040s
+?   	github.com/signalscout/signalscout/scripts/shopload	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/startupbench	1.624s
+ok  	github.com/signalscout/signalscout/scripts/storebench	1.909s
+ok  	github.com/signalscout/signalscout/scripts/workloadrates	1.657s
+task: [lint] go run ./scripts/checkfmt
+task: [lint] go vet ./...
+task: [lint] golangci-lint run
+0 issues.
+task: [build] go build -o bin/signalscout.exe ./cmd/signalscout
+Final local validation passed.

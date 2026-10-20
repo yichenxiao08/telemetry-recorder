@@ -357,3 +357,20 @@ Text-only guards retain the original matching semantics. No new resource index,
 ingest tuning, durability change, scoring adjustment or deadline extension was
 made for this regression. Unit tests compare complete records/provenance with
 the legacy views and cover separate windows, gaps, caps and late updates.
+
+The isolated native rerun preserves all 36 complete diff identities (scores,
+selection and evidence) across both saved seeds and modes. Maximum read/compute/
+save time falls from 1,000.50 to 48.87 ms for before mode and from 2,964.39 to
+67.78 ms for recent mode. These are maxima across eighteen comparisons per mode,
+not throughput measurements; the raw before/after records are in
+`m4b-reader-result-equivalence.json`. The full saved seed-1 race walkthrough
+resolves 513 evidence links in 453.45 seconds, within the unchanged ten-minute
+test limit. Earlier aggregation, per-run and non-indexed snapshot attempts remain
+as failures, including the latter's ten-minute navigation timeout.
+
+Final explorer API measurements over the same 1M-row fixture include decoding
+and aggregation: five-repeat maxima range from 1.0572 to 5.4773 ms, all below
+500 ms. Required time bounds, limits and index-plan assertions remain enforced.
+The fixture has eleven resources, small payloads and unflushed OS caches; this
+does not validate arbitrary cardinality or cold-disk latency. See the generated
+`benchmark/results/m4b-summary.md` and raw `m4b-million-queries-final.json`.

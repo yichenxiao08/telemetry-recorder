@@ -1,0 +1,10 @@
+=== RUN   TestStoredM2Walkthrough
+    demo_test.go:79: <!doctype html>
+        <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gateway Timeout · Signal Scout</title><link rel="stylesheet" href="/assets/viewer.css"></head>
+        <body><header class="site-header"><a href="/runs">Signal Scout</a><a href="/telemetry">Telemetry explorer</a><span>Run evidence and baseline differences</span></header><main>
+        <h1>Gateway Timeout</h1><p>The viewer request exceeded its time limit.</p><a href="/runs">Return to runs</a></main><footer>Signal Scout · local telemetry</footer></body></html>
+
+--- FAIL: TestStoredM2Walkthrough (11.42s)
+FAIL
+FAIL	github.com/signalscout/signalscout/internal/viewer	12.990s
+FAIL

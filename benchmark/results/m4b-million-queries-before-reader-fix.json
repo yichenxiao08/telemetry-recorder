@@ -1,0 +1,294 @@
+{
+  "Database": ".cache/performance/million.db",
+  "Method": "Existing seeded 1M-row real-schema fixture, migrated through 008; actual read APIs, time bounds and LIMIT100. Five repeats; first connection-cold, OS caches unflushed. Includes decoding, aggregation and iteration. No concurrent measurement workload.",
+  "Queries": [
+    {
+      "name": "spans_service_time",
+      "filter": {
+        "NoService": false,
+        "Kind": "span",
+        "Service": "service-02",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        4.0959,
+        1.1263,
+        1.085,
+        0.5294,
+        2.154
+      ],
+      "rows": 100,
+      "all_under_500ms": true
+    },
+    {
+      "name": "logs_service_time",
+      "filter": {
+        "NoService": false,
+        "Kind": "log",
+        "Service": "service-02",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        2.7661,
+        0.5171,
+        0.5362,
+        0.5421,
+        1.0683
+      ],
+      "rows": 100,
+      "all_under_500ms": true
+    },
+    {
+      "name": "metrics_service_time",
+      "filter": {
+        "NoService": false,
+        "Kind": "metric",
+        "Service": "service-02",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        2.4746,
+        1.0404,
+        0.5292,
+        1.0711,
+        0.5197
+      ],
+      "rows": 100,
+      "all_under_500ms": true
+    },
+    {
+      "name": "metrics_without_service",
+      "filter": {
+        "NoService": true,
+        "Kind": "metric",
+        "Service": "",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        2.6844,
+        0.5505,
+        0.5512,
+        1.0908,
+        1.0581
+      ],
+      "rows": 100,
+      "all_under_500ms": true
+    },
+    {
+      "name": "attribute_filter",
+      "filter": {
+        "NoService": false,
+        "Kind": "span",
+        "Service": "service-02",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "ok",
+        "Attribute": "http.route",
+        "AttributeValue": "/benchmark",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": 5,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        3.7546,
+        1.9014,
+        2.3703,
+        0,
+        3.0456
+      ],
+      "rows": 100,
+      "all_under_500ms": true
+    },
+    {
+      "name": "trace_spans",
+      "filter": {
+        "NoService": false,
+        "Kind": "span",
+        "Service": "",
+        "TraceID": "000000000000000100000000000030d5",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": 10,
+      "all_under_500ms": true
+    },
+    {
+      "name": "trace_logs",
+      "filter": {
+        "NoService": false,
+        "Kind": "log",
+        "Service": "",
+        "TraceID": "000000000000000100000000000030d5",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": 3,
+      "all_under_500ms": true
+    },
+    {
+      "name": "template_counts",
+      "filter": {
+        "NoService": false,
+        "Kind": "log",
+        "Service": "service-02",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        8.0614,
+        2.7045,
+        0.6052,
+        4.4941,
+        0
+      ],
+      "rows": 8,
+      "all_under_500ms": true
+    },
+    {
+      "name": "service_overview",
+      "filter": {
+        "NoService": false,
+        "Kind": "span",
+        "Service": "service-02",
+        "TraceID": "",
+        "Name": "",
+        "Text": "",
+        "Template": "",
+        "Status": "",
+        "Attribute": "",
+        "AttributeValue": "",
+        "From": 1700123200000000000,
+        "To": 1700126800000000000,
+        "Limit": 100,
+        "SeverityMin": null,
+        "SeverityMax": null,
+        "DurationMin": null,
+        "DurationMax": null,
+        "After": null
+      },
+      "milliseconds": [
+        7.9641,
+        5.6502,
+        0,
+        7.8719,
+        3.0276
+      ],
+      "rows": 1,
+      "all_under_500ms": true
+    }
+  ]
+}
