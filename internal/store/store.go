@@ -37,10 +37,11 @@ type Options struct {
 }
 
 type job struct {
-	batch  *model.Batch
-	result *storedDiff
-	now    time.Time
-	done   chan error
+	batch    *model.Batch
+	result   *storedDiff
+	metadata *metadataWrite
+	now      time.Time
+	done     chan error
 }
 
 type Store struct {
@@ -289,6 +290,8 @@ func (s *Store) loop(startup context.Context) {
 		var err error
 		if j.result != nil {
 			err = s.writeDiff(context.Background(), *j.result)
+		} else if j.metadata != nil {
+			err = s.writeMetadata(context.Background(), *j.metadata)
 		} else {
 			err = s.maintain(context.Background(), j.now, false)
 		}

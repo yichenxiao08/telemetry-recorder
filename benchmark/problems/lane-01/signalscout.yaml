@@ -1,0 +1,10 @@
+version: 1
+synthetic_only: true
+service: synthetic.lane-01
+auto_otel: false
+probes:
+  - module: lane_target
+    function: decide
+    capture:
+      args: [gap, previous_lane, previous_frame, frame, noise]
+      return: true

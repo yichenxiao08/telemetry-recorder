@@ -192,3 +192,28 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   saturated 272.15/708.41 us. Tight loops meet timing only with substantial loss.
   The final 19-test safety checkpoint passes. Budget/privacy/semantic-coverage
   gaps remain; no P0 implementation or production rollout is authorized.
+
+## Slice 1 conservative choices (2026-10-20)
+
+- PR #1 and the provenance spike are merged on main (859487c); Slice 1 branches
+  from that main. No real Subway Surfers data exists; do not reconstruct it.
+- The owner changed the reachable 60 Hz budget to 330/830 us after seeing results.
+  All five corrected-duration trials meet it; first-candidate trials meet it in
+  3/5 cases. Original 100/250 misses and saturation losses remain unchanged.
+- Annotation writes use the serving process API and existing writer queue. CLI
+  marking never opens another operational writer. Annotation created/recorded
+  times are separate from telemetry and cannot widen execution/context scopes.
+- Synthetic-only annotations require a rubric, source and reviewer. Revisions
+  append, retain target/dimension/source/reviewer and cannot fork. Disagreement
+  remains visible; label selection excludes conflicting active values. Unlabeled
+  runs remain unknown. Predicates support captured scalar equality only.
+- Cohorts pin unit/profile/workload, selection window, labels, native decision
+  revisions and sessions. Require bounds/limit; reject oversized populations
+  rather than truncate silently. Explicit reference cohorts cannot overlap the
+  problem cohort. Per-feature observed minimum is ten on each side.
+- A previous-version age is a profile-declared subtraction of two captured
+  scalars; this knowledge lives in the frozen profile, never engine name logic.
+  The version invariant checks producer-declared usage, not arbitrary reads.
+- authored_blind means evaluation outcomes unseen. The requested mechanisms and
+  formulas are known, and synthetic separability is deliberate; this is NOT
+  independent blind validation or real-world diagnostic accuracy.

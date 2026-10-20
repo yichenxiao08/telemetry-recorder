@@ -57,3 +57,8 @@ tasks:
     desc: Validate M3 rankings and timing on an existing M2 demo database
     cmds:
       - go run ./scripts/diffdemo {{.CLI_ARGS}}
+  lane-01:
+    desc: Run only the synthetic pre-registered Slice 1 lane problem
+    deps: [build]
+    cmds:
+      - go run ./scripts/laneeval {{.CLI_ARGS}}

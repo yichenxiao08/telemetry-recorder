@@ -73,7 +73,7 @@ func (s *Store) writeJobs(ctx context.Context, jobs []job) []error {
 }
 
 func (s *Store) reportError(err error) {
-	if err != nil && !errors.Is(err, RunChanged) {
+	if err != nil && !errors.Is(err, RunChanged) && !errors.Is(err, MetadataRejected) {
 		select {
 		case s.errors <- err:
 		default:

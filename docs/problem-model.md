@@ -155,3 +155,47 @@ Structured report types permit only observation, association and hypothesis.
 A verifier can reject an unsupported type, missing denominator or wrong evidence
 membership. It cannot guarantee detection of every causal overinterpretation in
 free text or settle subjective quality. Keep that limitation visible.
+
+## Slice 1 implemented boundary (2026-10-20)
+
+The owner explicitly authorizes a synthetic-only slice through marking, cohorts,
+categorical/input shifts and ONE declared-used version invariant. This supersedes
+this document's historical "design only/pending" statements for that narrow subset.
+P0 production privacy and M5–M8 remain unstarted; no hypothesis generation.
+
+Migration 009 adds append-only annotations and immutable cohort snapshots.
+CLI marks post JSON to the EXISTING serving writer; reads use the read-only pool.
+Created/recorded review times do not become telemetry/run/context times. Revisions
+retain run/dimension/source/reviewer, have one successor, and remain inspectable.
+Conflicting active label values exclude a run from label cohorts; no implicit
+adjudication. Predicate selection is bounded captured-scalar JSON equality only.
+
+Cohorts require explicit start-time bounds <=31 days and eligible-population limit
+1..1000. Oversize is an error, not silent selection truncation. Store exact run,
+label and native decision revisions, unit/profile/workload, selection/exclusions,
+and session IDs. The last decision per configured step/run is chosen when creating
+cohorts; later decisions never replace it in a saved selection. Overlap or profile
+mismatch is rejected. Raw event reads are bounded to 10,000 records per selection;
+annotation reads are bounded; labels are never inferred from log-template text.
+
+The formulas above are implemented unchanged in internal/cohort. Numeric units,
+epsilon and absolute floor come from a validated immutable profile; subtraction
+of two captured scalars is a declared generic feature transform. Returned string
+categories are selectable alongside verdict/reason/chosen fields. Score zero is
+an observation with no difference, not a ranked discovery. Each feature needs ten
+observed examples per cohort; missing capture is excluded with explicit coverage,
+never imputed zero. Reports retain raw numerator/denominator, selected/observed/
+missing run counts, selection exclusions and session counts beside associations.
+Session IDs identify clusters, not proven independence; shared sessions are explicit.
+
+The invariant is parameterized by declared-use/current/used selectors and delta;
+missing/nonintegral values yield unknown, a false declaration is not_applicable,
+and a matching/differing declared version yields satisfied/violated. It is an
+observation without a baseline, not a proof of arbitrary reads or causation.
+
+Still design: semantic-ID conflict handling, full graph traversal, artifact access,
+privacy/redaction, richer predicates/cohort matching, graphical mark UI, categorical
+reason enrichment, durable report history, hypotheses and suggested experiments.
+The exact lane evaluation contract is frozen at b537ee1 in problem.yaml and
+slice1-scoring.md; authored_blind is explicitly outcome-blind, not independently
+written. The engine never reads benchmark mechanism/symptom/decoy labels.

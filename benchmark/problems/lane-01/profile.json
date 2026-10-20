@@ -1,0 +1,26 @@
+{
+  "id": "lane-01-v1",
+  "unit": "frame",
+  "workload": "lane_target.decide",
+  "step": "lane_target.decide",
+  "envelope_profile": "synthetic",
+  "envelope_version": "1",
+  "numeric": [
+    {"name":"previous_age","selector":"inputs.frame","subtract":"inputs.previous_frame","unit":"frame","epsilon":1,"floor":1},
+    {"name":"gap","selector":"inputs.gap","unit":"ratio","epsilon":0.01,"floor":0.01},
+    {"name":"noise_0","selector":"inputs.noise.0","unit":"arbitrary","epsilon":1,"floor":0.1},
+    {"name":"noise_1","selector":"inputs.noise.1","unit":"arbitrary","epsilon":1,"floor":0.1},
+    {"name":"noise_2","selector":"inputs.noise.2","unit":"arbitrary","epsilon":1,"floor":0.1},
+    {"name":"noise_3","selector":"inputs.noise.3","unit":"arbitrary","epsilon":1,"floor":0.1},
+    {"name":"noise_4","selector":"inputs.noise.4","unit":"arbitrary","epsilon":1,"floor":0.1},
+    {"name":"noise_5","selector":"inputs.noise.5","unit":"arbitrary","epsilon":1,"floor":0.1},
+    {"name":"noise_6","selector":"inputs.noise.6","unit":"arbitrary","epsilon":1,"floor":0.1}
+  ],
+  "categories": [
+    {"name":"verdict","selector":"verdict"},
+    {"name":"reason_code","selector":"reason_code"},
+    {"name":"chosen.option","selector":"chosen.option"},
+    {"name":"output.lane","selector":"output.lane"}
+  ],
+  "invariant": {"declared":"output.previous_used","current":"inputs.frame","used":"inputs.previous_frame","delta":1}
+}

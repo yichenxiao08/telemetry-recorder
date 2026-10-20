@@ -55,3 +55,14 @@ and growth per hour rather than assume this extrapolation is accurate.
   uncertainty across runtimes/processes rather than infer sub-tick order from
   coincident wall-clock timestamps. S0 keeps the original failed fidelity test
   and both unchanged-budget cost passes.
+
+## Slice 1 follow-ups (parked)
+
+- Independent real-world cases and author-separated held-out evaluation before
+  claiming diagnostic accuracy. lane-01 is a deliberately separable synthetic
+  case-control task with pre-known mechanisms; keep decoy-heavy/minority misses.
+- Graph-based identity/read validation and clustered uncertainty estimates; scalar
+  version declarations are not proof of real data dependence or independence.
+- Richer cohort matching, mark UI and annotation retention/deletion policy only
+  after separately authorized scope and P0 privacy. Current annotations are
+  synthetic-only and append-only; no real-content capture gate is claimed.
