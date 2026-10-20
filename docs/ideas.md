@@ -3,3 +3,32 @@
 - Authentication and multi-tenant isolation (explicit non-goal for current plan).
 - Sampling and retention policy configuration UI (beyond current cleanup configuration).
 - Broader cross-signal correlation heuristics; current behavior requires explicit context.
+
+## Parked throughput experiments (not part of M4b)
+
+- Defender exclusion experiment: compare the same durable benchmark with and without an explicitly approved, narrowly scoped database-directory exclusion. Windows flush/write dominates the profile, but antivirus overhead has not been established. Do not change host protection as part of this milestone.
+- Background checkpointing: measure whether moving checkpoints out of intake reduces tail stalls, preserving WAL/NORMAL, bounded WAL growth, shutdown behavior and acknowledgment after commit.
+- Group-commit window: measure a small bounded waiting window versus the current four already-queued jobs, including low-load acknowledgment latency and queue pressure. No window is added now.
+- Compact scalar storage: measure typed scalar columns/series metadata against duplicated JSON TEXT while retaining raw-record fidelity and existing-data readability. This requires its own migration and correctness study.
+
+Storage estimate: the measured mixed 1M-record fixture uses about 1.1 KB/record.
+Applying that mixed-record estimate to 3,000 scalar points/sec gives roughly
+12 GB/hour before retention. This is an estimate, not measured scalar-only
+storage. M8 must measure scalar-point storage, series cardinality, retention
+and growth per hour rather than assume this extrapolation is accurate.
+
+## Revised thesis parking lot (design only)
+
+- Full-detail recent buffering and promotion on labels, versus declared sampling:
+  measure label delays, byte caps, eviction, reference availability and graph
+  completeness before choosing defaults. Do not implement in this spike.
+- Additional runtime/framework integrations after one measured supported helper.
+  Arbitrary-code semantic inference and automatic quality judgments remain non-goals.
+- Revision-bound source navigation and richer lineage graph visualization after
+  basic logical-ID resolution/invariants; preserve a bounded, simple viewer.
+- Resume training/ML breadth only when needed. The lane/frame synthetic fixture
+  does not authorize robotics integration or application replay.
+
+- Design-only signalscout record -- command wrapper and doctor summary: reuse
+  existing OTLP integrations, report unsupported libraries and missing app signals.
+  No wrapper, metrics-browser extension or service-overview expansion in this task.

@@ -37,6 +37,14 @@ tasks:
       CGO_ENABLED: '0'
     cmds:
       - go run ./scripts/storebench {{.CLI_ARGS}}
+  context-demo:
+    desc: Validate context differences on copies of both saved M2 demo databases
+    cmds:
+      - go run ./scripts/contextdemo {{.CLI_ARGS}}
+  benchmark-explorer:
+    desc: Measure actual bounded explorer APIs on the existing 1M-row fixture
+    cmds:
+      - go run ./scripts/explorerbench {{.CLI_ARGS}}
   shop-load:
     desc: Send fixed-seed checkout traffic to an already running shop
     cmds:

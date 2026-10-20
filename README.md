@@ -1,6 +1,6 @@
 # Signal Scout
 
-Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0–M4 provide intake, a seeded shop demo, ranked differences against passing history, and a minimal local viewer. See [plan.md](plan.md) for the full milestone plan; context exploration and agent explanations belong to later milestones.
+Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0–M4b provide intake, a seeded shop demo, ranked structural and context differences against passing history, and a local viewer and telemetry explorer. See [plan.md](plan.md) for the full milestone plan; agent explanations belong to later milestones.
 
 ## Windows / PowerShell quick start
 
@@ -38,8 +38,9 @@ two baseline diff panels, numeric distributions and highlighted evidence links.
 Templates escape telemetry; CSS is embedded and CSP disables scripts/external
 requests. On-demand diffs use the serving writer queue. See the full
 [PowerShell walkthrough](docs/viewer-walkthrough.md), including saved demo commands.
-Context logs/metrics, service overview and search remain M4b. The ingest
-throughput misses have a separate planned performance task before M4b.
+The explorer adds context logs/metrics, service overview and search. The completed
+performance task and the owner's revised workload gates are recorded in
+[docs/performance.md](docs/performance.md); remaining misses are preserved.
 
 The queue is bounded in batches, each decoded request limited to 16 MiB. Success means the batch committed. Queue saturation or storage failure returns 503 with `Retry-After: 1`; malformed input returns 4xx. Retrying identical requests is idempotent. Processes with accepted batches can still lose them if killed before commit; the HTTP client receives no success in that case. WAL uses `synchronous=NORMAL`, which does not promise survival of the most recent commits after power loss.
 
@@ -80,7 +81,10 @@ To reproduce M1 ingest measurements:
 task benchmark-ingest
 ```
 
-See [docs/benchmark.md](docs/benchmark.md) for what is timed and [the unchanged pre-M3 measurement](benchmark/results/m3-preflight-ingest-summary.md) for current separate-signal target misses. Older reports are retained. These are intake measurements, not the later multi-failure benchmark.
+See [docs/benchmark.md](docs/benchmark.md) for what is timed and
+[docs/performance.md](docs/performance.md) for historical misses, improvements and
+the revised combined profiles. Older reports are retained. These are intake
+measurements, not the later multi-failure benchmark.
 
 
 ## M2 shop demo
@@ -138,5 +142,20 @@ Copy-Item .\benchmark\results\shop-demo.json .\benchmark\results\shop-demo-seed-
 task diff-demo -- -demo benchmark/results/shop-demo-seed-2.json -out benchmark/results/diff-seed-2
 ```
 
-Context metrics and logs remain stored and inspectable through `runs show`;
-their difference types belong to M4b and are not scored in M3.
+The historical M3 comparison excludes context. Current CLI and viewer
+comparisons include the M4b extension described below.
+
+## Telemetry explorer and context comparisons (M4b)
+
+`signalscout serve` also serves `/telemetry` and the run context panel. Queries
+require a time range, a result limit and a service, trace or explicit no-service
+partition. Metrics use local SVG charts; logs retain trace correlation, severity
+and template counts. Context differences use config-compatible retrospective
+windows, with exact baseline IDs and clickable evidence.
+
+See [the PowerShell explorer walkthrough](docs/explorer-walkthrough.md),
+[context scoring policy](docs/context-differences.md), and
+[generated M4b measurements](benchmark/results/m4b-summary.md).
+The original combined-ingest targets were missed and then changed by the owner;
+the revised profiles also retain their per-seed misses. Saved seed 1 did not
+sample an in-use peak; its missing context detection is reported explicitly.

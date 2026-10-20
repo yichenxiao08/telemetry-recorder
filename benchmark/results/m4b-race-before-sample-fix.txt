@@ -1,0 +1,30 @@
+ok  	github.com/signalscout/signalscout/cmd/signalscout	7.731s
+?   	github.com/signalscout/signalscout/internal/agent	[no test files]
+?   	github.com/signalscout/signalscout/internal/config	[no test files]
+ok  	github.com/signalscout/signalscout/internal/diff	5.050s
+ok  	github.com/signalscout/signalscout/internal/intake	5.692s
+?   	github.com/signalscout/signalscout/internal/model	[no test files]
+?   	github.com/signalscout/signalscout/internal/redaction	[no test files]
+ok  	github.com/signalscout/signalscout/internal/runs	(cached)
+ok  	github.com/signalscout/signalscout/internal/stats	(cached)
+ok  	github.com/signalscout/signalscout/internal/store	9.883s
+ok  	github.com/signalscout/signalscout/internal/telemetry	(cached)
+ok  	github.com/signalscout/signalscout/internal/viewer	11.121s
+--- FAIL: TestAcquireTimeoutRetryAndEvidence (0.04s)
+    --- FAIL: TestAcquireTimeoutRetryAndEvidence/recovery (0.02s)
+        inventory_test.go:64: timeout evidence does not measure the real wait
+FAIL
+FAIL	github.com/signalscout/signalscout/samples/shop	4.457s
+ok  	github.com/signalscout/signalscout/samples/shop/load	(cached)
+ok  	github.com/signalscout/signalscout/samples/shop/workload	(cached)
+?   	github.com/signalscout/signalscout/scripts/checkfmt	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/diffdemo	4.306s
+ok  	github.com/signalscout/signalscout/scripts/ingestbench	6.896s
+ok  	github.com/signalscout/signalscout/scripts/ingestsummary	(cached)
+ok  	github.com/signalscout/signalscout/scripts/perfreport	(cached)
+ok  	github.com/signalscout/signalscout/scripts/shopdemo	5.110s
+?   	github.com/signalscout/signalscout/scripts/shopload	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/startupbench	4.281s
+ok  	github.com/signalscout/signalscout/scripts/storebench	5.124s
+ok  	github.com/signalscout/signalscout/scripts/workloadrates	(cached)
+FAIL

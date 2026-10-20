@@ -1,0 +1,124 @@
+=== RUN   TestStoredM2Walkthrough
+panic: test timed out after 10m0s
+	running tests:
+		TestStoredM2Walkthrough (10m0s)
+
+goroutine 12694 [running]:
+testing.(*M).startAlarm.func1()
+	C:/Program Files/Go/src/testing/testing.go:2959 +0x605
+created by time.goFunc
+	C:/Program Files/Go/src/time/sleep.go:182 +0x45
+
+goroutine 1 [chan receive, 9 minutes]:
+testing.(*T).Run(0xc000002200, {0x140e61755, 0x17}, 0x1414fd958)
+	C:/Program Files/Go/src/testing/testing.go:2266 +0xb56
+testing.runTests.func1(0xc000002200)
+	C:/Program Files/Go/src/testing/testing.go:2742 +0x85
+testing.tRunner(0xc000002200, 0xc0000e7a40)
+	C:/Program Files/Go/src/testing/testing.go:2193 +0x1cb
+testing.runTests({0x140e699ee, 0x22}, {0x140e72998, 0x32}, 0xc00000a480, {0x140e41640, 0xa, 0xa}, {0xc2adc7df34481d34, 0x8bb312ba1d, ...})
+	C:/Program Files/Go/src/testing/testing.go:2740 +0x9f8
+testing.(*M).Run(0xc0000aadc0)
+	C:/Program Files/Go/src/testing/testing.go:2600 +0xf45
+main.main()
+	_testmain.go:64 +0x165
+
+goroutine 7 [runnable]:
+modernc.org/sqlite/lib._sqlite3PagerGetExtra(...)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:115212
+modernc.org/sqlite/lib._getAndInitPage(0xc0000c2540, 0x478a9228, 0x15dd, 0x47ab39b8, 0x2)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:122955 +0x2c5
+modernc.org/sqlite/lib._moveToChild(0xc0000c2540, 0x47ab3930, 0x15dd)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:125857 +0x4c5
+modernc.org/sqlite/lib._sqlite3BtreeTableMoveto(0xc0000c2540, 0x47ab3930, 0x4b, 0x0, 0x478b6430)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:126276 +0xf8e
+modernc.org/sqlite/lib._sqlite3VdbeFinishMoveto(0xc0000c2540, 0x47ab3868)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:137749 +0x165
+modernc.org/sqlite/lib._sqlite3VdbeExec(0xc0000c2540, 0x47ab04d8)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:144852 +0x32a8b
+modernc.org/sqlite/lib._sqlite3Step(0xc0000c2540, 0x47ab04d8)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:140153 +0x1b5
+modernc.org/sqlite/lib.Xsqlite3_step(0xc0000c2540, 0x47ab04d8)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/lib/sqlite_windows.go:140216 +0x1cb
+modernc.org/sqlite.(*conn).step(0xc0000a2f00, 0x47ab04d8)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:1027 +0x49
+modernc.org/sqlite.(*stmt).query.func2(...)
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:661
+modernc.org/sqlite.(*stmt).query(0xc000208df0, {0x1414fc278, 0xc000280930}, {0xc00013a1e0, 0x4, 0x4})
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:702 +0x565
+modernc.org/sqlite.(*conn).query(0xc0000a2f00, {0x1414fc278, 0xc000280930}, {0x140e7b7d0, 0xd9}, {0xc00013a1e0, 0x4, 0x4})
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:1733 +0x17a
+modernc.org/sqlite.(*conn).QueryContext(0xc0000a2f00, {0x1414fc278, 0xc000280930}, {0x140e7b7d0, 0xd9}, {0xc00013a1e0, 0x4, 0x4})
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite_go18.go:63 +0x95
+database/sql.ctxDriverQuery({0x1414fc278, 0xc000280930}, {0x463151b0, 0xc0000a2f00}, {0x0, 0x0}, {0x140e7b7d0, 0xd9}, {0xc00013a1e0, 0x4, ...})
+	C:/Program Files/Go/src/database/sql/ctxutil.go:48 +0xeb
+database/sql.(*DB).queryDC.func1()
+	C:/Program Files/Go/src/database/sql/sql.go:1791 +0x266
+database/sql.withLock({0x1414fae08, 0xc000048580}, 0xc0001e6880)
+	C:/Program Files/Go/src/database/sql/sql.go:3615 +0xa3
+database/sql.(*DB).queryDC(0x1?, {0x1414fc278, 0xc000280930}, {0x0, 0x0}, 0xc000048580, 0xc000208de0, {0x140e7b7d0, 0xd9}, {0xc0001e6c78, ...})
+	C:/Program Files/Go/src/database/sql/sql.go:1786 +0x325
+database/sql.(*DB).query(0xc000039ba0, {0x1414fc278, 0xc000280930}, {0x140e7b7d0, 0xd9}, {0xc0001e6c78, 0x4, 0x4}, 0x1)
+	C:/Program Files/Go/src/database/sql/sql.go:1769 +0x166
+database/sql.(*DB).QueryContext.func1(0x1)
+	C:/Program Files/Go/src/database/sql/sql.go:1747 +0xd0
+database/sql.(*DB).retry(0xa551e8?, 0xc0001e6b00)
+	C:/Program Files/Go/src/database/sql/sql.go:1581 +0x4b
+database/sql.(*DB).QueryContext(0xc000039ba0, {0x1414fc278, 0xc000280930}, {0x140e7b7d0, 0xd9}, {0xc0001e6c78, 0x4, 0x4})
+	C:/Program Files/Go/src/database/sql/sql.go:1746 +0x185
+database/sql.(*DB).QueryRowContext(...)
+	C:/Program Files/Go/src/database/sql/sql.go:1847
+github.com/signalscout/signalscout/internal/store.(*Reader).PhaseStart(0xc0000061a0, {0x1414fc278, 0xc000280930}, {{0xc000020200, 0x20}, {0xc00088a0b2, 0xe}, {0xc00088a0cd, 0x3}, 0x18dfe28c6f0f7901, ...})
+	<repo>/internal/store/viewer.go:132 +0x46a
+github.com/signalscout/signalscout/internal/viewer.(*viewer).loadRun(_, {_, _}, {_, _})
+	<repo>/internal/viewer/viewer.go:219 +0x315
+github.com/signalscout/signalscout/internal/viewer.(*viewer).run(0xc000220400, {0x1414fb400, 0xc0000a2000}, 0xc000a94280)
+	<repo>/internal/viewer/viewer.go:255 +0x17b
+net/http.HandlerFunc.ServeHTTP(0xc000208b00, {0x1414fb400, 0xc0000a2000}, 0xc000a94280)
+	C:/Program Files/Go/src/net/http/server.go:2338 +0x48
+net/http.(*ServeMux).ServeHTTP(0xc000136180, {0x1414fb400, 0xc0000a2000}, 0xc000a94280)
+	C:/Program Files/Go/src/net/http/server.go:2903 +0x243
+github.com/signalscout/signalscout/internal/viewer.New.func3({0x1414fb400, 0xc0000a2000}, 0xc000a94140)
+	<repo>/internal/viewer/viewer.go:85 +0x645
+net/http.HandlerFunc.ServeHTTP(0xc000120a20, {0x1414fb400, 0xc0000a2000}, 0xc000a94140)
+	C:/Program Files/Go/src/net/http/server.go:2338 +0x48
+github.com/signalscout/signalscout/internal/viewer.request(0xc000002400, {0x1414f9530, 0xc000120a20}, {0x140e52217, 0x3}, {0xc0001544b0, 0x28}, {0x0, 0x0})
+	<repo>/internal/viewer/viewer_test.go:216 +0x43f
+github.com/signalscout/signalscout/internal/viewer.TestStoredM2Walkthrough(0xc000002400)
+	<repo>/internal/viewer/demo_test.go:98 +0x1d53
+testing.tRunner(0xc000002400, 0x1414fd958)
+	C:/Program Files/Go/src/testing/testing.go:2193 +0x1cb
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:2258 +0xb2b
+
+goroutine 8 [select, 9 minutes]:
+database/sql.(*DB).connectionOpener(0xc000039930, {0x1414fc208, 0xc0000ee2d0})
+	C:/Program Files/Go/src/database/sql/sql.go:1266 +0xed
+created by database/sql.OpenDB in goroutine 7
+	C:/Program Files/Go/src/database/sql/sql.go:846 +0x287
+
+goroutine 9 [select, 9 minutes]:
+database/sql.(*DB).connectionOpener(0xc000039ba0, {0x1414fc208, 0xc0000ee5a0})
+	C:/Program Files/Go/src/database/sql/sql.go:1266 +0xed
+created by database/sql.OpenDB in goroutine 7
+	C:/Program Files/Go/src/database/sql/sql.go:846 +0x287
+
+goroutine 10 [select, 9 minutes]:
+github.com/signalscout/signalscout/internal/store.(*Store).loop(0xc000039e10, {0x1414fc128, 0x14157f800})
+	<repo>/internal/store/store.go:249 +0x30d
+created by github.com/signalscout/signalscout/internal/store.open in goroutine 7
+	<repo>/internal/store/store.go:146 +0x1637
+
+goroutine 11 [select, 9 minutes]:
+github.com/signalscout/signalscout/internal/store.(*Store).scheduleMaintenance(0xc000039e10)
+	<repo>/internal/store/store.go:306 +0x2b9
+created by github.com/signalscout/signalscout/internal/store.open in goroutine 7
+	<repo>/internal/store/store.go:150 +0x16eb
+
+goroutine 12876 [select]:
+modernc.org/sqlite.interruptOnDone.func1()
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:785 +0xba
+created by modernc.org/sqlite.interruptOnDone in goroutine 7
+	<repo>/.cache/go-mod/modernc.org/sqlite@v1.33.1/sqlite.go:784 +0x19d
+FAIL	github.com/signalscout/signalscout/internal/viewer	600.840s
+FAIL

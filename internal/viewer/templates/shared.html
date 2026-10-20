@@ -1,6 +1,6 @@
 {{define "head"}}<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{.Title}} · Signal Scout</title><link rel="stylesheet" href="/assets/viewer.css"></head>
-<body><header class="site-header"><a href="/runs">Signal Scout</a><span>Run evidence and baseline differences</span></header><main>
+<body><header class="site-header"><a href="/runs">Signal Scout</a><a href="/telemetry">Telemetry explorer</a><span>Run evidence and baseline differences</span></header><main>
 {{end}}
 {{define "foot"}}</main><footer>Signal Scout · local telemetry</footer></body></html>{{end}}
 {{define "event"}}<li class="event evidence" id="{{.Anchor}}"><strong>◆ {{.Signal.Name}}</strong> <span>{{.Offset}}</span><br><code>{{.Signal.ID}}</code><details><summary>Event attributes</summary><pre>{{json .Signal.Attrs}}</pre></details></li>{{end}}

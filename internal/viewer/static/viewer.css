@@ -50,3 +50,5 @@ details { margin: .5rem 0; } summary { cursor: pointer; color: #12569c; font-wei
 .evidence:target, section:target { outline: 3px solid #cb8700; outline-offset: 3px; background: #fff5d6; }
 :focus-visible { outline: 3px solid #cb8700; outline-offset: 3px; }
 @media (max-width: 850px) { .comparisons { grid-template-columns: 1fr; } .site-header span { display: none; } dl { grid-template-columns: 1fr; } input { min-width: 12rem; } }
+/* Scalar charts are entirely local SVG; no script or inline style is needed. */
+.metric-line { fill: none; stroke: #2563eb; stroke-width: 2; }

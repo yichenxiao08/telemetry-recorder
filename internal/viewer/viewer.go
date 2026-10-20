@@ -20,12 +20,18 @@ import (
 	"github.com/signalscout/signalscout/internal/diff"
 	"github.com/signalscout/signalscout/internal/model"
 	"github.com/signalscout/signalscout/internal/store"
+	"github.com/signalscout/signalscout/internal/telemetry"
 )
 
 //go:embed templates/*.html static/*.css
 var assets embed.FS
 
 type reader interface {
+	SearchTelemetry(context.Context, telemetry.Filter) (telemetry.Page, error)
+	LogTemplates(context.Context, telemetry.Filter) ([]telemetry.TemplateCount, error)
+	ServiceOverview(context.Context, telemetry.Filter) ([]telemetry.ServiceStats, error)
+	RunContext(context.Context, string, int64, int64, int) ([]model.Signal, error)
+	ContextRange(context.Context, string) (int64, int64, error)
 	RunPage(context.Context, store.RunFilter) (store.RunPage, error)
 	RunStructure(context.Context, string, int) (model.RunDetail, error)
 	PhaseStart(context.Context, model.Run) (string, error)
@@ -56,6 +62,8 @@ func New(read reader, write writer, logger *slog.Logger) (http.Handler, error) {
 	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) { http.Redirect(w, r, "/runs", http.StatusSeeOther) })
 	mux.HandleFunc("GET /runs", v.list)
 	mux.HandleFunc("GET /run", v.run)
+	mux.HandleFunc("GET /telemetry", v.explore)
+	mux.HandleFunc("GET /trace", v.trace)
 	mux.HandleFunc("POST /run/diff", v.compare)
 	mux.HandleFunc("GET /assets/viewer.css", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/css; charset=utf-8")
@@ -213,7 +221,34 @@ func (v *viewer) loadRun(ctx context.Context, id string) (runView, error) {
 		return runView{}, err
 	}
 	spans, orphans := timeline(detail)
-	return runView{Title: "Run " + id, DiffAction: "/run/diff?id=" + url.QueryEscape(id) + "#diff", Before: before, Run: detail.Run, Spans: spans, Orphans: orphans}, nil
+	view := runView{Title: "Run " + id, DiffAction: "/run/diff?id=" + url.QueryEscape(id) + "#diff", Before: before, Run: detail.Run, Spans: spans, Orphans: orphans}
+	from, to, err := v.reader.ContextRange(ctx, id)
+	if err != nil {
+		return view, err
+	}
+	if from != 0 && to >= from {
+		signals, err := v.reader.RunContext(ctx, id, from, to, 5000)
+		if err != nil {
+			return view, err
+		}
+		view.Context = contextRows(signals, from, to)
+		marker := int64(0)
+		if detail.Run.Outcome == "fail" {
+			marker = detail.Run.EndedAt
+		}
+		for _, s := range detail.Signals {
+			if s.ID == detail.Run.FailureMarker {
+				marker = s.TS
+				if s.Kind == "span" {
+					marker = s.End
+				}
+			}
+		}
+		view.ContextCharts = seriesCharts(signals, from, to, marker)
+		view.ContextFrom = timeValue(from)
+		view.ContextTo = timeValue(to)
+	}
+	return view, nil
 }
 
 func (v *viewer) run(w http.ResponseWriter, r *http.Request) {

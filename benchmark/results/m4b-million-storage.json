@@ -1,0 +1,7 @@
+{
+  "Database": ".cache/performance/million.db",
+  "SchemaThrough": "008",
+  "Bytes": 1217073152,
+  "Records": 1000000,
+  "Method": "File size after the final explorer API benchmark upgraded and closed the existing verified 1M-record fixture; no VACUUM. Metadata read only, not a throughput measurement."
+}

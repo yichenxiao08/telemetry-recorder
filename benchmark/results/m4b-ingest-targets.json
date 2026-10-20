@@ -1,0 +1,20 @@
+[
+  {
+    "name": "shop-2x-peak",
+    "rationale": "Measured saved seeds 1 and 2; twice each maximum sliding-one-second signal count.",
+    "targets": {
+      "log": 1212,
+      "metric": 72,
+      "span": 2304
+    }
+  },
+  {
+    "name": "pipeline-60fps-estimate",
+    "rationale": "Estimate, not a measured workload: 60 frames/sec x 50 scalar values = 3000 points/sec; retain shop 2x span/log traffic concurrently, and use the larger metric budget.",
+    "targets": {
+      "log": 1212,
+      "metric": 3000,
+      "span": 2304
+    }
+  }
+]

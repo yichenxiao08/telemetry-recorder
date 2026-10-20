@@ -1,0 +1,89 @@
+{
+  "method": "Event-time records within each phase's earliest run start through latest run end. All resources (including host-only) included by timestamp, scalar metric values only. Peak = maximum count in any half-open sliding 1s window, not phase average. Targets = twice the largest per-signal peak across both phases and both saved seeds; maxima may occur at different times. Export delivery timestamps are not available, so this is workload emission rate, not exporter burst rate.",
+  "phases": [
+    {
+      "seed": 1,
+      "phase": "baseline",
+      "start_ns": 1792400249449411447,
+      "end_ns": 1792400249907884741,
+      "counts": {
+        "log": 120,
+        "metric": 13,
+        "span": 232
+      },
+      "average_per_second": {
+        "log": 261.73825514033103,
+        "metric": 28.35497764020253,
+        "span": 506.0272932713067
+      },
+      "peak_sliding_one_second": {
+        "log": 120,
+        "metric": 13,
+        "span": 232
+      }
+    },
+    {
+      "seed": 1,
+      "phase": "failure",
+      "start_ns": 1792400268408403076,
+      "end_ns": 1792400270070063382,
+      "counts": {
+        "log": 909,
+        "metric": 52,
+        "span": 1728
+      },
+      "average_per_second": {
+        "log": 547.0432173878986,
+        "metric": 31.29400143473127,
+        "span": 1039.923739984916
+      },
+      "peak_sliding_one_second": {
+        "log": 606,
+        "metric": 36,
+        "span": 1144
+      }
+    },
+    {
+      "seed": 2,
+      "phase": "baseline",
+      "start_ns": 1792426937912314020,
+      "end_ns": 1792426938413797382,
+      "counts": {
+        "log": 120,
+        "metric": 8,
+        "span": 240
+      },
+      "average_per_second": {
+        "log": 239.29009234009243,
+        "metric": 15.95267282267283,
+        "span": 478.58018468018486
+      },
+      "peak_sliding_one_second": {
+        "log": 120,
+        "metric": 8,
+        "span": 240
+      }
+    },
+    {
+      "seed": 2,
+      "phase": "failure",
+      "start_ns": 1792426957961361836,
+      "end_ns": 1792426959617050245,
+      "counts": {
+        "log": 909,
+        "metric": 43,
+        "span": 1724
+      },
+      "average_per_second": {
+        "log": 549.0163457440741,
+        "metric": 25.97107026072078,
+        "span": 1041.2587239414563
+      },
+      "peak_sliding_one_second": {
+        "log": 606,
+        "metric": 35,
+        "span": 1152
+      }
+    }
+  ]
+}

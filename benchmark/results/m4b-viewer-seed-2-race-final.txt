@@ -1,0 +1,5 @@
+=== RUN   TestStoredM2Walkthrough
+    demo_test.go:103: seed=2 run=c354999411908c27ac1a86edae05c8d2: list -> run -> both persisted baseline panels -> 379 resolved evidence links
+--- PASS: TestStoredM2Walkthrough (298.49s)
+PASS
+ok  	github.com/signalscout/signalscout/internal/viewer	300.008s

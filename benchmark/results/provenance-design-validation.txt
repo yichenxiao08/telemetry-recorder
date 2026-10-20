@@ -1,0 +1,36 @@
+gofmt: no unformatted Go files.
+0 issues.
+ok  	github.com/signalscout/signalscout/cmd/signalscout	3.642s
+?   	github.com/signalscout/signalscout/internal/agent	[no test files]
+?   	github.com/signalscout/signalscout/internal/config	[no test files]
+ok  	github.com/signalscout/signalscout/internal/diff	2.806s
+ok  	github.com/signalscout/signalscout/internal/intake	3.162s
+?   	github.com/signalscout/signalscout/internal/model	[no test files]
+?   	github.com/signalscout/signalscout/internal/redaction	[no test files]
+ok  	github.com/signalscout/signalscout/internal/runs	1.486s
+ok  	github.com/signalscout/signalscout/internal/stats	1.457s
+ok  	github.com/signalscout/signalscout/internal/store	7.938s
+ok  	github.com/signalscout/signalscout/internal/telemetry	1.364s
+ok  	github.com/signalscout/signalscout/internal/viewer	8.439s
+ok  	github.com/signalscout/signalscout/samples/shop	2.152s
+ok  	github.com/signalscout/signalscout/samples/shop/load	1.683s
+ok  	github.com/signalscout/signalscout/samples/shop/workload	1.345s
+?   	github.com/signalscout/signalscout/scripts/checkfmt	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/contextdemo	1.452s
+ok  	github.com/signalscout/signalscout/scripts/diffdemo	1.502s
+?   	github.com/signalscout/signalscout/scripts/explorerbench	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/ingestbench	3.697s
+ok  	github.com/signalscout/signalscout/scripts/ingestsummary	1.335s
+ok  	github.com/signalscout/signalscout/scripts/m4breport	1.259s
+ok  	github.com/signalscout/signalscout/scripts/perfreport	1.263s
+ok  	github.com/signalscout/signalscout/scripts/shopdemo	1.645s
+?   	github.com/signalscout/signalscout/scripts/shopload	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/startupbench	1.476s
+ok  	github.com/signalscout/signalscout/scripts/storebench	1.642s
+ok  	github.com/signalscout/signalscout/scripts/workloadrates	1.427s
+task: [lint] go run ./scripts/checkfmt
+task: [lint] go vet ./...
+task: [lint] golangci-lint run
+0 issues.
+task: [build] go build -o bin/signalscout.exe ./cmd/signalscout
+Design/audit regression checks pass; executable spike and cheapness measurements are pending.

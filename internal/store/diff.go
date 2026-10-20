@@ -28,7 +28,15 @@ const InvalidCutoff queueError = "invalid baseline cutoff"
 // Comparison loads only M3's owned spans/events. Context is deliberately absent.
 // A single read transaction freezes selection and evidence at the same snapshot.
 func (r *Reader) Comparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
-	return r.comparison(ctx, id, options, false)
+	return r.comparison(ctx, id, options, false, false)
+}
+
+// ContextComparison retains selection and context on the same read snapshot.
+func (r *Reader) ContextComparison(ctx context.Context, id string, options model.BaselineOptions) (model.Comparison, error) {
+	if options.N > 200 {
+		return model.Comparison{}, fmt.Errorf("context baseline limit is 200 runs")
+	}
+	return r.comparison(ctx, id, options, true, true)
 }
 
 // ViewerComparison refuses oversized inputs instead of computing a partial diff.
@@ -36,10 +44,10 @@ func (r *Reader) ViewerComparison(ctx context.Context, id string, options model.
 	if options.N > 200 {
 		return model.Comparison{}, fmt.Errorf("viewer baseline limit is 200 runs")
 	}
-	return r.comparison(ctx, id, options, true)
+	return r.comparison(ctx, id, options, true, true)
 }
 
-func (r *Reader) comparison(ctx context.Context, id string, options model.BaselineOptions, bounded bool) (model.Comparison, error) {
+func (r *Reader) comparison(ctx context.Context, id string, options model.BaselineOptions, bounded, withContext bool) (model.Comparison, error) {
 	result := model.Comparison{}
 	n := options.N
 	if !options.ExplicitN && n == 0 {
@@ -128,6 +136,27 @@ func (r *Reader) comparison(ctx context.Context, id string, options model.Baseli
 		total += len(b.Signals)
 		if bounded && total > 50000 {
 			return result, EvidenceLimit
+		}
+	}
+	if withContext {
+		var before int64
+		if err = tx.QueryRowContext(ctx, "SELECT before_ns FROM context_settings WHERE singleton=1").Scan(&before); err != nil {
+			return result, fmt.Errorf("read context settings (start serve once to upgrade older databases): %w", err)
+		}
+		result.Spec.ContextPolicy = "retrospective-config-v1"
+		result.Spec.ContextLookbackNS = before
+		result.Spec.ScoringVersion = "v1+context-v1"
+		windows := map[string]contextBounds{id: {result.Failing.Run.StartedAt - before, result.Failing.Run.EndedAt}}
+		for _, b := range result.Baseline {
+			windows[b.Run.ID] = contextBounds{b.Run.StartedAt - before, b.Run.EndedAt}
+		}
+		contexts, e := readContextWindows(ctx, tx, windows, 5000, 50000-total)
+		if e != nil {
+			return result, e
+		}
+		result.Failing.Context = contexts[id]
+		for i := range result.Baseline {
+			result.Baseline[i].Context = contexts[result.Baseline[i].Run.ID]
 		}
 	}
 	if err = tx.Commit(); err != nil {

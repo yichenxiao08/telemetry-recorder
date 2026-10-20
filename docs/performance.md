@@ -1,8 +1,8 @@
 # Performance task before M4b
 
-This task changes storage performance only. It does not add explorer pages,
+The original performance task changes storage performance only. It does not add explorer pages,
 context difference types, or change diff scoring. All rates require committed
-SQLite data (WAL, synchronous NORMAL), with one operational writer.
+SQLite data (WAL, synchronous NORMAL), with one operational writer. Later sections record the owner's gate change and M4b read-path validation.
 
 ## Reproducible measurements
 
@@ -299,3 +299,117 @@ both persisted baseline panels and all 46 evidence anchors resolve, with a
 1.39-second test body (`perf-05-viewer-seed1-race.txt`). Its former ten-minute
 timeout remains in the earlier failure log. Validation logs are retained in
 `perf-05-local-validation.txt`.
+
+## Owner-approved gate replacement before M4b
+
+The owner explicitly overrode the no-go: the original 5,000/5,000/10,000
+simultaneous targets were round numbers, not derived from workloads. **Targets
+have changed.** The original misses above are retained and remain misses.
+
+`go run ./scripts/workloadrates` measures the saved seed-1 and seed-2 load
+phases. Phase boundaries are earliest run start through latest run end. Count
+all resources by event timestamp, including host-only metrics; count only
+scalar metric values. Report phase averages and sliding-one-second peaks in
+`m4b-workload-rates.json`. Event-time rates do not establish exporter burst rate.
+Maximum peaks are 1,152 spans, 606 logs and 36 points/sec; twice each maximum
+gives 2,304/1,212/72 concurrently. The second profile is an **estimate**:
+60 fps x 50 scalar values/frame = 3,000 points/sec, with the same shop span/log
+budget retained concurrently. It is not a measured pipeline workload.
+
+Run `task benchmark-ingest -- -profiles benchmark/results/m4b-ingest-targets.json -out benchmark/results/m4b-combined-profiles.json`.
+This uses serving defaults, the same payload generator and batch size, five
+seeds and 30-second windows. No ingestion tuning accompanies this gate change.
+The first custom-profile harness attempt retained an old ratio in its count
+accounting; it was stopped and its failure log retained as
+`m4b-profile-harness-failed.txt`. Unequal-count persistence now has a regression
+test. That failed accounting attempt is not a throughput measurement.
+
+The corrected pre-explorer run passes seeds 1/4/5 for shop and 1/3/5 for the pipeline
+estimate. Both profiles therefore **miss the every-seed gate**. Shop seed 2's
+last eight logs finish after the deadline; seed 3 also misses the strict edge.
+Pipeline seed 2 measures 2,010/1,132/2,728 records/sec and seed 4 measures
+2,287/1,207/2,984. The full per-seed generated table is
+`m4b-combined-profiles-before-explorer.md`; it is not rounded into a pass. The owner requested
+continuing with M4b after recording per-profile outcomes. No further target
+reduction or throughput experiment accompanies M4b.
+
+## M4b read-path deadline regression
+
+The saved seed-1 race walkthrough initially hit the viewer's unchanged
+10-second comparison-request deadline (11.46 s test body), separately from the
+historical startup timeout. Its CPU profile attributes 69.14% to readContext
+and 62.25% to SQLite stepping. Cumulative allocation is 111.17 MiB, not peak RAM.
+Top-ten CPU/allocation summaries and failed logs are retained as m4b-context-*
+and m4b-viewer-seed-1-race-*.
+
+Combining record/provenance queries still hit the deadline, as did a per-run
+resource reader; retained review diffs show both attempts. The final approach
+resolves matching resource/rule metadata for the selected runs on one snapshot,
+merges only overlapping intervals, fetches/decodes each physical record once,
+then assigns exact per-run time/rule membership. Limits remain 5,000 context
+records per run, 50,000 total comparison records, and bounded metadata/provenance
+work; oversized inputs fail visibly. No history gaps are fetched. The next
+snapshot sees late updates. Read-only sharing is confined to that transaction.
+
+Resource plan tests exposed scans despite migration 003's existing JSON
+indexes: removing the scope TEXT affinity with unary + allows index seeks.
+Text-only guards retain the original matching semantics. No new resource index,
+ingest tuning, durability change, scoring adjustment or deadline extension was
+made for this regression. Unit tests compare complete records/provenance with
+the legacy views and cover separate windows, gaps, caps and late updates.
+
+The isolated native rerun preserves all 36 complete diff identities (scores,
+selection and evidence) across both saved seeds and modes. Maximum read/compute/
+save time falls from 1,000.50 to 48.87 ms for before mode and from 2,964.39 to
+67.78 ms for recent mode. These are maxima across eighteen comparisons per mode,
+not throughput measurements; the raw before/after records are in
+`m4b-reader-result-equivalence.json`. The full saved seed-1 race walkthrough
+resolves 513 evidence links in 453.45 seconds, within the unchanged ten-minute
+test limit. Seed 2 resolves 379 links in 298.49 seconds. Both include both persisted
+baseline panels and full navigation. Earlier aggregation, per-run and non-indexed snapshot attempts remain
+as failures, including the latter's ten-minute navigation timeout.
+
+Final explorer API measurements over the same 1M-row fixture include decoding
+and aggregation: five-repeat maxima range from 1.0572 to 5.4773 ms, all below
+500 ms. Required time bounds, limits and index-plan assertions remain enforced.
+The fixture has eleven resources, small payloads and unflushed OS caches; this
+does not validate arbitrary cardinality or cold-disk latency. See the generated
+`benchmark/results/m4b-summary.md` and raw `m4b-million-queries-final.json`.
+
+## Final M4b schema validation
+
+The revised combined profiles are repeated after migration 008, using identical
+targets, payload generation, five seeds, thirty-second windows and serving
+defaults. No throughput knob is changed. The original revised-profile JSON and
+generated table are retained as `m4b-combined-profiles-before-explorer.*`; the
+final schema results use `m4b-combined-profiles.*` and the generated M4b summary.
+Keep the earlier misses even if a later run passes: these short local trials do
+not establish sustained production capacity.
+
+Final schema outcomes: shop passes seeds 1–5 at 2,304/1,212/72 records/sec.
+The mixed pipeline estimate misses every seed. Its minimum/median rates are
+spans 1,548/1,800, logs 1,065/1,208 and scalar points 2,543/2,731 per second.
+The command returns exit 1 for the target miss after retaining all measurements
+and verified counts; this is not a passing benchmark. Per-seed values and exact
+unrounded summaries are generated in `m4b-combined-profiles.md` and
+`m4b-final-capacity-summary.json`. The earlier revised profiles passed 3/5 each;
+the final outcome is not a controlled attribution to index cost rather than run
+variation. No new profile of this rerun was taken, and no new cause is claimed.
+The shop budget is supported by these short trials; the estimated mixed
+pipeline budget remains unsupported. Targets are not lowered again.
+
+The closed 1M-record fixture now occupies 1,217,073,152 bytes after the new
+span/metric lookup index, versus 1,149,222,912 before it. The raw file-size
+measurement is `m4b-million-storage.json`; no VACUUM or compact scalar experiment
+was performed. The roughly 12 GB/hour extrapolation above comes from the earlier
+mixed fixture and remains an estimate. M8 must measure scalar storage directly.
+
+M4b's original saved datasets are retained. Seed 1 did not sample an in-use
+spike and cannot meet that detection expectation; this is the explicitly
+documented data-limited exception, not a scoring pass. Seed 2's representative
+pre-change comparison ranks in-use third behind config and retry. The latest
+recent baselines share the changed pool configuration and peak, so that
+difference correctly disappears. Context logs have controlled rare/common
+template tests; the saved shop does not supply a new context-log root cause.
+Host memory can rank incidentally. These observations do not establish causal
+accuracy, and no constants were fitted to either database.

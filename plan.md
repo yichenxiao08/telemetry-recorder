@@ -4,39 +4,66 @@
 
 ## 1. What we're building
 
-**Signal Scout learns what normal runs of a workload look like, then explains how a failing run diverged, with every explanation linked to the evidence behind it.**
+**Signal Scout helps a developer explain any behavior or problem they want to
+understand by recording how outputs were produced, tracing inputs and decisions,
+comparing labeled problem examples with reference examples, and checking declared
+expectations, with every claim linked to evidence.**
 
-It targets intermittent failures: ones that pass on rerun, appear only under load, or show up after a change. The useful evidence is a comparison against passing runs, so history must be collected before the bug appears.
+Failures are one way to mark a problem. A developer may instead ask about a
+lane-change calculation, an unexpected choice, or replies human reviewers call
+too strict. One unchanged system can supply both problem and reference examples.
+Domain meaning lives in versioned profiles, not generic core heuristics.
 
-Signal Scout is built on a **full telemetry store**: it keeps all the traces, logs, and metrics it receives (not only data attached to runs), and makes them searchable and correlated. **Runs are the lens** that organizes this data and provide the baselines for diffing. Broad telemetry is valuable because the cause of an intermittent failure is often *around* the run, not inside it (CPU saturation on a host, a connection-pool gauge, a warning log from another service). Signal Scout attaches that context to runs and feeds it into the diff engine.
-
-The deliverable is a working system plus a reproducible benchmark with real measurements. The benchmark is the centerpiece; the viewer and telemetry explorer are deliberately minimal.
+The telemetry store and M0–M4b remain the foundation: all received OTLP signals,
+run grouping, context, structural differences and bounded exploration.
+Execution spans alone do not explain data dependence. Decision records and
+explicit lineage must record the inputs, intermediate choices, configuration
+and rejected alternatives the producer actually reports using.
+Human quality judgments are annotations with provenance, never inferred from
+operational success. Unlabeled examples stay unknown.
 
 ### The core loop
 
-1. Instrumented apps emit standard OpenTelemetry (OTLP) data.
-2. Signal Scout stores **all** telemetry (traces, logs, metrics), searchable on its own, and groups it into **runs** (one web request, one training job). Telemetry from the same services and hosts during a run's time window is attached to the run as **context**.
-3. Given one failing run and a baseline of passing runs of the same workload, the **diff engine** ranks what differed by how well it discriminates failure.
-4. An **evidence-grounded agent** proposes a hypothesis from the ranked diff, citing evidence IDs. A **verifier** checks every citation.
-5. A **benchmark** of seeded failures with known root causes measures all of this.
+1. Configure supported standard telemetry, report coverage, and add explicit
+   profile-defined decision/input/output signals where standard telemetry ends.
+2. Store OTLP with stable native evidence, run/session links, capture completeness,
+   privacy controls and external artifact references.
+3. Let the developer define a problem using marks, predicates or review labels;
+   explicitly select reference examples from the same or another system.
+4. Follow output lineage and check developer-declared invariants without requiring
+   any baseline. Missing evidence yields unknown.
+5. Compare eligible cohorts, showing raw counts, sample/cluster sizes and missingness.
+6. Report observations, associations and hypotheses separately, cite evidence,
+   and suggest developer-controlled experiments. Never claim causation.
+7. Evaluate on pre-registered real and synthetic cases, retaining misses and costs.
 
 ### Architecture
 
-- **Go backend** (single binary): OTLP intake, run grouping, storage, diff engine, agent layer, verifier, viewer, CLI.
-- **Python client-side pieces**: the ML adapter (`signalscout_ml`) and the sample trainer, because that is where instrumented ML code lives.
-- **Go sample web app**: instrumented services plus Postgres.
-- The Python and Go sides communicate **only over OTLP and HTTP**. Python never touches the database file.
+- Go backend, standard OTLP and SQLite single-writer storage remain.
+- Domain adapters/helpers emit OTLP; Python and other clients never open SQLite.
+- Standard integration setup covers only supported libraries; app-specific meaning
+  requires explicit instrumentation. One initial runtime/profile precedes breadth.
+- Existing Go shop remains a real operational benchmark; the ML adapter role is absorbed into the general helper; trainer breadth is optional. No M5, M6, M7 or M8 implementation starts in this design task.
 
-### Non-goals (do NOT build these)
+### Non-goals (preserved and extended)
 
-- A custom collector or database engine. Reuse the OpenTelemetry Collector and SQLite.
+- A custom collector or database engine. Reuse OpenTelemetry Collector and SQLite.
 - A polished dashboard. Keep the UI minimal and functional.
-- Robotics integration (only a documented adapter interface and a design note).
-- Replay or rerun from saved inputs.
-- An artifact store. Artifacts are references (URI + content hash) only; never copy large files.
+- Robotics integration (only an adapter interface and design note). A synthetic
+  lane/frame fixture is a data-dependence example, not a robotics integration.
+- Replay or rerun from saved inputs. Replaying synthetic OTLP into intake validates
+  transport, not re-executing recorded applications.
+- An artifact store. Keep URI/content-hash references; never copy large files.
 - A human diagnosis-time study.
-- Multi-tenant auth, user accounts, or cloud deployment.
-- A dashboard builder, alerting, or PromQL/LogQL compatibility. The telemetry explorer is for inspecting and correlating data, not for replacing Grafana. Do not out-build mature tools on breadth.
+- Multi-tenant auth, accounts or cloud deployment.
+- Dashboard builders, alerting or PromQL/LogQL compatibility.
+- Judging quality itself: labels/predicates express developer/reviewer criteria.
+- Inferring how arbitrary code produced an output without instrumentation.
+- Claiming causation: observations, associations and hypotheses remain distinct.
+
+Specifications: docs/provenance-spec.md and docs/problem-model.md.
+The original failure-only thesis is superseded: normal/failing run comparison
+remains an implemented useful subset, not the whole problem definition.
 
 ## 2. Tech stack (fixed unless a milestone says otherwise)
 
@@ -122,7 +149,25 @@ signalscout/
 
 ## 4. The run model (draft; finalize in `docs/run-spec.md`)
 
-A **run** is one execution of a **workload** with a start, an end, and an outcome.
+A **run** is a profile-declared unit of execution: request, turn, frame, job or
+session, with boundaries and identity. Operational outcome is separate from
+problem labels. The fields and web/ML rules below describe the built M0–M4b
+contract, retained unchanged; generic run profiles are proposed, not implemented.
+
+### Revised core concepts (design)
+
+| Concept | Meaning |
+|---|---|
+| Decision record | A step's output ref, declared inputs, chosen/rejected options, rule/threshold and config refs. |
+| Lineage edge | An explicit input -> output derivation through a step, distinct from span parenthood. |
+| Behavior of interest | A developer-selected output, omission or pattern to understand, before calling it a defect. |
+| Problem | Developer-authored question and criteria for selecting examples. |
+| Problem/reference cohorts | Explicit eligible sets; no old/new core requirement and no unknown-as-good shortcut. |
+| Label | Outcome-rule, predicate or append-only human assertion with source/reviewer, rubric/version and evidence provenance. |
+| Invariant | Declared expectation, such as input X appearing in output Y's lineage; deterministically checked without a baseline. |
+
+See the two specifications for versioning, unknown states, capture/privacy and
+proposed difference formulas. None is silently mapped onto today's HTTP outcome.
 
 ### Identity and metadata
 
@@ -215,6 +260,10 @@ Stable strings shown to users and cited by the agent: `span:<id>`, `event:<id>`,
 
 ## 6. Diff engine design
 
+The failing-run baseline API below is the built M3/M4b subset and remains
+unchanged. The general problem/cohort/categorical/value design is specified in
+docs/problem-model.md; implementation waits for P4. No scoring constants change.
+
 **Input:** one failing run (later: a set of failing runs) and a baseline set of passing runs of the same workload.
 **Output:** a ranked slice of `Difference` structs, each with a score in [0, 1], a type, a human-readable explanation, and evidence IDs.
 
@@ -273,6 +322,12 @@ type Differ interface {
 
 ## 7. Agent layer design
 
+The original specification below is retained for history. Its failure-only,
+ranked-diff-only input is superseded by the proposed three-tier report contract:
+bounded decision/lineage evidence, invariants, labels, coverage and cohort counts
+must also be available. M7 remains unstarted. Verified citations are not verified
+causes; telemetry and reviewer text remain untrusted data.
+
 - The agent receives **only** the ranked diff (plus run metadata), never raw logs.
 - Required structured output (JSON, decoded into Go structs and validated):
   - `hypothesis`: text
@@ -292,6 +347,69 @@ type LLMClient interface {
 ## 8. Milestones
 
 Each milestone lists tasks and **acceptance criteria**. A milestone is done only when all criteria pass.
+
+### Revised order and status (proposal, 2026-10-20)
+
+Execution boundary: Parts 1–3 and source audit completed under the explicit
+fallback; A/B fixtures, Python helper, fresh A/B/C replay and cheapness measurements
+remain pending. No executable spike or helper-safety pass is claimed.
+
+The requested task includes documentation plus a pending executable spike, not the start of a
+later milestone. M4b is built at e260a09, preserved in PR #1 to main. It is not
+claimed merged. The new branch codex/provenance-spec starts from that commit.
+
+| Order | Scope/status | Acceptance before the next slice |
+|---|---|---|
+| M0–M4b | Built foundation; retain historical criteria/results below, including seed-1 sampling exception and pipeline capacity miss. | Existing regression suite and Windows/Ubuntu CI remain green. |
+| S0a (pending) | Synthetic Python helper safety and A recording spike only. | Bounded queue/drop/no-op behavior, host-exception preservation, instrumentation LOC and five-trial 60 Hz/tight-loop p50/p99, retaining misses. |
+| S0b (pending) | Plain OTLP A/B generators and A/B/C fresh-store replay with existing views. | Verify facts/refs and native anchors; report manual workflow gaps; simulated labels explicit; no schema/diff changes. |
+| P0 | Capture contract and privacy gate; synthetic data until complete. | Allowlisted values round-trip; planted secrets absent from body/attrs/raw/nested envelopes/URIs; unknown schemas fail closed; capture omissions visible; no default conversation text. |
+| P1 | One tiny provenance helper and guided setup for one actual supported runtime; framework coverage is explicit. | Under 15 minutes on a prepared clean fixture; repeated setup idempotent; no duplicate OTel providers/spans; decision IDs/conflicts and coverage inspectable; default-off field capture. |
+| P2 | Problem records, append-only annotations and bounded explicit cohorts. | HTTP-200 problem marks do not change outcome/times; disagreement/retractions/rubric versions survive; unlabeled stays unknown; exact selected IDs/label revisions persist; same-core comparison works. |
+| P3 | Bounded lineage inspection and deterministic invariants. | Cross-run versioned refs resolve; expected input missing with complete capture violates; incomplete/cyclic/dangling/evicted graphs yield integrity/unknown; no baseline required. |
+| P4 | Categorical/value cohort differences from problem-model.md. | Tests first: bounded scores, coverage/cluster counts beside every association, no iteration pseudo-replication/name boosts; held-out fixtures; unchanged M3/M4b constants. |
+| M5 revised | Trimmed evaluation: 4–5 cases, at least 3 problems observed in real systems, with independent review or declared expectations; synthetic cases explicitly marked. | Pre-register cases, expected evidence, cause/symptom labels, metrics and fixed constants before ranking; actual held-out runs/fresh experiments; at least one retained miss; report top-k plus invariant/coverage results over five seeds where generation applies. |
+| M7 revised | Bounded observation/association/hypothesis reports and verifier; suggested experiments. | Reject fabricated/wrong-run/wrong-turn citations, misquoted numbers and causal upgrades; insufficient evidence is explicit; report with no reference cohort can use invariants only; assess against pre-registered baselines. |
+| M8 revised | Remaining overhead/storage/redaction audits and write-up. | Measure scalar and decision bytes, label delays, buffer coverage and real workload capacity; publish costs/misses, final adapter conformance and reproducible PowerShell workflow. Privacy minimum already gates P0. |
+| M6 superseded | General helper absorbs the ML adapter role. Trainer/failure breadth remains optional, not a separate active milestone. | A second domain uses the same OTLP contract without server special cases; preserve old ML text for history. |
+
+M5 keeps pre-registration discipline. The existing real pool-exhaustion case can be one; other real cases need
+actual recorded behavior and independent review/expectations, not cases
+invented from engine features. The two planned synthetic fixtures would not satisfy
+"at least 3 real". Prefer including input-lineage and multi-stage cases only when
+actual observations and independent review/expectations are available. Four or five cases replace the old 6–8 web plus
+6–8 ML breadth so missing primitives can be validated first. No scoring tuning.
+The volume buffer/sampling policy remains a design pending measurements.
+
+### Current acceptance boundary: recording cost, not volume gates
+
+The round-number 5k/5k/10k rates, revised shop capacity gate and estimated
+3,000-point pipeline profile are retired as acceptance gates. Preserve every
+measurement, miss and method as historical evidence. Scale is a documented
+limitation, not a reason to keep expanding a telemetry product. Freeze the
+service overview and metrics browser at M4b: no extensions in this roadmap.
+
+Pre-register a provisional small-record recording-call budget: p50 <=100 us
+and p99 <=250 us, measured as caller wall time at 60 calls/sec and in a tight
+loop, with reachable and unreachable intake, five repetitions and reported drop
+counts. Include bounded capture/serialization/enqueue; exclude startup and
+explicit flush, measured separately. No network/queue-capacity wait on app paths,
+no recorder exception into the host, bounded memory and visible drops/no-op
+fallback. This is an engineering target, not a hard real-time guarantee of the
+OS/Python scheduler. Keep any miss; do not move the budget after measuring.
+
+Validation must span A (noisy per-frame calculation with stale prior value),
+B (human-labeled staged pipeline) and C (existing shop pool exhaustion). Trimmed
+M5 must pre-register 4–5 problems, at least 3 real observed problems, covering these
+structures. Synthetic A/B fixtures are not real defects or actual human labels.
+M6's adapter scope is absorbed by the language-neutral helper; no training-specific
+server core is required. Recorder helper, marking, lineage view and invariants
+come before M5. The record -- command wrapper is design-only in this task.
+
+### Historical milestone text (preserved)
+
+M0–M4b below document what was built, not work to restart.
+Old M5–M8 text is retained with supersession notes, not an active authorization.
 
 ### M0: Project skeleton
 
@@ -322,7 +440,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - Replaying recorded OTLP fixtures from `testdata/` produces the expected runs, spans, events, and outcomes (golden-file tests).
 - Malformed payloads return 4xx and do not corrupt storage.
 - Backpressure works: when the write queue is full, intake returns 503 (tested).
-- Ingest throughput targets on the same laptop are **simultaneous combined capacity**: 5,000 spans/sec plus 5,000 log records/sec plus 10,000 scalar metric points/sec. Retain the unchanged separate-signal `task benchmark-ingest` as a diagnostic (20,000 records/kind, batches of 256, seeds 1–5), and additionally measure all signals concurrently with `-combined`. Record minimum and median per signal, retain every miss, and require every signal in every seed to reach its target. Earlier separate-signal review results do not establish combined capacity; the three M1 review repeats were performed without tuning.
+- **Historical throughput acceptance (retired by the 2026-10-20 recorder budget):** The owner replaced the original round-number simultaneous 5,000 spans + 5,000 logs + 10,000 scalar points/sec gate after reviewing its measured miss. Keep those original results and separate diagnostics unchanged. Current combined profiles: twice the maximum sliding-one-second emitted record count across the saved shop-demo load phases for seeds 1 and 2 (2,304 spans + 1,212 logs + 72 scalar points/sec), and a second **estimated**, not measured, 60 fps x 50 values/frame pipeline budget of 3,000 scalar points/sec alongside that same shop span/log budget. Use serving defaults, 30-second offered windows, seeds 1–5, durable acknowledgments and verified counts; report pass/fail for every profile and seed, including unsent work. Measurement boundaries, averages and peak counts are in benchmark/results/m4b-workload-rates.json. This is an explicit workload-based target change, not a pass against the original targets.
 
 ### M2: Web sample app and seeded failure #1
 
@@ -389,8 +507,11 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - The run context panel shows the connection-pool gauge (or equivalent) for the failing run's window.
 - Context difference types have table-driven and property tests, and decoy templates rank below true causes.
 - Explorer queries over 1M stored rows return in under 500 ms for typical filters (record the numbers).
+- Validate both saved M2 seeds without tuning scoring or regenerating data to fit ranks. The owner delegated handling the discovered seed-1 sampling gap: retain and report it as an explicit data-limited acceptance exception. Seed 1's 1 Hz in-use gauge recorded only zeros through the padded failure window, so no in-use difference can be claimed there. Demonstrate the in-use difference on seed 2 and controlled fixtures, and report absent ranks, incidental higher-ranked context and both baseline modes honestly. This replaces the expectation that the saved seed-1 gauge must surface despite its missing measurement; it does not turn that miss into a successful detection.
 
 ### M5: Benchmark harness and web failures
+
+> Superseded by the trimmed, pre-registered M5 above; not started. Original breadth is retained for history.
 
 **Tasks**
 - Define the seeded-failure format in `benchmark/failures/<id>/`: `failure.yaml` (domain, root-cause label, expected evidence IDs or path keys, injection config), plus the injection config or code.
@@ -408,6 +529,8 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 
 ### M6: ML integration and failures
 
+> Superseded: the ML adapter role is absorbed into the general helper. Training-specific examples remain optional and unstarted.
+
 **Tasks**
 - Build `adapters/ml-python` (`signalscout_ml`): a small Python context manager that sets the run ID, emits spans for data loading and training steps, emits metrics (loss, lr, grad norm), emits events (batch drawn with shard ID, checkpoint saved), and records dataset hashes and model references as artifact refs. It exports to Signal Scout via OTLP only.
 - Build `samples/trainer`: a tiny model on a synthetic or small public dataset, CPU-only, finishing in a few minutes.
@@ -420,6 +543,8 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 - `task benchmark-ml` produces results in the same format as the web benchmark.
 
 ### M7: Agent layer and verifier
+
+> Superseded input/report semantics are in section 7 and the revised order; not started.
 
 **Tasks**
 - Implement prompt building from the ranked diff, the structured output types, the `LLMClient` interface, an Anthropic-backed client, and the mock client.
@@ -435,7 +560,10 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 
 ### M8: Overhead, redaction, and write-up
 
+> Privacy minimum moves before real data into P0. Remaining measurements stay later; not started.
+
 **Tasks**
+- Measure scalar-point bytes/record and hourly storage specifically: the mixed 1M fixture's roughly 1.1 KB/record extrapolates to about 12 GB/hour at 3,000 points/sec before retention, but is not a scalar-only measurement.
 - Overhead measurements on the web and ML samples: added request latency p50/p99, CPU, memory, and bytes stored per run, and storage growth per hour at a fixed ingest rate with the default retention policy, with sampling on and off.
 - Redaction: scrubbing rules for common secrets and PII (tokens, emails, card-like numbers, auth headers, SQL literals) applied at intake, before storage. Plant known secrets in sample traffic and measure the leak rate.
 - Finalize `docs/run-spec.md`, `docs/adapter-guide.md` (including the robotics design note: why spans fit high-rate streams poorly and how the spec handles it with metric streams, event markers, and linked bag files), and `docs/benchmark.md`.
@@ -478,7 +606,7 @@ Rules for honest reporting:
 - **Python stays on the client side.** The Python adapter and trainer talk to the Go server over OTLP only, and never read or write the database.
 - **When unsure, add a question to `docs/open-questions.md`** and continue with the most conservative choice.
 
-## 11. First task for Codex
+## 11. Historical first task for Codex (completed; superseded by revised order)
 
 Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summarize:
 - what was built,
@@ -486,7 +614,17 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 - any deviations from this plan,
 - open questions for the project owner.
 
-## 12. Definition of done for the whole project
+## 12. Revised definition of done
+
+- Low-effort supported integration with explicit coverage and app-specific helpers.
+- Trace a selected output to declared inputs/decisions/config and rejected options.
+- Mark a problem, keep unknown/disagreement, select reference examples from one system.
+- Check declared invariants without a baseline; compare cohorts with honest sample sizes.
+- Evidence-linked tiered reports and developer-controlled falsifiable experiments.
+- Pre-registered 4–5 case evaluation with at least 3 real observed problems, retained misses.
+- Measured capture/privacy/storage/overhead and native Windows reproducibility.
+
+### Historical definition of done (superseded breadth; preserved)
 
 - Web and ML sample apps, each with at least 6 seeded failures.
 - A telemetry store and minimal explorer over all traces, logs, and metrics, with retention.
@@ -500,9 +638,18 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 
 > These record what was actually built. Where this section conflicts with the design sketches above (for example the schema in section 5), this section and the migrations in `internal/store/` are authoritative.
 
-- The pre-M4b performance task stops with the combined gate unmet; M4b is not started. Final unprofiled serving-defaults mixed-load five-seed minimum/median rates are spans 1,308/2,317, logs 1,385/2,334 and scalar points 2,651/4,652 per second, missing all simultaneous 5k/5k/10k targets. Separate diagnostics pass at 18,247/22,222, 17,303/19,347 and 17,565/19,760 respectively, without establishing combined acceptance. Seed-1 startup improves from 67.634 s native / 455.885 s race to 0.460 s / 8.460 s for first upgrade and 0.002172 s for an unchanged native restart. On the seeded real-schema 1M-record fixture, bounded service/time, trace and template-count queries have five-repeat maxima of 25.495 ms, 0.541 ms and 35.602 ms. The file occupies 1,149,222,912 bytes, with 51,562 physical scopes (16,056,320 bytes including their primary-key b-tree) representing 1,876,896 links and 3,484,277 provenance rows. Whole-history context enumeration still takes seconds. Profiles identify durable SQLite commit/Windows file I/O as the remaining bottleneck; cleanup is not a demonstrated hot spot. See docs/performance.md and the generated results summary for all attempts, limitations and the no-go recommendation. No target, durability setting, timeout or correctness assertion was relaxed.
+- M4b's first plan tests exposed the missing service/time path for spans and metric points. Migration 008 adds a partial (resource_id,kind,ts_ns) index for those two kinds only, retaining migration 007's resource-service, log-resource/time and trace/time paths. Explorer filters require an explicit bounded range and limit plus a service, explicit no-service partition, or trace; the no-service partition uses resources_service IS NULL for independent host-only telemetry browsing. Query-plan tests reject signal scans and require indexed time bounds. Run context uses the existing run/rule interval indexes because host-only resources deliberately have no service name. No throughput experiment from the parking lot is implemented.
+- M4b's full race suite exposed the sample acquire timer starting before its span. Span setup could consume part of the timeout outside the recorded wait, failing the unchanged duration assertion. Start the span first, then create the acquire deadline from that span context. The timeout, retry behavior and test assertion are unchanged; the same race regression passes twenty repetitions after the correction. Saved M2 data and scoring constants are not rewritten.
+- M4b context scoring is versioned as v1+context-v1 with a persisted retrospective-config-v1 window policy. Metrics use configured lookback through run end (never future lookahead), config-compatible scalar gauges/non-monotonic sums, ten observed baseline windows and two failing samples. Logs use actual run intervals. Existing M3 constants are unchanged; a fixed 1% unit-relative numeric floor/scale handles arbitrary metric units. Strongest max/mean/last summary is ranked per series, with other statistics related; log presence/count duplicates share one rank. Missing metric windows are unknown, and overlapping baseline windows are explicitly correlated. Policies and reasons were committed in docs/context-differences.md before demo ranking. CLI and viewer comparisons load bounded context on the same read snapshot and persist through their existing writer paths; pure M3 comparison remains for historical validation.
+- The M4b viewer adds explicit bounded explorer forms, service/route statistics, span/trace and log navigation, template counts, scalar SVG charts and a padded run context panel with rule/source provenance and failure markers. Stable keyset pages and inclusive trace seeks keep a selected span reachable beyond the first page. Context evidence anchors resolve on run pages; templates and SVG geometry remain escaped/local under the existing strict CSP. Comparisons cap at 200 baselines/50,000 records and reject oversized inputs. The historical task diff-demo uses structural-only analysis so M3 acceptance remains reproducible; current CLI and viewer analysis include context. No M5 ablation CLI, dashboard builder, alerting, or query language is added.
+- Saved-data M4b race navigation exposed the unchanged 10-second request deadline while adding both context comparisons. Its CPU profile attributes 69.14% to context reads, primarily SQLite. A single-query provenance aggregation and per-run resource reader still missed the deadline; their patches and failure logs are retained. The final reader batches overlapping windows inside one read snapshot, resolves resources/rules before points, reads each physical record once, and retains each run's exact interval/provenance. Disjoint intervals are not widened across gaps; late updates remain visible on the next snapshot. Resource metadata uses existing migration 003 host/instance indexes (unary + removes TEXT affinity while text-only guards preserve matching). Plan tests reject resource and signal scans. No ingestion path, scoring constant, deadline or test assertion is relaxed.
+- M4b hosted validation initially stopped before project checks because Task setup exhausted GitHub's shared unauthenticated API limit on both operating systems. Pass the existing job token through the action's supported repo-token input and pin Task 3.54.0 to match native validation. No check is skipped or weakened.
+- M4b validation retains both original M2 datasets and all sampling gaps. Both saved-data race walkthroughs pass unchanged deadlines, resolving 513 evidence links for seed 1 and 379 for seed 2. Controlled tests cover both context difference types, prior-phase contamination, sparse/missing samples and common-template decoys. Native read optimization preserves all 36 diff identities; maximum read/compute/save time is 67.78 ms. The nine actual explorer API cases over 1M records have five-repeat maxima at or below 5.4773 ms with explicit time bounds and limits. Seed 1's missing pool-in-use sample remains the documented acceptance exception; seed 2's representative pre-change pool metric ranks #3 behind config and retry. Recent baselines correctly remove it. Full details and incidental higher ranks are generated in benchmark/results/m4b-summary.md. M5 is not started.
+- After migration 008, unchanged serving-default combined trials pass all five shop-budget seeds (2,304 spans + 1,212 logs + 72 scalar points/sec) and miss all five estimated mixed-pipeline seeds (same spans/logs + 3,000 points/sec). The command exits nonzero and retains verified results. Pipeline minimum/median rates are spans 1,548/1,800, logs 1,065/1,208 and points 2,543/2,731 per second. The earlier revised-profile 3/5 outcomes and original 5k/5k/10k misses remain preserved; no target, durability setting, scoring constant or ingest knob is relaxed. This does not establish sustained capacity or attribute the outcome change solely to the extra index. The 1M fixture occupies 1,217,073,152 bytes after the index, recorded separately from the older storage estimate.
 
-- The pre-M4b performance task supersedes the historical context materialization notes below: migration 005 replaces evidence-by-run `context_links`/`context_matches` tables with compatible views over `context_scopes` (one interval/value per run, qualifying span resource and matching rule). Raw signals, resources, run snapshots, ownership, outcomes, evidence IDs and all provenance remain readable. Scope updates share the run transaction; ambient inserts need no context writes. A persisted padding checkpoint skips history on unchanged restart; first upgrade or changed padding rebuilds only closed run/resource scopes. No timestamp cursor can skip out-of-order evidence. Migration frees the old b-tree pages for reuse; SQLite does not automatically shrink the existing file. Measurements and remaining throughput misses are recorded in docs/performance.md. Combined 5k/5k/10k capacity is the target; separate historical rates remain diagnostic.
+- The pre-M4b performance task originally stopped with the combined gate unmet, before the owner authorized M4b and replaced that gate as recorded in M1 acceptance. Final unprofiled serving-defaults mixed-load five-seed minimum/median rates are spans 1,308/2,317, logs 1,385/2,334 and scalar points 2,651/4,652 per second, missing all simultaneous 5k/5k/10k targets. Separate diagnostics pass at 18,247/22,222, 17,303/19,347 and 17,565/19,760 respectively, without establishing combined acceptance. Seed-1 startup improves from 67.634 s native / 455.885 s race to 0.460 s / 8.460 s for first upgrade and 0.002172 s for an unchanged native restart. On the seeded real-schema 1M-record fixture, bounded service/time, trace and template-count queries have five-repeat maxima of 25.495 ms, 0.541 ms and 35.602 ms. The file occupies 1,149,222,912 bytes, with 51,562 physical scopes (16,056,320 bytes including their primary-key b-tree) representing 1,876,896 links and 3,484,277 provenance rows. Whole-history context enumeration still takes seconds. Profiles identify durable SQLite commit/Windows file I/O as the remaining bottleneck; cleanup is not a demonstrated hot spot. See docs/performance.md and the generated results summary for all attempts, limitations and the no-go recommendation. No target, durability setting, timeout or correctness assertion was relaxed.
+
+- The pre-M4b performance task supersedes the historical context materialization notes below: migration 005 replaces evidence-by-run `context_links`/`context_matches` tables with compatible views over `context_scopes` (one interval/value per run, qualifying span resource and matching rule). Raw signals, resources, run snapshots, ownership, outcomes, evidence IDs and all provenance remain readable. Scope updates share the run transaction; ambient inserts need no context writes. A persisted padding checkpoint skips history on unchanged restart; first upgrade or changed padding rebuilds only closed run/resource scopes. No timestamp cursor can skip out-of-order evidence. Migration frees the old b-tree pages for reuse; SQLite does not automatically shrink the existing file. Measurements and remaining throughput misses are recorded in docs/performance.md. At that stage the target was simultaneous 5k/5k/10k capacity; the later owner override replaces it as recorded in M1 acceptance. Separate historical rates remain diagnostic.
 - The performance task also replaces per-row signal executions with bounded 128-row parameterized inserts, without changing HTTP batch size, transaction acknowledgment or ownership checks. The fixed driver prepares SQLite bytecode on each execution even through database/sql prepared statements. Raw records and normalized fields remain JSON TEXT; WAL, synchronous NORMAL and the single-writer design are unchanged. Five-seed results and unsuccessful combined trials are retained; separate throughput does not establish simultaneous acceptance.
 - The 1M-row preflight exposed a reversed join order in the shared-key context views. Migration 006 uses explicit scope/resource/evidence join order so every rule uses the indexed resource and time interval, preserving the exact logical sets. This is tested against SQLite's query plan; a global logical count is measured separately from bounded explorer-style queries. No context UI or difference type is added.
 - To reduce the measured flush/write cost, the single writer coalesces at most four already-queued intake jobs without adding a timer wait. Each job retains its receipt time and savepoint; successful acknowledgments wait for the shared commit, job errors roll back only their savepoint, and commit failure acknowledges none. Maintenance and diff jobs remain ordering barriers. WAL, synchronous NORMAL, default checkpoint policy, queue bounds and shutdown draining are unchanged. Tests cover commit failure recovery and cross-job ownership conflicts.
