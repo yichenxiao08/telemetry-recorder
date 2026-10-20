@@ -107,3 +107,20 @@ conditional applicability filtering. See benchmark/problems/lane-02/contract.md.
 - Independent real histories/author-separated cases are still needed before
   claiming diagnostic accuracy. Conditional comparison remains deferred; no
   M6–M8 or P0–P4 production phase starts. Stage 2 awaits explicit GO.
+
+## Lane-02 Stage 2 observations (parked; no implementation)
+
+- The owner-authorized one-shot run stopped on the first incomplete transport
+  case. Keep it and the 29 unattempted cases; do not retry or silently resume.
+  Future measurement needs a separately approved protocol, not reuse of the
+  reserved evaluation to obtain a passing result.
+- Consider bounded exporter diagnostics retaining error class/status and
+  occurrence counts without payloads. Current aggregate export_failed and
+  cooldown counters cannot identify the initiating failure. This is a proposal,
+  not permission to change the frozen recorder or perform new measurements.
+- Capture completeness must be explicit before interpreting cohort rankings.
+  Ack failures can have unknown persistence; any future reconciliation design
+  must distinguish confirmed success, confirmed rejection and unknown outcome.
+- Retain wrapper 475.750/2,300.580 us budget misses alongside prior observations.
+  No tuning, conditional comparison, migration, new diff type or production
+  phase is authorized. Full results: docs/lane02-stage2.md.

@@ -357,3 +357,28 @@ seed 103 moderate misses p99 and unrelated misses p50. All miss original
 100/250 us limits. Context p50 enter 26.5–29.5 us/exit 8.05–12.15 us; explicit
 flush 5.678–102.880 ms. These do not replace the earlier five-trial measurements
 or establish a new cost-gate pass. Synthetic arithmetic is not real diagnosis.
+
+## Lane-02 Stage 2 after owner GO (2026-10-20)
+
+One invocation, no retries: **one incomplete case, zero completed/scored cases,
+29 unattempted**. Seed 710021 matched-negative-controls stopped at the frozen
+transport check, before annotation, cohort creation or analysis. Of 1,600
+attempted spans, 1,418 exported successfully, 52 failed export and 130 dropped
+during cooldown. The 52 have unknown persistence, not confirmed database loss.
+The worker discarded exception details; the listener log alone cannot identify
+the underlying export error. No mechanism score/count/invariant expectation was
+evaluated, so NA must never be reported as zero association or a ranking miss.
+
+Wrapper p50/p99 475.750/2,300.580 us misses both recorded budgets. Run enter
+44.000/318.680 us and exit 17.800/86.061 us are separate; flush 9.7015 ms.
+One 800-call case at scheduled 60 Hz is not a five-trial overhead replication.
+Target edits/instrumentation remain zero, config ten lines; all 34 freeze hashes
+match. Local format/vet/lint/race/build and 25 development-only Python tests pass.
+No sources, equations, constants, profiles, lane-01 results or old reports changed.
+
+See docs/lane02-stage2.md and benchmark/results/lane02-stage2-evaluation.md/.json
+for all planned cases, raw capture, retained misses, hashes and limitations.
+The partial store/report and exclusive evaluation ledger stay in .cache. No
+reserved replay, reanalysis, continuing after the stop, or replacement seed was
+attempted. Complete representative capture is now the immediate unverified
+assumption; this provides no real-world diagnostic-accuracy evidence.

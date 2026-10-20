@@ -336,3 +336,18 @@ This section supersedes the earlier unresolved full-history-backfill and materia
 - Single-trial development overhead retains two historical 330/830 us misses;
   none meets original 100/250 us. Do not equate these new-payload observations
   with the old five-trial protocol or claim a recording-cost gate passed.
+
+## Lane-02 Stage 2 evaluation
+
+- **Incomplete one-shot transport:** after GO, seed 710021 matched stopped with
+  130 cooldown drops and 52 failed-export spans (1,418 successful of 1,600
+  attempts). Conservative choice: retain the incomplete case and 29 unattempted
+  cases, do not rerun/resume, and report all rankings/count expectations as NA.
+- **Unknown exporter cause/persistence:** no exception/status detail was retained;
+  the server log only records startup. Conservative choice: do not infer timeout,
+  queue pressure or database loss. Failed acknowledgement may follow commit.
+  Park bounded diagnostics for future review; change no frozen source.
+- **Cost and acceptance:** wrapper 475.750/2,300.580 us misses original 100/250
+  and historical 330/830 us budgets; one case is not the five-trial harness.
+  Conservative choice: no cost pass, no lane-02 evaluation acceptance and no
+  real-world diagnostic claim. See docs/lane02-stage2.md for raw counts/hashes.
