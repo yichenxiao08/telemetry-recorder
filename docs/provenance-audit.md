@@ -316,3 +316,16 @@ end-to-end HTTP instrumentation cost or all B stages as one transaction. Those
 costs are unmeasured, not assumed equal. Absolute cross-process clock order and
 real reviewer validity also remain unestablished. The replay keeps the current
 web/ML run classifications; no lane/coaching-specific engine behavior was added.
+
+## Owner budget decision — 2026-10-20 (after results)
+
+The owner replaces the reachable-60-Hz budget with p50 <=330 us / p99 <=830 us,
+representing approximately 2%/5% of a 16.7 ms frame. This budget was set AFTER
+seeing the measurements; it is not a pre-registered success against 100/250 us.
+The corrected-duration reachable trials all meet 330/830 us (median trial
+205.15/390.31 us; worst p99 399.50 us). Original 100/250 us misses, original
+candidate trials, unreachable/saturation losses and all raw results remain.
+The first-candidate reachable trials are evaluated individually, not relabeled
+as a universal pass. This decision authorizes a synthetic Slice 1 only, not P0
+privacy work or M5–M8. No new overhead measurement is needed for this budget-only
+change; any future recorder path change requires measurement again.
