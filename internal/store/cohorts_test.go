@@ -61,6 +61,16 @@ func TestCohortPinsRevisionsUnknownDisagreementAndPredicate(t *testing.T) {
 	if len(reference.RunIDs) != 1 || reference.RunIDs[0] != "c" || len(reference.LabelIDs) != 0 {
 		t.Fatal(reference)
 	}
+	canonical := bound
+	canonical.Equals = "5.0"
+	numeric, err := s.SelectCohort(ctx, "numeric-equality", p, canonical)
+	if err != nil || len(numeric.RunIDs) != 1 {
+		t.Fatal("JSON numeric scalar equality", numeric, err)
+	}
+	canonical.Equals = `{"not":"scalar"}`
+	if _, err := s.SelectCohort(ctx, "invalid-predicate", p, canonical); err == nil {
+		t.Fatal("structured predicate accepted")
+	}
 	if err = s.SaveCohort(ctx, reference); err != nil {
 		t.Fatal(err)
 	}

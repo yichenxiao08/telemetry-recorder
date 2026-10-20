@@ -217,3 +217,28 @@ This section supersedes the earlier unresolved full-history-backfill and materia
 - authored_blind means evaluation outcomes unseen. The requested mechanisms and
   formulas are known, and synthetic separability is deliberate; this is NOT
   independent blind validation or real-world diagnostic accuracy.
+
+- Slice 1 evaluation completes all five seeds and three variants with 3000/3000
+  captured decisions and no drops. Base mechanisms rank #2/#3 behind the output
+  symptom; decoy-heavy pushes them to #9/#10; harder median age has no detected
+  shift while the invariant flags 20/100 problem frames. These misses are retained.
+- Base success is likely inflated: separable synthetic populations, an oracle,
+  a declared age transform and known mechanisms. It is not an independently
+  authored blind test or evidence of real-world diagnosis/causation.
+- A post-first-run regression found contradictory output capture-off metadata
+  was interpreted as observed. The parser now treats it as unknown. Every first
+  result is retained; all 15 confirmatory cases have identical ranks, scores,
+  counts and invariant results. No formula/profile/seed was tuned. Confirmation
+  reused the same seeds and is not a fresh holdout.
+- Predicate scalar equality is normalized (5 and 5.0 match); structured values
+  are rejected. Its failed validation test is retained. Label-selected evaluation
+  does not use this predicate branch. No richer query language is introduced.
+- Both saved shop seeds retain all 72 M3/M4b ranked differences and scores exactly.
+  The seed-1 gauge sampling miss and incidental context observations remain.
+- The declaration-based invariant itself needs no reference, but this slice's
+  CLI presents it alongside cohort comparison. A standalone invariant-only CLI
+  and graphical mark UI remain parked; there is no graph-read proof or causal report.
+- The frame cases are constructed case-control examples, not a reconstructed
+  sequential game history. Previous-value origin is not independently verified;
+  the invariant checks declared versions. Treat this as pipeline validation;
+  base diagnostic accuracy is likely inflated. Independent histories remain future work.

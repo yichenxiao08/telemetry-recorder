@@ -27,6 +27,26 @@ func TestFrozenScores(t *testing.T) {
 	}
 }
 
+func TestNumericFormulaTable(t *testing.T) {
+	zero := make([]float64, 10)
+	for _, tc := range []struct {
+		name                 string
+		p, r                 []float64
+		epsilon, floor, want float64
+	}{
+		{"increase", []float64{3, 3, 3}, zero, 1, 1, (1 - math.Exp(-1)) * 11 / 12},
+		{"decrease", []float64{-3, -3, -3}, zero, 1, 1, (1 - math.Exp(-1)) * 11 / 12},
+		{"effect floor", []float64{3}, zero, 1, 4, 0},
+		{"MAD factor", []float64{3}, []float64{-2, -1, 0, 1, 2, -2, -1, 0, 1, 2}, .01, .1, (1 - math.Exp(-3/1.4826/3)) * 11 / 12},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := Numeric(tc.p, tc.r, tc.epsilon, tc.floor); math.Abs(got-tc.want) > 1e-12 {
+				t.Fatalf("got %g want %g", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestScoreProperties(t *testing.T) {
 	rapid.Check(t, func(t *rapid.T) {
 		n := rapid.IntRange(10, 100).Draw(t, "n")

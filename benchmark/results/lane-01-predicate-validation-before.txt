@@ -1,0 +1,5 @@
+--- FAIL: TestCohortPinsRevisionsUnknownDisagreementAndPredicate (0.02s)
+    cohorts_test.go:64: JSON numeric scalar equality {numeric-equality {toy item request toy synthetic 1 [{value inputs.x  u 1 1}] [] {used n v 1}} {0 1000 3  bad inputs.x 5.0} 1792482472013430200 [] [] map[] map[] map[predicate_false:3]} <nil>
+FAIL
+FAIL	github.com/signalscout/signalscout/internal/store	0.553s
+FAIL

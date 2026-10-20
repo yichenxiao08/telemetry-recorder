@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/signalscout/signalscout/internal/model"
@@ -123,6 +124,26 @@ func (r *Reader) SelectCohort(ctx context.Context, id string, p model.AnalysisPr
 	}
 	if (b.Dimension == "") == (b.Predicate == "") {
 		return c, fmt.Errorf("choose exactly one label/mark dimension or captured equality predicate")
+	}
+	if b.Predicate != "" {
+		if len(b.Predicate) > 256 || len(strings.Split(b.Predicate, ".")) > 8 {
+			return c, fmt.Errorf("bounded predicate selector required")
+		}
+		var scalar any
+		if err := json.Unmarshal([]byte(b.Equals), &scalar); err != nil {
+			return c, fmt.Errorf("predicate equality requires a JSON scalar: %w", err)
+		}
+		switch scalar.(type) {
+		case nil, bool, float64, string:
+		default:
+			return c, fmt.Errorf("predicate equality supports scalars only")
+		}
+		data, err := json.Marshal(scalar)
+		if err != nil {
+			return c, err
+		}
+		b.Equals = string(data)
+		c.Selection = b
 	}
 	tx, err := r.reader.BeginTx(ctx, &sql.TxOptions{ReadOnly: true})
 	if err != nil {

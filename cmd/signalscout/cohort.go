@@ -199,6 +199,7 @@ func newCohortCommand() *cobra.Command {
 }
 func newExplainCohortCommand(database *string) *cobra.Command {
 	var asJSON bool
+	var viewerURL string
 	cmd := &cobra.Command{Use: "explain-cohort <problem-cohort> <reference-cohort>", Short: "Report observations and cohort associations; no causal claims", Args: cobra.ExactArgs(2), RunE: func(cmd *cobra.Command, args []string) error {
 		reader, err := store.OpenReader(cmd.Context(), *database)
 		if err != nil {
@@ -213,11 +214,11 @@ func newExplainCohortCommand(database *string) *cobra.Command {
 			return jsonOutput(cmd, result)
 		}
 		var text strings.Builder
-		fmt.Fprintf(&text, "%s; %d problem runs / %d sessions vs %d reference runs / %d sessions; unknown sessions %d\nSelection exclusions: problem=%v reference=%v\n", result.Status, result.ProblemRuns, result.ProblemSessions, result.ReferenceRuns, result.ReferenceSessions, result.UnknownSessions, result.Problem.Excluded, result.Reference.Excluded)
+		fmt.Fprintf(&text, "%s; %d problem runs / %d sessions vs %d reference runs / %d sessions; unknown sessions %d; shared clusters %d; independence unknown\nSelection exclusions: problem=%v reference=%v\n", result.Status, result.ProblemRuns, result.ProblemSessions, result.ReferenceRuns, result.ReferenceSessions, result.UnknownSessions, result.SharedSessions, result.Problem.Excluded, result.Reference.Excluded)
 		for i, d := range result.Differences {
-			fmt.Fprintf(&text, "%d. %.6f %s [%s/%s]: %s\n   observed %d/%d problem vs %d/%d reference; missing %d/%d; sessions %d/%d\n   [%s]\n", i+1, d.Score, d.Type, d.Tier, d.Status, d.Summary, d.ProblemObserved, d.ProblemRuns, d.ReferenceObserved, d.ReferenceRuns, d.ProblemMissing, d.ReferenceMissing, d.ProblemSessions, d.ReferenceSessions, strings.Join(d.EvidenceIDs, ", "))
+			fmt.Fprintf(&text, "%d. %.6f %s [%s/%s]: %s\n   observed %d/%d problem vs %d/%d reference; missing %d/%d; sessions %d/%d; shared clusters %d; independence unknown\n   [%s]\n", i+1, d.Score, d.Type, d.Tier, d.Status, d.Summary, d.ProblemObserved, d.ProblemRuns, d.ReferenceObserved, d.ReferenceRuns, d.ProblemMissing, d.ReferenceMissing, d.ProblemSessions, d.ReferenceSessions, d.SharedSessions, strings.Join(d.EvidenceIDs, ", "))
 			for _, u := range d.EvidenceURLs {
-				fmt.Fprintln(&text, "   "+u)
+				fmt.Fprintln(&text, "   "+strings.TrimRight(viewerURL, "/")+u)
 			}
 		}
 		fmt.Fprintf(&text, "Declared-version invariant (observation, no baseline): %v\n", result.InvariantCounts)
@@ -225,6 +226,7 @@ func newExplainCohortCommand(database *string) *cobra.Command {
 		return err
 	}}
 	cmd.Flags().BoolVar(&asJSON, "json", false, "Structured report with pinned selections, sample sizes and invariant evidence")
+	cmd.Flags().StringVar(&viewerURL, "viewer-url", "http://127.0.0.1:4318", "Viewer origin for clickable evidence links in text output")
 	return cmd
 }
 

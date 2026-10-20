@@ -261,8 +261,7 @@ Stable strings shown to users and cited by the agent: `span:<id>`, `event:<id>`,
 ## 6. Diff engine design
 
 The failing-run baseline API below is the built M3/M4b subset and remains
-unchanged. The general problem/cohort/categorical/value design is specified in
-docs/problem-model.md; implementation waits for P4. No scoring constants change.
+unchanged. The general problem/cohort/categorical/value design is specified in docs/problem-model.md. Its narrow synthetic Slice 1 subset is now owner-authorized; existing M3/M4b scoring constants remain unchanged.
 
 **Input:** one failing run (later: a set of failing runs) and a baseline set of passing runs of the same workload.
 **Output:** a ranked slice of `Difference` structs, each with a score in [0, 1], a type, a human-readable explanation, and evidence IDs.
@@ -353,8 +352,7 @@ Each milestone lists tasks and **acceptance criteria**. A milestone is done only
 Execution boundary: Parts 1–3 and source audit are accepted. The synthetic external-probe/helper spike is executed: safety passes, recording-cost budgets have retained misses, and A/B/C fresh-store replay confirms transport breadth and manual workflow gaps. No P0–P4 or M5–M8 production implementation starts.
 
 The requested task includes documentation plus an executed synthetic spike, not the start of a
-later milestone. M4b is built at e260a09, preserved in PR #1 to main. It is not
-claimed merged. The new branch codex/provenance-spec starts from that commit.
+later milestone. PR #1 is confirmed merged (e260a09), and main 859487c also includes the accepted provenance spike. Slice 1 starts at main on codex/slice1-lane.
 
 | Order | Scope/status | Acceptance before the next slice |
 |---|---|---|
@@ -379,7 +377,7 @@ actual observations and independent review/expectations are available. Four or f
 6–8 ML breadth so missing primitives can be validated first. No scoring tuning.
 The volume buffer/sampling policy remains a design pending measurements.
 
-### Current acceptance boundary: recording cost, not volume gates
+### Historical recording-cost boundary (owner override below)
 
 The round-number 5k/5k/10k rates, revised shop capacity gate and estimated
 3,000-point pipeline profile are retired as acceptance gates. Preserve every
@@ -404,6 +402,57 @@ M6's adapter scope is absorbed by the language-neutral helper; no training-speci
 server core is required. Recorder helper, marking, lineage view and invariants
 come before M5. The record -- command wrapper is design-only in this task.
 
+
+### Slice 1 owner authorization and implementation decisions (2026-10-20)
+
+PR #1 is merged; branch codex/slice1-lane starts from main 859487c, which also
+contains the accepted provenance spike. Only the synthetic lane-01 vertical
+slice is authorized: immutable annotations, CLI marks, explicit bounded cohorts,
+categorical/input-value associations and one declared-used version invariant.
+These are narrow portions of the P2–P4 designs, not completion of those phases.
+P0 production privacy and M5–M8 remain unstarted; no hypothesis generation.
+The original Subway Surfers data is unavailable and is not reconstructed.
+
+The owner sets reachable-60-Hz budget p50 <=330 us and p99 <=830 us AFTER seeing
+the results (roughly 2%/5% of a 16.7 ms frame). All five corrected-duration trials
+meet this new budget; first-candidate trials meet it in 3/5 cases. All original
+100/250 us misses and raw results remain. This is an explicit post-hoc acceptance
+change, not a claim against the original budget. The recorder/probe implementation
+is unchanged in Slice 1; old measurements apply to their fixed measured payload,
+not a claim about arbitrary field volume or end-to-end diagnosis cost.
+
+Pre-registration b537ee1 locks problem.yaml and slice1-scoring.md BEFORE the first
+new evaluation run. Seeds 1009/2027/3037/4051/5059 are distinct from development
+101/103 and prior spike seeds. Base, decoy-heavy and minority-mechanism variants
+remain fixed; authored_blind is explicitly outcome-blind, not independent authorship.
+Numeric MAD/squash/smoothing constants and all M3/M4b constants remain unchanged.
+
+Migration 009 adds append-only annotations and immutable cohort snapshots. Marks
+post to the existing serving writer queue; CLI reads use read-only connections.
+Annotation created/recorded times do not become execution/context timestamps.
+Annotations require synthetic provenance and revisions cannot fork/change target
+or reviewer. Active reviewer disagreement is explicit and excludes label selection.
+No privacy/redaction or real-content gate is claimed.
+
+Cohorts pin bounds/limit, unit/profile/workload, run IDs, label revisions, native
+decision revisions and sessions. Selection rejects oversize, overlap and profile
+mismatch; a field needs ten observed runs on EACH side before ranking. Unknown
+capture is excluded, never zero. Reports contain observation/association tiers,
+raw counts, selected/observed/missing counts, exclusions and cluster counts.
+The API uses bounded same-origin JSON; no second operational writer is opened.
+
+Profiles use JSON to avoid a new Go dependency. A profile-declared subtraction
+(frame minus supplied previous version) makes age comparable across frames;
+returned categories may be selected alongside verdict/reason/chosen. The generic
+engine has no lane, gap, stale or decoy-name logic. The invariant's selectors and
+delta live in the declared profile; it checks assertions, not arbitrary reads.
+Capture-off outputs are unknown even if a contradictory inline value is stored;
+a failing regression test and all pre-fix evaluation results are retained.
+
+The narrow task lane-01 invokes the pinned Python client through a native Go
+orchestrator; it is NOT the M5 multi-problem harness. The target is plain Python,
+unchanged by probes. No general query language, mark UI, lineage graph, production
+privacy, real-system replay or causal reporting is added.
 ### Historical milestone text (preserved)
 
 M0–M4b below document what was built, not work to restart.
@@ -677,3 +726,11 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 - M4 adds a same-listener viewer with escaped templates, embedded CSS, inline SVG and no JavaScript. CSP disables scripts/external requests. Lists use a seven-day default/31-day maximum window and 25-row default/100-row maximum cursor pagination, backed by a start-time index. Timelines cap spans/events at 5,000 per run; viewer comparisons cap baseline runs at 200 and total structural records at 50,000, rejecting oversized inputs instead of truncating scoring. Request deadlines and two computation slots bound viewer work.
 - M4 uses explicit POST comparison and the serving store's SaveDiff queue; GET navigation performs no writes. Run changes between read and persistence return a nonfatal conflict; genuine storage failures still reach the serving lifecycle. Before-phase suggestions require the explicit M2 phase/workload/config/revision fingerprint, with a user-editable run-ID/RFC3339 cutoff; unknown phases require explicit input. Query-encoded run IDs and hashed evidence anchors preserve identifiers containing URL syntax. Numeric display uses the same comparison snapshot and feature aggregation without changing M3 scoring.
 - M4 navigation acceptance passes in the self-contained httptest race suite and native saved-data checks: seed 1 resolves 46 evidence links and seed 2 resolves 43, including both persisted baseline panels. The extra seed-1 saved-data test under -race failed at Go's unchanged 10-minute timeout in startup context backfill, before HTTP navigation; its portable log is benchmark/results/viewer-m2-seed-1-race.txt. This failure is retained for the planned pre-M4b performance task; no timeout, assertion, scoring constant or startup behavior was relaxed. Native saved-data test bodies took 63.46 s and 93.69 s including startup. M4 uses the written PowerShell walkthrough instead of an agent-recorded screen capture; the owner will capture screenshots. No M4b views/difference types or ingest tuning were implemented.
+
+Slice 1 measured boundary: base cases find the two declared input mechanisms at
+#2/#3; decoy-heavy pushes them to #9/#10; minority stale age is missed by the
+median while the invariant flags 20/100 problem frames. All 15 cases have complete
+capture. See benchmark/results/lane-01.md and lane-01-shop-regression.json.
+All 72 saved shop comparisons retain identical differences/scores. These are
+constructed cases, not independently verified sequential histories or real-world
+accuracy. The first evaluation and confirmatory rerun remain on record.

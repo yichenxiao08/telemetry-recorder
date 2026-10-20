@@ -73,7 +73,7 @@ S0a is executed; S0b findings are below. Historical pending/fallback statements 
 - The timed wrapper includes automatic run entry/exit, copying/serialization
   and enqueue; body time only is subtracted. Context and explicit flush are
   separately reported. Fixed four-scalar/two-returned-alternative envelopes
-  average about 1.19 KiB, below 2 KiB. Returning alternatives was a benchmark
+  average about 1.19 KB (1.16 KiB), below 2 KiB. Returning alternatives was a benchmark
   fixture choice; probes cannot invent alternatives hidden in an ordinary body.
 - Standard requests tracing bridges into the same bounded queue. Logging adds
   trace correlation only; log-body export is OFF. Existing providers are
@@ -325,7 +325,6 @@ seeing the measurements; it is not a pre-registered success against 100/250 us.
 The corrected-duration reachable trials all meet 330/830 us (median trial
 205.15/390.31 us; worst p99 399.50 us). Original 100/250 us misses, original
 candidate trials, unreachable/saturation losses and all raw results remain.
-The first-candidate reachable trials are evaluated individually, not relabeled
-as a universal pass. This decision authorizes a synthetic Slice 1 only, not P0
+The first-candidate reachable trials meet the new budget in 3/5 cases: all p50 values pass; p99 fails in trials 1 and 5. This decision authorizes a synthetic Slice 1 only, not P0
 privacy work or M5–M8. No new overhead measurement is needed for this budget-only
 change; any future recorder path change requires measurement again.

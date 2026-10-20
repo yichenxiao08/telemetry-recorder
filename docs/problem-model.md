@@ -1,6 +1,6 @@
-# Problem model (design v0)
+# Problem model (design v0; Slice 1 subset implemented)
 
-Extends the failure-oriented design without changing the M3/M4b implementation.
+Extends the failure-oriented design while preserving M3/M4b scoring. See the Slice 1 implemented boundary below; other sections describe the broader design.
 No new schema or scoring code is implemented in the feasibility spike.
 
 ## Problems and labels
