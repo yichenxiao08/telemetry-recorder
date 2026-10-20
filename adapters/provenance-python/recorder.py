@@ -10,6 +10,8 @@ import threading
 import time
 import urllib.request
 
+from export_diagnostics import Diagnostics, observe
+
 from opentelemetry.proto.collector.trace.v1.trace_service_pb2 import ExportTraceServiceRequest
 from opentelemetry.proto.common.v1.common_pb2 import AnyValue
 
@@ -98,6 +100,17 @@ class Run:
         return False  # Never suppress or replace the host application's exception.
 
 
+class ObservedQueue(queue.Queue):
+    def __init__(self, capacity):
+        super().__init__(capacity)
+        self.high_water = 0
+
+    def _put(self, item):
+        # Queue holds its existing mutex here: no new host-side wait or I/O.
+        super()._put(item)
+        self.high_water = max(self.high_water, self._qsize())
+
+
 class Recorder:
     def __init__(self, endpoint="http://127.0.0.1:4318", *, service="synthetic.provenance",
                  capture_fields=(), capacity=256, timeout=.5, cooldown=1,
@@ -108,7 +121,8 @@ class Recorder:
         self.endpoint, self.service = endpoint.rstrip("/"), service
         self.capture_fields = frozenset(capture_fields)
         self.timeout, self.cooldown = timeout, cooldown
-        self._q = queue.Queue(capacity)
+        self._q = ObservedQueue(capacity)
+        self.diagnostics = Diagnostics()
         self._counts, self._lock = {}, threading.Lock()
         self._active = contextvars.ContextVar("signalscout_run", default=None)
         self._stop, self._closed = threading.Event(), False
@@ -128,6 +142,12 @@ class Recorder:
             result = dict(self._counts)
         result.update(queue_size=self._q.qsize(), capacity=self._q.maxsize,
                       cooldown_active=time.monotonic() < self._cooldown_until)
+        details = self.diagnostics.snapshot()
+        details["counters_spans_except_flush_timeout"].update(
+            cooldown_drop=result.get("drop_cooldown", 0),
+            queue_full_drop=result.get("drop_full", 0),
+            shutdown_drop=result.get("drop_closed", 0), flush_drop=0)
+        result.update(queue_high_water=self._q.high_water, diagnostics=details)
         return result
 
     def run(self, name, *, run_id=None, start_ns=None, end_ns=None, attributes=None):
@@ -262,12 +282,16 @@ class Recorder:
         return req.SerializeToString()
 
     def _send(self, items):
+        self.diagnostics.phase = "encode"
         request = urllib.request.Request(self.endpoint + "/v1/traces", self._encode(items),
                                          {"Content-Type": "application/x-protobuf"})
         self._count("network_requests")
-        with urllib.request.urlopen(request, timeout=self.timeout) as response:
-            if response.status != 200:
-                raise OSError("OTLP export failed")
+        self.diagnostics.phase = "connect"
+        with observe(self.diagnostics):
+            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                self.diagnostics.phase = "response"
+                if response.status != 200:
+                    raise OSError("OTLP export failed")
 
     def _work(self):
         while not self._stop.is_set() or not self._q.empty():
@@ -280,15 +304,25 @@ class Recorder:
                     batch.append(self._q.get_nowait())
                 except queue.Empty:
                     break
+            started_ns, clock_ns = time.time_ns(), time.perf_counter_ns()
+            outcome = "exported"
             try:
                 if time.monotonic() < self._cooldown_until:
+                    self.diagnostics.phase = "cooldown"
                     raise OSError("cooldown")
                 self._send(batch)
                 self._count("exported", len(batch))
-            except Exception:
+            except Exception as error:
                 self._cooldown_until = time.monotonic() + self.cooldown
                 self._count("export_failed", len(batch))
+                if self.diagnostics.phase == "cooldown":
+                    outcome = "cooldown_suppressed"
+                    self.diagnostics.count(outcome, len(batch))
+                else:
+                    outcome = self.diagnostics.failure(error, len(batch), started_ns)
             finally:
+                self.diagnostics.batch(len(batch), started_ns, time.perf_counter_ns()-clock_ns,
+                                       outcome, self._q.qsize())
                 for _ in batch:
                     self._q.task_done()
 
@@ -298,6 +332,7 @@ class Recorder:
             while self._q.unfinished_tasks:
                 left = deadline - time.monotonic()
                 if left <= 0:
+                    self.diagnostics.count("flush_timeout")
                     return False
                 self._q.all_tasks_done.wait(left)
         return True
