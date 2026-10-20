@@ -1,0 +1,26 @@
+version: 1
+synthetic_only: true
+service: synthetic.pipeline
+auto_otel: true
+probes:
+  - module: pipeline_target
+    function: turn
+    capture: {args: [index], return: true}
+  - module: pipeline_target
+    function: context_select
+    capture: {args: [history, limit], return: true}
+  - module: pipeline_target
+    function: retrieve
+    capture: {args: [question], return: true}
+  - module: pipeline_target
+    function: select_evidence
+    capture: {args: [candidates], return: true}
+  - module: pipeline_target
+    function: draft
+    capture: {args: [evidence, context, strict], return: true}
+  - module: pipeline_target
+    function: review
+    capture: {args: [reply], return: true}
+  - module: pipeline_target
+    function: repair
+    capture: {args: [reply, evidence], return: true}

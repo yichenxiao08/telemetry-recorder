@@ -20,6 +20,20 @@ from opentelemetry.trace import NonRecordingSpan, SpanContext, TraceFlags
 from recorder import Recorder, bounded
 
 
+# Optional semantic calls share the process's single recorder, not a new exporter.
+_optional = None
+
+
+def record_decision(step_id, **fields):
+    try:
+        if _optional is None:
+            return False
+        return _optional.recorder.record_decision(
+            step_id, _parent_id=_optional.parent.get(), **fields)
+    except Exception:
+        return False
+
+
 def load_config(path):
     # No arbitrary tags or executable config. Capture is OFF unless allowlisted.
     text = Path(path).read_text(encoding="utf-8-sig")
@@ -284,6 +298,7 @@ def standard_otel(recorder):
 
 
 def main():
+    global _optional
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
@@ -298,6 +313,9 @@ def main():
     recorder = Recorder(cfg.get("endpoint", "http://127.0.0.1:4318"),
                         service=cfg.get("service", "synthetic.probe"), capture_fields=names)
     injector = Injector(recorder, cfg["probes"])
+    _optional = injector
+    # python -m names this module __main__; optional target imports must share it.
+    sys.modules.setdefault("scout_probe", sys.modules[__name__])
     auto = standard_otel(recorder) if cfg.get("auto_otel", False) else {"status": "disabled"}
     sys.path.insert(0, str(Path(args.path).resolve()))
     injector.install()
@@ -307,6 +325,7 @@ def main():
         module, function = args.entry.split(":")
         getattr(importlib.import_module(module), function)()
     finally:
+        _optional = None
         injector.uninstall()
         flush_start = time.perf_counter()
         drained = recorder.close(2)

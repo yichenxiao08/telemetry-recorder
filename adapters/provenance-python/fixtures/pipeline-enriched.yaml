@@ -1,0 +1,27 @@
+version: 1
+synthetic_only: true
+service: synthetic.pipeline.enriched
+auto_otel: true
+probes:
+  - module: pipeline_enriched
+    function: turn
+    capture: {args: [index], return: true}
+  - module: pipeline_enriched
+    function: context_select
+    capture: {args: [history, limit], return: true}
+  - module: pipeline_enriched
+    function: retrieve
+    capture: {args: [question], return: true}
+  - module: pipeline_enriched
+    function: select_evidence
+    capture: {args: [candidates], return: true}
+  - module: pipeline_enriched
+    function: draft
+    capture: {args: [evidence, context, strict], return: true}
+  - module: pipeline_enriched
+    function: review
+    capture: {args: [reply], return: true}
+  - module: pipeline_enriched
+    function: repair
+    capture: {args: [reply, evidence], return: true}
+

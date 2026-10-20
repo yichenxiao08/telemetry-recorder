@@ -41,6 +41,47 @@ make existing diff accept it.
 
 Measured results, exact PowerShell commands and observations will be added after
 the replay, including tests that explicitly demonstrate unsupported operations.
+## Current executable status (2026-10-20)
+
+S0a is now executed. Historical pending/fallback statements below describe the
+accepted source audit, not today's executable status. S0b results follow below
+when validated; no production milestone or engine change is implied.
+
+- uv 0.13.3 provisions CPython 3.12.12; OTel 1.28.2 / instrumentation 0.49b2
+  and all transitives are locked. Native Python 3.14 only bootstrapped uv.
+- Primary capture uses external YAML/import probes; A source edits = 0, config
+  = 11 lines. The independent Go generator matches every decision/lineage
+  envelope field after normalizing generated run identity. No graph resolver
+  or semantic completeness enforcement was added.
+- Safety checkpoint passed 15 tests before breadth validation. Tests cover
+  queue/cooldown, bounded values and metadata, unavailable/blocked exporter,
+  invalid values, original exception identity, context cleanup, actual OTLP
+  decoding, unsupported callables, default capture OFF and standard integrations.
+- Cost budget MISSED. The unchanged budget is p50 <=100 us / p99 <=250 us.
+  See [all 30 trials](../benchmark/results/s0a-probe-overhead.json) and the
+  [generated cost/context/flush tables](../benchmark/results/s0a-probe-overhead.md).
+  Reachable 60 Hz median trial p50/p99 = 252.20/818.49 us (0/5 pass); worst
+  trial p99 = 1741.28 us. All three 60 Hz conditions miss. Only 4/30 trials
+  across all modes meet both quantile budgets. Fast tight-loop drop paths do
+  not establish affordable full capture.
+- Reachable 60 Hz exported all 18,000 native items (9,000 decisions plus roots).
+  Reachable tight loops exported 2,112/100,000 items and dropped 97,888 full.
+  Unreachable exported zero; accepted-but-failed exports remain explicit.
+  Saturation retains at most one queued item and reports all loss.
+- The timed wrapper includes automatic run entry/exit, copying/serialization
+  and enqueue; body time only is subtracted. Context and explicit flush are
+  separately reported. Fixed four-scalar/two-returned-alternative envelopes
+  average about 1.19 KiB, below 2 KiB. Returning alternatives was a benchmark
+  fixture choice; probes cannot invent alternatives hidden in an ordinary body.
+- Standard requests tracing bridges into the same bounded queue. Logging adds
+  trace correlation only; log-body export is OFF. Existing providers are
+  preserved, not silently replaced. Async/generator/descriptor/alias/reload
+  support and arbitrary command injection remain unsupported.
+- The experimental complete flag covers capture of boundary arguments only.
+  It does not mean all arguments were read or all workflow dependencies seen.
+  HTTP-client instrumentation does not automatically instrument a server.
+
+### Historical source audit (preserved)
 
 ## Execution status: user-authorized partial boundary
 
