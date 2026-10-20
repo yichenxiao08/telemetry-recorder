@@ -1,0 +1,6 @@
+--- FAIL: TestTailTerms (0.00s)
+    --- FAIL: TestTailTerms/edges_inside (0.00s)
+        tail_test.go:37: {Status:ok Score:0.02144607843137255 Q05:1 Q95:1 Delta:0.5 Lower:0.5 Upper:1.5 ProblemLeft:0 ProblemRight:0 ProblemOutside:0 ReferenceLeft:0 ReferenceRight:0 ReferenceOutside:0 ProblemRate:0.03125 ReferenceRate:0.00980392156862745}
+FAIL
+FAIL	github.com/signalscout/signalscout/internal/cohort	0.380s
+FAIL

@@ -92,3 +92,18 @@ variants. Preserve the prior proposal as history; roles and reference-tail
 coverage are the only approved additions, and Task B still awaits contract review.
 The within-range subgroup miss stays visible rather than being rescued with
 conditional applicability filtering. See benchmark/problems/lane-02/contract.md.
+
+## Lane-02 Stage 1 observations (parked)
+
+- Finite empirical reference quantiles need not contain all nuisance support
+  after padding. Keep the benign 7/400 vs 7/400 outside counterexample and exact
+  zero score; do not change this frozen fixture or its interval to erase it.
+- Unequal-size Laplace contrasts can be positive with zero raw outside counts.
+  A future separately reviewed calibration design may address interpretation;
+  no smoothing change, significance claim or fused score is authorized here.
+- Current development cost measurements are single trials on a new payload and
+  retain two historical-budget misses. No recorder/ingestion tuning is part of
+  this slice. Any further cost task needs an explicit fixed-payload protocol.
+- Independent real histories/author-separated cases are still needed before
+  claiming diagnostic accuracy. Conditional comparison remains deferred; no
+  M6–M8 or P0–P4 production phase starts. Stage 2 awaits explicit GO.

@@ -734,3 +734,15 @@ capture. See benchmark/results/lane-01.md and lane-01-shop-regression.json.
 All 72 saved shop comparisons retain identical differences/scores. These are
 constructed cases, not independently verified sequential histories or real-world
 accuracy. The first evaluation and confirmatory rerun remain on record.
+
+### Lane-02 Stage 1 checkpoint (owner-authorized synthetic slice)
+
+Docs-only contract amendment 6a3716b precedes implementation. The narrow extension
+adds opt-in symptom roles and a separate reference-tail association list to the
+existing cohort report/CLI, without changing median constants, lane-01 artifacts,
+structural/context diff types or migrations. Development seeds 101/103 pass the
+deterministic score/count/invariant expectations; within-range age remains missed.
+Retain the benign finite-support premise mismatch and recording-cost misses in
+docs/lane02-checkpoint-a.md. Sources are pinned in the lane-02 source-freeze
+manifest; reserved seeds remain ungenerated/unscored pending explicit owner GO.
+No M6–M8, P0–P4 production work or conditional comparison starts.

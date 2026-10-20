@@ -328,3 +328,32 @@ candidate trials, unreachable/saturation losses and all raw results remain.
 The first-candidate reachable trials meet the new budget in 3/5 cases: all p50 values pass; p99 fails in trials 1 and 5. This decision authorizes a synthetic Slice 1 only, not P0
 privacy work or M5–M8. No new overhead measurement is needed for this budget-only
 change; any future recorder path change requires measurement again.
+
+## Lane-02 Stage 1 / Checkpoint A (2026-10-20)
+
+Step 0 amendment is 6a3716b8b1c21b3167331d0c0e7421ffc529fdfb. Stage 1 implements
+only the approved synthetic symptom roles and separate tail list; Stage 2 waits
+for explicit GO. No reserved seed was generated/scored. Full analysis, hashes,
+limitations and reproducible native checks are in docs/lane02-checkpoint-a.md.
+
+Both development seeds 101/103 complete all six variants: 9,600 decision records,
+57,600 captured arguments, 19,200 accepted/exported OTLP spans, zero drops or
+export failures. Instrumentation changes zero target lines; config has ten lines.
+Real intake preserves the harness's January 2026 clock and captured inputs/returns;
+native links, CLI role sections and null insufficient-tail scores are tested.
+Every deterministic age/current score/count and invariant count matches; the
+within-range subgroup remains missed by both marginal age statistics. All 15
+frozen lane-01 full reports and CLI JSON/text bytes match the pre-change binary.
+
+Retain two interpretation limits: benign noise_0 in seed 101 has seven outside
+values in EACH arm, contradicting the amended inside-support premise while
+still yielding exactly T=0. Unequal sample sizes can produce positive smoothed
+contrast with zero raw outliers (0/30 vs 0/100 gives 0.0214460784); the initial
+incorrect test expectation and its failure remain on record. No formula changed.
+
+Per-case wrapper p50 234.150–346.700 us, p99 469.143–846.346 us on this new payload,
+one development trial/case. Ten of twelve meet both historical 330/830 us limits;
+seed 103 moderate misses p99 and unrelated misses p50. All miss original
+100/250 us limits. Context p50 enter 26.5–29.5 us/exit 8.05–12.15 us; explicit
+flush 5.678–102.880 ms. These do not replace the earlier five-trial measurements
+or establish a new cost-gate pass. Synthetic arithmetic is not real diagnosis.
