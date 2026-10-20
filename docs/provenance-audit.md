@@ -382,3 +382,42 @@ The partial store/report and exclusive evaluation ledger stay in .cache. No
 reserved replay, reanalysis, continuing after the stop, or replacement seed was
 attempted. Complete representative capture is now the immediate unverified
 assumption; this provides no real-world diagnostic-accuracy evidence.
+
+## Recorder capture-loss Checkpoint A (2026-10-20)
+
+Branch codex/recorder-capture-loss adds bounded, payload-free exporter observation,
+not retry/delivery behavior. It preserves original counters and records failure
+class/reason, redacted message/status, phase and timestamps; queue high-water,
+batch histogram/timing and achieved call-phase rates are inspectable in doctor
+and run sidecars. Exported values/bytes are unchanged in independent OTLP and
+real-intake tests. Existing safety tests pass, including host exception identity.
+
+Five development-only repetitions complete 60/60 cases: 96,000 acknowledged
+spans, no drops/failed exports, and unchanged score/count expectations. Rates
+60.116–60.266 calls/sec; queue peaks 40/14/16/16/16. Natural loss is not reproduced.
+The original initiating failure therefore remains unknown. All old lane-02
+artifacts/lock/spec remain untouched; 25 protected hashes match, including the
+owner's pre-existing local published-report edit.
+
+A deliberate first-response delay after commit reproduces the amplification:
+two TimeoutError spans at wait-for-ack, 58 accepted spans suppressed in cooldown,
+120 new caller drops. Unreachable connect errors appear as URLError/TimeoutError
+on this machine: 40 timed-out spans, 1,200 suppressions, 2,360 new drops. Preserve
+unknown persistence; client failures are not proof of database loss. The delayed
+relay's WinError 10053 traceback is retained. HTTP/encode/connection categories
+are injected test coverage, not additional failures observed in the controls.
+
+Added two CPU workers and a bounded-file fsync worker cause no loss in one trial;
+Defender status is access-denied. SQLite-only commit latency is not isolated by
+end-to-end response timing. Queue 256 overflows on the explicit burst (1,712),
+while experimental 4,096 avoids drops but lengthens flush to 4.301 s. Wrapper
+spikes partially overlap long worker waits but also occur without them.
+
+All 60 case wrappers miss 100/250 us (p50 231.550–462.150 us, p99
+496.015–1,791.453 us); all six controls miss at least one quantile. Context/flush
+costs, observation limits, raw reports and per-run accounting are published in
+benchmark/results/recorder-capture-loss. These are not five-trial post-fix cost
+validation. Full protocol, hypotheses and proposed bounded retry/accounting fix:
+docs/recorder-capture-loss.md. STOP awaiting GO FIX, no behavioral fix yet.
+Local format/vet/lint/fresh race/build and all 32 Python tests pass; hosted
+Windows/Ubuntu CI is verified separately. No diagnostic-accuracy claim follows.

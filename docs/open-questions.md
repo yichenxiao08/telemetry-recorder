@@ -351,3 +351,35 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   and historical 330/830 us budgets; one case is not the five-trial harness.
   Conservative choice: no cost pass, no lane-02 evaluation acceptance and no
   real-world diagnostic claim. See docs/lane02-stage2.md for raw counts/hashes.
+
+## Recorder capture-loss Checkpoint A
+
+- Lane-02 stays closed as attempted/incomplete due to capture loss; the lock,
+  attempt-01, contract, generator/spec/checksums/freeze and published artifacts
+  retain their pre-task hashes. Existing owner edits remain local. New diagnostics
+  intentionally change the recorder, not the historical source-freeze manifest.
+- Five development repetitions (101/103, six variants) complete 60 cases and
+  acknowledge 96,000 spans without drops or failed exports. Natural loss is not
+  reproduced, so the historical initiating exception remains unknown.
+- A deliberate 650 ms post-commit reply delay causes two timed-out spans, 58
+  queued cooldown suppressions and 120 caller cooldown drops. Conservative
+  interpretation: timeout/cooldown amplification is evidenced, not the original
+  SQLite/Defender cause. Failed acknowledgements can follow real commits.
+- Defender status is denied by Windows. Added two-process CPU plus bounded-file
+  fsync load has zero loss in one trial. No security settings/exclusions change;
+  do not attribute original loss to Defender or claim background load is harmless.
+- Queue 256 fills in the tight burst (1,712 drops); 4,096 avoids those drops but
+  drains longer. Conservative choice: keep default 256 pending owner review;
+  normal-rate peaks <=40 and the delayed-ack peak 58 do not support a capacity fix.
+- Exception messages use truncated safe summaries because arbitrary exception
+  text can contain payloads, URLs or response bodies. Keep class/reason/status,
+  phase and timestamp, while documenting the redaction rather than claiming raw
+  message retention. Flush timeout is not a drop; counters keep that distinction.
+- All 60 development cases and all six controls miss 100/250 us on at least one
+  quantile. No budget change or fix-cost claim. Context exit includes observer
+  sampling; raw costs and every miss stay published. Strict global network
+  deadline enforcement remains a proposal requiring proof, not an implemented
+  property of urllib's per-socket timeout.
+- Stop at Checkpoint A: the bounded worker-retry/queue-admission/accounting design
+  in docs/recorder-capture-loss.md needs GO FIX. No behavior fix or Stage 4 work,
+  lane-03 contract, scoring change or production phase starts here.

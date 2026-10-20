@@ -124,3 +124,22 @@ conditional applicability filtering. See benchmark/problems/lane-02/contract.md.
 - Retain wrapper 475.750/2,300.580 us budget misses alongside prior observations.
   No tuning, conditional comparison, migration, new diff type or production
   phase is authorized. Full results: docs/lane02-stage2.md.
+
+## Recorder capture-loss Checkpoint A (parked until GO FIX)
+
+- Proposed, not implemented: one bounded worker retry for transient failures,
+  worker-only backoff, retaining accepted items through cooldown and allowing
+  nonblocking admission while finite capacity remains. Keep 256 as the default;
+  a 4,096 toy burst succeeding is not justification for a larger default.
+- Exact producer-span lifecycle accounting must distinguish acknowledgement,
+  confirmed rejection, caller drop and unknown persistence; draining is not
+  delivery. Verify trace/span/event idempotency before retrying ambiguous results.
+- A total retry deadline cannot be inferred from urllib's socket timeout. Review
+  DNS/header/slow-operation behavior and bound any auxiliary worker mechanism;
+  no unbounded thread-per-timeout approach. These are Stage 3 implementation
+  questions, not changes already made.
+- Retain the unhelpful controlled CPU/I/O trial, all 60 cost-budget misses, the
+  induced post-commit loss, and the relay WinError 10053 traceback. No Defender
+  exclusion test, profiling expansion or scoring/throughput tuning is added.
+- Future reliability validation needs the owner's Stage 3/4 approval. Do not write
+  a lane-03 contract or start later production milestones from this investigation.
