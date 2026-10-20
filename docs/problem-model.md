@@ -199,3 +199,9 @@ reason enrichment, durable report history, hypotheses and suggested experiments.
 The exact lane evaluation contract is frozen at b537ee1 in problem.yaml and
 slice1-scoring.md; authored_blind is explicitly outcome-blind, not independently
 written. The engine never reads benchmark mechanism/symptom/decoy labels.
+
+Finite captured values can overflow floating-point median/MAD subtraction.
+Slice 1 explicitly emits unsupported_numeric observations for undefined numeric
+arithmetic, preserving observed counts and avoiding NaN or a false no-difference
+association. This guard changes no formula/constants or valid lane-01 score;
+all 15 complete reports were recomputed from pinned evidence and remain identical.

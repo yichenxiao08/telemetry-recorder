@@ -1,0 +1,5 @@
+--- FAIL: TestExtremeFiniteCaptureDoesNotProduceNaN (0.00s)
+    scoring_test.go:52: unbounded numeric score NaN
+FAIL
+FAIL	github.com/signalscout/signalscout/internal/cohort	0.528s
+FAIL

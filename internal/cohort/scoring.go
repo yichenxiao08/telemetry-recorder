@@ -45,7 +45,7 @@ func Categorical(problem, reference []string) (score float64, category string, p
 }
 
 func Numeric(problem, reference []float64, epsilon, floor float64) float64 {
-	if len(problem) == 0 || len(reference) == 0 || epsilon <= 0 || floor <= 0 {
+	if epsilon <= 0 || floor <= 0 || math.IsNaN(epsilon) || math.IsNaN(floor) || math.IsInf(epsilon, 0) || math.IsInf(floor, 0) || !numericDefined(problem, reference) {
 		return 0
 	}
 	x, m := stats.Median(problem), stats.Median(reference)
@@ -61,6 +61,21 @@ func Numeric(problem, reference []float64, epsilon, floor float64) float64 {
 	}
 	scale := math.Max(1.4826*stats.MAD(reference), epsilon)
 	return (1 - math.Exp(-effect/scale/3)) * (1 - float64(e+1)/float64(len(reference)+2))
+}
+
+// Finite captured values can still overflow median/MAD subtraction. That is
+// unsupported arithmetic, not a score or an imputed absence of an effect.
+func numericDefined(problem, reference []float64) bool {
+	if len(problem) == 0 || len(reference) == 0 {
+		return false
+	}
+	x, m := stats.Median(problem), stats.Median(reference)
+	for _, v := range []float64{x, m, stats.MAD(reference), math.Abs(x - m)} {
+		if math.IsNaN(v) || math.IsInf(v, 0) {
+			return false
+		}
+	}
+	return true
 }
 
 func VersionCheck(values map[string]any, declared, current, used string, delta float64) string {

@@ -47,6 +47,24 @@ func TestNumericFormulaTable(t *testing.T) {
 	}
 }
 
+func TestExtremeFiniteCaptureDoesNotProduceNaN(t *testing.T) {
+	reference := []float64{-1e308, -1e308, 1e308, 1e308, 1e308, 1e308, 1e308, 1e308, 1e308, 1e308}
+	if score := Numeric([]float64{0}, reference, 1, 1); math.IsNaN(score) || score < 0 || score > 1 {
+		t.Fatal("unbounded numeric score", score)
+	}
+}
+
+func TestNumericWideMagnitudeBounds(t *testing.T) {
+	rapid.Check(t, func(t *rapid.T) {
+		power := rapid.IntRange(-300, 308).Draw(t, "power")
+		magnitude := math.Pow10(power)
+		score := Numeric([]float64{0}, []float64{-magnitude, -magnitude, magnitude, magnitude, magnitude, magnitude, magnitude, magnitude, magnitude, magnitude}, 1, .01)
+		if math.IsNaN(score) || score < 0 || score > 1 {
+			t.Fatal(score)
+		}
+	})
+}
+
 func TestScoreProperties(t *testing.T) {
 	rapid.Check(t, func(t *rapid.T) {
 		n := rapid.IntRange(10, 100).Draw(t, "n")

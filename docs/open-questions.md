@@ -242,3 +242,8 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   sequential game history. Previous-value origin is not independently verified;
   the invariant checks declared versions. Treat this as pipeline validation;
   base diagnostic accuracy is likely inflated. Independent histories remain future work.
+- A later adversarial test found finite extreme values can overflow MAD subtraction
+  and produce NaN. The numeric path now marks unsupported arithmetic as an
+  observation, with observed counts retained. Formula constants are unchanged;
+  wide-magnitude rapid and exact formula tests pass. Recomputing all 15 complete
+  reports from pinned evidence yields identical results. The failed test is retained.

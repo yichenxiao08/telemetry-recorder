@@ -52,3 +52,25 @@ func TestStableTiesNoNameBoostAndMissing(t *testing.T) {
 		t.Fatal("overlap accepted")
 	}
 }
+
+func TestOverflowIsUnsupportedObservation(t *testing.T) {
+	p, r := model.Cohort{Profile: toyProfile(), RunIDs: []string{"p"}}, model.Cohort{Profile: toyProfile(), RunIDs: []string{"r"}}
+	problem, reference := []model.DecisionObservation{}, []model.DecisionObservation{}
+	for i := 0; i < 10; i++ {
+		value := 1e308
+		if i < 2 {
+			value = -1e308
+		}
+		problem = append(problem, model.DecisionObservation{Values: map[string]any{"inputs": map[string]any{"a": 0.0, "b": 0.0}}})
+		reference = append(reference, model.DecisionObservation{Values: map[string]any{"inputs": map[string]any{"a": value, "b": value}}})
+	}
+	result, err := Compare(p, r, problem, reference)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, f := range result.Differences {
+		if f.Status != "unsupported_numeric" || f.Tier != "observation" || f.Score != 0 || f.ProblemMissing != 0 {
+			t.Fatal("overflow disguised as no effect or missing", f)
+		}
+	}
+}

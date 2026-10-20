@@ -123,7 +123,13 @@ func Compare(p, r model.Cohort, problem, reference []model.DecisionObservation) 
 		f.ProblemMissing = len(problem) - f.ProblemObserved
 		f.ReferenceMissing = len(reference) - f.ReferenceObserved
 		f.Tier = "association"
-		f.Status = "ok"
+		if f.Status == "" {
+			f.Status = "ok"
+		}
+		if f.Status == "unsupported_numeric" {
+			f.Score = 0
+			f.Tier = "observation"
+		}
 		f.ProblemRuns = len(problem)
 		f.ReferenceRuns = len(reference)
 		f.ProblemSessions = out.ProblemSessions
@@ -210,7 +216,12 @@ func Compare(p, r model.Cohort, problem, reference []model.DecisionObservation) 
 		if len(pv) == 0 || len(rv) == 0 {
 			summary = feature.Name + ": missing capture; no numeric effect imputed"
 		}
-		add(Finding{Type: "input_value", Feature: feature.Name, Score: score, ProblemObserved: len(pv), ReferenceObserved: len(rv), ProblemNumerator: pc, ReferenceNumerator: rc, Summary: summary})
+		status := ""
+		if len(pv) > 0 && len(rv) > 0 && !numericDefined(pv, rv) {
+			status = "unsupported_numeric"
+			summary = feature.Name + ": arithmetic overflow; observed counts retained, comparison unknown"
+		}
+		add(Finding{Type: "input_value", Feature: feature.Name, Score: score, Status: status, ProblemObserved: len(pv), ReferenceObserved: len(rv), ProblemNumerator: pc, ReferenceNumerator: rc, Summary: summary})
 	}
 	sort.Slice(out.Differences, func(i, j int) bool {
 		a, b := out.Differences[i], out.Differences[j]

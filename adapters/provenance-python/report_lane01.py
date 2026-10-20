@@ -1,12 +1,14 @@
 """Generate Slice 1 tables and compare saved shop rankings, never edit results."""
 import argparse
 import json
+import subprocess
 from pathlib import Path
 
 
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--repo",type=Path,required=True)
+    parser.add_argument("--verify-db",type=Path)
     args=parser.parse_args()
     results=args.repo/"benchmark/results"
     data=json.loads((results/"lane-01.json").read_text())
@@ -18,9 +20,16 @@ def main():
         assert (a["seed"],a["variant"],a["ranks"],a["invariant_counts"])==(b["seed"],b["variant"],b["ranks"],b["invariant_counts"])
         assert [{k:d[k] for k in compare_fields} for d in a["result"]["differences"]]==[{k:d[k] for k in compare_fields} for d in b["result"]["differences"]]
     (results/"lane-01-confirmation.json").write_text(json.dumps({"first_revision":first["revision"],"confirmed_revision":data["revision"],"cases":15,"ranks_scores_counts_invariants_identical":True,"formulas_profile_unchanged":True},indent=2)+"\n",encoding="utf-8")
+    if args.verify_db:
+        for case in data["cases"]:
+            p=case["result"]["problem"]["id"]
+            r=case["result"]["reference"]["id"]
+            checked=json.loads(subprocess.check_output([str(args.repo/"bin/signalscout.exe"),"--db",str(args.verify_db),"explain-cohort",p,r,"--json"]))
+            assert checked==case["result"],(case["seed"],case["variant"],"saved evidence result changed")
+        (results/"lane-01-boundary-confirmation.json").write_text(json.dumps({"cases":15,"full_reports_identical_on_pinned_evidence":True,"guard":"nonfinite MAD arithmetic is unsupported, never NaN"},indent=2)+"\n",encoding="utf-8")
     rows=["# lane-01: pre-registered synthetic Slice 1", "",
         "Pre-registration: `"+data["preregistration_sha"]+"`; implementation: `"+data["revision"]+"`.",
-        "All 15 first-run evaluation cases retained; no scoring/profile changes after execution.",
+        "All 15 first-run evaluation cases retained; no formula/constant/profile tuning. Validation fixes are disclosed below.",
         "Each case: 100 marked problem and 100 explicit reference frames; 10 shared session clusters.",
         "Session labels do not establish independence. Sampling/capture: 3000/3000 decisions, zero drops.",
         "Ranks count only positive, sufficiently observed differences. Dash = no detected difference.",
@@ -45,6 +54,10 @@ def main():
         "record had this contradiction. All 15 cases were rerun: ranks, scores, counts and invariants",
         "are identical. The first results and failed regression test remain committed. The rerun is",
         "confirmation on the SAME seeds, not a fresh holdout; formulas/profile were unchanged.","",
+        "A later adversarial numeric test found finite extreme values could overflow MAD subtraction.",
+        "That arithmetic now reports unsupported_numeric (observation), never a NaN or false zero-effect",
+        "association. Exact formula/constant tests and wide-magnitude rapid tests pass. All 15 saved",
+        "reports were recomputed from pinned evidence and remain identical; no formula/constant changed.","",
         "Seven irrelevant but selection-correlated inputs outrank mechanisms in decoy-heavy. This is a",
         "real limitation of marginal associations, not evidence that noise caused the output. Harder",
         "contains stale versions in 20% of problem frames: median shift misses them entirely. The",
