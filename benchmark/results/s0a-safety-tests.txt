@@ -1,0 +1,20 @@
+test_blocked_worker_does_not_block_host_or_context_exit (test_safety.BlockedExporter.test_blocked_worker_does_not_block_host_or_context_exit) ... ok
+test_capture_failure_never_changes_host_behavior (test_safety.ExtraSafety.test_capture_failure_never_changes_host_behavior) ... ok
+test_fixed_cost_payload (test_safety.ExtraSafety.test_fixed_cost_payload) ... ok
+test_zero_source_changes_and_all_envelope_fields_match_go (test_safety.FrameReference.test_zero_source_changes_and_all_envelope_fields_match_go) ... ok
+test_real_intake_decodes_probed_otlp_and_lineage (test_safety.Intake.test_real_intake_decodes_probed_otlp_and_lineage) ... ok
+test_reload_is_reported_and_doctor_memory_stays_bounded (test_safety.ReloadBound.test_reload_is_reported_and_doctor_memory_stays_bounded) ... ok
+test_config_capture_off_and_unknown_keys_rejected (test_safety.Safety.test_config_capture_off_and_unknown_keys_rejected) ... ok
+test_default_capture_off_and_snapshot_before_mutation (test_safety.Safety.test_default_capture_off_and_snapshot_before_mutation) ... ok
+test_exit_has_no_flush_join_or_network_and_full_queue_no_wait (test_safety.Safety.test_exit_has_no_flush_join_or_network_and_full_queue_no_wait) ... ok
+test_invalid_values_do_not_raise_or_call_user_hooks (test_safety.Safety.test_invalid_values_do_not_raise_or_call_user_hooks) ... ok
+test_original_exception_and_context_cleanup (test_safety.Safety.test_original_exception_and_context_cleanup) ... ok
+test_overflow_and_bounded_memory (test_safety.Safety.test_overflow_and_bounded_memory) ... ok
+test_server_down_cooldown_fast_path (test_safety.Safety.test_server_down_cooldown_fast_path) ... ok
+test_unsupported_and_import_hook_doctor (test_safety.Safety.test_unsupported_and_import_hook_doctor) ... ok
+test_installed_http_and_logging_integrations (test_safety.StandardOtel.test_installed_http_and_logging_integrations) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 1.045s
+
+OK

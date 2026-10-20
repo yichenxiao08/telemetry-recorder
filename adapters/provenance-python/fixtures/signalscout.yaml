@@ -1,0 +1,11 @@
+version: 1
+synthetic_only: true
+endpoint: http://127.0.0.1:4318
+service: synthetic.frame
+auto_otel: true
+probes:
+  - module: frame_target
+    function: choose_lane
+    capture:
+      args: [gap, previous_lane, previous_frame, frame]
+      return: true

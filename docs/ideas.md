@@ -32,3 +32,13 @@ and growth per hour rather than assume this extrapolation is accurate.
 - Design-only signalscout record -- command wrapper and doctor summary: reuse
   existing OTLP integrations, report unsupported libraries and missing app signals.
   No wrapper, metrics-browser extension or service-overview expansion in this task.
+
+## Synthetic zero-source-change probe follow-ups (parked)
+
+- Expand supported Python callables only after behavior-preservation tests for
+  async, generators, descriptors, module aliases and reload. Report unsupported
+  coverage explicitly; do not infer complete data flow.
+- Standard logging export and other HTTP/framework integrations need separate
+  privacy/safety tests. The spike only bridges requests traces and logging context.
+- Diagnose the measured probe cost before production rollout. Do not change the
+  100/250 us budget or use fast cooldown/drop paths as full-capture performance.

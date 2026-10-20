@@ -182,3 +182,36 @@ a stable step/output/config reference. Record payload bytes. Measure run-context
 entry/exit separately and retain saturation/drop/no-op-path costs separately.
 Large artifact hashing/I/O is explicitly outside this API and must not be
 silently charged to or hidden inside a "nonblocking" recording call.
+
+## S0 probe tier (2026-10-20 design amendment)
+
+The PRIMARY path is external config-driven capture with zero target-source edits.
+signalscout.yaml names Python modules/functions and per-field argument/return
+allowlists, default OFF. The synthetic python -m scout_probe import hook wraps
+supported synchronous functions in memory. It records call arguments before
+mutation, return values, duration and exception type through the SAME bounded
+record_decision/OTLP core. Unsupported targets/loaders/reloads are diagnosed.
+No server or transport convention changes are needed.
+
+A probe edge describes an argument supplied at a call boundary producing a
+return; it cannot establish which parameters were actually read or discover
+hidden globals/locals. The experimental complete flag covers captured call args,
+not complete workflow/data-flow provenance. Rules and rejected alternatives
+remain unobserved unless exposed in returns or explicitly instrumented.
+The OPTIONAL second tier is record_decision for those semantic gaps only.
+It must not become a prerequisite for ordinary capture.
+
+The prototype doctor lists attached/failed/unsupported probes, configured capture
+fields, serialized/dropped/exported counts, cooldown and synthetic privacy mode.
+Standard installed requests tracing uses the same queue. Logging instrumentation
+adds trace correlation; body export stays OFF. Other frameworks are unsupported.
+
+Design-only CLI shapes (not Go commands implemented here):
+- signalscout record --config signalscout.yaml -- <command>
+- signalscout probe add module:function --capture args.field --capture return
+- signalscout mark <run-or-output-ref> --problem <id> --label <value> --rubric <version>
+- signalscout explain <problem-id> --reference <selection>
+A future viewer Mark action would append an annotation through the existing
+writer, showing reviewer/rubric, dimension and evidence refs. It must not rewrite
+outcome/timestamps or manufacture a satisfactory reference. No marking UI or
+these production CLI commands are built during S0.

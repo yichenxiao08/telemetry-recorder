@@ -1,0 +1,14 @@
+[project]
+name = "signalscout-provenance-spike"
+version = "0.0.1"
+requires-python = "==3.12.*"
+dependencies = [
+  "opentelemetry-sdk==1.28.2",
+  "opentelemetry-exporter-otlp-proto-http==1.28.2",
+  "protobuf==5.28.3",
+  "PyYAML==6.0.3",
+  "opentelemetry-instrumentation-requests==0.49b2",
+  "opentelemetry-instrumentation-logging==0.49b2",
+]
+[tool.uv]
+package = false

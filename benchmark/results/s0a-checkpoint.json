@@ -1,0 +1,18 @@
+{
+  "Stage": "S0a",
+  "SyntheticOnly": true,
+  "Python": "3.12.12",
+  "Uv": "0.13.3",
+  "SafetyTests": 15,
+  "SafetyPassed": true,
+  "BudgetPassed": false,
+  "MeasurementTrials": 30,
+  "BudgetPassingTrials": 4,
+  "Checkpoint": "S0b permitted: safety passes; overhead budget remains missed. Saturation and unreachable loss are explicit injected conditions.",
+  "Limitations": [
+    "Queue mutex/runtime scheduling are not hard-real-time guarantees.",
+    "Probe edges are call-boundary provenance, not proof of internal data use.",
+    "Logging integration provides correlation, not log body export.",
+    "Initial test harness JSON field spelling failed; assertions corrected and failure retained."
+  ]
+}
