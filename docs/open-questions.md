@@ -192,3 +192,58 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   saturated 272.15/708.41 us. Tight loops meet timing only with substantial loss.
   The final 19-test safety checkpoint passes. Budget/privacy/semantic-coverage
   gaps remain; no P0 implementation or production rollout is authorized.
+
+## Slice 1 conservative choices (2026-10-20)
+
+- PR #1 and the provenance spike are merged on main (859487c); Slice 1 branches
+  from that main. No real Subway Surfers data exists; do not reconstruct it.
+- The owner changed the reachable 60 Hz budget to 330/830 us after seeing results.
+  All five corrected-duration trials meet it; first-candidate trials meet it in
+  3/5 cases. Original 100/250 misses and saturation losses remain unchanged.
+- Annotation writes use the serving process API and existing writer queue. CLI
+  marking never opens another operational writer. Annotation created/recorded
+  times are separate from telemetry and cannot widen execution/context scopes.
+- Synthetic-only annotations require a rubric, source and reviewer. Revisions
+  append, retain target/dimension/source/reviewer and cannot fork. Disagreement
+  remains visible; label selection excludes conflicting active values. Unlabeled
+  runs remain unknown. Predicates support captured scalar equality only.
+- Cohorts pin unit/profile/workload, selection window, labels, native decision
+  revisions and sessions. Require bounds/limit; reject oversized populations
+  rather than truncate silently. Explicit reference cohorts cannot overlap the
+  problem cohort. Per-feature observed minimum is ten on each side.
+- A previous-version age is a profile-declared subtraction of two captured
+  scalars; this knowledge lives in the frozen profile, never engine name logic.
+  The version invariant checks producer-declared usage, not arbitrary reads.
+- authored_blind means evaluation outcomes unseen. The requested mechanisms and
+  formulas are known, and synthetic separability is deliberate; this is NOT
+  independent blind validation or real-world diagnostic accuracy.
+
+- Slice 1 evaluation completes all five seeds and three variants with 3000/3000
+  captured decisions and no drops. Base mechanisms rank #2/#3 behind the output
+  symptom; decoy-heavy pushes them to #9/#10; harder median age has no detected
+  shift while the invariant flags 20/100 problem frames. These misses are retained.
+- Base success is likely inflated: separable synthetic populations, an oracle,
+  a declared age transform and known mechanisms. It is not an independently
+  authored blind test or evidence of real-world diagnosis/causation.
+- A post-first-run regression found contradictory output capture-off metadata
+  was interpreted as observed. The parser now treats it as unknown. Every first
+  result is retained; all 15 confirmatory cases have identical ranks, scores,
+  counts and invariant results. No formula/profile/seed was tuned. Confirmation
+  reused the same seeds and is not a fresh holdout.
+- Predicate scalar equality is normalized (5 and 5.0 match); structured values
+  are rejected. Its failed validation test is retained. Label-selected evaluation
+  does not use this predicate branch. No richer query language is introduced.
+- Both saved shop seeds retain all 72 M3/M4b ranked differences and scores exactly.
+  The seed-1 gauge sampling miss and incidental context observations remain.
+- The declaration-based invariant itself needs no reference, but this slice's
+  CLI presents it alongside cohort comparison. A standalone invariant-only CLI
+  and graphical mark UI remain parked; there is no graph-read proof or causal report.
+- The frame cases are constructed case-control examples, not a reconstructed
+  sequential game history. Previous-value origin is not independently verified;
+  the invariant checks declared versions. Treat this as pipeline validation;
+  base diagnostic accuracy is likely inflated. Independent histories remain future work.
+- A later adversarial test found finite extreme values can overflow MAD subtraction
+  and produce NaN. The numeric path now marks unsupported arithmetic as an
+  observation, with observed counts retained. Formula constants are unchanged;
+  wide-magnitude rapid and exact formula tests pass. Recomputing all 15 complete
+  reports from pinned evidence yields identical results. The failed test is retained.

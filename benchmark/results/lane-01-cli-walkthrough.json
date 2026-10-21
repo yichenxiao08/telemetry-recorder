@@ -1,0 +1,7 @@
+{
+  "manual_mark_passed": true,
+  "cohort_status": "insufficient_evidence",
+  "problem_runs": 1,
+  "reference_runs": 100,
+  "endpoint": "http://127.0.0.1:4323"
+}

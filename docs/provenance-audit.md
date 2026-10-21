@@ -73,7 +73,7 @@ S0a is executed; S0b findings are below. Historical pending/fallback statements 
 - The timed wrapper includes automatic run entry/exit, copying/serialization
   and enqueue; body time only is subtracted. Context and explicit flush are
   separately reported. Fixed four-scalar/two-returned-alternative envelopes
-  average about 1.19 KiB, below 2 KiB. Returning alternatives was a benchmark
+  average about 1.19 KB (1.16 KiB), below 2 KiB. Returning alternatives was a benchmark
   fixture choice; probes cannot invent alternatives hidden in an ordinary body.
 - Standard requests tracing bridges into the same bounded queue. Logging adds
   trace correlation only; log-body export is OFF. Existing providers are
@@ -316,3 +316,15 @@ end-to-end HTTP instrumentation cost or all B stages as one transaction. Those
 costs are unmeasured, not assumed equal. Absolute cross-process clock order and
 real reviewer validity also remain unestablished. The replay keeps the current
 web/ML run classifications; no lane/coaching-specific engine behavior was added.
+
+## Owner budget decision — 2026-10-20 (after results)
+
+The owner replaces the reachable-60-Hz budget with p50 <=330 us / p99 <=830 us,
+representing approximately 2%/5% of a 16.7 ms frame. This budget was set AFTER
+seeing the measurements; it is not a pre-registered success against 100/250 us.
+The corrected-duration reachable trials all meet 330/830 us (median trial
+205.15/390.31 us; worst p99 399.50 us). Original 100/250 us misses, original
+candidate trials, unreachable/saturation losses and all raw results remain.
+The first-candidate reachable trials meet the new budget in 3/5 cases: all p50 values pass; p99 fails in trials 1 and 5. This decision authorizes a synthetic Slice 1 only, not P0
+privacy work or M5–M8. No new overhead measurement is needed for this budget-only
+change; any future recorder path change requires measurement again.

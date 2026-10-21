@@ -1,0 +1,18 @@
+[
+  {
+    "seed": 1,
+    "structural_comparisons": 18,
+    "context_comparisons": 18,
+    "all_ranked_differences_and_scores_identical": true,
+    "m3_max_ms": 17.137,
+    "known_seed1_sampling_gap_preserved": true
+  },
+  {
+    "seed": 2,
+    "structural_comparisons": 18,
+    "context_comparisons": 18,
+    "all_ranked_differences_and_scores_identical": true,
+    "m3_max_ms": 17.4173,
+    "known_seed1_sampling_gap_preserved": null
+  }
+]

@@ -66,6 +66,7 @@ func serve(ctx context.Context, database, address string, options store.Options,
 	}
 	mux := http.NewServeMux()
 	mux.Handle("/v1/", intake.New(s))
+	mux.Handle("/api/", metadataHandler(s))
 	mux.Handle("/", view)
 	listener, err := net.Listen("tcp", address)
 	if err != nil {

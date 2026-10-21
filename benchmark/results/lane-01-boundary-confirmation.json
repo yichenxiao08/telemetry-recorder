@@ -1,0 +1,5 @@
+{
+  "cases": 15,
+  "full_reports_identical_on_pinned_evidence": true,
+  "guard": "nonfinite MAD arithmetic is unsupported, never NaN"
+}

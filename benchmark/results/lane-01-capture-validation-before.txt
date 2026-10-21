@@ -1,0 +1,5 @@
+--- FAIL: TestOutputDeclaredOffIsUnknown (0.00s)
+    records_test.go:30: declared-off capture treated as observed
+FAIL
+FAIL	github.com/signalscout/signalscout/internal/provenance	0.434s
+FAIL
