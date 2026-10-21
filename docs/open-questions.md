@@ -281,3 +281,29 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   supplied previous_frame as metadata. Changing its version alone cannot fix
   lane. Keep the stale-age mechanism label as an asserted freshness violation,
   not a verified causal effect; future sequential histories must establish use.
+
+## Lane-02 Task A contract checkpoint
+
+- Owner approves symptom roles and reference-tail coverage only; conditional
+  comparison is deferred because controls need developer declarations, disjoint
+  support is unsupported, and complexity is unjustified for this slice. Task A
+  is docs-only; Task B requires another approval. No M5–M8 or P0 starts.
+- Both slice1-lane and lane-diagnostic are unmerged into refreshed main. Branch
+  codex/lane02-contract starts from lane-diagnostic. Review PR #4 is Slice 1 to
+  main; #5 is diagnostic to Slice 1. The app returned 403; the signed-in browser
+  created both PRs. No merge is performed in this task.
+- The generator is pinned as a normative source specification, not executable
+  code, to satisfy the docs-only boundary. Its checksum and contract checksum
+  use canonical UTF-8/LF Git-blob bytes. Task B must freeze executable source
+  hashes separately before generating any reserved-seed data. Needs review.
+- Actual version lookup replaces lane-01's metadata-only flaw: older history
+  value -1 versus fresh +1 flips the lane in the declared-use branch. Task B
+  development-only counterfactual tests on 101/103 must verify this before eval.
+- Minority problem cohorts use a disclosed current-value mechanism for the
+  other 80% of wrong outputs. Within-range references contain unused older
+  version values, deliberately hiding age from the marginal tail interval.
+  These are short independent synthetic episodes, not continuous histories.
+- Seeds 710021/710023/710027/710029/710033 remain ungenerated and unscored.
+  Six variants, equations, profile, roles, floors, expectations and failure
+  policies are predeclared in benchmark/problems/lane-02/contract.md and its
+  generator-source.md. No post-result changes, seed search or fused score.
