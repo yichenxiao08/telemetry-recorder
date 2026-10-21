@@ -161,7 +161,11 @@ complete; preserve legacy archived profiles/results unchanged.
 ### Literal keys
 
 Options: replace all paths with JSON Pointer; add bracket syntax; add escapes.
-Recommend a backwards-compatible escaped path grammar: unescaped dot separates
+Recommend an opt-in `selector_syntax: escaped-v1` profile field, omitted on all
+legacy profiles. Without it, keep the current literal split behavior exactly,
+including backslashes that were valid literal key characters. This prevents a
+new escape parser from changing an old selector's meaning. With the explicit
+version, use the escaped path grammar: unescaped dot separates
 segments, `\.` is a literal dot, `\\` a literal backslash. Thus
 `inputs.self\.score` addresses the single input name self.score, whereas
 `inputs.self.score` retains its existing nested meaning. JSON profile files must
@@ -170,6 +174,8 @@ retain <=256 bytes / <=8 decoded segments and bounded sequence indices. No
 fallback lookup that guesses between dotted and nested keys. Test multiple dots,
 literal backslashes, empty/malformed segments and map-key versus sequence-index
 ambiguity; preserve all valid historical selectors.
+Pin the syntax version in cohort/profile snapshots. Malformed-escape rejection
+applies only to escaped-v1, not retroactively to legacy profiles.
 
 ### Optional invariant
 
