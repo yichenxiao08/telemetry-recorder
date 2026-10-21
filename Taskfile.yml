@@ -62,3 +62,8 @@ tasks:
     deps: [build]
     cmds:
       - go run ./scripts/laneeval {{.CLI_ARGS}}
+  profile-wrapper:
+    desc: Measure synthetic wrapper costs; no optimization or reserved seeds
+    deps: [build]
+    cmds:
+      - go run ./scripts/wrapperprofile {{.CLI_ARGS}}
