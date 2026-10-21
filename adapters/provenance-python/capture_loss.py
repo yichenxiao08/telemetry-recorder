@@ -77,7 +77,8 @@ def main():
             begin = time.perf_counter_ns()
             drained = super().flush(timeout)
             if phase is not None:
-                phase.update(flush_ns=time.perf_counter_ns()-begin, drained=drained, after=self.snapshot())
+                phase.update(flush_ns=time.perf_counter_ns()-begin,
+                             drained=dict(drained) if isinstance(drained, dict) else drained, after=self.snapshot())
                 result["cases"].append(phase)
                 save()
             return drained

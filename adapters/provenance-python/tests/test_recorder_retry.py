@@ -115,6 +115,12 @@ class RetryLifecycle(unittest.TestCase):
             r._stop.set()
             worker.join(3)
             self.assertFalse(worker.is_alive())
+            final = r.flush(0)
+            self.assertFalse(final)
+            self.assertEqual(final["unknown"], 1)  # A late reply never credits the expired batch.
+            self.assertEqual(final["acknowledged"], 256)
+            self.assertEqual(final["dropped"], 744)
+            self.assertEqual(final["attempted"], 1001)
 
 
 class ExplicitAcceptance(unittest.TestCase):
@@ -123,7 +129,7 @@ class ExplicitAcceptance(unittest.TestCase):
         self.addCleanup(lambda: r.close(0))
         for _ in range(40):
             r._enqueue(ITEM)
-        r._cooldown_until = time.monotonic()+.15
+        r._cooldown_until = time.monotonic()+10
         sent = []
         with patch.object(r, "_send", side_effect=lambda batch: sent.extend(batch)):
             worker = threading.Thread(target=r._work, daemon=True)
@@ -132,6 +138,8 @@ class ExplicitAcceptance(unittest.TestCase):
             self.assertEqual(len(sent), 0)
             self.assertEqual(r.snapshot()["queue_size"], 40)
             self.assertTrue(r._enqueue(ITEM))
+            self.assertTrue(r.snapshot()["cooldown_active"])
+            r._cooldown_until = 0  # Release the controlled cooldown after the assertions.
             report = r.flush(2)
             self.assertTrue(report)
             self.assertEqual(len(sent), 41)

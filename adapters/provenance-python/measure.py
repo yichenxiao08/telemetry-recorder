@@ -63,7 +63,7 @@ def trial(endpoint, condition, mode, seed):
             "p50_us":p50,"p99_us":p99,"budget_met":p50<=100 and p99<=250,
             "context_enter_p50_us":quantile(entry,.5),"context_enter_p99_us":quantile(entry,.99),
             "context_exit_p50_us":quantile(exit_times,.5),"context_exit_p99_us":quantile(exit_times,.99),
-            "flush_seconds":flush_seconds,"drained":flushed,"counts":counts,
+            "flush_seconds":flush_seconds,"drained":dict(flushed) if isinstance(flushed,dict) else flushed,"counts":counts,
             "mean_envelope_bytes":counts.get("envelope_bytes",0)/serialized if serialized else None,
             "expected_saturation_flush_timeout":condition=="saturated"}
 

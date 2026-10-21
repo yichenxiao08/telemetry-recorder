@@ -143,3 +143,35 @@ conditional applicability filtering. See benchmark/problems/lane-02/contract.md.
   exclusion test, profiling expansion or scoring/throughput tuning is added.
 - Future reliability validation needs the owner's Stage 3/4 approval. Do not write
   a lane-03 contract or start later production milestones from this investigation.
+
+## Recorder capture-loss GO FIX follow-up (Stage 3–4)
+
+The Checkpoint A retry/accounting proposal above was approved and implemented
+in `a8453cb`. See docs/recorder-capture-loss-fix.md and its saved measurements
+for the final validation; the earlier proposal remains historical evidence.
+
+- Proposed only: require ten consecutive clean full development repetitions
+  before considering a future reserved evaluation. Exact counts, visible
+  unknowns, protected artifacts, evidence links and unchanged score bytes are
+  separate gates from the unchanged 100/250 us overhead budget. A miss retains
+  the attempt and resets the qualifying streak. No lane-03 contract is written.
+- Parked: any durable local spool or acknowledgement reconciliation. A bounded
+  RAM queue plus one retry cannot promise delivery across arbitrary outages or
+  process exit. Such work needs explicit privacy, disk, recovery and lifecycle
+  requirements; this fix does not introduce it.
+- Parked: extending duplicate guarantees to log/metric exporters. The current
+  acceptance test proves span/event idempotency with stable trace/span IDs only.
+- Parked: stronger OS network cancellation. The current single daemon operation
+  slot quarantines a stuck call without growing threads; queued data can remain
+  unknown until a timeout-bounded flush returns or the process exits.
+- Keep cost misses and every paired pre/post trial on record. Do not expand the
+  queue, change the payload, drop diagnostics or relax the budget to make a
+  future run qualify. Any future host-cost optimization needs its own measured
+  proposal. No scoring/engine change or production milestone is implied.
+- Final measurements: ten clean development repetitions, but all paced trials
+  still miss the fixed cost budget. Retain the strict fresh-byte mismatch due
+  to event timestamp identity separately from the successful evidence-validated
+  analytic comparison. Do not stabilize IDs or alter clocks/scoring merely to
+  make that reporting assumption true. Reviewed results are in
+  benchmark/results/recorder-capture-loss-fix-reviewed; the first publication
+  remains in benchmark/results/recorder-capture-loss-fix.

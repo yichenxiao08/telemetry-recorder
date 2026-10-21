@@ -137,7 +137,7 @@ def trial(out, name, *, calls=1800, paced=True, capacity=256, ack_delay=0, loade
                       "background": "two CPU processes + bounded-file fsync process" if loaded else "no added load",
                       "server_pid": real.process.pid, "driver_pid": os.getpid(),
                       "started_unix_ns": start_ns, "wall_seconds": wall, "achieved_calls_per_second": calls/wall,
-                      "drained": drained, "flush_ns": flush_ns, "snapshot": snapshot,
+                      "drained": dict(drained) if isinstance(drained, dict) else drained, "flush_ns": flush_ns, "snapshot": snapshot,
                       "wrapper_p50_us": quantile([e["wrapper_ns"]/1000 for e in caller_events], .5),
                       "wrapper_p99_us": quantile([e["wrapper_ns"]/1000 for e in caller_events], .99),
                       "caller_events": caller_events, "relay_events": relay_events,

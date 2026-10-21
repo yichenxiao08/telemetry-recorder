@@ -421,3 +421,60 @@ validation. Full protocol, hypotheses and proposed bounded retry/accounting fix:
 docs/recorder-capture-loss.md. STOP awaiting GO FIX, no behavioral fix yet.
 Local format/vet/lint/fresh race/build and all 32 Python tests pass; hosted
 Windows/Ubuntu CI is verified separately. No diagnostic-accuracy claim follows.
+
+## Recorder capture-loss GO FIX: delivery behavior and limits
+
+Owner approved Stage 3–4 after Checkpoint A; `a8453cb` implements the bounded
+worker retry and exact flush accounting. Queue 256, batch 32, socket timeout
+0.5 s, captured values, IDs and OTLP encoding stay fixed. One worker retry uses
+a 50 ms backoff within a 1.25 s logical batch budget. Cooldown waits on the
+worker and preserves admission while capacity remains. Host calls do no network
+I/O, capacity waits, flush or join; target returns/exceptions stay unchanged.
+
+Two explicit acceptance results are reported separately: cooldown preserves 40
+queued spans plus one admitted during cooldown and acknowledges all 41; a lost
+acknowledgement after real commit causes two identical deliveries but stores
+one span and one event. This establishes the current span/event intake behavior,
+not idempotency for future log or metric exporters. Both Windows and Ubuntu CI
+passed for the implementation (Actions run 39524192620).
+
+Flush now returns a JSON-friendly report whose truth means complete delivery,
+not merely an empty queue. Its cumulative producer identity is attempted =
+acknowledged + failed + dropped + unknown. Pending and ambiguous persistence
+stay unknown. Per-attempt diagnostics may show a recovered failure without a
+final failed producer span. Callers that previously tested `flush(...) is True`
+must use its documented completeness field/truth value instead. This is an
+intentional change to the synthetic helper API, not an engine API change.
+
+A Python OS network call cannot be forcibly terminated safely. One daemon I/O
+slot quarantines a call that exceeds the logical budget; no replacement threads
+are created. The expired batch stays unknown, late acknowledgements are not
+retroactively credited, and the bounded queue can eventually overflow. Explicit
+flush is timeout-bounded. There is no durable spool or arbitrary-outage delivery
+guarantee. Invalid capture attempts remain separately counted and must be zero
+for a clean development gate.
+
+Stage 4 measurements and every miss are recorded in
+docs/recorder-capture-loss-fix.md and benchmark/results/recorder-capture-loss-fix.
+The old lane-02 reserved evaluation remains closed/incomplete, with its lock,
+attempt and published results unchanged. No lane-03 contract, later milestone,
+scoring adjustment or real-world diagnostic-accuracy claim follows.
+
+Final Stage 4: ten full repetitions complete 120 cases and acknowledge all
+192,000 producer spans, with zero failed/dropped/unknown/invalid counts. All
+120 development wrappers and all paced fixed-payload trials still miss the
+unchanged 100/250 us budget. The unchanged delayed-ack control improves from
+3,420 ack / 60 unsuccessful / 120 drops to 3,600 ack / zero loss with one retry.
+The unchanged capacity256 burst still drops 1,712 of 2,000 attempts. Sustained
+outage and no-worker saturation remain explicit incomplete cases with exact
+four-state accounting, never delivered/zero-association claims.
+
+All 15 frozen lane-01 JSON/text reports and 12 existing development JSON/text
+reports remain identical. The first fresh-report projection fails 120/120 and
+is retained: actual probe timestamp offsets change event hashes/anchors.
+A separate comparison validates evidence-to-run and exact anchor identity,
+then compares all analytic content with stable run references; it matches
+120/120 without removing any score, count, value or coverage. Both results are
+published; no raw new-capture byte-identity claim is made. Full reviewed data:
+benchmark/results/recorder-capture-loss-fix-reviewed. Forty-four Python tests
+pass. The cost gate remains NO-GO; the original reserved trigger remains unknown.

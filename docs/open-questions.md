@@ -383,3 +383,50 @@ This section supersedes the earlier unresolved full-history-backfill and materia
 - Stop at Checkpoint A: the bounded worker-retry/queue-admission/accounting design
   in docs/recorder-capture-loss.md needs GO FIX. No behavior fix or Stage 4 work,
   lane-03 contract, scoring change or production phase starts here.
+
+## Recorder capture-loss: GO FIX Stage 3–4
+
+This section supersedes the proposal/awaiting-approval status above. Owner
+approved GO FIX, including separate cooldown-preservation and duplicate-delivery
+acceptance tests. The implementation is `a8453cb`; protocol, measured results
+and remaining misses are in docs/recorder-capture-loss-fix.md and
+benchmark/results/recorder-capture-loss-fix.
+
+- The original reserved-run initiating failure remains unproven. The induced
+  slow-acknowledgement/cooldown amplification is evidenced; do not attribute it
+  to SQLite or Defender without an isolated measurement. Keep lane-02 closed
+  as attempted/incomplete and preserve all old artifacts and owner edits.
+- Queue capacity remains 256; one worker retry, 50 ms backoff and a 1.25 s
+  logical batch budget are fixed. A quarantined OS network call can outlive
+  that budget. Conservative choice: one I/O slot, no replacement threads, no
+  late acknowledgement credit, bounded pending memory and explicit unknowns.
+  No RAM queue can guarantee delivery across arbitrary outages/process exit.
+- Flush now exposes exact acknowledged/failed/dropped/unknown producer counts;
+  its truth means completeness, not drain. Invalid captures stay separately
+  visible. Per-attempt diagnostics can include recovered timeouts without a
+  final failed producer span. Conservative choice: unknown never means delivered.
+- Python's indented JSON encoder checks dict truthiness. Structured flush
+  reports must be copied with `dict(report)` before encoding; all spike report
+  boundaries do so and a regression test covers incomplete reports. External
+  callers using `flush(...) is True` need the documented completeness check.
+  This remains a synthetic helper API, not a production compatibility promise.
+- Real intake duplicate span/event delivery is tested with stable IDs and two
+  committed requests. Log/metric exporter idempotency is not established here;
+  defer any broader duplicate guarantee.
+- Keep the 100/250 us overhead budget and every paired-trial miss. A clean
+  transport streak cannot waive the cost gate or establish that recording is
+  cheap in another application. No scoring or performance tuning is authorized.
+- A future zero-drop gate is proposed only: ten consecutive full clean
+  development repetitions, exact expected counts, unchanged analytic outputs,
+  resolved evidence and passing safety controls. Preserve a miss, reset the
+  qualifying streak and obtain owner authorization before any reserved attempt.
+  No lane-03 contract or later milestone is created by this task.
+- Final results: benchmark/results/recorder-capture-loss-fix-reviewed. All
+  120 new development cases acknowledge 192,000 spans without loss; all paced
+  overhead trials still miss 100/250 us. No cost-gate override is inferred.
+- The first strict fresh-byte comparison (retained in the original results
+  directory) fails because measured timestamp offsets change event hashes and
+  anchors. Existing-store JSON/text bytes match; a separate evidence-validated
+  analytic comparison preserves every score/count/value and matches all 120
+  replays. Conservative choice: retain both results, never call new raw reports
+  byte-identical, and do not change clocks, engine IDs or scores to erase it.

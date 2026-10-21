@@ -130,9 +130,11 @@ class Safety(unittest.TestCase):
         with socket.socket() as listener:
             listener.bind(("127.0.0.1", 0))
             port = listener.getsockname()[1]
-        r = Recorder(f"http://127.0.0.1:{port}", timeout=.1, cooldown=5)
+        r = Recorder(f"http://127.0.0.1:{port}", timeout=.1, cooldown=5, _start_worker=False)
         self.addCleanup(lambda: r.close(.2))
         wrapped(r, identity)(1)
+        # Admit both producer spans before worker scheduling can split them.
+        r._worker.start()
         report = r.flush(1)
         self.assertTrue(report["drained"])
         self.assertFalse(report)
