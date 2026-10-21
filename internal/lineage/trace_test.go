@@ -110,6 +110,17 @@ func TestInvariantUnknownAndEdges(t *testing.T) {
 	if len(r.Findings) == 0 || len(r.Nodes[0].Edges) != 0 {
 		t.Fatal("mismatched edge accepted")
 	}
+	delete(s.Attrs, "signalscout.record.id")
+	delete(other.Attrs, "signalscout.record.id")
+	r = Walk([]model.Signal{s, other}, "a", Options{Depth: 4, Nodes: 4}, nil)
+	if len(r.Nodes) != 0 {
+		t.Fatal("conflicting output accepted via logical ID without selector attributes")
+	}
+	orphanEdge := edge("orphan", "x", "a", "absent")
+	r = Walk([]model.Signal{s, orphanEdge}, "a", Options{Depth: 4, Nodes: 4}, nil)
+	if len(r.Findings) == 0 {
+		t.Fatal("dangling decision_ref silently ignored")
+	}
 }
 func TestTraversalProperties(t *testing.T) {
 	rapid.Check(t, func(t *rapid.T) {

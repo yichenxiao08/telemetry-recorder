@@ -386,6 +386,14 @@ func Walk(signals []model.Signal, target string, opt Options, p *model.AnalysisP
 				bad[id] = true
 				add("malformed", id, "unknown: incomplete or unsupported lineage edge")
 			}
+			producer, exists := records[rec.edge.DecisionRef]
+			if !exists || producer.kind != "decision" || bad[rec.edge.DecisionRef] {
+				bad[id] = true
+				add("dangling", id, "unknown: lineage decision_ref is missing or non-unique")
+			} else if producer.env.Output.Ref != rec.edge.OutputRef || producer.env.Step.ID != rec.edge.StepID {
+				bad[id] = true
+				add("malformed", id, "unknown: lineage disagrees with its referenced decision")
+			}
 			if !bad[id] {
 				edges[rec.edge.OutputRef] = append(edges[rec.edge.OutputRef], rec)
 			}
@@ -415,6 +423,12 @@ func Walk(signals []model.Signal, target string, opt Options, p *model.AnalysisP
 	}
 	for _, s := range signals {
 		id, _ := s.Attrs["signalscout.record.id"].(string)
+		if id == "" {
+			body, _ := s.Attrs["signalscout.record.json"].(string)
+			var x struct{ ID string }
+			_ = json.Unmarshal([]byte(body), &x)
+			id = x.ID
+		}
 		rec, ok := records[id]
 		if ok && rec.kind == "decision" && len(outputs[rec.env.Output.Ref]) > 1 && !bad[id] {
 			bad[id] = true
