@@ -1,0 +1,609 @@
+{
+  "privacy": "synthetic-only; per-field capture default OFF; NOT P0",
+  "probes": [
+    {
+      "module": "value.modules.flappy.environment",
+      "function": "Environment.step",
+      "status": "attached",
+      "capture": {
+        "args": [
+          "action"
+        ],
+        "self": [
+          "score"
+        ],
+        "return_items": [
+          1,
+          2
+        ]
+      },
+      "calls": 20580,
+      "records_captured": 170,
+      "fraction": 0.00826044703595724,
+      "sampling": {
+        "every_nth": 25,
+        "max_per_run": 40
+      }
+    },
+    {
+      "module": "run_scenario",
+      "function": "run_episode",
+      "status": "attached",
+      "capture": {
+        "args": [
+          "episode_id",
+          "seed"
+        ],
+        "return": true
+      },
+      "calls": 80,
+      "records_captured": 15,
+      "fraction": 0.1875,
+      "sampling": {}
+    },
+    {
+      "module": "run_scenario",
+      "function": "select_action",
+      "status": "attached",
+      "capture": {
+        "args": [
+          "state"
+        ],
+        "return": true
+      },
+      "calls": 20580,
+      "records_captured": 170,
+      "fraction": 0.00826044703595724,
+      "sampling": {
+        "every_nth": 25,
+        "max_per_run": 40
+      }
+    }
+  ],
+  "counters": {
+    "probe_calls:run_scenario.run_episode": 80,
+    "probe_runs_created": 80,
+    "captured_args": 1834,
+    "probe_calls:run_scenario.select_action": 20580,
+    "sampling_run_summaries": 160,
+    "serialized": 1754,
+    "envelope_bytes": 1662247,
+    "attempted": 1834,
+    "accepted": 370,
+    "probe_decisions_captured": 355,
+    "probe_captured:run_scenario.select_action": 170,
+    "probe_calls:value.modules.flappy.environment.Environment.step": 20580,
+    "probe_captured:value.modules.flappy.environment.Environment.step": 170,
+    "sampled_out:run_scenario.select_action": 19743,
+    "sampled_out:value.modules.flappy.environment.Environment.step": 19743,
+    "probe_captured:run_scenario.run_episode": 15,
+    "network_requests": 12,
+    "drop_full": 1464,
+    "exported": 370,
+    "acknowledged": 370,
+    "failed": 0,
+    "dropped": 1464,
+    "unknown": 0,
+    "queue_size": 0,
+    "capacity": 256,
+    "cooldown_active": false,
+    "queue_high_water": 256,
+    "diagnostics": {
+      "counters_spans_except_flush_timeout": {
+        "encode_failure": 0,
+        "timeout": 0,
+        "connection_error": 0,
+        "http_non_2xx": 0,
+        "cooldown_suppressed": 0,
+        "other_failure": 0,
+        "flush_timeout": 0,
+        "cooldown_drop": 0,
+        "queue_full_drop": 1464,
+        "shutdown_drop": 0,
+        "flush_drop": 0
+      },
+      "failures_by_class_spans": {},
+      "last_failures": [],
+      "failure_sample_limit": 64,
+      "worker_batch_sizes": {
+        "18": 1,
+        "32": 11
+      },
+      "last_worker_batches": [
+        {
+          "attempt_unix_ns": 1792616982156494600,
+          "elapsed_ns": 546353600,
+          "size": 18,
+          "outcome": "exported",
+          "queue_depth": 256
+        },
+        {
+          "attempt_unix_ns": 1792616982703013300,
+          "elapsed_ns": 205151900,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 256
+        },
+        {
+          "attempt_unix_ns": 1792616982908150900,
+          "elapsed_ns": 133689500,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 256
+        },
+        {
+          "attempt_unix_ns": 1792616983042023700,
+          "elapsed_ns": 117698000,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 256
+        },
+        {
+          "attempt_unix_ns": 1792616983159901900,
+          "elapsed_ns": 45824900,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 224
+        },
+        {
+          "attempt_unix_ns": 1792616983204902600,
+          "elapsed_ns": 68795400,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 192
+        },
+        {
+          "attempt_unix_ns": 1792616983275005600,
+          "elapsed_ns": 56325700,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 160
+        },
+        {
+          "attempt_unix_ns": 1792616983331050800,
+          "elapsed_ns": 27804200,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 128
+        },
+        {
+          "attempt_unix_ns": 1792616983359308700,
+          "elapsed_ns": 49140900,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 96
+        },
+        {
+          "attempt_unix_ns": 1792616983408136700,
+          "elapsed_ns": 36333000,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 64
+        },
+        {
+          "attempt_unix_ns": 1792616983445276700,
+          "elapsed_ns": 69968300,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 32
+        },
+        {
+          "attempt_unix_ns": 1792616983515062900,
+          "elapsed_ns": 31520300,
+          "size": 32,
+          "outcome": "exported",
+          "queue_depth": 0
+        }
+      ],
+      "batch_sample_limit": 256
+    },
+    "network_operation_slots": 1,
+    "retry_limit": 1,
+    "attempt_budget_seconds": 1.25
+  },
+  "sampling_runs": [
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "c9750f9257baeca7f41f0e56dd2bcba4",
+      "seen": 95,
+      "selected": 4,
+      "captured": 4,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.042105263157894736
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "c9750f9257baeca7f41f0e56dd2bcba4",
+      "seen": 95,
+      "selected": 4,
+      "captured": 4,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.042105263157894736
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "67d29bd0a41715450c603b4557dbcc22",
+      "seen": 95,
+      "selected": 4,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "67d29bd0a41715450c603b4557dbcc22",
+      "seen": 95,
+      "selected": 4,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "01ac08d2912de3d5d49497aee0ea4e9f",
+      "seen": 724,
+      "selected": 29,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "01ac08d2912de3d5d49497aee0ea4e9f",
+      "seen": 724,
+      "selected": 29,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "418de36a219dbe7cd2d575f737cddea7",
+      "seen": 70,
+      "selected": 3,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "418de36a219dbe7cd2d575f737cddea7",
+      "seen": 70,
+      "selected": 3,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "7f99799130849da5f85a825392784726",
+      "seen": 321,
+      "selected": 13,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "7f99799130849da5f85a825392784726",
+      "seen": 321,
+      "selected": 13,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "b0324ff5b2f671b3b98a46a86dd2489a",
+      "seen": 170,
+      "selected": 7,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "b0324ff5b2f671b3b98a46a86dd2489a",
+      "seen": 170,
+      "selected": 7,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "004b31676da2ee9773c6631cc0f04801",
+      "seen": 70,
+      "selected": 3,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "004b31676da2ee9773c6631cc0f04801",
+      "seen": 70,
+      "selected": 3,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "5ba5c7742a3227bf342e8ed739ceeaa7",
+      "seen": 547,
+      "selected": 22,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "5ba5c7742a3227bf342e8ed739ceeaa7",
+      "seen": 547,
+      "selected": 22,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "e8e38558706846871a581f7587a2449f",
+      "seen": 422,
+      "selected": 17,
+      "captured": 16,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.037914691943127965
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "e8e38558706846871a581f7587a2449f",
+      "seen": 422,
+      "selected": 17,
+      "captured": 16,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.037914691943127965
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "d8902807d63031816a96e1508bdbc15c",
+      "seen": 170,
+      "selected": 7,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "d8902807d63031816a96e1508bdbc15c",
+      "seen": 170,
+      "selected": 7,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "a402095f98d8305b9b8f1ea235fa5786",
+      "seen": 195,
+      "selected": 8,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "a402095f98d8305b9b8f1ea235fa5786",
+      "seen": 195,
+      "selected": 8,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "8cf190f01671b6f312925175725a1def",
+      "seen": 145,
+      "selected": 6,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "8cf190f01671b6f312925175725a1def",
+      "seen": 145,
+      "selected": 6,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "a4ac88d57f2bd150596545655bfc3470",
+      "seen": 321,
+      "selected": 13,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "a4ac88d57f2bd150596545655bfc3470",
+      "seen": 321,
+      "selected": 13,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "466276e082c7d24680c80bd6411a101d",
+      "seen": 346,
+      "selected": 14,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "466276e082c7d24680c80bd6411a101d",
+      "seen": 346,
+      "selected": 14,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "939ad52dda78a3f83f18824c18526c78",
+      "seen": 296,
+      "selected": 12,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "939ad52dda78a3f83f18824c18526c78",
+      "seen": 296,
+      "selected": 12,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "run_scenario.select_action",
+      "run_id": "55845207432f3e6d7f90e5a56a65e952",
+      "seen": 95,
+      "selected": 4,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    },
+    {
+      "probe": "value.modules.flappy.environment.Environment.step",
+      "run_id": "55845207432f3e6d7f90e5a56a65e952",
+      "seen": 95,
+      "selected": 4,
+      "captured": 0,
+      "rule": {
+        "every_nth": 25,
+        "max_per_run": 40
+      },
+      "fraction": 0.0
+    }
+  ],
+  "sampling_runs_omitted": 128,
+  "element_reasons": {},
+  "auto_otel": {
+    "status": "disabled"
+  },
+  "elapsed_seconds": 1.413602400018135,
+  "flush_seconds": 0.41331620002165437,
+  "drained": {},
+  "preflight": false,
+  "target_argv": [
+    "<repo>\\.cache\\real-case-gaps\\project\\run_scenario.py",
+    "--episodes",
+    "80",
+    "--seed",
+    "20261020"
+  ],
+  "target_ran": true,
+  "records_captured": 355,
+  "runs_created": 80
+}

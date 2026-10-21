@@ -1,0 +1,27 @@
+version: 1
+synthetic_only: true
+endpoint: http://127.0.0.1:4318
+service: synthetic.rl_arcade
+probes:
+  - module: run_scenario
+    function: run_episode
+    capture:
+      args: [episode_id, seed]
+      return: true
+  - module: value.modules.flappy.environment
+    function: Environment.step
+    capture:
+      args: [action]
+      self: [score]
+      return_items: [1, 2]
+    sampling:
+      every_nth: 25
+      max_per_run: 40
+  - module: run_scenario
+    function: select_action
+    capture:
+      args: [state]
+      return: true
+    sampling:
+      every_nth: 25
+      max_per_run: 40

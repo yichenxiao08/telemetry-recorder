@@ -198,3 +198,19 @@ for the final validation; the earlier proposal remains historical evidence.
   current fine scopes materially perturb costs, and thread CPU accounting is
   too coarse to prove GIL or scheduler causes. Do not turn a calibrated phase
   estimate into a production budget claim. Full results: docs/wrapper-overhead.md.
+## Real-case gaps proposals only — 2026-10-21
+
+- Prioritize explicit sampled/partial/unknown run capture manifests and exact
+  terminal accounting before analysis on burst capture. Bounded worker retries
+  cannot make an arbitrary unpaced producer lossless; missing manifests stay unknown.
+- A separate bounded item-and-byte buffer experiment may absorb finite bursts
+  after GO BUILD. Sampling-before-snapshot already exists; do not reopen wrapper
+  optimization or the closed overhead budget task to implement it again.
+- Extend selectors with literal-dot/backslash escapes, make invariant declarations
+  optional, preserve Subtract and equality predicates, then add only bounded
+  numeric predicates/aggregates/expressions with pinned source evidence. No eval,
+  query language, new score/diff type, unit changes or feature-name boosts.
+- Durable disk spooling, adaptive/random sampling, automatic threshold search and
+  general expression languages remain deferred. Eighty aggregate run observations
+  cannot meet the unchanged tail minimums; a larger independent synthetic population
+  would need a new owner-approved design, never reused lane-02 reserved seeds.

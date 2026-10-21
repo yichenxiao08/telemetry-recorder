@@ -1,0 +1,43 @@
+task: [lint] go run ./scripts/checkfmt
+task: [lint] go vet ./...
+task: [lint] golangci-lint run
+0 issues.
+ok  	github.com/signalscout/signalscout/cmd/signalscout	(cached)
+?   	github.com/signalscout/signalscout/internal/agent	[no test files]
+ok  	github.com/signalscout/signalscout/internal/cohort	(cached)
+?   	github.com/signalscout/signalscout/internal/config	[no test files]
+ok  	github.com/signalscout/signalscout/internal/diff	(cached)
+ok  	github.com/signalscout/signalscout/internal/intake	(cached)
+?   	github.com/signalscout/signalscout/internal/model	[no test files]
+ok  	github.com/signalscout/signalscout/internal/provenance	(cached)
+?   	github.com/signalscout/signalscout/internal/redaction	[no test files]
+ok  	github.com/signalscout/signalscout/internal/runs	(cached)
+ok  	github.com/signalscout/signalscout/internal/stats	(cached)
+ok  	github.com/signalscout/signalscout/internal/store	(cached)
+ok  	github.com/signalscout/signalscout/internal/telemetry	(cached)
+ok  	github.com/signalscout/signalscout/internal/viewer	(cached)
+ok  	github.com/signalscout/signalscout/samples/shop	(cached)
+ok  	github.com/signalscout/signalscout/samples/shop/load	(cached)
+ok  	github.com/signalscout/signalscout/samples/shop/workload	(cached)
+?   	github.com/signalscout/signalscout/scripts/checkfmt	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/contextdemo	(cached)
+ok  	github.com/signalscout/signalscout/scripts/diffdemo	(cached)
+?   	github.com/signalscout/signalscout/scripts/explorerbench	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/framefixture	(cached)
+ok  	github.com/signalscout/signalscout/scripts/ingestbench	(cached)
+ok  	github.com/signalscout/signalscout/scripts/ingestsummary	(cached)
+?   	github.com/signalscout/signalscout/scripts/lane02legacy	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/lane02vectors	(cached)
+?   	github.com/signalscout/signalscout/scripts/lane02views	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/lanediagnostic	(cached)
+?   	github.com/signalscout/signalscout/scripts/laneeval	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/m4breport	(cached)
+ok  	github.com/signalscout/signalscout/scripts/perfreport	(cached)
+ok  	github.com/signalscout/signalscout/scripts/provenancespike	(cached)
+ok  	github.com/signalscout/signalscout/scripts/shopdemo	(cached)
+?   	github.com/signalscout/signalscout/scripts/shopload	[no test files]
+ok  	github.com/signalscout/signalscout/scripts/startupbench	(cached)
+ok  	github.com/signalscout/signalscout/scripts/storebench	(cached)
+ok  	github.com/signalscout/signalscout/scripts/workloadrates	(cached)
+?   	github.com/signalscout/signalscout/scripts/wrapperprofile	[no test files]
+task: [build] go build -o bin/signalscout.exe ./cmd/signalscout

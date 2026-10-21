@@ -1,0 +1,14 @@
+[
+  {
+    "artifact": "baseline-results.csv",
+    "sha256": "02c9a98e5e29935ea746336be9df4776f796a596db27933f6244fa6aeb59b006"
+  },
+  {
+    "artifact": "plain/scenario_results.csv",
+    "sha256": "02c9a98e5e29935ea746336be9df4776f796a596db27933f6244fa6aeb59b006"
+  },
+  {
+    "artifact": "profiled/scenario_results.csv",
+    "sha256": "02c9a98e5e29935ea746336be9df4776f796a596db27933f6244fa6aeb59b006"
+  }
+]

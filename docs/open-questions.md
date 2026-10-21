@@ -457,3 +457,29 @@ benchmark/results/recorder-capture-loss-fix.
 - Most plain paced p99 calls have no GC/encode overlap; quantized thread CPU
   cannot distinguish GIL/scheduling. GC-disable has no consistent benefit.
   Keep these causes unresolved; any optimization still needs GO OPTIMIZE.
+## Real-case gaps: Stage 1 checkpoint — 2026-10-21
+
+- The requested wrapper-overhead base is 474f53f, before method/sampling support.
+  Keep the design branch there and measure isolated, unchanged a2c2cee, confirmed
+  by the owner as the scenario engine. No behavior is cherry-picked into Stage 1.
+- Plain reproduction: 80 target rows / 17 failures / 63 successes; 19 stored run
+  IDs, 1,464/1,834 spans dropped, exit 5. This differs from the supplied 14-run /
+  1,554-drop historical summary. Preserve it; do not tune to match. ACK 370,
+  failed 0, unknown 0. Stored run IDs do not establish complete episode capture.
+- Sampling already precedes snapshot/JSON on a2c2cee. Instrumented sampled-out
+  calls are cheaper but not free; the phase observer changes capture scheduling.
+  Keep the 29-run diagnostic separate from the 19-run plain reproduction.
+- Per-run sampling summaries are bounded to the last 32; this run reports 128
+  omitted summaries. Global per-probe counters remain available, but a durable
+  full-run completeness manifest is not present. Missing final state is unknown.
+- Difference via NumericFeature.Subtract and scalar equality predicates already
+  exist. Missing features are escaped literal-key selection, optional invariants,
+  a bounded expression extension, numeric inequalities and pinned per-run aggregates.
+- Keep tail >=30 problem / >=100 reference observations and >=5 known sessions
+  per arm. Eighty per-run units cannot qualify even with perfect capture; 17/63
+  misses both count gates. Do not inflate n with correlated loop steps.
+- Existing telemetry/cohort JSON may hold versioned manifests/aggregates without
+  a migration. If correct durable/bounded indexed reads require schema changes,
+  stop and ask. No migration or Stage 2/3 implementation is authorized before GO BUILD.
+- Lane-02 stays closed. A later development-only rerun exception must be explicit;
+  never touch historical attempts, locks, specifications, results or reserved seeds.

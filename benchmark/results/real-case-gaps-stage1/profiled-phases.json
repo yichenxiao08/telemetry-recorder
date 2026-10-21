@@ -1,0 +1,336 @@
+{
+  "runner_exit": 5,
+  "insertions": {
+    "recorder": {
+      "value_snapshot": 1,
+      "queue_admission": 1,
+      "envelope_json": 2,
+      "record_prepare": 1,
+      "worker_otlp_encode": 1
+    },
+    "scout_probe": {
+      "sampling_decision": 1,
+      "argument_snapshot": 1,
+      "target_body": 3,
+      "wrapper_call": 1
+    }
+  },
+  "timings": {
+    "outside_probe:value_snapshot_exclusive": {
+      "count": 1,
+      "total_ns": 12100,
+      "min_ns": 12100,
+      "max_ns": 12100,
+      "mean_us": 12.1
+    },
+    "outside_probe:value_snapshot_inclusive": {
+      "count": 1,
+      "total_ns": 12100,
+      "min_ns": 12100,
+      "max_ns": 12100,
+      "mean_us": 12.1
+    },
+    "outside_probe:worker_otlp_encode_exclusive": {
+      "count": 15,
+      "total_ns": 36958700,
+      "min_ns": 975600,
+      "max_ns": 3662000,
+      "mean_us": 2463.9133333333334
+    },
+    "outside_probe:worker_otlp_encode_inclusive": {
+      "count": 15,
+      "total_ns": 36958700,
+      "min_ns": 975600,
+      "max_ns": 3662000,
+      "mean_us": 2463.9133333333334
+    },
+    "run_scenario.run_episode:argument_snapshot_exclusive": {
+      "count": 80,
+      "total_ns": 2508300,
+      "min_ns": 19500,
+      "max_ns": 75200,
+      "mean_us": 31.35375
+    },
+    "run_scenario.run_episode:argument_snapshot_inclusive": {
+      "count": 80,
+      "total_ns": 2675400,
+      "min_ns": 21100,
+      "max_ns": 81200,
+      "mean_us": 33.4425
+    },
+    "run_scenario.run_episode:envelope_json_exclusive": {
+      "count": 240,
+      "total_ns": 3889800,
+      "min_ns": 5000,
+      "max_ns": 111300,
+      "mean_us": 16.2075
+    },
+    "run_scenario.run_episode:envelope_json_inclusive": {
+      "count": 240,
+      "total_ns": 3889800,
+      "min_ns": 5000,
+      "max_ns": 111300,
+      "mean_us": 16.2075
+    },
+    "run_scenario.run_episode:queue_admission_exclusive": {
+      "count": 160,
+      "total_ns": 1224800,
+      "min_ns": 3400,
+      "max_ns": 103500,
+      "mean_us": 7.655
+    },
+    "run_scenario.run_episode:queue_admission_inclusive": {
+      "count": 160,
+      "total_ns": 1224800,
+      "min_ns": 3400,
+      "max_ns": 103500,
+      "mean_us": 7.655
+    },
+    "run_scenario.run_episode:record_prepare_exclusive": {
+      "count": 80,
+      "total_ns": 9491600,
+      "min_ns": 86000,
+      "max_ns": 268500,
+      "mean_us": 118.645
+    },
+    "run_scenario.run_episode:record_prepare_inclusive": {
+      "count": 80,
+      "total_ns": 18612400,
+      "min_ns": 164000,
+      "max_ns": 601800,
+      "mean_us": 232.655
+    },
+    "run_scenario.run_episode:sampling_decision_exclusive": {
+      "count": 80,
+      "total_ns": 56500,
+      "min_ns": 400,
+      "max_ns": 2300,
+      "mean_us": 0.70625
+    },
+    "run_scenario.run_episode:sampling_decision_inclusive": {
+      "count": 80,
+      "total_ns": 56500,
+      "min_ns": 400,
+      "max_ns": 2300,
+      "mean_us": 0.70625
+    },
+    "run_scenario.run_episode:selected_wrapper": {
+      "count": 80,
+      "total_ns": 32957500,
+      "min_ns": 272100,
+      "max_ns": 899300,
+      "mean_us": 411.96875
+    },
+    "run_scenario.run_episode:value_snapshot_exclusive": {
+      "count": 2080,
+      "total_ns": 5075700,
+      "min_ns": 400,
+      "max_ns": 173600,
+      "mean_us": 2.4402403846153846
+    },
+    "run_scenario.run_episode:value_snapshot_inclusive": {
+      "count": 2080,
+      "total_ns": 5465000,
+      "min_ns": 400,
+      "max_ns": 173600,
+      "mean_us": 2.6274038461538463
+    },
+    "run_scenario.select_action:argument_snapshot_exclusive": {
+      "count": 837,
+      "total_ns": 18719300,
+      "min_ns": 11300,
+      "max_ns": 313200,
+      "mean_us": 22.364755077658305
+    },
+    "run_scenario.select_action:argument_snapshot_inclusive": {
+      "count": 837,
+      "total_ns": 43202000,
+      "min_ns": 31100,
+      "max_ns": 952800,
+      "mean_us": 51.6152927120669
+    },
+    "run_scenario.select_action:envelope_json_exclusive": {
+      "count": 1674,
+      "total_ns": 34149500,
+      "min_ns": 5900,
+      "max_ns": 857000,
+      "mean_us": 20.399940262843486
+    },
+    "run_scenario.select_action:envelope_json_inclusive": {
+      "count": 1674,
+      "total_ns": 34149500,
+      "min_ns": 5900,
+      "max_ns": 857000,
+      "mean_us": 20.399940262843486
+    },
+    "run_scenario.select_action:queue_admission_exclusive": {
+      "count": 837,
+      "total_ns": 7096700,
+      "min_ns": 4100,
+      "max_ns": 124600,
+      "mean_us": 8.478733572281959
+    },
+    "run_scenario.select_action:queue_admission_inclusive": {
+      "count": 837,
+      "total_ns": 7096700,
+      "min_ns": 4100,
+      "max_ns": 124600,
+      "mean_us": 8.478733572281959
+    },
+    "run_scenario.select_action:record_prepare_exclusive": {
+      "count": 837,
+      "total_ns": 76651200,
+      "min_ns": 65800,
+      "max_ns": 407400,
+      "mean_us": 91.57849462365591
+    },
+    "run_scenario.select_action:record_prepare_inclusive": {
+      "count": 837,
+      "total_ns": 155430100,
+      "min_ns": 126800,
+      "max_ns": 1088400,
+      "mean_us": 185.69904420549582
+    },
+    "run_scenario.select_action:sampling_decision_exclusive": {
+      "count": 20580,
+      "total_ns": 28261300,
+      "min_ns": 800,
+      "max_ns": 164500,
+      "mean_us": 1.3732410106899904
+    },
+    "run_scenario.select_action:sampling_decision_inclusive": {
+      "count": 20580,
+      "total_ns": 28261300,
+      "min_ns": 800,
+      "max_ns": 164500,
+      "mean_us": 1.3732410106899904
+    },
+    "run_scenario.select_action:selected_wrapper": {
+      "count": 837,
+      "total_ns": 236329000,
+      "min_ns": 187900,
+      "max_ns": 1426100,
+      "mean_us": 282.35244922341695
+    },
+    "run_scenario.select_action:unsampled_wrapper": {
+      "count": 19743,
+      "total_ns": 146855700,
+      "min_ns": 5200,
+      "max_ns": 520300,
+      "mean_us": 7.438368029174898
+    },
+    "run_scenario.select_action:value_snapshot_exclusive": {
+      "count": 19251,
+      "total_ns": 62015400,
+      "min_ns": 400,
+      "max_ns": 913800,
+      "mean_us": 3.2214118747078073
+    },
+    "run_scenario.select_action:value_snapshot_inclusive": {
+      "count": 19251,
+      "total_ns": 67334400,
+      "min_ns": 400,
+      "max_ns": 922600,
+      "mean_us": 3.4977092099111733
+    },
+    "value.modules.flappy.environment.Environment.step:argument_snapshot_exclusive": {
+      "count": 837,
+      "total_ns": 32183800,
+      "min_ns": 24700,
+      "max_ns": 200600,
+      "mean_us": 38.45137395459976
+    },
+    "value.modules.flappy.environment.Environment.step:argument_snapshot_inclusive": {
+      "count": 837,
+      "total_ns": 33953200,
+      "min_ns": 26300,
+      "max_ns": 209500,
+      "mean_us": 40.56535244922341
+    },
+    "value.modules.flappy.environment.Environment.step:envelope_json_exclusive": {
+      "count": 3348,
+      "total_ns": 41784700,
+      "min_ns": 4600,
+      "max_ns": 376700,
+      "mean_us": 12.480495818399044
+    },
+    "value.modules.flappy.environment.Environment.step:envelope_json_inclusive": {
+      "count": 3348,
+      "total_ns": 41784700,
+      "min_ns": 4600,
+      "max_ns": 376700,
+      "mean_us": 12.480495818399044
+    },
+    "value.modules.flappy.environment.Environment.step:queue_admission_exclusive": {
+      "count": 837,
+      "total_ns": 5722500,
+      "min_ns": 4000,
+      "max_ns": 176800,
+      "mean_us": 6.836917562724015
+    },
+    "value.modules.flappy.environment.Environment.step:queue_admission_inclusive": {
+      "count": 837,
+      "total_ns": 5722500,
+      "min_ns": 4000,
+      "max_ns": 176800,
+      "mean_us": 6.836917562724015
+    },
+    "value.modules.flappy.environment.Environment.step:record_prepare_exclusive": {
+      "count": 837,
+      "total_ns": 109734800,
+      "min_ns": 96700,
+      "max_ns": 4585800,
+      "mean_us": 131.10489844683391
+    },
+    "value.modules.flappy.environment.Environment.step:record_prepare_inclusive": {
+      "count": 837,
+      "total_ns": 190919000,
+      "min_ns": 166600,
+      "max_ns": 4743500,
+      "mean_us": 228.09916367980884
+    },
+    "value.modules.flappy.environment.Environment.step:sampling_decision_exclusive": {
+      "count": 20580,
+      "total_ns": 25910500,
+      "min_ns": 800,
+      "max_ns": 195000,
+      "mean_us": 1.2590136054421768
+    },
+    "value.modules.flappy.environment.Environment.step:sampling_decision_inclusive": {
+      "count": 20580,
+      "total_ns": 25910500,
+      "min_ns": 800,
+      "max_ns": 195000,
+      "mean_us": 1.2590136054421768
+    },
+    "value.modules.flappy.environment.Environment.step:selected_wrapper": {
+      "count": 837,
+      "total_ns": 264978000,
+      "min_ns": 222400,
+      "max_ns": 4823800,
+      "mean_us": 316.5806451612903
+    },
+    "value.modules.flappy.environment.Environment.step:unsampled_wrapper": {
+      "count": 19743,
+      "total_ns": 146218400,
+      "min_ns": 5200,
+      "max_ns": 5840900,
+      "mean_us": 7.406088233804387
+    },
+    "value.modules.flappy.environment.Environment.step:value_snapshot_exclusive": {
+      "count": 19251,
+      "total_ns": 35446400,
+      "min_ns": 400,
+      "max_ns": 364800,
+      "mean_us": 1.8412757778816686
+    },
+    "value.modules.flappy.environment.Environment.step:value_snapshot_inclusive": {
+      "count": 19251,
+      "total_ns": 37680400,
+      "min_ns": 400,
+      "max_ns": 366800,
+      "mean_us": 1.957321697574152
+    }
+  },
+  "limits": "Instrumented diagnostic; bounded aggregate counters, no cost qualification. Wrapper timing excludes target-body time but omits the outer method guard. Phase inclusive/exclusive totals must not be summed together."
+}
