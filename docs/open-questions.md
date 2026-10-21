@@ -457,3 +457,23 @@ benchmark/results/recorder-capture-loss-fix.
 - Most plain paced p99 calls have no GC/encode overlap; quantized thread CPU
   cannot distinguish GIL/scheduling. GC-disable has no consistent benefit.
   Keep these causes unresolved; any optimization still needs GO OPTIMIZE.
+
+## Single-output trace — 2026-10-21
+
+- Opaque IDs have no global index. Conservative choice: require --run, explicit
+  bounds and a read limit; discover only bounded run-qualified partitions.
+  No migration/history scan. Missing is unknown in the printed search scope.
+- A/B probe argument refs have no upstream producer identity. Show dangling refs,
+  never infer edges from nesting/equality. This is the riskiest assumption for
+  useful deep tracing across unmodified applications. Artifact refs are not fetched.
+- Conflicts/duplicates/malformed envelopes/cycles produce integrity findings.
+  No arbitrary winner. Captured local values do not certify graph completeness.
+- Optional profiles evaluate declared versions only on captured fields. Off,
+  hash-only, missing and unsafe integer values stay unknown. Lane-01 stale/fresh
+  is violated/satisfied (3/3), but both lanes are left; its known metadata-only
+  limitation is preserved. No counterfactual causal conclusion follows.
+- Wrapper optimization is NO-GO. Latest conservative method-specific observation
+  468.50/912.87 us misses both budgets. Historical 205.15/390.31 passed 330/830;
+  fix-only paired data was 206.60/404.56. Harness hooks, payload details and
+  uncontrolled machine state differ. Current observer-free cost is unknown.
+  No overhead rerun; a future time-boxed binding experiment is deferred.

@@ -17,6 +17,7 @@ func newRootCommand() *cobra.Command {
 	root.PersistentFlags().StringVar(&database, "db", "signalscout.db", "SQLite database path")
 	root.AddCommand(newServeCommand(&database), newRunsCommand(&database), newDiffCommand(&database))
 	root.AddCommand(newMarkCommand(), newLabelsCommand(&database), newCohortCommand(), newExplainCohortCommand(&database))
+	root.AddCommand(newTraceCommand(&database))
 	root.CompletionOptions.DisableDefaultCmd = true
 	return root
 }
