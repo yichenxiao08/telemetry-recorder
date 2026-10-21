@@ -242,3 +242,46 @@ Final publication CI is verified in the checkpoint response.
 This establishes synthetic observations on one desktop, not real-world
 diagnostic accuracy, cross-codebase cost or a revised budget. STOP at
 Checkpoint A; wait for the owner's GO OPTIMIZE.
+
+## Owner decision — 2026-10-21 (America/Toronto)
+
+**NO-GO on optimization.** Close this branch as a measurement record, keeping
+every result and miss. The current lossless paced observation misses both the
+original 100/250 us budget and the owner-set 330/830 us budget. Optimization is
+deferred. One time-boxed binding-plan experiment may be revisited if recording
+cost blocks real use; this note does not authorize that experiment.
+
+### Why 205/390 and 468.5/912.9 are not interchangeable
+
+The earlier corrected-duration S0a reachable-60-Hz result is 205.15/390.31 us
+(benchmark/results/s0a-probe-overhead-monotonic.md). It passed the owner's
+post-hoc 330/830 us limits, while missing 100/250 us. Preserve that historical
+pass against its stated budget and method.
+
+The newer plain controls use the recorder fix through eb9225e. They retain
+worker encode/send interval hooks, GC callbacks and caller boundary/thread-CPU
+observations even though they omit phase scopes. They therefore are not the
+old untouched S0a harness. They also retain per-call samples and query queue
+depth before calls. The shared target still returns four scalar inputs' result
+and two scored alternatives; its source is unchanged. The newer fixed input
+keeps previous_frame=1 across trials, whereas S0a used trial numbers 1–5;
+service metadata differs. Frame counts/rate and small payload shape remain the
+same, but these are not byte-identical whole-workload trials.
+
+The same fixed-S0a harness was already run in the recorder-fix paired study:
+before 206.900/403.825, fixed 206.600/404.555 us at reachable 60 Hz
+(docs/recorder-capture-loss-fix.md). That is evidence against attributing the
+new 468.50/912.87 solely to the recorder fix. Machine state was not held fixed
+across the older and newer studies: different times on a working Windows
+desktop, scheduling/background activity and unmeasured cache/power/thermal
+state can contribute. No controlled measurement isolates those effects or
+the interval hooks' contribution. Do not claim a unique explanation.
+
+Use **468.50/912.87 us as the latest conservative current observation under
+its documented harness**, and retain 205.15/390.31 (and fixed 206.60/404.56)
+as historical, method-specific observations. The observer-free current cost
+and the exact size of any recorder regression remain unknown. The earlier
+number cannot qualify current use by itself; the newer number cannot prove
+that the recorder intrinsically doubled in cost. No additional benchmark was
+run for this reconciliation. Both current lossless payload controls miss
+330/830 as well as 100/250. Optimization remains deferred.
