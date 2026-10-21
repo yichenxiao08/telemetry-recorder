@@ -259,3 +259,64 @@ The minimal enriched B adds an import and a selection-semantic call (two lines);
 all ordinary A/B capture works without those edits. Body capture remains OFF
 unless the corresponding field is explicitly allowed. This is synthetic-only,
 not a replacement for P0 recursive privacy/secret tests.
+
+## Proposed zero-code return-to-argument linking (2026-10-21; design only)
+
+Recommendation: a bounded, process-local identity registry for explicitly
+allowlisted mutable object returns, plus explicit unknown for primitives.
+No linking code or trace behavior is changed by this proposal.
+
+For a returned weak-referenceable object, keep a weak reference, the exact
+object identity, output ref, process epoch and mutation/version assertion.
+A later argument is linked only when the live referent is the same object,
+the registry entry has not expired, and the permitted version is known.
+Never rely on id() alone: memory addresses are reused after collection.
+Use weakref callbacks plus an epoch/token to invalidate entries. Built-in
+list/dict objects are not generally weak-referenceable: either report unsupported
+or retain a bounded strong reference with a short TTL and explicit memory cost.
+Eviction must yield unknown, never a guessed link. Mutation between calls means
+same identity is not same value: absent a verified version/snapshot or explicit
+immutability declaration, report identity-only/unknown value lineage. Do not
+invoke arbitrary __eq__, hash, repr or user serialization on the caller path.
+
+Copies, slices, conversions, reconstruction and serialization break object
+identity. Container identity does not establish element identity or that a
+consumer read an element; aliases and replacement need distinct versions.
+Equal-valued numbers/strings cannot be linked by value: interning, repeated
+constants and multiple producers create false links. Honest options are an
+explicit config declaration of the producer/consumer argument relationship
+(marked developer assertion), an optional in-code value tag, or unknown.
+Neither timing, equal content nor nesting authorizes an inferred derives edge.
+
+Per-call lookup, weakref bookkeeping, bounded eviction, version checks and
+any snapshots add cost and memory; do not claim O(1) bookkeeping means cheap
+wall time. The latest wrapper observation is 468.50/912.87 us p50/p99 and
+observer-free current cost remains unresolved. No optimization or new cost
+budget is authorized. Field capture remains OFF without profile/field consent;
+the registry must not retain unallowlisted values or perform equality hashes.
+HMAC equality tokens are not proof of object identity or a code read.
+
+False links include id reuse, mutated aliases, stale registry entries, shared
+constants, cross-thread races and reused refs. A future trace implementation
+would need explicit assertion kind, registry epoch/version and evidence for
+both boundaries. Ambiguous producers, missing versions or evicted entries must
+produce integrity findings plus unknown, not a complete graph or causal claim.
+Current trace already refuses to invent missing producer nodes; do not change it
+as part of this design task.
+
+Smallest feasibility experiment, separately approved later: development-only
+accepted pipeline retrieval->selection->draft object handoffs and lane-01's
+primitive previous-frame argument. Use a bounded registry (e.g. 128 entries)
+without target edits. Expect an immutable, unchanged object alias to link; expect
+copies, mutated containers, id reuse, unrelated equal primitives, expired entries
+and capture-OFF fields to stay unknown. Tests must demonstrate no false links,
+bounded memory, unchanged outputs/exceptions and correct explicit edge/evidence
+refs through real OTLP. Measure added caller p50/p99 separately on the same fixed
+payload, keeping every miss; no recorder tuning. Stop on any false link, host
+behavior change, unbounded retention, privacy leak or unsupported object silently
+accepted. A useful lane primitive link may require a config assertion or optional
+tag; that is a limitation, not zero-code automatic identity success.
+
+Riskiest assumption: a cheap version/identity check can distinguish a mutable
+object's value at two boundaries without retaining private snapshots or running
+user code. This is unresolved and not implemented.

@@ -185,3 +185,22 @@ diagnostic accuracy. Any later revision needs new untouched seeds and approval.
    problem outputs; correct outputs are never marked wrong to fill a cohort.
 4. Conditional comparison, control fields and related variants are deferred;
    the within-range miss is retained rather than repaired by applicability filtering.
+
+## Owner reconfirmation — 2026-10-21 (docs only)
+
+The requirements are reconfirmed without changing equations, variants, seeds,
+expectations, scores or executable sources. The contract was originally committed
+at 37f2151 and amended at 6a3716b, before source freeze d704cc7 and the recorded
+reserved-seed attempt bef1fc8. That attempt is historical attempted/incomplete;
+these five seeds are NOT untouched holdouts now. This docs-only reconfirmation
+cannot retroactively pre-register them. No reserved seed is generated, scored,
+rerun or replaced in this task. A future new evaluation requires fresh owner-
+approved untouched seeds and a new preregistration. Preserve all original misses.
+
+The actual-use equation remains history[n-2]=-1 -> left for stale declared-use
+frames, versus history[n-1]=+1 -> right when ONLY previous_frame is replaced by
+n-1. Development-only counterfactual tests are required; no target or generator
+change is authorized here. All six expectations above remain fixed. Tail coverage
+and symptom roles are proposed/previous historical implementation only for this
+task: do not implement, enable, tune or rerun them. Conditional comparison remains
+deferred. checksums.txt pins this reconfirmed document and generator specification.
