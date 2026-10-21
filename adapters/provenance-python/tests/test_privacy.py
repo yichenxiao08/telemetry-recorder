@@ -20,7 +20,42 @@ def synthetic_raising(error):
     raise error
 
 
+class SyntheticPrivate:
+    def __init__(self):
+        self.score = 3
+        self.review = "person@example.invalid"
+        self.result = {"lane": "left", "review": self.review}
+
+    def step(self, action):
+        self.score += action
+        return self.result
+
+
 class Privacy(unittest.TestCase):
+    def test_method_fields_obey_profile_policy_without_mutating_host(self):
+        policy = Policy({"version": 1, "profiles": {"synthetic": {"fields": {
+            "inputs.self.score": {"kind": "number"}, "output.lane": {"kind": "enum", "values": ["left"]}}}}})
+        recorder = Recorder(_start_worker=False, capture_fields={"action", "self.score", "self.review", "output"},
+                            capture_policy=policy, capture_profile="synthetic")
+        spec = {"module": __name__, "function": "SyntheticPrivate.step", "capture": {"args": ["action"], "self": ["score", "review"], "return": True}}
+        owner = Injector(recorder, [spec])
+        owner.install()
+        try:
+            instance = SyntheticPrivate()
+            self.assertIs(instance.step(2), instance.result)
+            self.assertEqual(instance.review, "person@example.invalid")
+            self.assertEqual(instance.score, 5)
+            items = []
+            while not recorder._q.empty():
+                items.append(recorder._q.get_nowait())
+            stored = json.dumps(items)
+            self.assertNotIn("example.invalid", stored)
+            self.assertIn("self.score", stored)
+            self.assertEqual(owner.doctor()["probes"][0]["status"], "attached")
+        finally:
+            owner.uninstall()
+            recorder.close(.01)
+
     def test_exception_identity_and_message_not_buffered(self):
         policy = Policy({"version": 1, "profiles": {"synthetic": {"fields": {}}}})
         recorder = Recorder(_start_worker=False, capture_policy=policy, capture_profile="synthetic")

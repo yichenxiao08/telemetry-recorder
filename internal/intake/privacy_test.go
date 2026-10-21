@@ -47,7 +47,8 @@ func TestP0PlantedSecretsAbsentFromEveryStoredColumn(t *testing.T) {
 	logRequest := &logscol.ExportLogsServiceRequest{ResourceLogs: []*logs.ResourceLogs{{Resource: res, ScopeLogs: []*logs.ScopeLogs{{Scope: scope, LogRecords: []*logs.LogRecord{{TimeUnixNano: 12, Body: &common.AnyValue{Value: &common.AnyValue_StringValue{StringValue: text}}, SeverityText: text, Attributes: attrs}, {TimeUnixNano: 13, Body: &common.AnyValue{Value: &common.AnyValue_IntValue{IntValue: 4111111111111111}}, Attributes: attrs}}}}}}}
 	point := &metrics.NumberDataPoint{TimeUnixNano: 14, Attributes: attrs, Value: &metrics.NumberDataPoint_AsInt{AsInt: 4111111111111111}}
 	metric := &metrics.Metric{Name: text, Description: text, Unit: text, Data: &metrics.Metric_Gauge{Gauge: &metrics.Gauge{DataPoints: []*metrics.NumberDataPoint{point}}}}
-	metricScope := &metrics.ScopeMetrics{Scope: scope, Metrics: []*metrics.Metric{metric}}
+	histogram := &metrics.Metric{Name: text, Data: &metrics.Metric_Histogram{Histogram: &metrics.Histogram{DataPoints: []*metrics.HistogramDataPoint{{TimeUnixNano: 15, Attributes: attrs, ExplicitBounds: []float64{4111111111111111}, BucketCounts: []uint64{4111111111111111}}}}}}
+	metricScope := &metrics.ScopeMetrics{Scope: scope, Metrics: []*metrics.Metric{metric, histogram}}
 	metricRequest := &metricscol.ExportMetricsServiceRequest{ResourceMetrics: []*metrics.ResourceMetrics{{Resource: res, ScopeMetrics: []*metrics.ScopeMetrics{metricScope}}}}
 	handler := NewWithPolicy(s, p, "synthetic")
 	for _, item := range []struct {
@@ -147,6 +148,13 @@ func TestP0PlantedSecretsAbsentFromEveryStoredColumn(t *testing.T) {
 	var record map[string]any
 	if json.Unmarshal([]byte(data), &record) != nil {
 		t.Fatal("invalid raw JSON")
+	}
+	if record["attrs"].(map[string]any)["safe.number"] != float64(10) {
+		t.Fatal("allowlisted scalar did not round-trip")
+	}
+	var capturedValues int
+	if err = db.QueryRow(`SELECT count(*) FROM signals WHERE kind='metric' AND json_type(data,'$.value') IS NOT NULL`).Scan(&capturedValues); err != nil || capturedValues != 0 {
+		t.Fatal("capture-OFF metrics became numeric values", err)
 	}
 	t.Logf("synthetic planted-set leaks=%d; stored columns checked=%d; records=%d; placements across traces/logs/metrics JSON+protobuf+gzip", leaks, checked, count)
 }

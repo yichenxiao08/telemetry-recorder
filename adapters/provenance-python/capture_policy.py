@@ -9,6 +9,7 @@ SENSITIVE = re.compile(r"password|credential|authorization|api.?key|access.?toke
 CREDENTIAL = re.compile(r"bearer\s|sk[-_]|token[=:]|password[=:]|\b(select|insert|update|delete)\b|\d{11,19}", re.I)
 EMAIL = re.compile(r"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}", re.I)
 VERSION = re.compile(r"[a-zA-Z0-9._-]{1,32}")
+FIELD = re.compile(r"[A-Za-z_][A-Za-z0-9_.-]{0,255}")
 
 
 def unique(pairs):
@@ -32,7 +33,7 @@ class Policy:
             if not VERSION.fullmatch(name) or set(profile) != {"fields"} or len(profile["fields"]) > 128:
                 raise ValueError("invalid profile")
             for path, rule in profile["fields"].items():
-                if not path or len(path) > 256 or SENSITIVE.search(path) or set(rule) - {"kind", "values", "equality", "value_class", "nonpersonal", "hash_basis"}:
+                if not FIELD.fullmatch(path) or SENSITIVE.search(path) or set(rule) - {"kind", "values", "equality", "value_class", "nonpersonal", "hash_basis"}:
                     raise ValueError("invalid/credential field")
                 kind = rule.get("kind")
                 if kind in ("number", "boolean"):

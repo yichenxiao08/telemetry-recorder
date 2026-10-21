@@ -32,6 +32,7 @@ func (p *Policy) OTLP(message proto.Message, profile string) {
 				for i := 0; i < list.Len(); i++ {
 					item := list.Get(i)
 					kv := item.Message().Interface().(*common.KeyValue)
+					kv.ProtoReflect().SetUnknown(nil)
 					key := kv.GetKey()
 					if key == "signalscout.record.json" {
 						kv.Value = &common.AnyValue{Value: &common.AnyValue_StringValue{StringValue: p.Envelope(profile, kv.GetValue().GetStringValue())}}
@@ -91,6 +92,8 @@ func (p *Policy) OTLP(message proto.Message, profile string) {
 					for i := 0; i < list.Len(); i++ {
 						walk(list.Get(i).Message(), scope)
 					}
+				} else {
+					m.Clear(fd) // Repeated scalar payloads are capture-OFF too.
 				}
 				return true
 			}

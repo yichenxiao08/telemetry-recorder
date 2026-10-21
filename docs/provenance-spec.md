@@ -239,9 +239,29 @@ The synthetic CLI accepts a module:function entry point, not an arbitrary child
 command. It neither edits source nor installs sitecustomize globally. Configuration
 must identify every supported function and explicitly allow its argument names
 and/or return. Doctor is required output, including unsupported targets and loss.
-Safe support is limited to directly defined synchronous Python module functions.
-Framework discovery, aliases already held elsewhere, async/generators, descriptors,
-reload and native functions remain unsupported.
+Safe support includes directly defined synchronous Python module functions and
+instance/class/static methods of top-level plain Python classes. Framework
+discovery, aliases already held elsewhere, async/generators, properties/custom
+descriptors, nested/dunder-heavy classes, reload and native functions remain
+unsupported. Configuration names a class method as `Class.method`; implicit
+self/cls objects are never captured. Explicit `self: [score, steps]` or `cls:
+[family]` allowlists permit only named builtin data, never property getters.
+Override-to-base calls on the same receiver/name record the outer configured
+method once, with visible suppression counts. This is execution-boundary
+deduplication, not provenance linking, a ranking rule or proof of data dependence.
+
+Runner argv is isolated before target import: resolved target filename followed
+only by args after `--`, with the original argv restored afterward. Preflight
+dry-imports and reports attachments/argv without calling the entry; import-time
+side effects and parsers defined inside main are not safely validated. Stderr
+and doctor JSON report coverage and admission/delivery counts. Status 3 means
+unsupported/unattached/uninvoked coverage; 4 means executed target with zero
+captured decisions/run contexts; 5 means delivery/drop failure. Nonzero target
+errors keep their status; normal exit 0 still passes through capture checks.
+See adapters/provenance-python/README.md for bounds, remaining unsupported cases,
+exact PowerShell commands and the single exploratory method-cost observation.
+The full method overhead remains unmeasured against budgets; no optimization,
+privacy productionization or engine/cohort/diff/trace change occurs here.
 
 Short Windows wall-clock samples can be identical. The spike anchors each run to
 UTC once, then uses monotonic elapsed nanoseconds for probe timestamps/durations

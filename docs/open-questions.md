@@ -477,3 +477,24 @@ benchmark/results/recorder-capture-loss-fix.
   fix-only paired data was 206.60/404.56. Harness hooks, payload details and
   uncontrolled machine state differ. Current observer-free cost is unknown.
   No overhead rerun; a future time-boxed binding experiment is deferred.
+
+## Probe usability — 2026-10-21
+
+- Supported method attachment is limited to plain top-level classes and directly
+  declared synchronous methods. Properties, custom descriptors/access/metaclasses,
+  slots, nested classes, native and async/generator callables stay unsupported.
+  Default receiver capture is OFF; selected builtin dict fields only, never self.
+- Child->base same-name chains on one receiver record the outermost configured
+  override once. Suppressed calls remain counted. Explicit base calls in the same
+  chain are treated the same; no bytecode inference that super() was used.
+- Preflight is a dry import, not a sandbox or validation of a parser inside main.
+  It reports isolated argv/attachments. Module import side effects are a risk.
+- Queue-admitted decisions and created contexts are not proof of persisted runs;
+  stderr includes ACK/flush/loss counters. Zero capture now exits 4, coverage gaps
+  3, delivery problems 5. Target nonzero exits/exceptions remain unchanged.
+- One paired 300-sample trial: function 210.95/421.31 us, instance method
+  219.20/403.34 us p50/p99, zero drops; not budget qualification. Full method/state
+  overhead is unmeasured. No optimization or repeated trial is authorized here.
+- Riskiest assumption: monkeypatching plain class descriptors is transparent enough
+  for ordinary callers. Identity/introspection-sensitive code and cached aliases
+  remain outside the supported claim. Synthetic data only; P0 is separate.

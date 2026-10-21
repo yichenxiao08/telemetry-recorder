@@ -36,6 +36,7 @@ var sensitive = regexp.MustCompile(`(?i)password|credential|authorization|api.?k
 var credential = regexp.MustCompile(`(?i)bearer\s|sk[-_]|token[=:]|password[=:]|\b(select|insert|update|delete)\b|\d{11,19}`)
 var email = regexp.MustCompile(`(?i)[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}`)
 var versionName = regexp.MustCompile(`^[a-zA-Z0-9._-]{1,32}$`)
+var fieldPath = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_.-]{0,255}$`)
 
 func Parse(body, key []byte) (*Policy, error) {
 	if len(body) > 65536 || !uniqueJSON(body) {
@@ -55,7 +56,7 @@ func Parse(body, key []byte) (*Policy, error) {
 			return nil, fmt.Errorf("invalid profile")
 		}
 		for path, r := range profile.Fields {
-			if path == "" || len(path) > 256 || sensitive.MatchString(path) {
+			if !fieldPath.MatchString(path) || sensitive.MatchString(path) {
 				return nil, fmt.Errorf("credential/invalid field forbidden")
 			}
 			switch r.Kind {

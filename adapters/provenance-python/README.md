@@ -6,10 +6,91 @@ only. Standard requests/logging instrumentations are pinned at 0.49b2.
 PyYAML is used only for bounded safe configuration. No Go dependencies changed.
 
 Primary interface: python -m scout_probe, not an edit to the target source.
-signalscout.yaml names directly defined synchronous module functions and explicit
-argument/return capture allowlists. Default capture is OFF. Supported functions
-must have fixed signatures; generators, async functions, class/descriptor paths,
-builtins and unsupported loaders are reported. No arbitrary-code inference.
+signalscout.yaml names directly defined synchronous module functions or methods
+of top-level plain Python classes, with explicit argument/return/receiver-field
+allowlists. Default capture is OFF. Fixed signatures are required. Unsupported
+callables are reported with reasons; there is no arbitrary-code inference.
+
+## Runner and method usability (2026-10-21)
+
+The entry point is a plain synchronous `module:function`. Runner options go before
+the explicit `--` separator; everything after it belongs only to the target.
+Before importing the target, the runner sets `sys.argv` to the resolved target
+script filename (module name if no source origin), followed by those target args.
+It restores the previous argv object and search path on normal/error exits.
+Nonzero target exits and exceptions propagate. A normal `SystemExit(0)` still
+passes through capture checks, so zero capture cannot silently return success.
+
+~~~powershell
+task build
+$repo = (Get-Location).Path
+New-Item -ItemType Directory -Force .cache/probe-usability | Out-Null
+$doctor = Join-Path $repo '.cache/probe-usability/doctor.json'
+# In a separate PowerShell window, start the existing intake:
+.\bin\signalscout.exe --db .cache/probe-usability/manual.db serve --retention 0
+# With intake running, preflight (dry import, no entry-point execution):
+uv run --directory adapters/provenance-python --frozen python -m scout_probe --config fixtures/usability/signalscout.yaml --doctor $doctor --path fixtures/usability --preflight class_environment:main -- run --episodes 10 --seed 1
+# Actual target run:
+uv run --directory adapters/provenance-python --frozen python -m scout_probe --config fixtures/usability/signalscout.yaml --doctor $doctor --path fixtures/usability class_environment:main -- run --episodes 10 --seed 1
+.\bin\signalscout.exe --db .cache/probe-usability/manual.db runs list
+~~~
+
+Preflight resolves/imports the module, validates the entry and attachments, and
+reports the exact isolated argv in doctor JSON. It does not execute `main`,
+validate an argparse parser defined inside it, or sandbox import-time side effects.
+Use a fresh process: wrappers and aliases are process-scoped, not hot-reloadable.
+
+Config `function: Environment.step` supports instance methods; classmethod and
+staticmethod descriptors are preserved. `capture: {args: [action], self: [score,
+steps], return: true}` captures ONLY the two named builtin-valued instance-dict
+attributes before the call. `cls: [family]` similarly permits named class data.
+Implicit self/cls objects are never captured. Property/descriptor reads are never
+used to obtain state. Missing or unsupported values remain uncaptured and visible
+in counters. `complete` covers recorded explicit arguments/selected fields only,
+not all receiver state or proof of code reads. No new privacy gate is included.
+
+Only a class's directly defined method can be configured: use the declaring base
+for inherited methods. If both overriding child and base methods are configured,
+the same receiver/name's active child->base chain records the outermost override
+once. The base invocation is counted and `probe_super_suppressed` reports omitted
+duplicate recording. This also covers an explicit base call within that chain;
+it does not inspect Python bytecode to prove a `super()` expression. Different
+method names still record nested steps. Identity is compared with `is`, never
+user equality/hash. Active method state is context-local, reset in finally,
+bounded to 64 calls; receiver field/MRO/envelope/queue budgets remain bounded.
+
+Unsupported: generators/async/async generators; properties and custom descriptors;
+nested classes/functions; C/native/builtin callables; variadic or oversized
+signatures; custom signatures/aliases; constructors/dunder probes, custom
+metaclasses/access hooks/slots/oversized MROs; inherited aliases configured on a
+subclass; unsupported loaders; reload; references cached before attachment.
+Descriptor introspection never invokes the property's getter. Introspection or
+identity-sensitive callers may observe wrapper functions/extra traceback frames.
+
+Human-readable stderr and doctor JSON always report configured/attached/failed
+probes, reasons, invocation counts, captured decisions, run contexts and transport
+counters. Context creation and queue admission are not proof of stored delivery.
+Each outer probed call creates a run; episodes are not automatically grouped.
+
+| Runner status | Meaning |
+|---|---|
+| 0 | Successful supported execution and flush, or successful dry preflight |
+| 2 | argparse usage error; target's nonzero exit is preserved |
+| 3 | Unsupported, unattached, or (after execution) configured but uninvoked probe |
+| 4 | Executed target produced zero admitted probe decisions or zero probe run contexts |
+| 5 | Incomplete flush or recorded drops/failed/unknown delivery |
+
+Zero capture has precedence over partial coverage, then delivery status. Unexpected
+target exceptions keep their original exception/exit semantics after reporting.
+Default-off capture and synthetic-only restrictions still apply.
+
+One exploratory paired measurement is in `benchmark/results/probe-usability`:
+300 samples/kind, one trial, 60 TOTAL calls/sec, same four scalars and returned
+alternatives, receiver capture OFF. Function p50/p99 210.95/421.31 us; instance
+method 219.20/403.34 us. All 640 warmup+measured decisions and 1,280 spans were
+acknowledged, with zero drops. Quantile differences are +8.25/-17.97 us, not a
+causal or budget qualification. Full added method/receiver-capture cost against
+100/250 or 330/830 budgets is UNMEASURED. No optimization or repeat trial occurred.
 
 The import hook replaces configured function objects in memory only.
 Aliases retained before attachment, module reload semantics, opaque C/native

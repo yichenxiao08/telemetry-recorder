@@ -4,7 +4,31 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
+
+	common "go.opentelemetry.io/proto/otlp/common/v1"
+	trace "go.opentelemetry.io/proto/otlp/trace/v1"
+	"google.golang.org/protobuf/encoding/protowire"
 )
+
+func TestKeptAttributesDiscardUnknownWireFields(t *testing.T) {
+	p, err := Parse([]byte(`{"version":1,"profiles":{"synthetic":{"fields":{"attributes.safe.number":{"kind":"number"}}}}}`), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	unknown := protowire.AppendTag(nil, 100, protowire.BytesType)
+	unknown = protowire.AppendString(unknown, "Bearer synthetic-unknown-wire")
+	for _, kv := range []*common.KeyValue{
+		{Key: "safe.number", Value: &common.AnyValue{Value: &common.AnyValue_DoubleValue{DoubleValue: 10}}},
+		{Key: "signalscout.record.json", Value: &common.AnyValue{Value: &common.AnyValue_StringValue{StringValue: `{"version":1}`}}},
+	} {
+		kv.ProtoReflect().SetUnknown(unknown)
+		span := &trace.Span{Attributes: []*common.KeyValue{kv}}
+		p.OTLP(span, "synthetic")
+		if len(span.Attributes) != 1 || len(span.Attributes[0].ProtoReflect().GetUnknown()) != 0 {
+			t.Fatal("kept attribute retained unknown wire payload")
+		}
+	}
+}
 
 func TestPolicyFailClosedAndTypedCapture(t *testing.T) {
 	p, err := Parse([]byte(`{"version":1,"profiles":{"synthetic":{"fields":{"inputs.frame":{"kind":"number"},"output.lane":{"kind":"enum","values":["left","right"]}}}}}`), nil)
