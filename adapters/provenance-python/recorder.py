@@ -58,6 +58,14 @@ def attrs(values):
 
 class Run:
     def __init__(self, recorder, name, run_id, start_ns, end_ns, attributes):
+        if recorder.capture_policy is not None:
+            try:
+                clean, ok = recorder.capture_policy.value(recorder.capture_profile, "otlp.name", bounded(name))
+                name = clean if ok else "redacted"
+                attributes = recorder.capture_policy.attributes(recorder.capture_profile, bounded(attributes))
+            except Exception:
+                recorder._count("drop_privacy")
+                name, attributes = "redacted", {}
         self.recorder, self.name, self.trace_id = recorder, name, run_id
         self.start_ns, self.end_ns, self.attributes = start_ns, end_ns, attributes
         self.span_id, self.next_id = "0000000000000001", 2
@@ -120,11 +128,22 @@ class FlushReport(dict):
 class Recorder:
     def __init__(self, endpoint="http://127.0.0.1:4318", *, service="synthetic.provenance",
                  capture_fields=(), capacity=256, timeout=.5, cooldown=1,
-                 resource_attributes=None, _start_worker=True, retry_limit=1):
+                 resource_attributes=None, _start_worker=True, retry_limit=1,
+                 capture_policy=None, capture_profile=""):
         if not 1 <= capacity <= 4096 or not 0 < timeout <= 5 or not 0 < cooldown <= 60:
             raise ValueError("invalid recorder bounds")
         self.resource_attributes = bounded({} if resource_attributes is None else resource_attributes)
         self.endpoint, self.service = endpoint.rstrip("/"), service
+        self.capture_policy, self.capture_profile = capture_policy, capture_profile
+        self.scope_name = "signalscout.synthetic.spike"
+        if capture_policy is not None:
+            if capture_profile not in capture_policy.profiles:
+                raise ValueError("known capture profile required")
+            self.resource_attributes = capture_policy.attributes(capture_profile, self.resource_attributes, "resource.")
+            clean, ok = capture_policy.value(capture_profile, "resource.attributes.service.name", service)
+            self.service = clean if ok else "redacted"
+            clean, ok = capture_policy.value(capture_profile, "scope.otlp.name", self.scope_name)
+            self.scope_name = clean if ok else "redacted"
         self.capture_fields = frozenset(capture_fields)
         self.timeout, self.cooldown = timeout, cooldown
         if retry_limit not in (0, 1):
@@ -181,6 +200,13 @@ class Recorder:
 
     def _enqueue(self, item):
         self._count("attempted")
+        if self.capture_policy is not None:
+            try:
+                item = self.capture_policy.queued(self.capture_profile, item)
+                self._count("privacy_checked_batches")
+            except Exception:
+                self._count("drop_privacy")
+                return False
         if self._closed:
             self._count("drop_closed")
             return False
@@ -281,7 +307,7 @@ class Recorder:
         for a in attrs(self.resource_attributes):
             resource.resource.attributes.add(**a)
         scope = resource.scope_spans.add()
-        scope.scope.name = "signalscout.synthetic.spike"
+        scope.scope.name = self.scope_name
         for item in items:
             span = scope.spans.add(trace_id=bytes.fromhex(item["trace"]),
                 span_id=bytes.fromhex(item["span"]), parent_span_id=bytes.fromhex(item["parent"]),

@@ -2,15 +2,19 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/signalscout/signalscout/internal/intake"
+	"github.com/signalscout/signalscout/internal/redaction"
 	"github.com/signalscout/signalscout/internal/store"
 	"github.com/signalscout/signalscout/internal/viewer"
 	"github.com/spf13/cobra"
@@ -20,6 +24,7 @@ func newServeCommand(database *string) *cobra.Command {
 	options := store.Options{}
 	var address string
 	var thresholds []string
+	var policyPath, profile string
 	command := &cobra.Command{Use: "serve", Short: "Receive OTLP telemetry and serve the local viewer", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error {
 		options.Thresholds = map[string]float64{}
 		for _, value := range thresholds {
@@ -40,9 +45,39 @@ func newServeCommand(database *string) *cobra.Command {
 			return fmt.Errorf("queue, idle timeout and sweep interval must be positive; retention cannot be negative")
 		}
 		logger := slog.New(slog.NewTextHandler(cmd.ErrOrStderr(), nil))
-		return serve(cmd.Context(), *database, address, options, logger)
+		var policy *redaction.Policy
+		if policyPath != "" {
+			f, err := os.Open(policyPath)
+			if err != nil {
+				return err
+			}
+			data, err := io.ReadAll(io.LimitReader(f, 65537))
+			_ = f.Close()
+			if err != nil {
+				return err
+			}
+			var key []byte
+			if raw := os.Getenv("SIGNALSCOUT_P0_HMAC_KEY"); raw != "" {
+				key, err = base64.StdEncoding.DecodeString(raw)
+				if err != nil {
+					return fmt.Errorf("P0 key must be base64")
+				}
+			}
+			policy, err = redaction.Parse(data, key)
+			if err != nil {
+				return err
+			}
+			if !policy.HasProfile(profile) {
+				return fmt.Errorf("known --capture-profile required")
+			}
+		} else if profile != "" {
+			return fmt.Errorf("--capture-profile requires --capture-policy")
+		}
+		return servePolicy(cmd.Context(), *database, address, options, logger, policy, profile)
 	}}
 	flags := command.Flags()
+	flags.StringVar(&policyPath, "capture-policy", "", "Enable strict synthetic P0 capture with this validated JSON policy (legacy mode otherwise)")
+	flags.StringVar(&profile, "capture-profile", "", "Explicit P0 capture profile")
 	flags.StringVar(&address, "listen", "127.0.0.1:4318", "OTLP and viewer HTTP listen address")
 	flags.IntVar(&options.QueueSize, "queue-size", 64, "Maximum queued batches")
 	flags.DurationVar(&options.IdleTimeout, "idle-timeout", 5*time.Second, "Close a run after inactivity")
@@ -55,6 +90,10 @@ func newServeCommand(database *string) *cobra.Command {
 }
 
 func serve(ctx context.Context, database, address string, options store.Options, logger *slog.Logger) (result error) {
+	return servePolicy(ctx, database, address, options, logger, nil, "")
+}
+
+func servePolicy(ctx context.Context, database, address string, options store.Options, logger *slog.Logger, policy *redaction.Policy, profile string) (result error) {
 	s, err := store.Open(ctx, database, options)
 	if err != nil {
 		return err
@@ -65,8 +104,19 @@ func serve(ctx context.Context, database, address string, options store.Options,
 		return err
 	}
 	mux := http.NewServeMux()
-	mux.Handle("/v1/", intake.New(s))
-	mux.Handle("/api/", metadataHandler(s))
+	mux.Handle("/v1/", intake.NewWithPolicy(s, policy, profile))
+	metadata := metadataHandler(s)
+	if policy != nil {
+		mux.Handle("/api/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method != "GET" && r.Method != "HEAD" {
+				http.Error(w, "P0 metadata writes disabled; annotation text has no approved capture policy", http.StatusForbidden)
+				return
+			}
+			metadata.ServeHTTP(w, r)
+		}))
+	} else {
+		mux.Handle("/api/", metadata)
+	}
 	mux.Handle("/", view)
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
