@@ -16,7 +16,27 @@ def synthetic_step(review):
     return {"lane": "left", "review": review}
 
 
+def synthetic_raising(error):
+    raise error
+
+
 class Privacy(unittest.TestCase):
+    def test_exception_identity_and_message_not_buffered(self):
+        policy = Policy({"version": 1, "profiles": {"synthetic": {"fields": {}}}})
+        recorder = Recorder(_start_worker=False, capture_policy=policy, capture_profile="synthetic")
+        owner = Injector(recorder, [])
+        wrapped = Probe(owner, synthetic_raising, {"module": __name__, "function": "synthetic_raising"}).wrap()
+        error = ValueError("Bearer syntheticExceptionSecret")
+        with self.assertRaises(ValueError) as caught:
+            wrapped(error)
+        self.assertIs(caught.exception, error)
+        items = []
+        while not recorder._q.empty():
+            items.append(recorder._q.get_nowait())
+        self.assertNotIn("syntheticExceptionSecret", json.dumps(items))
+        self.assertIsNone(recorder._active.get())
+        recorder.close(.01)
+
     def test_hmac_and_artifact_policy(self):
         policy = Policy({"version": 1, "key_version": "test-v1", "profiles": {"synthetic": {"fields": {
             "email": {"kind": "hmac", "value_class": "email", "equality": True},
