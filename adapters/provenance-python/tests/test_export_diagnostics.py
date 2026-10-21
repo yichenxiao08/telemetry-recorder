@@ -22,7 +22,7 @@ class ExportDiagnostics(unittest.TestCase):
         return recorder
 
     def failed(self, phase, error):
-        r = self.make()
+        r = self.make(retry_limit=0)  # Isolate one attempt; retry policy is tested separately.
         def send(items):
             r.diagnostics.phase = phase
             raise error
@@ -102,22 +102,26 @@ class ExportDiagnostics(unittest.TestCase):
         c = s["diagnostics"]["counters_spans_except_flush_timeout"]
         self.assertEqual(s["queue_high_water"], 1)
         self.assertEqual(c["queue_full_drop"], s["drop_full"])
-        self.assertEqual(c["cooldown_drop"], s["drop_cooldown"])
+        self.assertEqual(c["cooldown_drop"], 0)
+        self.assertEqual(s.get("drop_cooldown", 0), 0)
+        self.assertEqual(s["drop_full"], 2)
         self.assertEqual(c["shutdown_drop"], s["drop_closed"])
         self.assertGreater(c["flush_timeout"], 0)
         self.assertEqual(c["flush_drop"], 0)  # Timeout does not discard pending data.
         self.assertEqual(s["queue_size"], 1)
 
-    def test_cooldown_suppressed_batch_keeps_legacy_meaning(self):
+    def test_cooldown_wait_exports_instead_of_suppressing(self):
         r = self.make()
         r._enqueue(ITEM)
-        r._cooldown_until = time.monotonic()+1
+        r._cooldown_until = time.monotonic()+.05
         r._stop.set()
-        with patch.object(r, "_send", side_effect=AssertionError("must not send")):
+        with patch.object(r, "_send", return_value=None) as send:
             r._work()
+        send.assert_called_once_with([ITEM])
         s = r.snapshot()
-        self.assertEqual(s["export_failed"], 1)
-        self.assertEqual(s["diagnostics"]["counters_spans_except_flush_timeout"]["cooldown_suppressed"], 1)
+        self.assertEqual(s.get("export_failed", 0), 0)
+        self.assertEqual(s["acknowledged"], 1)
+        self.assertEqual(s["diagnostics"]["counters_spans_except_flush_timeout"].get("cooldown_suppressed", 0), 0)
 
     def test_diagnostics_do_not_change_encoded_bytes(self):
         r = self.make()

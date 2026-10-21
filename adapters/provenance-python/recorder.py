@@ -111,24 +111,39 @@ class ObservedQueue(queue.Queue):
         self.high_water = max(self.high_water, self._qsize())
 
 
+class FlushReport(dict):
+    """JSON-friendly accounting; truth means complete delivery, not just drain."""
+    def __bool__(self):
+        return self["complete"]
+
+
 class Recorder:
     def __init__(self, endpoint="http://127.0.0.1:4318", *, service="synthetic.provenance",
                  capture_fields=(), capacity=256, timeout=.5, cooldown=1,
-                 resource_attributes=None, _start_worker=True):
+                 resource_attributes=None, _start_worker=True, retry_limit=1):
         if not 1 <= capacity <= 4096 or not 0 < timeout <= 5 or not 0 < cooldown <= 60:
             raise ValueError("invalid recorder bounds")
         self.resource_attributes = bounded({} if resource_attributes is None else resource_attributes)
         self.endpoint, self.service = endpoint.rstrip("/"), service
         self.capture_fields = frozenset(capture_fields)
         self.timeout, self.cooldown = timeout, cooldown
+        if retry_limit not in (0, 1):
+            raise ValueError("at most one retry")
+        self.retry_limit = retry_limit
+        self.attempt_budget, self.retry_backoff = 1.25, .05
         self._q = ObservedQueue(capacity)
         self.diagnostics = Diagnostics()
         self._counts, self._lock = {}, threading.Lock()
         self._active = contextvars.ContextVar("signalscout_run", default=None)
         self._stop, self._closed = threading.Event(), False
         self._cooldown_until = 0.0
-        # Only this daemon performs network I/O. It never holds the stats lock
-        # while exporting. Queue waits occur only here or in explicit flush.
+        self._network_jobs = queue.Queue(1)
+        self._network_stop = threading.Event()
+        self._network_thread = None
+        self._flight = None
+        # One delivery worker and at most one daemon I/O worker. An I/O call
+        # stuck in DNS/headers is quarantined, never replaced by more threads.
+        # Neither holds the statistics lock during I/O or worker-only waits.
         self._worker = threading.Thread(target=self._work, name="signalscout-export", daemon=True)
         if _start_worker:
             self._worker.start()
@@ -140,6 +155,10 @@ class Recorder:
     def snapshot(self):
         with self._lock:
             result = dict(self._counts)
+            result["acknowledged"] = result.get("exported", 0)
+            result["failed"] = result.get("failed", 0)
+            result["dropped"] = sum(result.get(k, 0) for k in ("drop_full", "drop_closed", "drop_cooldown"))
+            result["unknown"] = result.get("attempted", 0)-result["acknowledged"]-result["failed"]-result["dropped"]
         result.update(queue_size=self._q.qsize(), capacity=self._q.maxsize,
                       cooldown_active=time.monotonic() < self._cooldown_until)
         details = self.diagnostics.snapshot()
@@ -148,6 +167,8 @@ class Recorder:
             queue_full_drop=result.get("drop_full", 0),
             shutdown_drop=result.get("drop_closed", 0), flush_drop=0)
         result.update(queue_high_water=self._q.high_water, diagnostics=details)
+        result.update(network_operation_slots=1, retry_limit=self.retry_limit,
+                      attempt_budget_seconds=self.attempt_budget)
         return result
 
     def run(self, name, *, run_id=None, start_ns=None, end_ns=None, attributes=None):
@@ -163,9 +184,6 @@ class Recorder:
         if self._closed:
             self._count("drop_closed")
             return False
-        if time.monotonic() < self._cooldown_until:
-            self._count("drop_cooldown")
-            return False
         try:
             self._q.put_nowait(item)
         except queue.Full:
@@ -179,14 +197,11 @@ class Recorder:
                         record_id=None, at_ns=None, end_ns=None, _span_id=None, _parent_id=None,
                         _error=False):
         try:
-            # Circuit fast path is reported separately from full serialization.
+            # Closing still rejects immediately. Cooldown is worker-only:
+            # existing and newly admitted queue items must not be discarded.
             if self._closed:
                 self._count("attempted")
                 self._count("drop_closed")
-                return False
-            if time.monotonic() < self._cooldown_until:
-                self._count("attempted")
-                self._count("drop_cooldown")
                 return False
             run = self._active.get()
             if run is None or not run.valid or type(inputs) is not dict or len(inputs) > 32:
@@ -293,8 +308,95 @@ class Recorder:
                 if response.status != 200:
                     raise OSError("OTLP export failed")
 
+    def _network_loop(self):
+        while not self._network_stop.is_set() or not self._network_jobs.empty():
+            try:
+                operation = self._network_jobs.get(timeout=.05)
+            except queue.Empty:
+                continue
+            try:
+                self._send(operation["batch"])
+            except BaseException as error:
+                operation["error"] = error
+                operation["phase"] = self.diagnostics.phase
+            finally:
+                operation["done"].set()
+                self._network_jobs.task_done()
+
+    def _settle(self, size, state):
+        with self._lock:
+            key = "exported" if state == "acknowledged" else "export_failed"
+            self._counts[key] = self._counts.get(key, 0)+size
+            if state != "acknowledged":
+                key = "failed" if state == "failed" else "unknown_terminal"
+                self._counts[key] = self._counts.get(key, 0)+size
+
+    def _deliver(self, batch):
+        deadline = time.monotonic()+self.attempt_budget
+        ambiguous = False
+        for attempt in range(self.retry_limit+1):
+            if attempt:
+                self._network_stop.wait(min(self.retry_backoff, max(0, deadline-time.monotonic())))
+                if time.monotonic() >= deadline:
+                    break
+                self._count("retry_requests")
+            operation = {"batch": batch, "done": threading.Event(), "error": None, "phase": "encode"}
+            self._flight = operation
+            started_ns, clock_ns = time.time_ns(), time.perf_counter_ns()
+            self._network_jobs.put_nowait(operation)  # Only this worker submits; no concurrent I/O.
+            completed = operation["done"].wait(max(0, deadline-time.monotonic()))
+            if not completed:
+                self._count("deadline_expired_spans", len(batch))
+                self.diagnostics.failure(TimeoutError(), len(batch), started_ns)
+                self.diagnostics.batch(len(batch), started_ns, time.perf_counter_ns()-clock_ns,
+                                       "deadline_unknown", self._q.qsize())
+                self._settle(len(batch), "unknown")
+                self._cooldown_until = time.monotonic()+self.cooldown
+                return
+            error = operation["error"]
+            self._flight = None
+            if error is None:
+                self.diagnostics.batch(len(batch), started_ns, time.perf_counter_ns()-clock_ns,
+                                       "exported", self._q.qsize())
+                self._settle(len(batch), "acknowledged")
+                return
+            self.diagnostics.phase = operation["phase"]
+            outcome = self.diagnostics.failure(error, len(batch), started_ns)
+            self.diagnostics.batch(len(batch), started_ns, time.perf_counter_ns()-clock_ns,
+                                   outcome, self._q.qsize())
+            status = getattr(error, "code", None)
+            terminal = operation["phase"] == "encode" or (
+                isinstance(status, int) and 400 <= status < 500 and status not in (408, 429))
+            known = operation["phase"] in ("encode", "connect") or terminal
+            ambiguous |= not known
+            if terminal or attempt == self.retry_limit:
+                self._settle(len(batch), "unknown" if ambiguous else "failed")
+                self._cooldown_until = time.monotonic()+self.cooldown
+                return
+        self._settle(len(batch), "unknown" if ambiguous else "failed")
+        self._cooldown_until = time.monotonic()+self.cooldown
+
     def _work(self):
+        self._network_thread = threading.Thread(target=self._network_loop, name="signalscout-network", daemon=True)
+        self._network_thread.start()
+        try:
+            self._drain()
+        finally:
+            self._network_stop.set()
+
+    def _drain(self):
         while not self._stop.is_set() or not self._q.empty():
+            # Never dequeue/discard during cooldown or while a timed-out I/O
+            # operation still owns the single slot. A late response is not
+            # retroactively promoted to delivery after the logical deadline.
+            if self._flight is not None:
+                if not self._flight["done"].wait(.05):
+                    continue
+                self._flight = None
+            remaining = self._cooldown_until-time.monotonic()
+            if remaining > 0:
+                self._network_stop.wait(min(.05, remaining))
+                continue
             try:
                 batch = [self._q.get(timeout=.05)]
             except queue.Empty:
@@ -304,25 +406,9 @@ class Recorder:
                     batch.append(self._q.get_nowait())
                 except queue.Empty:
                     break
-            started_ns, clock_ns = time.time_ns(), time.perf_counter_ns()
-            outcome = "exported"
             try:
-                if time.monotonic() < self._cooldown_until:
-                    self.diagnostics.phase = "cooldown"
-                    raise OSError("cooldown")
-                self._send(batch)
-                self._count("exported", len(batch))
-            except Exception as error:
-                self._cooldown_until = time.monotonic() + self.cooldown
-                self._count("export_failed", len(batch))
-                if self.diagnostics.phase == "cooldown":
-                    outcome = "cooldown_suppressed"
-                    self.diagnostics.count(outcome, len(batch))
-                else:
-                    outcome = self.diagnostics.failure(error, len(batch), started_ns)
+                self._deliver(batch)
             finally:
-                self.diagnostics.batch(len(batch), started_ns, time.perf_counter_ns()-clock_ns,
-                                       outcome, self._q.qsize())
                 for _ in batch:
                     self._q.task_done()
 
@@ -333,9 +419,15 @@ class Recorder:
                 left = deadline - time.monotonic()
                 if left <= 0:
                     self.diagnostics.count("flush_timeout")
-                    return False
+                    break
                 self._q.all_tasks_done.wait(left)
-        return True
+            drained = self._q.unfinished_tasks == 0
+        counts = self.snapshot()
+        result = FlushReport({key: counts.get(key, 0) for key in
+                              ("attempted", "acknowledged", "failed", "dropped", "unknown")})
+        result.update(drained=drained, complete=drained and not any(
+            result[k] for k in ("failed", "dropped", "unknown")))
+        return result
 
     def close(self, timeout=2):
         result = self.flush(timeout)

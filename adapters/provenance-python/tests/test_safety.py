@@ -126,21 +126,32 @@ class Safety(unittest.TestCase):
         self.assertEqual(r.snapshot()["accepted"], 1)
         self.assertEqual(r.snapshot()["drop_full"], 1)
 
-    def test_server_down_cooldown_fast_path(self):
+    def test_server_down_cooldown_preserves_admitted_items_without_host_wait(self):
         with socket.socket() as listener:
             listener.bind(("127.0.0.1", 0))
             port = listener.getsockname()[1]
         r = Recorder(f"http://127.0.0.1:{port}", timeout=.1, cooldown=5)
         self.addCleanup(lambda: r.close(.2))
         wrapped(r, identity)(1)
-        self.assertTrue(r.flush(1))
+        report = r.flush(1)
+        self.assertTrue(report["drained"])
+        self.assertFalse(report)
+        self.assertEqual(report["failed"], 2)
         self.assertGreater(r.snapshot().get("export_failed", 0), 0)
         requests = r.snapshot()["network_requests"]
+        start = time.monotonic()
         for _ in range(100):
             wrapped(r, identity)(1)
-        self.assertTrue(r.flush(1))
+        self.assertLess(time.monotonic()-start, 1)
+        report = r.flush(.01)
+        self.assertFalse(report)
+        self.assertFalse(report["drained"])
+        self.assertEqual(report["unknown"], 200)
+        self.assertEqual(report["dropped"], 0)
+        self.assertEqual(report["attempted"], sum(report[k] for k in ("acknowledged", "failed", "dropped", "unknown")))
         self.assertEqual(r.snapshot()["network_requests"], requests)
-        self.assertGreater(r.snapshot()["drop_cooldown"], 0)
+        self.assertEqual(r.snapshot().get("drop_cooldown", 0), 0)
+        self.assertEqual(r.snapshot()["queue_size"], 200)
 
     def test_unsupported_and_import_hook_doctor(self):
         r = self.make()
