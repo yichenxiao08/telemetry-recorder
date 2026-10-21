@@ -17,12 +17,18 @@ func ValidateProfile(p model.AnalysisProfile) error {
 	}
 	names := map[string]bool{}
 	for _, f := range p.Numeric {
+		if err := validateRole(f.Role, f.Rationale, p.RoleAuthor); err != nil {
+			return err
+		}
 		if f.Name == "" || names[f.Name] || f.Unit == "" || !finitePositive(f.Epsilon) || !finitePositive(f.Floor) || !selectorValid(f.Selector) || f.Subtract != "" && !selectorValid(f.Subtract) {
 			return fmt.Errorf("invalid numeric feature %q", f.Name)
 		}
 		names[f.Name] = true
 	}
 	for _, f := range p.Categories {
+		if err := validateRole(f.Role, f.Rationale, p.RoleAuthor); err != nil {
+			return err
+		}
 		if f.Name == "" || names[f.Name] || !selectorValid(f.Selector) {
 			return fmt.Errorf("invalid categorical feature %q", f.Name)
 		}
@@ -35,6 +41,18 @@ func ValidateProfile(p model.AnalysisProfile) error {
 	}
 	if !finitePositive(p.Invariant.Delta) {
 		return fmt.Errorf("positive version delta required")
+	}
+	return nil
+}
+func validateRole(role, rationale, author string) error {
+	if role == "" {
+		if rationale != "" {
+			return fmt.Errorf("role required for rationale")
+		}
+		return nil
+	}
+	if (role != "candidate" && role != "symptom") || rationale == "" || author == "" || len(rationale) > 512 || len(author) > 128 {
+		return fmt.Errorf("versioned role author and rationale required")
 	}
 	return nil
 }

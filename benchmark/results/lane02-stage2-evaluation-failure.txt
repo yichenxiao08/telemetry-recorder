@@ -1,0 +1,11 @@
+Frozen runner terminal result (single attempt; exit code 1):
+Traceback (most recent call last):
+  File "adapters/provenance-python/lane02.py", line 294, in <module>
+    main()
+  File "adapters/provenance-python/lane02.py", line 232, in main
+    raise RuntimeError("transport/capture incomplete; retain case, no zero association")
+RuntimeError: transport/capture incomplete; retain case, no zero association
+
+Paths above are repo-relative for portability. No underlying exporter exception
+was logged. The listener log is published separately; the raw original is hashed
+in lane02-stage2-evaluation-artifacts.json.

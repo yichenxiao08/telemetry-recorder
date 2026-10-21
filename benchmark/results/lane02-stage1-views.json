@@ -1,0 +1,74 @@
+[
+  {
+    "read_only": true,
+    "seed": 101,
+    "variant": "matched-negative-controls",
+    "verified_links": 6
+  },
+  {
+    "read_only": true,
+    "seed": 101,
+    "variant": "minority-stale-use",
+    "verified_links": 15
+  },
+  {
+    "read_only": true,
+    "seed": 101,
+    "variant": "benign-minority-tail",
+    "verified_links": 19
+  },
+  {
+    "read_only": true,
+    "seed": 101,
+    "variant": "within-range-subgroup",
+    "verified_links": 11
+  },
+  {
+    "read_only": true,
+    "seed": 101,
+    "variant": "moderate-decoy",
+    "verified_links": 16
+  },
+  {
+    "read_only": true,
+    "seed": 101,
+    "variant": "unrelated-nuisance",
+    "verified_links": 12
+  },
+  {
+    "read_only": true,
+    "seed": 103,
+    "variant": "matched-negative-controls",
+    "verified_links": 6
+  },
+  {
+    "read_only": true,
+    "seed": 103,
+    "variant": "minority-stale-use",
+    "verified_links": 14
+  },
+  {
+    "read_only": true,
+    "seed": 103,
+    "variant": "benign-minority-tail",
+    "verified_links": 14
+  },
+  {
+    "read_only": true,
+    "seed": 103,
+    "variant": "within-range-subgroup",
+    "verified_links": 12
+  },
+  {
+    "read_only": true,
+    "seed": 103,
+    "variant": "moderate-decoy",
+    "verified_links": 15
+  },
+  {
+    "read_only": true,
+    "seed": 103,
+    "variant": "unrelated-nuisance",
+    "verified_links": 15
+  }
+]

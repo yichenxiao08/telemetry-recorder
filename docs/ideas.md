@@ -92,3 +92,35 @@ variants. Preserve the prior proposal as history; roles and reference-tail
 coverage are the only approved additions, and Task B still awaits contract review.
 The within-range subgroup miss stays visible rather than being rescued with
 conditional applicability filtering. See benchmark/problems/lane-02/contract.md.
+
+## Lane-02 Stage 1 observations (parked)
+
+- Finite empirical reference quantiles need not contain all nuisance support
+  after padding. Keep the benign 7/400 vs 7/400 outside counterexample and exact
+  zero score; do not change this frozen fixture or its interval to erase it.
+- Unequal-size Laplace contrasts can be positive with zero raw outside counts.
+  A future separately reviewed calibration design may address interpretation;
+  no smoothing change, significance claim or fused score is authorized here.
+- Current development cost measurements are single trials on a new payload and
+  retain two historical-budget misses. No recorder/ingestion tuning is part of
+  this slice. Any further cost task needs an explicit fixed-payload protocol.
+- Independent real histories/author-separated cases are still needed before
+  claiming diagnostic accuracy. Conditional comparison remains deferred; no
+  M6–M8 or P0–P4 production phase starts. Stage 2 awaits explicit GO.
+
+## Lane-02 Stage 2 observations (parked; no implementation)
+
+- The owner-authorized one-shot run stopped on the first incomplete transport
+  case. Keep it and the 29 unattempted cases; do not retry or silently resume.
+  Future measurement needs a separately approved protocol, not reuse of the
+  reserved evaluation to obtain a passing result.
+- Consider bounded exporter diagnostics retaining error class/status and
+  occurrence counts without payloads. Current aggregate export_failed and
+  cooldown counters cannot identify the initiating failure. This is a proposal,
+  not permission to change the frozen recorder or perform new measurements.
+- Capture completeness must be explicit before interpreting cohort rankings.
+  Ack failures can have unknown persistence; any future reconciliation design
+  must distinguish confirmed success, confirmed rejection and unknown outcome.
+- Retain wrapper 475.750/2,300.580 us budget misses alongside prior observations.
+  No tuning, conditional comparison, migration, new diff type or production
+  phase is authorized. Full results: docs/lane02-stage2.md.

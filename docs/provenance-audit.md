@@ -328,3 +328,57 @@ candidate trials, unreachable/saturation losses and all raw results remain.
 The first-candidate reachable trials meet the new budget in 3/5 cases: all p50 values pass; p99 fails in trials 1 and 5. This decision authorizes a synthetic Slice 1 only, not P0
 privacy work or M5–M8. No new overhead measurement is needed for this budget-only
 change; any future recorder path change requires measurement again.
+
+## Lane-02 Stage 1 / Checkpoint A (2026-10-20)
+
+Step 0 amendment is 6a3716b8b1c21b3167331d0c0e7421ffc529fdfb. Stage 1 implements
+only the approved synthetic symptom roles and separate tail list; Stage 2 waits
+for explicit GO. No reserved seed was generated/scored. Full analysis, hashes,
+limitations and reproducible native checks are in docs/lane02-checkpoint-a.md.
+
+Both development seeds 101/103 complete all six variants: 9,600 decision records,
+57,600 captured arguments, 19,200 accepted/exported OTLP spans, zero drops or
+export failures. Instrumentation changes zero target lines; config has ten lines.
+Real intake preserves the harness's January 2026 clock and captured inputs/returns;
+native links, CLI role sections and null insufficient-tail scores are tested.
+Every deterministic age/current score/count and invariant count matches; the
+within-range subgroup remains missed by both marginal age statistics. All 15
+frozen lane-01 full reports and CLI JSON/text bytes match the pre-change binary.
+
+Retain two interpretation limits: benign noise_0 in seed 101 has seven outside
+values in EACH arm, contradicting the amended inside-support premise while
+still yielding exactly T=0. Unequal sample sizes can produce positive smoothed
+contrast with zero raw outliers (0/30 vs 0/100 gives 0.0214460784); the initial
+incorrect test expectation and its failure remain on record. No formula changed.
+
+Per-case wrapper p50 234.150–346.700 us, p99 469.143–846.346 us on this new payload,
+one development trial/case. Ten of twelve meet both historical 330/830 us limits;
+seed 103 moderate misses p99 and unrelated misses p50. All miss original
+100/250 us limits. Context p50 enter 26.5–29.5 us/exit 8.05–12.15 us; explicit
+flush 5.678–102.880 ms. These do not replace the earlier five-trial measurements
+or establish a new cost-gate pass. Synthetic arithmetic is not real diagnosis.
+
+## Lane-02 Stage 2 after owner GO (2026-10-20)
+
+One invocation, no retries: **one incomplete case, zero completed/scored cases,
+29 unattempted**. Seed 710021 matched-negative-controls stopped at the frozen
+transport check, before annotation, cohort creation or analysis. Of 1,600
+attempted spans, 1,418 exported successfully, 52 failed export and 130 dropped
+during cooldown. The 52 have unknown persistence, not confirmed database loss.
+The worker discarded exception details; the listener log alone cannot identify
+the underlying export error. No mechanism score/count/invariant expectation was
+evaluated, so NA must never be reported as zero association or a ranking miss.
+
+Wrapper p50/p99 475.750/2,300.580 us misses both recorded budgets. Run enter
+44.000/318.680 us and exit 17.800/86.061 us are separate; flush 9.7015 ms.
+One 800-call case at scheduled 60 Hz is not a five-trial overhead replication.
+Target edits/instrumentation remain zero, config ten lines; all 34 freeze hashes
+match. Local format/vet/lint/race/build and 25 development-only Python tests pass.
+No sources, equations, constants, profiles, lane-01 results or old reports changed.
+
+See docs/lane02-stage2.md and benchmark/results/lane02-stage2-evaluation.md/.json
+for all planned cases, raw capture, retained misses, hashes and limitations.
+The partial store/report and exclusive evaluation ledger stay in .cache. No
+reserved replay, reanalysis, continuing after the stop, or replacement seed was
+attempted. Complete representative capture is now the immediate unverified
+assumption; this provides no real-world diagnostic-accuracy evidence.

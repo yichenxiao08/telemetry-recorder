@@ -1,0 +1,19 @@
+{
+  "id":"lane-02-v1", "unit":"frame", "workload":"lane02_target.decide", "step":"lane02_target.decide",
+  "envelope_profile":"synthetic", "envelope_version":"1",
+  "numeric":[
+    {"name":"previous_age","selector":"inputs.frame","subtract":"inputs.previous_frame","unit":"frame","epsilon":1,"floor":1,"role":"candidate","rationale":"Freshness input used for actual history lookup."},
+    {"name":"gap","selector":"inputs.gap","unit":"ratio","epsilon":0.01,"floor":0.01,"role":"candidate","rationale":"Matched branch gate."},
+    {"name":"current_value","selector":"inputs.current_value","unit":"signed value","epsilon":1,"floor":1,"role":"candidate","rationale":"Direct current-branch input."},
+    {"name":"noise_0","selector":"inputs.noise.0","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."},
+    {"name":"noise_1","selector":"inputs.noise.1","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."},
+    {"name":"noise_2","selector":"inputs.noise.2","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."},
+    {"name":"noise_3","selector":"inputs.noise.3","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."},
+    {"name":"noise_4","selector":"inputs.noise.4","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."},
+    {"name":"noise_5","selector":"inputs.noise.5","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."},
+    {"name":"noise_6","selector":"inputs.noise.6","unit":"arbitrary","epsilon":1,"floor":0.1,"role":"candidate","rationale":"Captured input; no evaluation truth is used for ranking."}
+  ],
+  "categories":[{"name":"output.lane","selector":"output.lane","role":"symptom","rationale":"Oracle selection criterion; show as The problem."}],
+  "invariant":{"declared":"output.previous_used","current":"inputs.frame","used":"inputs.previous_frame","delta":1},
+  "role_author":"synthetic-lane02-contract-v1", "reference_tail":true
+}

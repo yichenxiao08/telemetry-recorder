@@ -47,6 +47,10 @@ variants. Crucially the target **looks up the value at previous_frame** in a
 captured two-snapshot history. For affected frames, using n-2 selects -1 and
 returns left; substituting n-1 selects +1 and returns right in the same branch.
 The required development-only counterfactual test is specified there.
+The synthetic timestamp origin is 1767225600000000000 (2026-01-01 UTC);
+all offsets stay unchanged. A harness clock supplies timestamps to the
+probe/exporter, never to target logic. If that cannot be done without changing
+the target or an equation, stop and ask the owner.
 These are independent short synthetic episodes, not continuous game histories.
 No real content is captured. Capture remains default off; a future fixture-only
 allowlist explicitly permits these synthetic arguments, history and return value.
@@ -126,10 +130,10 @@ not proving general causality. Both rankings and every miss must be published.
 |---|---|---|---|
 | matched-negative-controls | Age succeeds: P age=2, R age=1. Gap/current/noise multisets match and score zero. Age is the only positive numeric candidate. | Age succeeds: 400/400 vs 0/400 outside [.5,1.5], T=400/402. Matched controls yield zero. | P: 400 violated. R: 400 satisfied. |
 | minority-stale-use | Age deliberately fails: P has 80 twos+320 ones, R 400 ones; medians both 1. Current_value succeeds (320 negative P, all positive R). Gap/noise match. | Age succeeds: 80/400 vs 0/400 outside [.5,1.5], T=80/402. Current_value also surfaces (320/400 vs 0/400 outside reference padded range); separate ranks, not a fused diagnosis. | P: 80 violated+320 N/A. R: 80 satisfied+320 N/A. |
-| benign-minority-tail | Same age miss/current signal as minority. noise_0 has identical 20% elevated tails in both arms: no median association. | Age/current succeed as above. noise_0 has identical raw outside counts in both arms, hence T=0 even if its distribution has an elevated tail. | Same as minority. |
+| benign-minority-tail | Same age miss/current signal as minority. noise_0 has identical 20% elevated tails in both arms: no median association. | Age/current succeed as above. Nuisance supports lie inside the padded reference interval: nuisance T=0 exactly. This variant tests nuisance behavior in the median list only. | Same as minority. |
 | within-range-subgroup (deliberate failure) | Age fails: P 80 twos, R 120 twos; both medians 1. Current_value still surfaces. | Age fails: R padded interval [.5,2.5] contains all P/R ages, so both outside counts zero and T=0. Conditional applicability is NOT added to rescue it. Current_value still surfaces. | Same as minority: R's 120 age-2 examples never use that history. Observe 80 actual P violations despite both marginal age scores missing them. |
-| moderate-decoy | Age median fails; current succeeds. One UNUSED noise field shifts only +.75: its positive median association is expected and may outrank age. All other nuisance multisets match. | Age/current signals remain. Shifted noise_0 may also score positively and outrank a mechanism; exact nuisance tail counts/rank are seed-dependent. Retain any such miss, no promise of causal separation. | Same as minority. |
-| unrelated-nuisance | Age median fails; current succeeds. Seven independent-arm nuisance fields have equal generating distributions but possible finite-sample contrasts; publish them all. | Age/current signals remain. Small nuisance contrasts/false associations may appear; no calibrated significance claim or guaranteed null rank. | Same as minority. |
+| moderate-decoy | Age median fails; current succeeds. One UNUSED noise field shifts only +.75: its positive median association is expected and may outrank age. All other nuisance multisets match. | Age/current signals remain. Only noise_0 can score on tail, seed-dependent; it may outrank a mechanism. Retain any such miss, no promise of causal separation. | Same as minority. |
+| unrelated-nuisance | Age median fails; current succeeds. Seven independent-arm nuisance fields have equal generating distributions but possible finite-sample contrasts; publish them all. | Age/current signals remain. Nuisance supports lie inside the padded reference interval, so nuisance T=0 exactly. This variant tests the median list only. | Same as minority. |
 
 Gap's distribution is matched by pair in **every variant**, so it is not
 expected to score despite its branch role. A mechanism need not differ between
@@ -156,14 +160,16 @@ counts, evidence IDs, timings and source/contract hashes. Distinguish attempted,
 failed and completed cases; a transport failure is not a zero association.
 Compute mechanism top-1/3/5 separately for median and tail candidate lists using
 the predeclared evaluation truth (age only in matched; age/current elsewhere),
-plus symptom-inclusive legacy median results. Keep absent ranks and every
+plus symptom-inclusive legacy median results. Report top-1 rank and the number
+of positive candidates in each list beside top-5. Keep absent ranks and every
 negative-control rank, including nuisance fields above known mechanisms.
 
 Functional acceptance is exact agreement with these counts/formulas, no symptom
 in candidate lists, verified development counterfactuals, native intake/evidence
 fidelity, and unchanged regression checks. Record whether age reaches top 5 in
-the tail list on >=4/5 seeds for each intended supported variant; a miss is a
-retained diagnostic-performance miss, never a reason to tune or replace a seed.
+the tail list on >=4/5 seeds for each intended supported variant. Age/current
+tail values are deterministic, so this is a reproducibility check, not
+performance evidence; a miss is retained, never a reason to tune or replace a seed.
 Do not apply that gate to the deliberately within-range failure. For unrelated
 controls publish all contrasts without an invented significance cutoff. Nothing
 in this contract guarantees causes rank above all decoys or proves real-world

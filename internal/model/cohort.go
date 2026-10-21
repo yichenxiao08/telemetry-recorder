@@ -20,16 +20,20 @@ type Annotation struct {
 }
 
 type NumericFeature struct {
-	Name     string  `json:"name"`
-	Selector string  `json:"selector"`
-	Subtract string  `json:"subtract,omitempty"`
-	Unit     string  `json:"unit"`
-	Epsilon  float64 `json:"epsilon"`
-	Floor    float64 `json:"floor"`
+	Name      string  `json:"name"`
+	Selector  string  `json:"selector"`
+	Subtract  string  `json:"subtract,omitempty"`
+	Unit      string  `json:"unit"`
+	Epsilon   float64 `json:"epsilon"`
+	Floor     float64 `json:"floor"`
+	Role      string  `json:"role,omitempty"`
+	Rationale string  `json:"rationale,omitempty"`
 }
 type CategoryFeature struct {
-	Name     string `json:"name"`
-	Selector string `json:"selector"`
+	Name      string `json:"name"`
+	Selector  string `json:"selector"`
+	Role      string `json:"role,omitempty"`
+	Rationale string `json:"rationale,omitempty"`
 }
 type VersionInvariant struct {
 	Declared string  `json:"declared"`
@@ -47,6 +51,8 @@ type AnalysisProfile struct {
 	Numeric         []NumericFeature  `json:"numeric"`
 	Categories      []CategoryFeature `json:"categories"`
 	Invariant       VersionInvariant  `json:"invariant"`
+	RoleAuthor      string            `json:"role_author,omitempty"`
+	ReferenceTail   bool              `json:"reference_tail,omitempty"`
 }
 type CohortSelection struct {
 	From      int64  `json:"from"`

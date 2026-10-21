@@ -1,0 +1,10 @@
+{
+  "source": "lane02_target.py",
+  "source_sha256": "43c87e14cec58f5918756d3fe787be4a489cbe66533519be7fa5fef8149bca2d",
+  "source_lines_changed": 0,
+  "instrumentation_lines": 0,
+  "config": "signalscout.yaml",
+  "config_physical_lines": 10,
+  "config_nonblank_noncomment_lines": 10,
+  "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+}

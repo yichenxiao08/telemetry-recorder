@@ -307,3 +307,47 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   Six variants, equations, profile, roles, floors, expectations and failure
   policies are predeclared in benchmark/problems/lane-02/contract.md and its
   generator-source.md. No post-result changes, seed search or fused score.
+
+## Lane-02 Checkpoint A / Stage 1
+
+- Docs-only amendment 6a3716b changes exactly the requested timestamp origin,
+  tail-expectation wording, reproducibility reporting and harness-clock clause.
+  Harness run times already anchor probe events, so no target/clock equation
+  change was needed. Source freeze is benchmark/problems/lane-02/source-freeze.json.
+- Only development seeds 101/103 ran: all 12 cases complete, deterministic
+  age/current and invariant counts match, zero drops. Reserved seeds remain
+  blocked unless the explicit evaluation flag and frozen-source checks pass;
+  tests/imports/CI never enable it. Stage 2 awaits the owner's literal GO.
+- The amended benign support premise is false for seed 101: seven noise_0
+  values outside on both sides. Equal matched counts still give exactly T=0.
+  Record this premise miss without changing any fixture, equation or score.
+- Specified unequal-size smoothing can give positive score with no raw outside
+  values: 0/30 vs 0/100 yields 1/32-1/102. The initial test failure is retained;
+  tests now assert the exact specified effect plus edge equality on equal sizes.
+  Unknown scores serialize null; observed feature sessions govern eligibility.
+- Roles/tail are opt-in existing-cohort report metadata. CLI shows The problem
+  separately; no new viewer page, registered structural/context diff type,
+  migration, conditional comparison or production phase is added. Legacy CLI
+  JSON/text bytes and all 15 lane-01 full reports remain identical.
+- Development source refinement prefers true tail outlier citations. Final
+  reanalysis from the same pinned records preserves all statistics and legacy
+  output; the original development report remains cached. Read-only HTTP checks
+  verify the refined links without replaying data or using a second writer.
+- Single-trial development overhead retains two historical 330/830 us misses;
+  none meets original 100/250 us. Do not equate these new-payload observations
+  with the old five-trial protocol or claim a recording-cost gate passed.
+
+## Lane-02 Stage 2 evaluation
+
+- **Incomplete one-shot transport:** after GO, seed 710021 matched stopped with
+  130 cooldown drops and 52 failed-export spans (1,418 successful of 1,600
+  attempts). Conservative choice: retain the incomplete case and 29 unattempted
+  cases, do not rerun/resume, and report all rankings/count expectations as NA.
+- **Unknown exporter cause/persistence:** no exception/status detail was retained;
+  the server log only records startup. Conservative choice: do not infer timeout,
+  queue pressure or database loss. Failed acknowledgement may follow commit.
+  Park bounded diagnostics for future review; change no frozen source.
+- **Cost and acceptance:** wrapper 475.750/2,300.580 us misses original 100/250
+  and historical 330/830 us budgets; one case is not the five-trial harness.
+  Conservative choice: no cost pass, no lane-02 evaluation acceptance and no
+  real-world diagnostic claim. See docs/lane02-stage2.md for raw counts/hashes.

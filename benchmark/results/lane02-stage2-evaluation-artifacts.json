@@ -1,0 +1,75 @@
+{
+  "contract_commit": "6a3716b8b1c21b3167331d0c0e7421ffc529fdfb",
+  "source_freeze_commit": "d704cc7b40b341df7ed02e8f564202d5f653f7f6",
+  "source_freeze_sha256": "bceb440c3687dc860f5bfac03735c468ba91d46b5c1d1f1eb4c855beaaf6b937",
+  "frozen_files_verified": 34,
+  "frozen_hash_mismatches": [],
+  "source_freeze_historical_status_preserved": true,
+  "reporting_only": true,
+  "attempted": 1,
+  "completed": 0,
+  "failed_cases": 0,
+  "incomplete": 1,
+  "unattempted": 29,
+  "scored": 0,
+  "source_instrumentation": {
+    "source": "lane02_target.py",
+    "source_sha256": "43c87e14cec58f5918756d3fe787be4a489cbe66533519be7fa5fef8149bca2d",
+    "source_lines_changed": 0,
+    "instrumentation_lines": 0,
+    "config": "signalscout.yaml",
+    "config_physical_lines": 10,
+    "config_nonblank_noncomment_lines": 10,
+    "method": "Compare untouched pre-run target snapshot to post-run source; AST union of recorder imports/calls and run-context header spans only, excluding original application bodies."
+  },
+  "ledger_portable": {
+    "contract_sha": "6a3716b8b1c21b3167331d0c0e7421ffc529fdfb",
+    "source_freeze_sha256": "bceb440c3687dc860f5bfac03735c468ba91d46b5c1d1f1eb4c855beaaf6b937",
+    "seeds": [
+      710021,
+      710023,
+      710027,
+      710029,
+      710033
+    ],
+    "output": ".cache/lane02-evaluation/attempt-01"
+  },
+  "ledger_file_sha256": "6a55319755e4fd76edef2b59c6de6ade7f63a16374818eaab94f2496a0f74e9a",
+  "artifacts": [
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/fresh.db",
+      "bytes": 31711232,
+      "sha256": "51d577b608b7f3f46407c52b6e5da811774e1e6c98f7697d986d4f12e5688a4e"
+    },
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/fresh.db-shm",
+      "bytes": 32768,
+      "sha256": "e69ebe9c79b81ce868f377c4890fd82e360040acf39372bf7ecfc2d240f7a23c"
+    },
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/fresh.db-wal",
+      "bytes": 5669152,
+      "sha256": "17308c3cf8ff5d3819c6253420427b8dd9b5abc9b045efc3948c40c9e5abdd57"
+    },
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/fresh.db.log",
+      "bytes": 243,
+      "sha256": "9ae760976647895c19c95528324f2e9eb6f0c8e0bceab5ab1298c194875c0d7c"
+    },
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/instrumentation.json",
+      "bytes": 483,
+      "sha256": "56926feebb44d9cb4f02bb588ae763971da37fdf2035351659ea1650ea8d9a59"
+    },
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/report.json",
+      "bytes": 805029,
+      "sha256": "9b19992a08bd8a65a850d8fcf7c09115f605e52607f5d4b745c12daddd964c15"
+    },
+    {
+      "path": ".cache/lane02-evaluation/attempt-01/target-before.py",
+      "bytes": 517,
+      "sha256": "43c87e14cec58f5918756d3fe787be4a489cbe66533519be7fa5fef8149bca2d"
+    }
+  ]
+}

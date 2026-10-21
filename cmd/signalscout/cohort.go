@@ -215,10 +215,39 @@ func newExplainCohortCommand(database *string) *cobra.Command {
 		}
 		var text strings.Builder
 		fmt.Fprintf(&text, "%s; %d problem runs / %d sessions vs %d reference runs / %d sessions; unknown sessions %d; shared clusters %d; independence unknown\nSelection exclusions: problem=%v reference=%v\n", result.Status, result.ProblemRuns, result.ProblemSessions, result.ReferenceRuns, result.ReferenceSessions, result.UnknownSessions, result.SharedSessions, result.Problem.Excluded, result.Reference.Excluded)
-		for i, d := range result.Differences {
-			fmt.Fprintf(&text, "%d. %.6f %s [%s/%s]: %s\n   observed %d/%d problem vs %d/%d reference; missing %d/%d; sessions %d/%d; shared clusters %d; independence unknown\n   [%s]\n", i+1, d.Score, d.Type, d.Tier, d.Status, d.Summary, d.ProblemObserved, d.ProblemRuns, d.ReferenceObserved, d.ReferenceRuns, d.ProblemMissing, d.ReferenceMissing, d.ProblemSessions, d.ReferenceSessions, d.SharedSessions, strings.Join(d.EvidenceIDs, ", "))
+		if result.Presentation != nil {
+			fmt.Fprintln(&text, "The problem (symptoms; excluded from candidate lists):")
+			for _, f := range result.Presentation.Problem {
+				fmt.Fprintf(&text, "  %s: %s [%s]\n", f.Feature, f.Summary, strings.Join(f.EvidenceIDs, ", "))
+				for _, u := range f.EvidenceURLs {
+					fmt.Fprintln(&text, "   "+strings.TrimRight(viewerURL, "/")+u)
+				}
+			}
+			fmt.Fprintln(&text, "Candidate median associations:")
+		}
+		median := result.Differences
+		if result.Presentation != nil {
+			median = result.Presentation.Median
+		}
+		for i, d := range median {
+			rank := fmt.Sprint(i + 1)
+			if result.Presentation != nil && (d.Status != "ok" || d.Score <= 0) {
+				rank = "unranked"
+			}
+			fmt.Fprintf(&text, "%s. %.6f %s [%s/%s]: %s\n   observed %d/%d problem vs %d/%d reference; missing %d/%d; sessions %d/%d; shared clusters %d; independence unknown\n   [%s]\n", rank, d.Score, d.Type, d.Tier, d.Status, d.Summary, d.ProblemObserved, d.ProblemRuns, d.ReferenceObserved, d.ReferenceRuns, d.ProblemMissing, d.ReferenceMissing, d.ProblemSessions, d.ReferenceSessions, d.SharedSessions, strings.Join(d.EvidenceIDs, ", "))
 			for _, u := range d.EvidenceURLs {
 				fmt.Fprintln(&text, "   "+strings.TrimRight(viewerURL, "/")+u)
+			}
+		}
+		if result.Presentation != nil {
+			fmt.Fprintln(&text, "Separate reference-tail associations (no fused score):")
+			for _, f := range result.Presentation.Tail {
+				if f.Status != "ok" && f.Status != "no_difference" {
+					fmt.Fprintf(&text, "  %s: %s; score unavailable; observed %d/%d; sessions %d/%d\n", f.Feature, f.Status, f.ProblemObserved, f.ReferenceObserved, f.ProblemSessions, f.ReferenceSessions)
+					continue
+				}
+				v := f.Terms
+				fmt.Fprintf(&text, "  %s: %.6f [%s] strict outside [%g,%g]: %d/%d problem vs %d/%d reference; smoothed %g/%g; sessions %d/%d; missing %d/%d; evidence [%s]\n", f.Feature, f.Score, f.Status, v.Lower, v.Upper, v.ProblemOutside, f.ProblemObserved, v.ReferenceOutside, f.ReferenceObserved, v.ProblemRate, v.ReferenceRate, f.ProblemSessions, f.ReferenceSessions, f.ProblemMissing, f.ReferenceMissing, strings.Join(f.EvidenceIDs, ", "))
 			}
 		}
 		fmt.Fprintf(&text, "Declared-version invariant (observation, no baseline): %v\n", result.InvariantCounts)

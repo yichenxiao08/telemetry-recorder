@@ -57,6 +57,7 @@ type Result struct {
 	Differences       []Finding         `json:"differences"`
 	Invariants        []InvariantResult `json:"invariants"`
 	InvariantCounts   map[string]int    `json:"invariant_counts"`
+	Presentation      *Presentation     `json:"presentation,omitempty"`
 }
 
 func Analyze(ctx context.Context, reader *store.Reader, problem, reference string) (Result, error) {
@@ -247,5 +248,6 @@ func Compare(p, r model.Cohort, problem, reference []model.DecisionObservation) 
 			out.Invariants = append(out.Invariants, InvariantResult{x.RunID, status, x.EvidenceID})
 		}
 	}
+	out.Presentation = present(p.Profile, out.Differences, problem, reference)
 	return out, nil
 }
