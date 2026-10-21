@@ -163,6 +163,41 @@ join and never suppresses the application's exception. Explicit flush has a
 deadline; drain success is not delivery success when export_failed is nonzero.
 Python runtime/queue locks and scheduling are not hard real-time guarantees.
 
+### Queue bound is optional and not a default
+
+`--queue-max-items` with `--queue-max-bytes` (given together) replaces the 256-item
+queue with an item and estimated-byte bound on queued plus in-flight spans. The
+3,280-item / 26,869,760-byte setting used in experiment B2 was selected on one
+scenario (80 episodes, seed 20261020) and is not a general default. The default
+stays 256 items with no byte bound. Bytes are a payload estimate, not memory use.
+
+### Drain timeout
+
+`--drain-timeout SECONDS` (default `2`, unchanged) sets the one process-shutdown
+wait: the runner's `Recorder.close(timeout)` in its `finally`. A host call and
+`Run.__exit__` never flush, join or wait. `Recorder.flush()`/`close()` now reject
+values outside `0..60` with `ValueError` (the CLI reports a usage error, exit 2).
+The ceiling used to be 10 s and silently shortened longer requests; it is now an
+explicit validated 60 s ceiling (`recorder.MAX_DRAIN_SECONDS`). A larger drain only
+gives the worker more time; it cannot recover items already dropped at admission.
+
+### Completeness manifests (`--manifest`, default off)
+
+With `--manifest` (or `Recorder(manifest=True)`) each run gets a bounded ledger of
+per-probe counters: calls seen, sampled out, selected, serialized, admitted,
+rejected, terminal acknowledged/failed/dropped/unknown (the worker credits the
+last group when a batch settles). After the run's root span has exited and every
+referenced item has settled, the worker emits one child span of the root named
+`signalscout.capture.manifest` (final marker, version 1). A reserved trace named
+`signalscout.capture.scope` lists the expected run IDs in chunks of 128; its tail
+record is queued by `close()`. Manifest records are delivered through the worker
+only, are not part of `attempted = acknowledged + failed + dropped + unknown`, and
+are counted separately under `manifest` in the doctor counters. Bounds: 1024
+pending run ledgers, 34 buckets per run, 256 queued manifest records, 1024
+unemitted scope IDs; exceeding any of them is counted (`ledger_overflow`,
+`population_overflow`) and makes completeness unknown, never complete. With the
+flag off no extra item, span, lock or attribute exists and OTLP bytes are unchanged.
+
 The fixed cost target has four scalar inputs and RETURNED two scored alternatives.
 The probe does not invent unreturned alternatives. The serialized envelope is
 checked <=2 KiB; actual bytes are recorded. Thresholds stay p50<=100 us and

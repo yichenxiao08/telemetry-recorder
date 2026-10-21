@@ -14,3 +14,6 @@
 # Local Python spike environments
 **/.venv/
 **/__pycache__/
+
+# Local IDE agent configuration
+.kiro/

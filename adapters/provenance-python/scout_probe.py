@@ -18,7 +18,7 @@ import yaml
 from opentelemetry import context, trace
 from opentelemetry.trace import NonRecordingSpan, SpanContext, TraceFlags
 
-from recorder import Recorder, bounded
+from recorder import MAX_DRAIN_SECONDS, Recorder, bounded, check_drain_seconds
 
 
 # Optional semantic calls share the process's single recorder, not a new exporter.
@@ -136,7 +136,7 @@ class Probe:
             begin = time.perf_counter_ns()
             run, manager, parent_token, otel_token = None, None, None, None
             entry_ns = exit_ns = 0
-            sampling, stats, selected = None, None, True
+            sampling, stats, selected, ledger_bucket = None, None, True, None
             try:
                 recorder._count("probe_calls:" + self.spec["module"] + "." + self.spec["function"])
                 run = recorder._active.get()
@@ -163,6 +163,9 @@ class Probe:
                     else:
                         stats["selected"] += 1
                         sampling = {"rule": dict(self.sampling), "call_index": index}
+                if recorder._manifest is not None and run.ledger is not None:
+                    ledger_bucket = run.ledger.bucket(self.key)
+                    recorder._manifest.call(ledger_bucket, selected)
                 if not selected:
                     sid, parent = None, None
                 else:
@@ -253,7 +256,7 @@ class Probe:
                         reason_code=type(error).__name__ if error is not None else "",
                         record_id=sid, at_ns=wall_start, end_ns=wall_end,
                         _span_id=sid, _parent_id=parent, _error=error is not None,
-                        _return_items=self.return_items, _sampling=sampling)
+                        _return_items=self.return_items, _sampling=sampling, _ledger=ledger_bucket)
                     if accepted:
                         recorder._count("probe_decisions_captured")
                         recorder._count("probe_captured:" + self.key)
@@ -505,6 +508,11 @@ def main(argv=None):
                         help="optional retained-item bound (queued + in-flight); requires --queue-max-bytes")
     parser.add_argument("--queue-max-bytes", type=int, default=None,
                         help="optional retained-byte ESTIMATE bound (not RSS); requires --queue-max-items")
+    parser.add_argument("--drain-timeout", type=float, default=2.0, metavar="SECONDS",
+                        help=f"process-shutdown drain wait (default 2; 0..{MAX_DRAIN_SECONDS}). Applied only by the "
+                             "runner at exit; a host call never flushes, joins or waits")
+    parser.add_argument("--manifest", action="store_true",
+                        help="emit per-run completeness manifests and a capture-scope record (default off)")
     parser.add_argument("entry", help="module:function; the target source remains unmodified")
     arguments = list(sys.argv[1:] if argv is None else argv)
     target_args = []
@@ -514,6 +522,10 @@ def main(argv=None):
     args = parser.parse_args(arguments)
     if (args.queue_max_items is None) != (args.queue_max_bytes is None):
         parser.error("--queue-max-items and --queue-max-bytes must be given together")
+    try:
+        drain_timeout = check_drain_seconds(args.drain_timeout)
+    except ValueError as error:
+        parser.error("--drain-timeout: " + str(error))
     queue_limits = None if args.queue_max_items is None else (args.queue_max_items, args.queue_max_bytes)
     cfg = load_config(args.config)
     names = {n for p in cfg["probes"] for n in p.get("capture", {}).get("args", [])}
@@ -522,7 +534,7 @@ def main(argv=None):
         names.add("output")
     recorder = Recorder(cfg.get("endpoint", "http://127.0.0.1:4318"),
                         service=cfg.get("service", "synthetic.probe"), capture_fields=names,
-                        _start_worker=not args.preflight, queue_limits=queue_limits)
+                        _start_worker=not args.preflight, queue_limits=queue_limits, manifest=args.manifest)
     injector = Injector(recorder, cfg["probes"])
     previous_optional, _optional = _optional, injector
     # python -m names this module __main__; optional target imports must share it.
@@ -564,7 +576,7 @@ def main(argv=None):
         sys.argv = previous_argv
         sys.path[:] = previous_path
         flush_start = time.perf_counter()
-        drained = recorder.close(2)
+        drained = recorder.close(drain_timeout)
         report = injector.doctor()
         report.update(auto_otel=auto, elapsed_seconds=time.perf_counter()-started,
                       flush_seconds=time.perf_counter()-flush_start, drained=drained,
