@@ -279,3 +279,28 @@ The minimal enriched B adds an import and a selection-semantic call (two lines);
 all ordinary A/B capture works without those edits. Body capture remains OFF
 unless the corresponding field is explicitly allowed. This is synthetic-only,
 not a replacement for P0 recursive privacy/secret tests.
+
+## Implemented opt-in P0 boundary (2026-10-21; synthetic only)
+
+The separately reviewed synthetic compatibility choice keeps legacy capture
+unchanged, and adds a strict default-OFF policy mode in both recorder and intake.
+It is enabled by capture_policy/capture_profile in probe config and matching
+serve --capture-policy/--capture-profile flags. Legacy mode is NOT privacy-safe.
+Known version-1 JSON policies allow typed per-profile/per-field leaves only;
+unknown envelopes fail closed. Redaction precedes the producer queue and all
+normalized/raw/indexed intake storage. No new migrations or engine algorithms.
+
+Strict mode supports finite numbers/booleans, approved nonpersonal enums,
+explicit field/profile/key-version-scoped HMAC equality for email-class values,
+and SHA-256 of exact approved redacted nonpersonal artifact literals. Arbitrary
+text/body capture and URI fetching remain unsupported. IDs/semantic envelope
+metadata are deliberately omitted rather than guessed, making lineage unknown;
+metric scalar payloads are OFF in this initial policy. Strict-mode HTTP metadata
+writes are disabled because their free text has no approved policy. This does
+not modify trace, cohort, ranking, diff or legacy M4b behavior.
+
+See docs/p0-capture.md for limits, policy format, planted-secret misses/fixes,
+the opt-in/legacy distinction, fresh-store requirement and uncovered channels.
+P0 added caller cost is unmeasured against both existing budgets; no optimization
+or real-data authorization follows from passing synthetic leak checks. Return-
+to-argument linking is still design only on the separate docs proposal branch.

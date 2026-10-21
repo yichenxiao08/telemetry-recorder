@@ -183,6 +183,32 @@ count_instrumentation.py counts AST source spans of recorder imports, calls and
 run-context headers, excluding original application bodies. It compares a
 pre-run source snapshot to post-run source and reports physical plus nonblank
 config lines. No source modification is inferred merely from in-memory wrapping.
+
+## Opt-in P0 synthetic capture policy
+
+Legacy operation is unchanged and **not privacy-safe**. To enable the strict
+default-OFF gate, add these top-level keys to signalscout.yaml:
+
+```yaml
+capture_policy: policy.json
+capture_profile: synthetic
+```
+
+The JSON policy path is relative to the config file. Use the same profile/policy
+on the server with --capture-policy and --capture-profile. The existing probe
+allowlist and the P0 field rule must both permit a field. Unknown policy versions
+are errors; unknown/malformed record envelopes lose their payload. Never put a
+secret in a policy or config. A synthetic example is testdata/privacy/policy.json
+at the repository root. HMAC requires a separately provisioned base64 runtime
+key in SIGNALSCOUT_P0_HMAC_KEY, not a key in source or command history.
+
+The policy gate precedes enqueue/export, and intake repeats it before storage.
+This version is intentionally lossy: free text, IDs/refs and semantic envelope
+metadata are omitted, metric values are OFF, and strict-mode HTTP metadata writes
+are disabled. See docs/p0-capture.md for exact supported types and unknown
+semantics. It does not authorize real data or provide consent/access/deletion/
+retention policy. Added P0 cost is unmeasured against existing budgets. Neither
+the method paired observation nor old wrapper results qualify policy-mode cost.
 ## Reproduce synthetic breadth (PowerShell, repository root)
 
 The source shop database must already exist at the path in breadth.py. This is
