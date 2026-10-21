@@ -175,3 +175,26 @@ for the final validation; the earlier proposal remains historical evidence.
   make that reporting assumption true. Reviewed results are in
   benchmark/results/recorder-capture-loss-fix-reviewed; the first publication
   remains in benchmark/results/recorder-capture-loss-fix.
+
+## Wrapper cost investigation: approval boundary
+
+- Stage 1 measures only. The diagnostic AST copies are observers, not an
+  optimized recorder or an alternative production path. No Stage 2 change is
+  approved until the owner replies GO OPTIMIZE after Checkpoint A.
+- Rank proposed savings using both phase estimates and separate cProfile/plain
+  controls. Warm empty-scope subtraction does not remove cold observer costs;
+  do not promise measured phase fractions as achievable savings.
+- Preserve mutable-value snapshots, exact wire bytes, default capture OFF and
+  the fixed queue/retry/deadline/four-state policy in any later proposal.
+- Defer interpreter comparisons, OS scheduling/power experiments and native
+  capture mechanisms. This task's single Python 3.12.12 measurement cannot
+  establish their causal contribution or justify a new budget.
+- Checkpoint A: investigate binding plans first (8–10% optimistic profile
+  proxy), then encoder/static-metadata reuse, then owned-input duplicate
+  snapshots. These are proposals only, not demonstrated savings. Distinct
+  lineage messages cannot simply be removed. Serialization-on-worker remains
+  deferred pending validation/admission-accounting and mutable snapshot design.
+- Keep lower-overhead external timing/profiling as a future measurement idea:
+  current fine scopes materially perturb costs, and thread CPU accounting is
+  too coarse to prove GIL or scheduler causes. Do not turn a calibrated phase
+  estimate into a production budget claim. Full results: docs/wrapper-overhead.md.

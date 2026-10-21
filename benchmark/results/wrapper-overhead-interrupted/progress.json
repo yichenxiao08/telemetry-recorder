@@ -1,0 +1,37 @@
+[
+  {
+    "name": "fixed-60hz-phase-bare-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.16176176071167
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.307336807250977
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.188180208206177
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.289183616638184
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.20934557914734
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-1",
+    "exit_code": 1,
+    "elapsed_seconds": 31.640368938446045
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-2",
+    "exit_code": 1,
+    "elapsed_seconds": 31.824947118759155
+  }
+]

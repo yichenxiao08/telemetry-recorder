@@ -1,0 +1,1 @@
+time=2026-10-21T01:04:26.941-04:00 level=INFO msg="OTLP and viewer HTTP listening" address=127.0.0.1:63641 viewer=http://127.0.0.1:63641/runs database=C:\Users\yiche\telemetry-project\.cache\wrapper-overhead\stage1-02\lane-driver-tight-phase-full-default-4\driver\fresh.db queue_size=64

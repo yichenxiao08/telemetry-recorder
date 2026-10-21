@@ -1,0 +1,2021 @@
+{
+  "synthetic_only": true,
+  "configuration": {
+    "out": "<repo>\\.cache\\wrapper-overhead\\stage1-02\\lane-driver-60hz-phase-full-default-3",
+    "child": true,
+    "payload": "lane-driver",
+    "mode": "60hz",
+    "observer": "phase",
+    "feature": "full",
+    "factor": "default",
+    "trial": 3
+  },
+  "python": "3.12.12 (main, Feb 12 2026, 00:40:26) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "cpu": "Intel64 Family 6 Model 197 Stepping 2, GenuineIntel",
+  "gc_enabled_during_calls": true,
+  "gc_threshold": [
+    700,
+    10,
+    10
+  ],
+  "source_sha256": {
+    "recorder.py": "6605df842c639f57397e44a4c5457b886dc21eaf63fb4a8336bb5365953d5f01",
+    "scout_probe.py": "af61c3e19e44763bb8b10df09cf17420b63b5c5c43cfdb18686dcd710ac21148",
+    "profile_phases.py": "3e829cf904f439e1432e5d26580441081b6d6737989b3161ae31cf38ef19eea0",
+    "profile_wrapper.py": "6283f55286e57234a7d3f20422810bd4d5b8a4da834477b2bdfb248d438f67cf"
+  },
+  "calibration": {
+    "empty_scope_internal_ns": {
+      "p50_us": 0.1,
+      "p99_us": 0.2,
+      "sum_ns": 1396100
+    },
+    "empty_scope_whole_ns": {
+      "p50_us": 1.0,
+      "p99_us": 1.6,
+      "sum_ns": 10532600
+    },
+    "consecutive_timer_ns": {
+      "p50_us": 0.1,
+      "p99_us": 0.1,
+      "sum_ns": 550000
+    },
+    "subtracted_internal_ns": 100.0,
+    "subtracted_whole_ns": 1000.0
+  },
+  "calls": 9600,
+  "raw": {
+    "p50_us": 1179.3,
+    "p99_us": 2442.003,
+    "sum_ns": 11723740100
+  },
+  "adjusted": {
+    "p50_us": 998.3,
+    "p99_us": 2261.003,
+    "sum_ns": 9986140100.0
+  },
+  "phases": {
+    "entry_argument_access": {
+      "p50_us": 108.4,
+      "p99_us": 380.66700000000145,
+      "sum_ns": 1148489700.0,
+      "fraction": 0.11500837045136188
+    },
+    "allowlist_privacy": {
+      "p50_us": 73.3,
+      "p99_us": 202.61000000000024,
+      "sum_ns": 738471900.0,
+      "fraction": 0.07394968352186447
+    },
+    "value_capture": {
+      "p50_us": 229.3,
+      "p99_us": 691.9360000000008,
+      "sum_ns": 2366532000.0,
+      "fraction": 0.23698165420290868
+    },
+    "envelope_json": {
+      "p50_us": 205.7,
+      "p99_us": 566.7370000000008,
+      "sum_ns": 2085388200.0,
+      "fraction": 0.20882825387158346
+    },
+    "span_lineage": {
+      "p50_us": 56.9,
+      "p99_us": 186.7320000000007,
+      "sum_ns": 568428200.0,
+      "fraction": 0.05692171292489678
+    },
+    "clock": {
+      "p50_us": 8.1,
+      "p99_us": 17.3,
+      "sum_ns": 82113200.0,
+      "fraction": 0.00822271660298457
+    },
+    "queue_put": {
+      "p50_us": 36.1,
+      "p99_us": 140.50200000000007,
+      "sum_ns": 385516400.0,
+      "fraction": 0.038605146346785184
+    },
+    "exit_path": {
+      "p50_us": 22.7,
+      "p99_us": 65.60300000000005,
+      "sum_ns": 233494300.0,
+      "fraction": 0.023381836992252894
+    },
+    "run_context_enter": {
+      "p50_us": 37.5,
+      "p99_us": 114.60900000000021,
+      "sum_ns": 379394100.0,
+      "fraction": 0.037992066624420784
+    },
+    "run_context_exit": {
+      "p50_us": 10.2,
+      "p99_us": 28.6,
+      "sum_ns": 101177200.0,
+      "fraction": 0.010131762521537226
+    },
+    "counter_bookkeeping": {
+      "p50_us": 21.3,
+      "p99_us": 60.80700000000015,
+      "sum_ns": 215098500.0,
+      "fraction": 0.02153970381408929
+    }
+  },
+  "residual": {
+    "p50_us": 167.3,
+    "p99_us": 444.81700000000035,
+    "sum_ns": 1682036400.0
+  },
+  "negative_adjustments": 0,
+  "budget_met": false,
+  "overlap": {
+    "gc": {
+      "all_calls": 240,
+      "top_1_percent_calls": 31
+    },
+    "_encode": {
+      "all_calls": 1,
+      "top_1_percent_calls": 0
+    },
+    "_send": {
+      "all_calls": 8402,
+      "top_1_percent_calls": 84
+    }
+  },
+  "tail_off_cpu": {
+    "p50_us": 2834.35,
+    "p99_us": 18516.959999999934,
+    "sum_ns": 341803200
+  },
+  "observer_overflow": 0,
+  "status": "completed",
+  "error": null,
+  "counts": {
+    "captured_args": 57600,
+    "serialized": 9600,
+    "envelope_bytes": 15544497,
+    "attempted": 19200,
+    "accepted": 19200,
+    "network_requests": 4886,
+    "exported": 19200,
+    "retry_requests": 1,
+    "acknowledged": 19200,
+    "failed": 0,
+    "dropped": 0,
+    "unknown": 0,
+    "queue_size": 0,
+    "capacity": 256,
+    "cooldown_active": false,
+    "queue_high_water": 90,
+    "diagnostics": {
+      "counters_spans_except_flush_timeout": {
+        "encode_failure": 0,
+        "timeout": 4,
+        "connection_error": 0,
+        "http_non_2xx": 0,
+        "cooldown_suppressed": 0,
+        "other_failure": 0,
+        "flush_timeout": 0,
+        "cooldown_drop": 0,
+        "queue_full_drop": 0,
+        "shutdown_drop": 0,
+        "flush_drop": 0
+      },
+      "failures_by_class_spans": {
+        "TimeoutError": 4
+      },
+      "last_failures": [
+        {
+          "exception_class": "TimeoutError",
+          "reason_class": "TimeoutError",
+          "message": "timed out",
+          "http_status": null,
+          "phase": "wait-for-ack",
+          "kind": "timeout",
+          "spans": 4,
+          "attempt_unix_ns": 1792558368933894900,
+          "observed_unix_ns": 1792558369436590500
+        }
+      ],
+      "failure_sample_limit": 64,
+      "worker_batch_sizes": {
+        "2": 3053,
+        "4": 1010,
+        "6": 274,
+        "8": 107,
+        "12": 98,
+        "10": 74,
+        "14": 107,
+        "16": 69,
+        "20": 22,
+        "18": 36,
+        "24": 8,
+        "30": 3,
+        "22": 10,
+        "26": 3,
+        "28": 3,
+        "32": 9
+      },
+      "last_worker_batches": [
+        {
+          "attempt_unix_ns": 1792558423953986300,
+          "elapsed_ns": 10181800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558423967565000,
+          "elapsed_ns": 19345900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558423987915500,
+          "elapsed_ns": 31166100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558424018731200,
+          "elapsed_ns": 37838800,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558424056385300,
+          "elapsed_ns": 16602200,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424073588800,
+          "elapsed_ns": 8774600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424084304100,
+          "elapsed_ns": 30896300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424116572700,
+          "elapsed_ns": 9787800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424126066000,
+          "elapsed_ns": 9109000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424135350300,
+          "elapsed_ns": 9337000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424151624100,
+          "elapsed_ns": 12918800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424167382100,
+          "elapsed_ns": 87427000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558424256105000,
+          "elapsed_ns": 69581900,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558424325569600,
+          "elapsed_ns": 49514400,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558424375221800,
+          "elapsed_ns": 24702200,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424399780800,
+          "elapsed_ns": 11861700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424411973200,
+          "elapsed_ns": 25673100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558424437663300,
+          "elapsed_ns": 14469900,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424452003400,
+          "elapsed_ns": 11134600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424467502000,
+          "elapsed_ns": 8987700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424484141000,
+          "elapsed_ns": 8952700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424500834700,
+          "elapsed_ns": 26874200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424528950600,
+          "elapsed_ns": 8250400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424536864700,
+          "elapsed_ns": 9752000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424550744100,
+          "elapsed_ns": 6962000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424567249500,
+          "elapsed_ns": 112657800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 12
+        },
+        {
+          "attempt_unix_ns": 1792558424679899100,
+          "elapsed_ns": 46364900,
+          "size": 12,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558424727591100,
+          "elapsed_ns": 44136600,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558424771660900,
+          "elapsed_ns": 47168200,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558424817473400,
+          "elapsed_ns": 30591900,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424849300100,
+          "elapsed_ns": 11995300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424861845100,
+          "elapsed_ns": 10542700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558424872533600,
+          "elapsed_ns": 8368900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424884099100,
+          "elapsed_ns": 8796500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424900789900,
+          "elapsed_ns": 11391600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424917566500,
+          "elapsed_ns": 10034400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424934258300,
+          "elapsed_ns": 10308900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558424950542800,
+          "elapsed_ns": 103320100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 12
+        },
+        {
+          "attempt_unix_ns": 1792558425054816800,
+          "elapsed_ns": 38863400,
+          "size": 12,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558425093566000,
+          "elapsed_ns": 17259900,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425111363300,
+          "elapsed_ns": 11095000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425122228500,
+          "elapsed_ns": 10337100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425134072100,
+          "elapsed_ns": 10974100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425150920500,
+          "elapsed_ns": 21279900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425173230300,
+          "elapsed_ns": 12237500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425184880600,
+          "elapsed_ns": 8161800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425200874600,
+          "elapsed_ns": 11986200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425217509500,
+          "elapsed_ns": 8709500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425233857100,
+          "elapsed_ns": 33540200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558425267339500,
+          "elapsed_ns": 12895900,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425283971000,
+          "elapsed_ns": 7585900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425301481300,
+          "elapsed_ns": 7150600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425317332500,
+          "elapsed_ns": 7056100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425335047100,
+          "elapsed_ns": 200605600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 24
+        },
+        {
+          "attempt_unix_ns": 1792558425536005300,
+          "elapsed_ns": 66337300,
+          "size": 24,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558425602428000,
+          "elapsed_ns": 41859900,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558425644187200,
+          "elapsed_ns": 16685700,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425661139600,
+          "elapsed_ns": 8494400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425669942300,
+          "elapsed_ns": 10319400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425684015100,
+          "elapsed_ns": 8898300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425700950300,
+          "elapsed_ns": 9629000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425717665300,
+          "elapsed_ns": 9710000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425733845200,
+          "elapsed_ns": 87763300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558425823185300,
+          "elapsed_ns": 52336300,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558425875222400,
+          "elapsed_ns": 21695400,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425896334000,
+          "elapsed_ns": 9320800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425907186400,
+          "elapsed_ns": 9351100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425917552600,
+          "elapsed_ns": 24807100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558425943540400,
+          "elapsed_ns": 6978200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425950679100,
+          "elapsed_ns": 8990900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425967291300,
+          "elapsed_ns": 11471600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558425984177000,
+          "elapsed_ns": 9228200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426000675400,
+          "elapsed_ns": 13350400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426017590500,
+          "elapsed_ns": 19306600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426038309600,
+          "elapsed_ns": 10419100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426050951200,
+          "elapsed_ns": 15058600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426067454600,
+          "elapsed_ns": 10925200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426083900800,
+          "elapsed_ns": 34297900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558426117736700,
+          "elapsed_ns": 14547800,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426134182500,
+          "elapsed_ns": 85455100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558426220703700,
+          "elapsed_ns": 36164400,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558426255644100,
+          "elapsed_ns": 14630000,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426271568400,
+          "elapsed_ns": 10245900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426284325200,
+          "elapsed_ns": 11476500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426300968000,
+          "elapsed_ns": 7635600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426317514100,
+          "elapsed_ns": 32253000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426350971600,
+          "elapsed_ns": 12683300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426363896800,
+          "elapsed_ns": 14280800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426378081400,
+          "elapsed_ns": 9549100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426387656900,
+          "elapsed_ns": 12023400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426402661200,
+          "elapsed_ns": 12594800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558426417438700,
+          "elapsed_ns": 38375300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558426456541000,
+          "elapsed_ns": 16755000,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426474227700,
+          "elapsed_ns": 26390900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558426500439700,
+          "elapsed_ns": 29442400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558426529977600,
+          "elapsed_ns": 234596700,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 28
+        },
+        {
+          "attempt_unix_ns": 1792558426764981700,
+          "elapsed_ns": 80488600,
+          "size": 28,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558426845041400,
+          "elapsed_ns": 45033000,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558426890810900,
+          "elapsed_ns": 38677800,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558426929169600,
+          "elapsed_ns": 145500500,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 18
+        },
+        {
+          "attempt_unix_ns": 1792558427073840800,
+          "elapsed_ns": 66161800,
+          "size": 18,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558427138734800,
+          "elapsed_ns": 49946300,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558427191123200,
+          "elapsed_ns": 19388300,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427209761200,
+          "elapsed_ns": 10757300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427221426500,
+          "elapsed_ns": 14193900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427234879800,
+          "elapsed_ns": 12064800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558427250747400,
+          "elapsed_ns": 10344400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558427267604900,
+          "elapsed_ns": 30824000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427299868500,
+          "elapsed_ns": 12704100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427312590900,
+          "elapsed_ns": 113657100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558427426519000,
+          "elapsed_ns": 44875100,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558427471271800,
+          "elapsed_ns": 21254400,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427492583800,
+          "elapsed_ns": 12674200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427505464900,
+          "elapsed_ns": 8275100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558427518830600,
+          "elapsed_ns": 10021400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558427535160000,
+          "elapsed_ns": 130713300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558427665991000,
+          "elapsed_ns": 191376400,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 24
+        },
+        {
+          "attempt_unix_ns": 1792558427857780000,
+          "elapsed_ns": 63571600,
+          "size": 24,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558427919929600,
+          "elapsed_ns": 23264600,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427944115000,
+          "elapsed_ns": 9766100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558427954296800,
+          "elapsed_ns": 9539500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558427967678600,
+          "elapsed_ns": 8740200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558427984291100,
+          "elapsed_ns": 10884900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428000627500,
+          "elapsed_ns": 8600500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428017487700,
+          "elapsed_ns": 12800400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428033882600,
+          "elapsed_ns": 7532400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428050574900,
+          "elapsed_ns": 11063100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428067420400,
+          "elapsed_ns": 8746200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428084294400,
+          "elapsed_ns": 128210900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558428213465600,
+          "elapsed_ns": 63009800,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558428273715500,
+          "elapsed_ns": 27115600,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558428303609300,
+          "elapsed_ns": 26390200,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558428330690200,
+          "elapsed_ns": 12263600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558428342914300,
+          "elapsed_ns": 9633300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558428352429900,
+          "elapsed_ns": 10598200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428367604300,
+          "elapsed_ns": 10467800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428383858700,
+          "elapsed_ns": 9496200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428400804200,
+          "elapsed_ns": 8799600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428417559100,
+          "elapsed_ns": 9604500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428434214400,
+          "elapsed_ns": 11029600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428450773600,
+          "elapsed_ns": 9607800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558428467216800,
+          "elapsed_ns": 30157900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558428498935900,
+          "elapsed_ns": 77204100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558428576136500,
+          "elapsed_ns": 193563000,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 24
+        },
+        {
+          "attempt_unix_ns": 1792558428768781000,
+          "elapsed_ns": 68870000,
+          "size": 24,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558428838381800,
+          "elapsed_ns": 24343600,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558428863094900,
+          "elapsed_ns": 98064500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 12
+        },
+        {
+          "attempt_unix_ns": 1792558428960942300,
+          "elapsed_ns": 44456100,
+          "size": 12,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558429005998000,
+          "elapsed_ns": 26765600,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429032454400,
+          "elapsed_ns": 10902600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429043687900,
+          "elapsed_ns": 9861600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429053416300,
+          "elapsed_ns": 12677700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558429067396600,
+          "elapsed_ns": 10725500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558429084202600,
+          "elapsed_ns": 11819100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558429100930500,
+          "elapsed_ns": 24720600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429126617900,
+          "elapsed_ns": 11654000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429137240700,
+          "elapsed_ns": 37698800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558429175608100,
+          "elapsed_ns": 39525700,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558429215833500,
+          "elapsed_ns": 16917900,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429232874900,
+          "elapsed_ns": 9013300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429241755500,
+          "elapsed_ns": 117772100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558429359724300,
+          "elapsed_ns": 45606900,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558429405174100,
+          "elapsed_ns": 26105100,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429431544500,
+          "elapsed_ns": 11923700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429442160900,
+          "elapsed_ns": 10691700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429454691800,
+          "elapsed_ns": 38199600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558429492372200,
+          "elapsed_ns": 15118200,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558429507678600,
+          "elapsed_ns": 7872300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558429517205000,
+          "elapsed_ns": 8994600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558429536465100,
+          "elapsed_ns": 134896200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 16
+        },
+        {
+          "attempt_unix_ns": 1792558429671940800,
+          "elapsed_ns": 251199900,
+          "size": 16,
+          "outcome": "exported",
+          "queue_depth": 30
+        },
+        {
+          "attempt_unix_ns": 1792558429923360500,
+          "elapsed_ns": 83416100,
+          "size": 30,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558430005560000,
+          "elapsed_ns": 29515900,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430034336000,
+          "elapsed_ns": 17413100,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558430053623300,
+          "elapsed_ns": 11560900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558430067381100,
+          "elapsed_ns": 11232800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558430085675100,
+          "elapsed_ns": 11220900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558430102742200,
+          "elapsed_ns": 116979300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558430219542600,
+          "elapsed_ns": 45733300,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430264639100,
+          "elapsed_ns": 17404400,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558430280200100,
+          "elapsed_ns": 12844200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558430290972700,
+          "elapsed_ns": 32004500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430328023900,
+          "elapsed_ns": 37485800,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430365404400,
+          "elapsed_ns": 20272800,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430384833300,
+          "elapsed_ns": 28904200,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558430414690700,
+          "elapsed_ns": 14906600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558430429389800,
+          "elapsed_ns": 23927000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430453810200,
+          "elapsed_ns": 38863100,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558430492663000,
+          "elapsed_ns": 19017700,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558430511453700,
+          "elapsed_ns": 165823800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 20
+        },
+        {
+          "attempt_unix_ns": 1792558430678031500,
+          "elapsed_ns": 216871200,
+          "size": 20,
+          "outcome": "exported",
+          "queue_depth": 26
+        },
+        {
+          "attempt_unix_ns": 1792558430894448800,
+          "elapsed_ns": 76591500,
+          "size": 26,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558430971257400,
+          "elapsed_ns": 182466800,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 22
+        },
+        {
+          "attempt_unix_ns": 1792558431154251000,
+          "elapsed_ns": 66257300,
+          "size": 22,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792558431217668200,
+          "elapsed_ns": 28028900,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431248422800,
+          "elapsed_ns": 11524100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431260154700,
+          "elapsed_ns": 10438100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431270437300,
+          "elapsed_ns": 6560800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558431283905400,
+          "elapsed_ns": 11924600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558431300633200,
+          "elapsed_ns": 29864900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431331762000,
+          "elapsed_ns": 9692900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431341450000,
+          "elapsed_ns": 38504000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558431380325800,
+          "elapsed_ns": 18664100,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431398878200,
+          "elapsed_ns": 87328800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 12
+        },
+        {
+          "attempt_unix_ns": 1792558431486494400,
+          "elapsed_ns": 49705900,
+          "size": 12,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558431536086100,
+          "elapsed_ns": 152110300,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 18
+        },
+        {
+          "attempt_unix_ns": 1792558431687987100,
+          "elapsed_ns": 53907500,
+          "size": 18,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558431742291900,
+          "elapsed_ns": 19655600,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431762205800,
+          "elapsed_ns": 141181000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 18
+        },
+        {
+          "attempt_unix_ns": 1792558431902772700,
+          "elapsed_ns": 49708200,
+          "size": 18,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558431952400900,
+          "elapsed_ns": 22720500,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558431975905600,
+          "elapsed_ns": 27296300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558432003172400,
+          "elapsed_ns": 18420300,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432021800600,
+          "elapsed_ns": 14632700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432035532300,
+          "elapsed_ns": 28485400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432064881500,
+          "elapsed_ns": 14217900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432078980100,
+          "elapsed_ns": 12502500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432091789100,
+          "elapsed_ns": 19465200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432111501200,
+          "elapsed_ns": 34055600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558432145415300,
+          "elapsed_ns": 35727200,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558432180886500,
+          "elapsed_ns": 115122600,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558432296655800,
+          "elapsed_ns": 46255700,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558432342971500,
+          "elapsed_ns": 23178500,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432366253700,
+          "elapsed_ns": 11118300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432377447200,
+          "elapsed_ns": 9192800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432386739700,
+          "elapsed_ns": 10650000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558432400603100,
+          "elapsed_ns": 7774500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558432417395400,
+          "elapsed_ns": 12675600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558432434047100,
+          "elapsed_ns": 8191800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558432450663700,
+          "elapsed_ns": 30106200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432481962600,
+          "elapsed_ns": 29420600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558432511687500,
+          "elapsed_ns": 18416000,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432530248000,
+          "elapsed_ns": 239674800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 30
+        },
+        {
+          "attempt_unix_ns": 1792558432769889100,
+          "elapsed_ns": 101399800,
+          "size": 30,
+          "outcome": "exported",
+          "queue_depth": 12
+        },
+        {
+          "attempt_unix_ns": 1792558432869889900,
+          "elapsed_ns": 28397500,
+          "size": 12,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432899712300,
+          "elapsed_ns": 13704700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432913507500,
+          "elapsed_ns": 12985200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432923741300,
+          "elapsed_ns": 10998800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558432937944200,
+          "elapsed_ns": 145701300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 16
+        },
+        {
+          "attempt_unix_ns": 1792558433083137000,
+          "elapsed_ns": 71638000,
+          "size": 16,
+          "outcome": "exported",
+          "queue_depth": 10
+        },
+        {
+          "attempt_unix_ns": 1792558433154905900,
+          "elapsed_ns": 35262700,
+          "size": 10,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558433189762000,
+          "elapsed_ns": 15474800,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558433206353700,
+          "elapsed_ns": 10300700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558433217302500,
+          "elapsed_ns": 17517600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558433235882900,
+          "elapsed_ns": 10144400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558433250800400,
+          "elapsed_ns": 33947400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558433286066400,
+          "elapsed_ns": 16800300,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792558433302169500,
+          "elapsed_ns": 9665900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558433317211500,
+          "elapsed_ns": 14217800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792558433333897300,
+          "elapsed_ns": 106725900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 12
+        },
+        {
+          "attempt_unix_ns": 1792558433440479400,
+          "elapsed_ns": 48259300,
+          "size": 12,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558433490591100,
+          "elapsed_ns": 38374500,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792558433528564900,
+          "elapsed_ns": 140173200,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 18
+        },
+        {
+          "attempt_unix_ns": 1792558433667395400,
+          "elapsed_ns": 52170400,
+          "size": 18,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792558433718870000,
+          "elapsed_ns": 144720300,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 14
+        },
+        {
+          "attempt_unix_ns": 1792558433865899800,
+          "elapsed_ns": 41442200,
+          "size": 14,
+          "outcome": "exported",
+          "queue_depth": 0
+        }
+      ],
+      "batch_sample_limit": 256
+    },
+    "network_operation_slots": 1,
+    "retry_limit": 1,
+    "attempt_budget_seconds": 1.25
+  }
+}
