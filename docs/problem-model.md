@@ -205,3 +205,155 @@ Slice 1 explicitly emits unsupported_numeric observations for undefined numeric
 arithmetic, preserving observed counts and avoiding NaN or a false no-difference
 association. This guard changes no formula/constants or valid lane-01 score;
 all 15 complete reports were recomputed from pinned evidence and remain identical.
+
+## Proposed v1 (analysis only; not authorized for implementation)
+
+The lane-01 diagnostic is in docs/lane-01-diagnostic.md and generated raw tables
+in benchmark/results/lane-01-diagnostic.md/.json. Heavy-case decoys have genuine
+large marginal shifts introduced by cohort construction; positive-score ties
+are not responsible. Harder loses the 20% age subgroup at the median. These
+findings motivate **at most two additions** below. Existing scores/constants,
+profiles and results stay frozen. This section specifies proposals, not working
+features, a causal model or permission to start P0/M5–M8.
+
+### 1. Conditional comparison with explicit common-support reporting
+
+Question: does an association persist within comparable, declared contexts?
+The profile predeclares at most two captured, pre-output adjustment fields,
+categorical levels or numeric bin edges, and the comparison question. Use
+domain-reviewed nuisance/context fields, not evaluation mechanism/decoy labels.
+Session regime may be a control when it spans multiple clusters; a unique
+session ID cannot meet the per-stratum five-cluster rule and yields unsupported.
+Reject the candidate itself and all symptom/selection-output fields as controls.
+Do not automatically condition on the top-ranked fields: selecting and testing
+on the same observations is circular, and controlling a mediator or collider can
+destroy a real mechanism or create an association. Automatic control selection
+would require a separately reviewed, cluster-disjoint discovery/validation design.
+
+Let h denote the fixed cross-product stratum. Eligible h needs at least ten
+observed problem and ten reference examples and five distinct session IDs in
+each arm. Unknown session IDs are not independence. Missing controls/values are
+excluded with counts, never a zero stratum. Compute the **unchanged v0** numeric
+score S_h (same unit epsilon, floor, 1.4826, k=3 and +1/+2), or Laplace-smoothed
+categorical TV within h. Let H be eligible strata, a_h observed reference count,
+and w_h=a_h/sum_H a_h. Report S_cond=sum_H w_h S_h, in [0,1], together with
+all stratum medians/counts/directions and marginal scores. Preserve stratum
+directions; a high absolute summary cannot imply one common directional effect.
+The weights standardize to the explicitly chosen reference population, never
+inverse tiny propensity weights. Per-stratum smoothing is exactly the existing
+formula; no extra fitted shrinkage or post-ranking feature boosts.
+
+Report supported fractions c_P=sum_H n_Ph/n_P and c_R=sum_H n_Rh/n_R.
+Require both >=0.8 and at least five known clusters per arm overall. Otherwise
+the aggregate is **unsupported_overlap**, with no rank or zero-score claim;
+show supported-stratum observations only. Even when valid, state that the
+estimand covers H and print excluded strata. Each stratum retains its own
+cluster counts/shared IDs. No independent p-value is inferred from frame count.
+The thresholds are proposed engineering rules to freeze before new evaluation,
+not guarantees of precision. A changed proposal requires a new version.
+
+New failure modes: sparse strata, bin-boundary sensitivity, lack of positivity,
+unmeasured confounding, noisy control capture, conditioning on mediators/colliders,
+and dependence within sessions. Simpson reversals may reflect different
+questions rather than mistakes. A lower conditional score does not prove a
+field irrelevant. Lane-01's disjoint gap support would make gap adjustment
+unsupported; this is an expected limitation, not a false diagnosis to suppress.
+Session adjustment cannot remove the deliberately within-session decoy offset.
+
+### 2. Reference-tail coverage for minority shifts
+
+Question: how many problem examples lie outside the reference's ordinary range,
+even when the central median is unchanged? For each predeclared numeric field,
+compute L=Q_reference(0.05)-delta and U=Q_reference(0.95)+delta using the existing
+interpolated quantile definition. Here delta=max(profile epsilon, profile floor)/2
+in the declared unit, frozen before evaluation. Strictly outside means x<L or
+x>U; equality stays inside. The padding prevents tiny quantization changes
+from creating a tail and handles zero-MAD/constant references. The full interval,
+raw unpadded quantiles and delta must be displayed.
+
+Let a_P/a_R be raw numbers outside this **same fixed reference interval** among
+n_P/n_R observed values. Laplace rates p=(a_P+1)/(n_P+2), r=(a_R+1)/(n_R+2).
+Proposed score T=max(0,p-r), in [0,1]. Report left/right counts separately and
+the combined count once; no post-hoc choice of whichever tail scores higher.
+This is an in-sample descriptive reference-tail contrast, not an out-of-sample
+false-positive estimate, significance test or probability of a cause. The
+reference estimates both the interval and its own tail count; that optimism
+must stay explicit. No minimum observed tail count is silently imputed.
+
+Require >=100 observed references (nominally five per 5% tail), >=30 problems,
+and >=five known session IDs per arm. Below these counts report insufficient
+tail evidence without a score/rank. Preserve missing/excluded/shared-session
+counts and label-selection policy. These minima are feasibility guards only.
+T does not boost names, mechanism labels, output roles or known demo features;
+all eligible fields get the same rule. It is reported separately from median
+score, with its own ranked list, **not** max(median,T) or a tuned fused score.
+Two lists cost attention and multiple comparisons; do not hide that cost.
+
+New failure modes: legitimate heavy tails, a contaminated/shifted reference,
+subgroups within the reference interval, minorities smaller than sampling noise,
+cluster concentration, high dimensional chance contrasts, and padding that hides
+small real effects. It will also rank truly shifted but computationally unused
+decoys. It addresses median blindness, not causal identifiability. Reference
+intervals are marginal unless an explicitly authorized conditional-tail extension
+is reviewed later; that extension is not a third proposal in this task.
+
+### Symptom declarations and presentation
+
+A proposed versioned profile role is symptom or candidate (default candidate),
+with selector, rationale and author recorded **before** evaluation. Output
+quality/selection criteria such as output.lane are declared symptoms: show them
+under **The problem**, with raw counts, labels, evidence and existing score;
+exclude them from the ranked candidate-mechanism lists and their denominators.
+Retain original combined ranks for historical comparisons. Excluding a symptom
+is presentation, not evidence that remaining fields are causes. Never use a
+benchmark's hidden mechanism/decoy labels to suppress or boost candidates.
+Store role versions with future reports; reject a field declared both symptom
+and adjustment control. Changing roles after outcomes requires a visible new
+profile/version and cannot rewrite prior acceptance results. This is metadata
+and presentation design, not an implemented scoring addition.
+
+### Fresh preregistration proposal (no execution)
+
+Reserve seeds **710021, 710023, 710027, 710029, 710033** for the new evaluation.
+These are absent from the prior fixture source/preregistrations; neither data
+generation nor scoring on them has run. Keep 101/103 and all lane-01 evaluation
+seeds solely as old/development evidence. No seed may be replaced for poor ranks.
+
+Before implementing/running evaluation, commit a separate lane-02 contract with
+generator equations, checksums, unit/resolution/roles, controls/bin edges,
+sampling/label rules, known mechanism/symptom/negative-control labels, expected
+failure conditions and this seed list. Have the owner review it; retain an
+author-separated review if available. Then freeze scorer and fixture revisions
+before the first new engine run. No retrospective modification of lane-01.
+
+Planned population: 20 synthetic sessions per seed/variant, 40 decision examples
+per session, 800 total, balanced 20 problem/20 reference in each session. Session
+is a supplied dependence cluster, not an independent frame history. Use a plain
+target whose gap mechanism and declared version use are visible, record all
+fields, and keep output/synthetic labels separate. The preregistered generator
+must explain how labels arise; an assembly flag is never an argument to the
+target. Matching stress variants intentionally relax within-session balance as
+declared below. Freeze exact equations before any engine execution; this is
+the review plan, not an already frozen/runnable lane-02 benchmark.
+
+| Planned variant | Construction and expectation to freeze |
+|---|---|
+| Matched negative controls | Interleaved sessions/time, nuisance fields independent of labels; gap shifts and 100% stale subgroup. Check median/tail evidence, no output in candidate list. |
+| Session nuisance imbalance | Half of sessions have 30 problem/10 reference, half 10/30; one nuisance level shifts by session regime only and is unused by target. Every session has both labels. The two declared regime strata each span ten clusters. Regime adjustment should reduce the marginal contrast; report any residual and supported fractions. |
+| Minority stale use | Balanced sessions; 20% of problem examples use a stale declared version, none of references. The target must actually take the declared-use branch. Expect zero median contrast but excess tail/invariant observations, not proof of a fixed output under intervention. |
+| Benign minority tail | Same minority distribution in both arms, including a shifted nuisance tail unrelated to target use. Measure false associations and any tail rank, retain all outcomes. |
+| Deliberate failure: disjoint support | Label-correlated unused nuisance shift like lane-01; candidate controls fully separate cohorts. Expect conditional unsupported_overlap; tail may still rank decoys high. Failing to recover causal relevance is an expected miss, never converted into a pass for diagnosis. |
+| Deliberate failure: within-range subgroup | Reference already spans both subgroup values; problem minority changes while both medians remain equal and values stay within the padded interval. Expect median and tail misses; declared invariant can still expose a violation if supplied. |
+
+Future acceptance: table tests/rapid for bounds, deterministic bins, padding,
+missingness, support exclusions, no renaming effects, unchanged host/core
+regressions and frozen lane-01 outputs. Evaluate every seed/variant once with
+fixed policies: raw and symptom-separated top-1/3/5 mechanism recall, negative
+control ranks/rates, per-stratum coverage, tail counts, invariant results,
+unknown/unsupported counts and wall time. Publish each candidate list separately,
+including ties and all misses. For planned supported cases require the declared
+mechanisms within top 5 in at least 4/5 seeds; publish failures rather than tune.
+For null controls publish false-positive contrasts without inventing calibrated
+significance. Require unsupported on every deliberately empty-support case.
+Do not set causal-accuracy acceptance on the nonidentifiable case. Any new design
+after looking at these seeds needs another untouched evaluation set and approval.

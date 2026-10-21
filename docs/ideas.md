@@ -66,3 +66,18 @@ and growth per hour rather than assume this extrapolation is accurate.
 - Richer cohort matching, mark UI and annotation retention/deletion policy only
   after separately authorized scope and P0 privacy. Current annotations are
   synthetic-only and append-only; no real-content capture gate is claimed.
+
+## Lane-01 diagnostic follow-ups (design parked, 2026-10-20)
+
+- Review only two candidate additions: common-support conditional comparisons
+  and reference-tail coverage. Full formulas, minima, failure modes and an
+  unexecuted fresh-seed plan are in problem-model.md Proposed v1. No new engine
+  type, scorer, migration or production phase is authorized by this analysis.
+- Treat unused label-correlated inputs as observationally nonidentifiable unless
+  stronger read/use evidence or a developer-controlled intervention is available.
+  Session matching alone cannot remove the within-session synthetic +10 offset.
+- Independent sequential histories and author-separated variants remain needed.
+  Do not replace lane-01, search seeds, or tune constants to make it successful.
+- Potential later uncertainty calibration, cluster-aware resampling, automated
+  control selection, conditional tails and interventions require separate review.
+  They are not additional proposed v1 features to implement in this task.
