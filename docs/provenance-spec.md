@@ -1,8 +1,25 @@
 # Provenance capture specification (design v0)
 
-Status: design plus source-level feasibility audit. Executable spike is pending. No new production
-endpoint, table, resolver, capture policy or diff type is implemented here.
+Status (2026-10-21): design plus accepted synthetic spike and a bounded
+read-only `signalscout trace` resolver. The resolver adds no production endpoint,
+table, capture policy or diff type.
 M4b is preserved in PR #1; M5–M8 remain unstarted.
+
+## Implemented single-output trace versus remaining design
+
+`trace <output-ref|native-evidence-id>` and `trace <run-id> <output-name>` read
+v1 decision/lineage envelopes with required time bounds, record limits and
+existing indexes. Opaque refs need a run partition; no whole-history fallback
+or migration. Backward traversal and descriptive `--compare-to` share budgets.
+An optional profile enables the per-output version invariant without a baseline.
+Text/JSON include capture states, integrity findings, truncations, negative-search
+scope and native evidence URLs. See [trace-walkthrough.md](trace-walkthrough.md).
+
+Inputs are "supplied to this step" and "recorded as input". Explicit probe
+`derived_from` edges are boundary assertions, not proof of code reads. Missing
+producers, alternatives, rules and evicted detail remain unknown. Artifact
+fetching, automatic cross-call identity, production recorder work and causal
+diagnosis remain design work. No cohort, diff or scoring behavior changed.
 
 ## Meaning and identity
 

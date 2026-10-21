@@ -1,5 +1,18 @@
 # Ideas parking lot
 
+## Owner closeout and single-output trace — 2026-10-21
+
+- Optimization NO-GO: retain all wrapper results/misses and both budgets. One
+  time-boxed binding-plan experiment may be reconsidered only if cost blocks
+  real use; not authorized now. Current observer-free cost remains unknown.
+- Design explicit cross-call value identity separately: today's probe argument
+  refs are not upstream return identities. Never infer dependence from nesting,
+  equal values or timing. A future opaque-ref index could improve ergonomics;
+  current bounded run-partition reads need no migration.
+- Artifact dereferencing, digest verification, identifying eviction versus
+  never-captured data and a viewer trace entry point remain deferred. Existing
+  run/event anchors work. No cohort, scoring or causal diagnosis is implied.
+
 - Authentication and multi-tenant isolation (explicit non-goal for current plan).
 - Sampling and retention policy configuration UI (beyond current cleanup configuration).
 - Broader cross-signal correlation heuristics; current behavior requires explicit context.
