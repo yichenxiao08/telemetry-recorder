@@ -214,3 +214,71 @@ resolve. Mark/reference/semantic explain controls are design only.
 The overhead harness has no concurrent replay workload. Use a separate fresh DB
 and absolute output paths; run measure.py only after safety tests pass. Original
 and monotonic-duration results retain the same rates, five seeds and budget.
+
+## Synthetic tuple returns and deterministic sampling
+
+Capture remains OFF unless explicitly requested. Whole `capture.return: true`
+accepts builtin tuples and standard namedtuples as ordered JSON arrays. Existing
+list limits apply: 32 items per sequence, depth 6, total traversal budget 256,
+and decision envelope 8192 bytes. Fields keep their original position; namedtuple
+field names are configuration selectors, not a new wire shape. Existing scalar,
+list and dict function/method wire values are unchanged without these options.
+
+```yaml
+probes:
+  - module: tuple_environment
+    function: loop
+  - module: tuple_environment
+    function: Environment.step
+    capture:
+      return_items: [0, 1]  # alternatively [state, reward] for a namedtuple
+    sampling:
+      every_nth: 10
+      max_per_run: 4
+```
+
+Use either whole `return: true` or `return_items`, not both. An explicit item
+allowlist enables only the selected zero-based indices or namedtuple field names;
+indices and names form a union. An empty list enables no elements. Other slots
+are `{"unknown":"not_allowlisted"}` without a drop. Item allowlists require a
+sequence; scalar/dict returns are rejected rather than exposed. Unsupported or
+oversized tuple elements (including nested sequence values) become explicit
+`{"unknown":"<reason>"}` markers. The output has `element_drops`; doctor counters
+include `drop_element` and reason counts. Numpy scalars/arrays stay unsupported
+with `numpy_unsupported`; numpy is not a dependency. Whole oversized sequences,
+invalid root values and envelopes over budget still cause `drop_invalid`.
+Existing list/dict root rejection behavior remains unchanged. No user repr,
+serializer, iterator or property is invoked. Snapshots do not retain caller data.
+
+Sampling is optional, per configured probe and explicit recorder run. Index 1
+is selected, then 1+N, 1+2N, etc. `max_per_run` caps selection opportunities,
+including selected calls whose capture later fails; the cap never retries a lost
+record. When both rules exist they intersect. Counts reset for each run; nested
+calls of the same probe share its counter. A standalone probe call creates its
+own run, so group repeated steps with an outer probed loop or explicit run to
+sample across them. Super-chain suppression retains its existing semantics.
+Calls skipped by sampling execute normally before any argument binding or value
+serialization. A skipped frame supplies no span; nested captured calls retain
+the nearest captured parent. This does not establish value links.
+
+Selected records add `sampling.rule` and one-based `sampling.call_index` and set
+`complete: false`. Doctor and stderr report per-probe calls, admitted decision
+records, rule and captured/seen fraction; run root attributes retain per-probe
+run totals, rule and fraction. Doctor/stderr retain only the latest 32 sampled
+probe/run summaries with an explicit omitted count; aggregate counters remain
+exact. Captured means queue-admitted, not necessarily persisted: also inspect
+ACK, queue drops and flush completion. Sampling-out is counted separately and
+cannot cause exit 5. Element/queue/invalid/delivery drops still can. Statuses
+remain zero capture 4, coverage gap 3, capture/delivery loss 5 (existing priority).
+Host exceptions and nonzero target exits keep their original identity/status.
+
+Capture is incomplete. Unsampled calls and unknown elements provide no evidence
+for invariant satisfaction or absence claims. Existing trace, lane, pipeline,
+ranking, cohort and diff behavior is unchanged; a trace of a captured sample is
+only that boundary observation. Do not interpret sampled traces as a full run.
+
+Synthetic fixture: `fixtures/tuple_environment.py` has plain RL-style steps
+returning `(state, reward, done)` and a high-rate loop. Run the full unittest suite
+with Python 3.12; new tests also verify real serve, runs list and bounded trace.
+`measure_tuple_sampling.py` retains one optional small paired local cost harness;
+it does not optimize or establish a supported rate or performance budget.

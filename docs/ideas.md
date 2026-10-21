@@ -223,3 +223,16 @@ for the final validation; the earlier proposal remains historical evidence.
   of scope. Boundary capture does not establish reads or return-to-argument links.
 - Measure receiver-field and method cost properly only if authorized later. Keep
   the one paired observation and all historical budget misses; no optimization.
+
+## Parked after synthetic tuple/sampling work (2026-10-21)
+
+- Application outcome field -> run status: define explicit mapping and conflict
+  semantics before implementing; an RL done/result flag does not currently alter
+  native run status.
+- Bulk mark-from-file: define bounded validation, preview and failure accounting
+  before implementing batch annotations.
+- General behavior expectations need a separate contract from the declared-version
+  invariant; do not reinterpret existing invariant/ranking/cohort/diff results.
+- Future sampling consumers could make incompleteness more visible. Current
+  metadata and documentation establish no evidence for skipped calls; do not
+  infer negative claims or implement new trace behavior in this task.

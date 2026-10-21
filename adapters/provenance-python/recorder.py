@@ -16,8 +16,20 @@ from opentelemetry.proto.collector.trace.v1.trace_service_pb2 import ExportTrace
 from opentelemetry.proto.common.v1.common_pb2 import AnyValue
 
 
-def bounded(value, depth=0, budget=None):
+def sequence_fields(value):
+    """Read namedtuple metadata without invoking instance hooks."""
+    cls = type(value)
+    if type(cls) is type and cls.__bases__ == (tuple,):
+        fields = vars(cls).get("_fields")
+        if type(fields) is tuple and len(fields) == tuple.__len__(value) and len(fields) <= 32 and all(type(f) is str and f.isidentifier() for f in fields):
+            return fields
+    return None
+
+
+def bounded(value, depth=0, budget=None, *, on_unknown=None, return_items=None):
     """Only builtins: never invoke a caller's serializer, repr or property."""
+    if return_items is not None and type(value) not in (list, tuple) and sequence_fields(value) is None:
+        raise ValueError("return_items_requires_sequence")
     if budget is None:
         budget = [256]
     budget[0] -= 1
@@ -31,12 +43,34 @@ def bounded(value, depth=0, budget=None):
         return value
     if type(value) is str and len(value) <= 256:
         return value
-    if type(value) is list and len(value) <= 32:
-        return [bounded(v, depth + 1, budget) for v in value]
+    fields = sequence_fields(value)
+    if type(value) in (list, tuple) or fields is not None:
+        size = list.__len__(value) if type(value) is list else tuple.__len__(value)
+        if size > 32:
+            raise ValueError("oversized sequence")
+        result = []
+        for i in range(size):
+            if return_items is not None and i not in return_items and (fields is None or fields[i] not in return_items):
+                result.append({"unknown": "not_allowlisted"})
+                continue
+            item = list.__getitem__(value, i) if type(value) is list else tuple.__getitem__(value, i)
+            try:
+                result.append(bounded(item, depth + 1, budget, on_unknown=on_unknown))
+            except ValueError as error:
+                if on_unknown is None:
+                    raise
+                reason = str(error)
+                on_unknown(reason)
+                result.append({"unknown": reason})
+        return result
     if type(value) is dict and len(value) <= 32:
         if any(type(k) is not str or len(k) > 128 for k in value):
             raise ValueError("invalid key")
-        return {k: bounded(v, depth + 1, budget) for k, v in value.items()}
+        return {k: bounded(v, depth + 1, budget, on_unknown=on_unknown) for k, v in value.items()}
+    if type(type(value)) is type:
+        module = vars(type(value)).get("__module__")
+        if type(module) is str and module.split(".")[0] == "numpy":
+            raise ValueError("numpy_unsupported")
     raise ValueError("unsupported or oversized value")
 
 
@@ -62,6 +96,7 @@ class Run:
         self.start_ns, self.end_ns, self.attributes = start_ns, end_ns, attributes
         self.span_id, self.next_id = "0000000000000001", 2
         self.valid, self.token = False, None
+        self.probe_sampling = {}
 
     def __enter__(self):
         try:
@@ -85,6 +120,12 @@ class Run:
     def __exit__(self, typ, value, traceback):
         try:
             if self.valid:
+                for index, stats in enumerate(self.probe_sampling.values()):
+                    prefix = f"signalscout.sampling.{index}."
+                    self.attributes.update({prefix + "probe": stats["probe"],
+                        prefix + "seen": stats["seen"], prefix + "captured": stats["captured"],
+                        prefix + "rule": json.dumps(stats["rule"], sort_keys=True),
+                        prefix + "fraction": stats["captured"] / stats["seen"] if stats["seen"] else 0})
                 self.recorder._enqueue(self.recorder._span(
                     self, self.span_id, "", self.name, self.start_ns,
                     self.end_ns or self.start_ns + time.perf_counter_ns() - self.monotonic_start,
@@ -195,7 +236,7 @@ class Recorder:
     def record_decision(self, step_id, *, output, inputs, chosen, alternatives,
                         rule, config_refs=(), verdict="selected", reason_code="",
                         record_id=None, at_ns=None, end_ns=None, _span_id=None, _parent_id=None,
-                        _error=False):
+                        _error=False, _return_items=None, _sampling=None):
         try:
             # Closing still rejects immediately. Cooldown is worker-only:
             # existing and newly admitted queue items must not be discarded.
@@ -231,8 +272,17 @@ class Recorder:
                     entry.update(inline=bounded(item["value"]), capture="allowed")
                 records.append(entry)
             out = {"ref": bounded(output["ref"]), "capture": "off"}
+            element_drops = []
             if "output" in self.capture_fields and "value" in output:
-                out.update(inline=bounded(output["value"]), capture="allowed")
+                def unknown(reason):
+                    element_drops.append(reason)
+                    self._count("drop_element")
+                    self._count("element_reason:" + reason)
+                tolerant = type(output["value"]) is tuple or sequence_fields(output["value"]) is not None or _return_items is not None
+                out.update(inline=bounded(output["value"], on_unknown=unknown if tolerant else None,
+                                          return_items=_return_items), capture="allowed")
+                if element_drops:
+                    out["element_drops"] = len(element_drops)
             envelope = {"version": 1, "id": f"decision:{run.trace_id}/{rid}",
                         "run_id": run.trace_id, "profile": {"id": "synthetic", "version": "1"},
                         "step": {"id": bounded(step_id), "version": "1",
@@ -242,6 +292,10 @@ class Recorder:
                         "config_refs": bounded(list(config_refs)),
                         "verdict": bounded(verdict), "reason_code": bounded(reason_code),
                         "complete": all(v["capture"] == "allowed" for v in records)}
+            if element_drops or _return_items is not None or _sampling is not None:
+                envelope["complete"] = False
+            if _sampling is not None:
+                envelope["sampling"] = _sampling
             body = json.dumps(envelope, separators=(",", ":"), allow_nan=False)
             if len(body.encode("utf-8")) > 8192 or len(alternatives) > 8:
                 raise ValueError("oversized envelope")
@@ -269,7 +323,9 @@ class Recorder:
             self._count("serialized")
             self._count("envelope_bytes", len(body.encode("utf-8")))
             return self._enqueue(self._span(run, sid, _parent_id or run.span_id, step_id, ts, end_ns or ts + 1, {}, events, _error))
-        except Exception:
+        except Exception as error:
+            if type(error) is ValueError and str(error) == "numpy_unsupported":
+                self._count("element_reason:numpy_unsupported")
             self._count("drop_invalid")
             return False
 
