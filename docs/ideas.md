@@ -211,3 +211,15 @@ for the final validation; the earlier proposal remains historical evidence.
   current fine scopes materially perturb costs, and thread CPU accounting is
   too coarse to prove GIL or scheduler causes. Do not turn a calibrated phase
   estimate into a production budget claim. Full results: docs/wrapper-overhead.md.
+
+## Probe usability follow-ups (deferred, 2026-10-21)
+
+- A subprocess import sandbox or application-declared argument-parser hook could
+  improve preflight. Current dry import cannot validate main-local argparse or
+  prevent module-level side effects. Do not run whole targets as preflight.
+- Broader callable support (native/async/generators, descriptors, inherited aliases,
+  custom access/metaclasses, reload) needs separate semantics/tests; do not silently
+  skip it. Automatic episode grouping and receiver-object provenance remain out
+  of scope. Boundary capture does not establish reads or return-to-argument links.
+- Measure receiver-field and method cost properly only if authorized later. Keep
+  the one paired observation and all historical budget misses; no optimization.
