@@ -53,3 +53,16 @@ and completed run, raw timing sample, calibration, counter and profile. Keep
 initial instrumented/observer misses; do not tune measurements after results.
 The 100/250 us budget remains unchanged, including every miss. GC and worker
 controls are not shipped defaults. No Stage 2 begins without GO OPTIMIZE.
+
+### Preserved harness failure before the complete suite
+
+Attempt `stage1-01` at harness commit `60eb69d` stopped after summary generation
+failed: GC callbacks appended to a deque while a Python generator iterated it.
+Calls had finished and raw timings were saved. The suite parent was stopped;
+the in-flight child was allowed to finish. All attempted files and failures are
+retained, including bare-function trials. This is a reporting defect, not a
+recorder safety failure. The correction snapshots the observation deque once
+before serialization/analysis, with a regression test. A fresh complete suite
+uses the corrected harness. Attempt-01 source metadata read at report time can
+reflect this edit for its in-flight child; its loaded code is the old commit.
+Do not combine interrupted-attempt trials with the five-trial complete suite.

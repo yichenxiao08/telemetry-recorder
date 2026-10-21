@@ -1,0 +1,474 @@
+{
+  "fixed-60hz-phase-bare-default-1": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 0,
+        "tail": 0
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 0,
+        "tail": 0
+      },
+      "gc_or_encode": {
+        "all": 0,
+        "tail": 0
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 154.4,
+      "p99_us": 387.0409999999998,
+      "sum_ns": 3022600
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 11.6,
+        "p99_us": 70.42799999999997,
+        "sum_ns": 25677100.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 0,
+      "allowlist_privacy": 0,
+      "value_capture": 0,
+      "envelope_json": 0,
+      "span_lineage": 0,
+      "clock": 0,
+      "queue_put": 0,
+      "exit_path": 0,
+      "run_context_enter": 0,
+      "run_context_exit": 0,
+      "counter_bookkeeping": 0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 11.6,
+      "p99_us": 70.42799999999997,
+      "sum_ns": 25677100.0
+    }
+  },
+  "fixed-60hz-phase-bare-default-2": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 0,
+        "tail": 0
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 0,
+        "tail": 0
+      },
+      "gc_or_encode": {
+        "all": 0,
+        "tail": 0
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 112.3,
+      "p99_us": 285.79099999999994,
+      "sum_ns": 2617700
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 15.75,
+        "p99_us": 73.76899999999995,
+        "sum_ns": 31487100.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 0,
+      "allowlist_privacy": 0,
+      "value_capture": 0,
+      "envelope_json": 0,
+      "span_lineage": 0,
+      "clock": 0,
+      "queue_put": 0,
+      "exit_path": 0,
+      "run_context_enter": 0,
+      "run_context_exit": 0,
+      "counter_bookkeeping": 0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 15.75,
+      "p99_us": 73.76899999999995,
+      "sum_ns": 31487100.0
+    }
+  },
+  "fixed-60hz-phase-bare-default-3": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 0,
+        "tail": 0
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 0,
+        "tail": 0
+      },
+      "gc_or_encode": {
+        "all": 0,
+        "tail": 0
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 205.35,
+      "p99_us": 795.3999999999994,
+      "sum_ns": 5030700
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 17.1,
+        "p99_us": 123.705,
+        "sum_ns": 37170000.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 0,
+      "allowlist_privacy": 0,
+      "value_capture": 0,
+      "envelope_json": 0,
+      "span_lineage": 0,
+      "clock": 0,
+      "queue_put": 0,
+      "exit_path": 0,
+      "run_context_enter": 0,
+      "run_context_exit": 0,
+      "counter_bookkeeping": 0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 17.1,
+      "p99_us": 123.705,
+      "sum_ns": 37170000.0
+    }
+  },
+  "fixed-60hz-phase-bare-default-4": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 0,
+        "tail": 0
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 0,
+        "tail": 0
+      },
+      "gc_or_encode": {
+        "all": 0,
+        "tail": 0
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 154.2,
+      "p99_us": 909.6959999999998,
+      "sum_ns": 4551600
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 17.7,
+        "p99_us": 104.3059999999999,
+        "sum_ns": 36755600.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 0,
+      "allowlist_privacy": 0,
+      "value_capture": 0,
+      "envelope_json": 0,
+      "span_lineage": 0,
+      "clock": 0,
+      "queue_put": 0,
+      "exit_path": 0,
+      "run_context_enter": 0,
+      "run_context_exit": 0,
+      "counter_bookkeeping": 0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 17.7,
+      "p99_us": 104.3059999999999,
+      "sum_ns": 36755600.0
+    }
+  },
+  "fixed-60hz-phase-bare-default-5": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 0,
+        "tail": 0
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 0,
+        "tail": 0
+      },
+      "gc_or_encode": {
+        "all": 0,
+        "tail": 0
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 226.15,
+      "p99_us": 1773.7729999999985,
+      "sum_ns": 6945200
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 15.8,
+        "p99_us": 115.36299999999994,
+        "sum_ns": 37028300.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 0,
+      "allowlist_privacy": 0,
+      "value_capture": 0,
+      "envelope_json": 0,
+      "span_lineage": 0,
+      "clock": 0,
+      "queue_put": 0,
+      "exit_path": 0,
+      "run_context_enter": 0,
+      "run_context_exit": 0,
+      "counter_bookkeeping": 0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 15.8,
+      "p99_us": 115.36299999999994,
+      "sum_ns": 37028300.0
+    }
+  },
+  "fixed-60hz-phase-off-default-1": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 18,
+        "tail": 1
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 1237,
+        "tail": 10
+      },
+      "gc_or_encode": {
+        "all": 18,
+        "tail": 1
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 2291.95,
+      "p99_us": 4034.262999999999,
+      "sum_ns": 43753700
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 739.6,
+        "p99_us": 1766.790999999999,
+        "sum_ns": 1330923800.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 220497200.0,
+      "allowlist_privacy": 30071100.0,
+      "value_capture": 181706800.0,
+      "envelope_json": 290100700.0,
+      "span_lineage": 72282100.0,
+      "clock": 24923900.0,
+      "queue_put": 77794600.0,
+      "exit_path": 42657700.0,
+      "run_context_enter": 70531900.0,
+      "run_context_exit": 15540700.0,
+      "counter_bookkeeping": 19250200.0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 739.6,
+      "p99_us": 1766.790999999999,
+      "sum_ns": 1330923800.0
+    }
+  },
+  "fixed-60hz-phase-off-default-2": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 17,
+        "tail": 1
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 1241,
+        "tail": 11
+      },
+      "gc_or_encode": {
+        "all": 17,
+        "tail": 1
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 2411.15,
+      "p99_us": 5540.007999999996,
+      "sum_ns": 43449000
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 769.15,
+        "p99_us": 1881.1419999999998,
+        "sum_ns": 1452487100.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 231432000.0,
+      "allowlist_privacy": 30154300.0,
+      "value_capture": 199116600.0,
+      "envelope_json": 321147800.0,
+      "span_lineage": 84951900.0,
+      "clock": 24724600.0,
+      "queue_put": 78581800.0,
+      "exit_path": 44679100.0,
+      "run_context_enter": 75716400.0,
+      "run_context_exit": 19748100.0,
+      "counter_bookkeeping": 19030700.0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 769.15,
+      "p99_us": 1881.1419999999998,
+      "sum_ns": 1452487100.0
+    }
+  },
+  "fixed-60hz-phase-off-default-3": {
+    "calls": 1800,
+    "tail_calls": 18,
+    "overlap": {
+      "gc": {
+        "all": 15,
+        "tail": 1
+      },
+      "_encode": {
+        "all": 0,
+        "tail": 0
+      },
+      "_send": {
+        "all": 1250,
+        "tail": 12
+      },
+      "gc_or_encode": {
+        "all": 15,
+        "tail": 1
+      }
+    },
+    "tail_off_cpu": {
+      "p50_us": 2203.3,
+      "p99_us": 4614.163999999999,
+      "sum_ns": 42494400
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 1800,
+        "p50_us": 757.9,
+        "p99_us": 1670.936,
+        "sum_ns": 1411255800.0
+      },
+      "full_before": {
+        "calls": 0,
+        "p50_us": null,
+        "p99_us": null,
+        "sum_ns": 0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 235697800.0,
+      "allowlist_privacy": 28827200.0,
+      "value_capture": 189879900.0,
+      "envelope_json": 316210700.0,
+      "span_lineage": 80884600.0,
+      "clock": 24899300.0,
+      "queue_put": 77334200.0,
+      "exit_path": 42840900.0,
+      "run_context_enter": 73932200.0,
+      "run_context_exit": 16586400.0,
+      "counter_bookkeeping": 18451700.0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 757.9,
+      "p99_us": 1670.936,
+      "sum_ns": 1411255800.0
+    }
+  }
+}

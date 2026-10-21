@@ -1,0 +1,122 @@
+[
+  {
+    "path": "fixed-60hz-phase-bare-default-1/raw.json.gz",
+    "original_sha256": "fa918f15c8417f71d2260625a1e880ca6e61d839418b8646b4a6f2e945428920",
+    "original_bytes": 51629
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-1/summary.json",
+    "original_sha256": "0ff86dd89cdec49dbe26bfc1f52c9881c4018aa22ba00568ab972dc0a21165a9",
+    "original_bytes": 4755
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-1.log",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_bytes": 0
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-2/raw.json.gz",
+    "original_sha256": "c3621f7c1eaf1ab9fae145e03cad39f95448311dd3d77929b4439eab3accdcb7",
+    "original_bytes": 52671
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-2/summary.json",
+    "original_sha256": "10d048f5add7562ae9f95774223c55a243af58cc2f2c549fe0f14aa0c94810ee",
+    "original_bytes": 4758
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-2.log",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_bytes": 0
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-3/raw.json.gz",
+    "original_sha256": "dfca3e12481829c56d005e348decc092d86c8f8522d4d6b281ba6a287b1c3b15",
+    "original_bytes": 53641
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-3/summary.json",
+    "original_sha256": "e26f094e16200a527b6f31856fff4e11a38647c8745e23f40537b95219262e75",
+    "original_bytes": 4725
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-3.log",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_bytes": 0
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-4/raw.json.gz",
+    "original_sha256": "fedfee753a34f9ca2375f0fb834150d02cf9216604ebc4243cff15991fd6d673",
+    "original_bytes": 53779
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-4/summary.json",
+    "original_sha256": "8bb42b441f0c4c455a578ef92a4075c232329ee6c62bea6076cc06cefe65ba10",
+    "original_bytes": 4755
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-4.log",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_bytes": 0
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-5/raw.json.gz",
+    "original_sha256": "b97afe7071e6319a3598e0aac0c3102a2f6908c68179f6d0472657348d688046",
+    "original_bytes": 53049
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-5/summary.json",
+    "original_sha256": "e99a4976c6dec8d3a707c47dd08f5672cfd6dc97cbb484d370fca56f331a17f8",
+    "original_bytes": 4760
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-5.log",
+    "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original_bytes": 0
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-1/raw.json.gz",
+    "original_sha256": "71a35d2fa0f71ee20bbe74ff6246bbdbe6ab3fccbe2d282d2de62b5ff0ca6bb3",
+    "original_bytes": 280432
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-1.log",
+    "original_sha256": "9110d372d635fe6cde9888320ca5ef345da193706c83c5e57398e2650d381b3c",
+    "original_bytes": 1236
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-2/raw.json.gz",
+    "original_sha256": "c1ca6fa7854ddd675941114ae1f83a85a283c64cc85a68810e0c8b6fa05ab29f",
+    "original_bytes": 284381
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-2.log",
+    "original_sha256": "9110d372d635fe6cde9888320ca5ef345da193706c83c5e57398e2650d381b3c",
+    "original_bytes": 1236
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-3/raw.json.gz",
+    "original_sha256": "bae679eab0b827628ca62614aeccc9c86766844008471198ffbd0f996ad37ba3",
+    "original_bytes": 281431
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-3.log",
+    "original_sha256": "04651e58cb7a8d7f8e86ce5b482385c1dfd8b77b499437be473f4ce34c9ea160",
+    "original_bytes": 1301
+  },
+  {
+    "path": "plan.json",
+    "original_sha256": "ce97ea9bd6cb8980d3a59c58e008119f5cfdb7d69e780ee645bf0071ba4313fc",
+    "original_bytes": 14298
+  },
+  {
+    "path": "progress.json",
+    "original_sha256": "ea58e9422d20f40ce47c916332ad645b8c02cdee78b345e2f02c5ba01605a4bd",
+    "original_bytes": 862
+  },
+  {
+    "path": "stopped.json",
+    "original_sha256": "91f669d70019a06810a4a247e6ded4e671b804b416bd598a63560838d1f96cd4",
+    "original_bytes": 300
+  }
+]

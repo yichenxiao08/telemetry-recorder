@@ -132,3 +132,30 @@ class ProfilingTests(unittest.TestCase):
         summary = profile_wrapper.summarize([sample])
         self.assertEqual(summary["calls"], 1)
         self.assertEqual(summary["raw"]["p50_us"], sample["raw_total_ns"]/1000)
+
+    def test_reporting_uses_one_observation_snapshot(self):
+        import argparse
+        import gzip
+        from pathlib import Path
+        import tempfile
+        import profile_wrapper as harness
+        meter = Meter()
+        calibration = meter.calibrate(10)
+        meter.begin()
+        sample = meter.finish()
+        factors = harness.Factors()
+        factors.append("gc", sample["started_ns"], sample["stopped_ns"], 0)
+        original = harness.summarize
+        def mutate(samples):
+            factors.append("_encode", sample["started_ns"], sample["stopped_ns"], 1)
+            return original(samples)
+        with tempfile.TemporaryDirectory() as directory:
+            args = argparse.Namespace(out=Path(directory), factor="default")
+            with patch.object(harness, "summarize", side_effect=mutate):
+                harness.report(args, [sample], calibration, factors, {})
+            saved = json.loads((Path(directory)/"summary.json").read_text())
+            with gzip.open(Path(directory)/"raw.json.gz", "rt") as stream:
+                raw = json.load(stream)
+            self.assertEqual(len(raw["intervals"]), 1)
+            self.assertEqual(saved["overlap"]["gc"]["all_calls"], 1)
+            self.assertEqual(saved["overlap"]["_encode"]["all_calls"], 0)

@@ -1,0 +1,6 @@
+{
+  "status": "stopped",
+  "reason": "Summary iterated a live GC observation deque; raw completed calls and failure logs retained. Parent stopped between diagnostic attempts; current child allowed to finish.",
+  "stopped_at": "2026-10-20T23:51:53.9587811-04:00",
+  "source_commit": "60eb69d"
+}

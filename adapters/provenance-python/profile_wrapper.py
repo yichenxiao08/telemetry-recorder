@@ -226,14 +226,17 @@ def lane_driver(args, meter, api, cls, factors, calibration):
 
 
 def report(args, samples, calibration, factors, extra):
+    # Snapshot once: GC callbacks can append while report allocations collect.
+    # Iterating a live deque through a Python generator is not safe here.
+    intervals_snapshot = list(factors.intervals)
     with gzip.open(args.out/"raw.json.gz", "wt", encoding="utf-8") as stream:
-        json.dump({"samples": samples, "calibration": calibration, "intervals": list(factors.intervals)}, stream)
+        json.dump({"samples": samples, "calibration": calibration, "intervals": intervals_snapshot}, stream)
     summary = summarize(samples)
     threshold = percentile([s["raw_total_ns"] for s in samples], .99)
     tails = [s for s in samples if s["raw_total_ns"] >= threshold]
     overlap = {}
     for kind in ("gc", "_encode", "_send"):
-        intervals = sorted((a, b) for k, a, b, _ in factors.intervals if k == kind)
+        intervals = sorted((a, b) for k, a, b, _ in intervals_snapshot if k == kind)
         def count_overlap(items):
             # Linear interval merge; do not add observer work to the measured path.
             index, count = 0, 0

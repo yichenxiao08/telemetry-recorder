@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\profile_wrapper.py", line 304, in <module>
+    
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\profile_wrapper.py", line 300, in main
+    parser.add_argument("--factor", choices=("default", "gc-disabled", "worker-idle"), default="default")
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\profile_wrapper.py", line 127, in child
+    micro(args, meter, api, Observed, factors, calibration, server.endpoint)
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\profile_wrapper.py", line 184, in micro
+    report(args, samples, calibration, factors,
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\profile_wrapper.py", line 236, in report
+    tails = [s for s in samples if s["raw_total_ns"] >= threshold]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\profile_wrapper.py", line 236, in <genexpr>
+    tails = [s for s in samples if s["raw_total_ns"] >= threshold]
+                                                    ^^^^^^^^^^^^^^^
+RuntimeError: deque mutated during iteration

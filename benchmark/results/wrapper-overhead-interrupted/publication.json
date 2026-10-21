@@ -1,0 +1,10 @@
+{
+  "planned": 154,
+  "recorded_exits": 7,
+  "summaries": 5,
+  "interrupted": true,
+  "original_timing_gzip_copied_byte_identically": true,
+  "json_metadata_paths_normalized": true,
+  "databases_remain_local": true,
+  "raw_pstats_paths_unmodified": true
+}
