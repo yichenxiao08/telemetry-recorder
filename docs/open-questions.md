@@ -430,3 +430,30 @@ benchmark/results/recorder-capture-loss-fix.
   analytic comparison preserves every score/count/value and matches all 120
   replays. Conservative choice: retain both results, never call new raw reports
   byte-identical, and do not change clocks, engine IDs or scores to erase it.
+
+## Wrapper overhead Stage 1 (measurement only)
+
+- The current probe has no independent capture-enabled switch. Conservative
+  choice: measure omitted capture (OFF), explicit empty allowlist and full
+  allowlist as configured today; do not invent a new runtime fast path.
+- Fine-grained timing changes allocation, GC and worker contention. Keep raw
+  timing, warmed empty-scope corrections, negative corrections, residuals and
+  separate plain controls. Phase estimates alone cannot certify the budget.
+- Worker-idle experiments fill the unchanged 256-item queue. Report full and
+  nonfull groups, drops and unknowns; do not mistake saturation for an isolated
+  causal test of GIL cost. GC/network overlap cannot identify a unique cause.
+- Keep the interrupted profiling attempt and reporting failure. Its fix takes
+  one observation-buffer snapshot; no shipped wrapper/recorder change follows.
+- Checkpoint A stops before optimization; retain the unchanged 100/250 us
+  budget and every miss. No reserved seeds, later milestones or lane-03 work.
+- Final Stage 1: plain lossless paced medians miss at 468.50/912.87 us (fixed)
+  and 498.85/1,315.68 us (lane inputs). Warm tight passes drop about 98% of
+  spans. All 60 paced driver cases complete; five tight cases are incomplete
+  and 55 unattempted. Retain these separately; never infer zero association.
+- Fine timing remains intrusive after calibration; plain controls did not save
+  separate context timings. Paced OFF/empty input controls cover only the
+  sequence prefix, not all 12 cases. Conservative choice: disclose coverage
+  and observer limitations, and do not promise precise optimization savings.
+- Most plain paced p99 calls have no GC/encode overlap; quantized thread CPU
+  cannot distinguish GIL/scheduling. GC-disable has no consistent benefit.
+  Keep these causes unresolved; any optimization still needs GO OPTIMIZE.

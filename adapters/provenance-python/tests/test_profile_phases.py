@@ -159,3 +159,16 @@ class ProfilingTests(unittest.TestCase):
             self.assertEqual(len(raw["intervals"]), 1)
             self.assertEqual(saved["overlap"]["gc"]["all_calls"], 1)
             self.assertEqual(saved["overlap"]["_encode"]["all_calls"], 0)
+
+    def test_raw_analysis_retains_negative_corrections_and_merges_intervals(self):
+        from report_wrapper_profile import raw_analysis
+        samples = [{"raw_total_ns": 10, "adjusted_total_ns": -2,
+                    "started_ns": 100, "stopped_ns": 110, "caller_thread_cpu_ns": 0,
+                    "adjusted_exclusive_ns": {"clock": -1}, "queue_depth_before": 256}]
+        result = raw_analysis({"samples": samples, "intervals": [
+            ["gc", 0, 105, 0], ["_encode", 2, 3, 1], ["_encode", 104, 120, 1]]})
+        self.assertEqual(result["overlap"]["gc_or_encode"]["tail"], 1)
+        self.assertEqual(result["clipped_adjusted_total"]["p50_us"], 0)
+        self.assertEqual(samples[0]["adjusted_total_ns"], -2)
+        self.assertEqual(result["queue_groups"]["full_before"]["calls"], 1)
+        self.assertEqual(result["zero_thread_cpu_calls"], 1)

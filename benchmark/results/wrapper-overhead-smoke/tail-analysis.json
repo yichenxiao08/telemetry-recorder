@@ -1,0 +1,75 @@
+{
+  ".": {
+    "calls": 10000,
+    "tail_calls": 100,
+    "overlap": {
+      "gc": {
+        "all": 78,
+        "tail": 8
+      },
+      "_encode": {
+        "all": 17,
+        "tail": 17
+      },
+      "_send": {
+        "all": 8335,
+        "tail": 88
+      },
+      "gc_or_encode": {
+        "all": 94,
+        "tail": 24
+      }
+    },
+    "context_inclusive": {
+      "run_context_enter": {
+        "p50_us": 8.0,
+        "p99_us": 43.00600000000013,
+        "sum_ns": 137631400
+      },
+      "run_context_exit": {
+        "p50_us": 7.5,
+        "p99_us": 39.9,
+        "sum_ns": 134505300
+      }
+    },
+    "zero_thread_cpu_calls": 9781,
+    "thread_cpu_exceeds_wall_calls": 219,
+    "tail_off_cpu": {
+      "p50_us": 1451.1,
+      "p99_us": 5680.748000000034,
+      "sum_ns": 181711500
+    },
+    "queue_groups": {
+      "nonfull_before": {
+        "calls": 430,
+        "p50_us": 117.6,
+        "p99_us": 1000.8499999999989,
+        "sum_ns": 116868900.0
+      },
+      "full_before": {
+        "calls": 9570,
+        "p50_us": 58.3,
+        "p99_us": 973.5549999999997,
+        "sum_ns": 2046338300.0
+      }
+    },
+    "clipped_phase_sum_ns": {
+      "entry_argument_access": 227092000.0,
+      "allowlist_privacy": 152694800.0,
+      "value_capture": 470612900.0,
+      "envelope_json": 480589100.0,
+      "span_lineage": 128470100.0,
+      "clock": 42566800.0,
+      "queue_put": 84543800.0,
+      "exit_path": 57450000.0,
+      "run_context_enter": 65625500.0,
+      "run_context_exit": 27615500.0,
+      "counter_bookkeeping": 60604100.0
+    },
+    "clipped_adjusted_total": {
+      "p50_us": 59.9,
+      "p99_us": 973.9720000000017,
+      "sum_ns": 2163207200.0
+    }
+  }
+}

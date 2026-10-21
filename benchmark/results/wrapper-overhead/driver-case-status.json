@@ -1,0 +1,2194 @@
+[
+  {
+    "path": "lane-driver-60hz-phase-full-default-1\\driver\\report.json",
+    "status": "completed",
+    "counts": {
+      "completed": 12,
+      "unattempted": 0
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 586,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 14,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 955950.0,
+          "wrapper_p99": 1772503.9999999995,
+          "run_enter_p50": 100150.0,
+          "run_exit_p50": 80000.0,
+          "run_enter_p99": 249869.99999999977,
+          "run_exit_p99": 181806.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 101,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295711,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 531,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 2,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 980400.0,
+          "wrapper_p99": 1759051.0,
+          "run_enter_p50": 102400.0,
+          "run_exit_p50": 83900.0,
+          "run_enter_p99": 259401.0,
+          "run_exit_p99": 232681.9999999999
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 101,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295357,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 470,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 4,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1001600.0,
+          "wrapper_p99": 2149825.0,
+          "run_enter_p50": 107500.0,
+          "run_exit_p50": 84300.0,
+          "run_enter_p99": 293491.99999999965,
+          "run_exit_p99": 191807.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 19
+      },
+      {
+        "seed": 101,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295641,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 513,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 981800.0,
+          "wrapper_p99": 1778561.999999999,
+          "run_enter_p50": 103450.0,
+          "run_exit_p50": 82900.0,
+          "run_enter_p99": 201243.99999999997,
+          "run_exit_p99": 147986.99999999983
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 11
+      },
+      {
+        "seed": 101,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295460,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 412,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 4,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1075150.0,
+          "wrapper_p99": 2419072.9999999995,
+          "run_enter_p50": 109700.0,
+          "run_exit_p50": 88000.0,
+          "run_enter_p99": 449345.9999999999,
+          "run_exit_p99": 261371.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 16
+      },
+      {
+        "seed": 101,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295554,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 339,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 44,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1070750.0,
+          "wrapper_p99": 3031126.999999999,
+          "run_enter_p50": 128650.0,
+          "run_exit_p50": 93800.0,
+          "run_enter_p99": 249680.9999999999,
+          "run_exit_p99": 224671.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294615,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 362,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1001700.0,
+          "wrapper_p99": 2037882.9999999988,
+          "run_enter_p50": 114950.0,
+          "run_exit_p50": 87200.0,
+          "run_enter_p99": 331606.0,
+          "run_exit_p99": 238406.9999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 103,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295457,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 372,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1126900.0,
+          "wrapper_p99": 2406047.9999999995,
+          "run_enter_p50": 119250.0,
+          "run_exit_p50": 91050.0,
+          "run_enter_p99": 343609.9999999999,
+          "run_exit_p99": 565511.9999999998
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295429,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 366,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1030850.0,
+          "wrapper_p99": 1790866.9999999998,
+          "run_enter_p50": 120150.0,
+          "run_exit_p50": 89700.0,
+          "run_enter_p99": 254222.99999999988,
+          "run_exit_p99": 188719.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295667,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 339,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1043950.0,
+          "wrapper_p99": 1820875.9999999995,
+          "run_enter_p50": 124100.0,
+          "run_exit_p50": 87700.0,
+          "run_enter_p99": 231351.99999999985,
+          "run_exit_p99": 242179.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295466,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 406,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1000400.0,
+          "wrapper_p99": 2048613.9999999993,
+          "run_enter_p50": 104200.0,
+          "run_exit_p50": 84000.0,
+          "run_enter_p99": 367172.99999999994,
+          "run_exit_p99": 225842.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 103,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295639,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 420,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 989050.0,
+          "wrapper_p99": 2104238.9999999995,
+          "run_enter_p50": 100500.0,
+          "run_exit_p50": 82650.0,
+          "run_enter_p99": 208558.99999999994,
+          "run_exit_p99": 471984.9999999998
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-60hz-phase-full-default-2\\driver\\report.json",
+    "status": "completed",
+    "counts": {
+      "completed": 12,
+      "unattempted": 0
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 580,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 12,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 972350.0,
+          "wrapper_p99": 1714149.9999999998,
+          "run_enter_p50": 103700.0,
+          "run_exit_p50": 83000.0,
+          "run_enter_p99": 232614.0,
+          "run_exit_p99": 186738.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 101,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295711,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 515,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 8,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 974450.0,
+          "wrapper_p99": 2390007.9999999995,
+          "run_enter_p50": 99350.0,
+          "run_exit_p50": 84300.0,
+          "run_enter_p99": 273085.9999999998,
+          "run_exit_p99": 191531.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 101,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295357,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 511,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 999650.0,
+          "wrapper_p99": 1792258.999999999,
+          "run_enter_p50": 112600.0,
+          "run_exit_p50": 83900.0,
+          "run_enter_p99": 203770.99999999994,
+          "run_exit_p99": 213220.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 19
+      },
+      {
+        "seed": 101,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295641,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 440,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 2,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 985650.0,
+          "wrapper_p99": 2261763.999999999,
+          "run_enter_p50": 113200.0,
+          "run_exit_p50": 86700.0,
+          "run_enter_p99": 257125.99999999988,
+          "run_exit_p99": 225283.99999999983
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 11
+      },
+      {
+        "seed": 101,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295460,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 415,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1030250.0,
+          "wrapper_p99": 2069784.999999999,
+          "run_enter_p50": 116400.0,
+          "run_exit_p50": 86000.0,
+          "run_enter_p99": 222923.99999999997,
+          "run_exit_p99": 205520.99999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 16
+      },
+      {
+        "seed": 101,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295554,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 447,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 980700.0,
+          "wrapper_p99": 1929624.999999999,
+          "run_enter_p50": 101350.0,
+          "run_exit_p50": 83900.0,
+          "run_enter_p99": 184097.9999999999,
+          "run_exit_p99": 233490.9999999999
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294615,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 377,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1028850.0,
+          "wrapper_p99": 1823328.9999999998,
+          "run_enter_p50": 120050.0,
+          "run_exit_p50": 89800.0,
+          "run_enter_p99": 233797.9999999999,
+          "run_exit_p99": 214724.99999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 103,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295457,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 339,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 992150.0,
+          "wrapper_p99": 2347051.0,
+          "run_enter_p50": 108250.0,
+          "run_exit_p50": 83600.0,
+          "run_enter_p99": 191906.0,
+          "run_exit_p99": 219617.99999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295429,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 316,
+          "exported": 1600,
+          "retry_requests": 1,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 46,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 976750.0,
+          "wrapper_p99": 3156157.999999998,
+          "run_enter_p50": 105800.0,
+          "run_exit_p50": 84700.0,
+          "run_enter_p99": 304292.99999999994,
+          "run_exit_p99": 244654.99999999968
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295667,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 290,
+          "exported": 1600,
+          "retry_requests": 1,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 16,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 993300.0,
+          "wrapper_p99": 3169322.9999999963,
+          "run_enter_p50": 113400.0,
+          "run_exit_p50": 83150.0,
+          "run_enter_p99": 189869.99999999985,
+          "run_exit_p99": 163764.99999999985
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295466,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 351,
+          "exported": 1600,
+          "retry_requests": 0,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 993750.0,
+          "wrapper_p99": 1990684.0,
+          "run_enter_p50": 108900.0,
+          "run_exit_p50": 84900.0,
+          "run_enter_p99": 301947.99999999994,
+          "run_exit_p99": 215676.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 103,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295639,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 396,
+          "exported": 1600,
+          "retry_requests": 0,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 988300.0,
+          "wrapper_p99": 1800681.9999999998,
+          "run_enter_p50": 108100.0,
+          "run_exit_p50": 84550.0,
+          "run_enter_p99": 263072.9999999998,
+          "run_exit_p99": 223505.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-60hz-phase-full-default-3\\driver\\report.json",
+    "status": "completed",
+    "counts": {
+      "completed": 12,
+      "unattempted": 0
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 570,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 14,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 962800.0,
+          "wrapper_p99": 1898051.9999999998,
+          "run_enter_p50": 106250.0,
+          "run_exit_p50": 79700.0,
+          "run_enter_p99": 308138.9999999999,
+          "run_exit_p99": 223702.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 101,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295711,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 493,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 2,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1014700.0,
+          "wrapper_p99": 1884760.0,
+          "run_enter_p50": 119100.0,
+          "run_exit_p50": 86600.0,
+          "run_enter_p99": 316114.9999999999,
+          "run_exit_p99": 234058.99999999985
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 101,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295357,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 468,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 4,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1036300.0,
+          "wrapper_p99": 1906925.9999999993,
+          "run_enter_p50": 121300.0,
+          "run_exit_p50": 87500.0,
+          "run_enter_p99": 398036.99999999977,
+          "run_exit_p99": 195043.99999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 19
+      },
+      {
+        "seed": 101,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295641,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 414,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1016650.0,
+          "wrapper_p99": 1756938.9999999998,
+          "run_enter_p50": 117300.0,
+          "run_exit_p50": 86550.0,
+          "run_enter_p99": 276952.9999999999,
+          "run_exit_p99": 237628.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 11
+      },
+      {
+        "seed": 101,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295460,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 386,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 10,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1051200.0,
+          "wrapper_p99": 1958480.9999999998,
+          "run_enter_p50": 126400.0,
+          "run_exit_p50": 86350.0,
+          "run_enter_p99": 283886.9999999998,
+          "run_exit_p99": 238508.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 16
+      },
+      {
+        "seed": 101,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295554,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 413,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1028800.0,
+          "wrapper_p99": 1750746.9999999995,
+          "run_enter_p50": 121500.0,
+          "run_exit_p50": 88000.0,
+          "run_enter_p99": 216295.9999999999,
+          "run_exit_p99": 170207.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294615,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 362,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1002950.0,
+          "wrapper_p99": 2362266.9999999986,
+          "run_enter_p50": 108050.0,
+          "run_exit_p50": 83450.0,
+          "run_enter_p99": 283001.0,
+          "run_exit_p99": 180941.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 103,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295457,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 386,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 992050.0,
+          "wrapper_p99": 1805340.9999999995,
+          "run_enter_p50": 108600.0,
+          "run_exit_p50": 82000.0,
+          "run_enter_p99": 231264.99999999994,
+          "run_exit_p99": 149501.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295429,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 383,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 984850.0,
+          "wrapper_p99": 2145469.9999999995,
+          "run_enter_p50": 105650.0,
+          "run_exit_p50": 84200.0,
+          "run_enter_p99": 228471.99999999994,
+          "run_exit_p99": 195894.9999999999
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295667,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 284,
+          "exported": 1600,
+          "retry_requests": 1,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 60,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 995450.0,
+          "wrapper_p99": 5343943.0,
+          "run_enter_p50": 110800.0,
+          "run_exit_p50": 80250.0,
+          "run_enter_p99": 292213.9999999998,
+          "run_exit_p99": 187450.99999999985
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295466,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 370,
+          "exported": 1600,
+          "retry_requests": 0,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 988450.0,
+          "wrapper_p99": 1908145.9999999998,
+          "run_enter_p50": 106700.0,
+          "run_exit_p50": 82250.0,
+          "run_enter_p99": 255905.0,
+          "run_exit_p99": 190302.9999999999
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 103,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295639,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 357,
+          "exported": 1600,
+          "retry_requests": 0,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 994850.0,
+          "wrapper_p99": 2119551.9999999995,
+          "run_enter_p50": 106200.0,
+          "run_exit_p50": 83800.0,
+          "run_enter_p99": 265017.9999999999,
+          "run_exit_p99": 230342.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-60hz-phase-full-default-4\\driver\\report.json",
+    "status": "completed",
+    "counts": {
+      "completed": 12,
+      "unattempted": 0
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 625,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 38,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 572950.0,
+          "wrapper_p99": 1898279.9999999995,
+          "run_enter_p50": 71750.0,
+          "run_exit_p50": 44100.0,
+          "run_enter_p99": 487511.9999999999,
+          "run_exit_p99": 202932.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 101,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295711,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 544,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 705150.0,
+          "wrapper_p99": 1398572.9999999995,
+          "run_enter_p50": 86150.0,
+          "run_exit_p50": 58300.0,
+          "run_enter_p99": 189503.0,
+          "run_exit_p99": 130208.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 101,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295357,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 512,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 738400.0,
+          "wrapper_p99": 1502024.0,
+          "run_enter_p50": 87500.0,
+          "run_exit_p50": 58100.0,
+          "run_enter_p99": 254200.0,
+          "run_exit_p99": 133418.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 19
+      },
+      {
+        "seed": 101,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295641,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 515,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 849900.0,
+          "wrapper_p99": 2017915.9999999995,
+          "run_enter_p50": 92850.0,
+          "run_exit_p50": 66750.0,
+          "run_enter_p99": 302646.99999999994,
+          "run_exit_p99": 211815.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 11
+      },
+      {
+        "seed": 101,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295460,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 522,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 816750.0,
+          "wrapper_p99": 2065070.0,
+          "run_enter_p50": 91600.0,
+          "run_exit_p50": 62000.0,
+          "run_enter_p99": 258123.99999999988,
+          "run_exit_p99": 195320.99999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 16
+      },
+      {
+        "seed": 101,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295554,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 490,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 818800.0,
+          "wrapper_p99": 1661662.9999999995,
+          "run_enter_p50": 96150.0,
+          "run_exit_p50": 66150.0,
+          "run_enter_p99": 257866.99999999994,
+          "run_exit_p99": 170439.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294615,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 509,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 719400.0,
+          "wrapper_p99": 1224734.0,
+          "run_enter_p50": 86000.0,
+          "run_exit_p50": 58500.0,
+          "run_enter_p99": 152701.0,
+          "run_exit_p99": 98135.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 103,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295457,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 394,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 997100.0,
+          "wrapper_p99": 2068261.9999999984,
+          "run_enter_p50": 113300.0,
+          "run_exit_p50": 82850.0,
+          "run_enter_p99": 291144.9999999999,
+          "run_exit_p99": 163646.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295429,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 380,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1018300.0,
+          "wrapper_p99": 1957758.0,
+          "run_enter_p50": 115900.0,
+          "run_exit_p50": 86800.0,
+          "run_enter_p99": 276169.99999999994,
+          "run_exit_p99": 227353.99999999985
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295667,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 354,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1034550.0,
+          "wrapper_p99": 1898658.9999999993,
+          "run_enter_p50": 123950.0,
+          "run_exit_p50": 84850.0,
+          "run_enter_p99": 262334.9999999999,
+          "run_exit_p99": 225103.99999999983
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295466,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 334,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1039500.0,
+          "wrapper_p99": 2247864.0,
+          "run_enter_p50": 115900.0,
+          "run_exit_p50": 87250.0,
+          "run_enter_p99": 239322.9999999998,
+          "run_exit_p99": 616604.9999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 103,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295639,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 346,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1025050.0,
+          "wrapper_p99": 1842938.9999999998,
+          "run_enter_p50": 118200.0,
+          "run_exit_p50": 87300.0,
+          "run_enter_p99": 284227.0,
+          "run_exit_p99": 203017.99999999988
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-60hz-phase-full-default-5\\driver\\report.json",
+    "status": "completed",
+    "counts": {
+      "completed": 12,
+      "unattempted": 0
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 588,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 20,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 959650.0,
+          "wrapper_p99": 2096189.9999999984,
+          "run_enter_p50": 110400.0,
+          "run_exit_p50": 81450.0,
+          "run_enter_p99": 384097.9999999997,
+          "run_exit_p99": 262739.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 101,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295711,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 476,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 4,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1024650.0,
+          "wrapper_p99": 2236807.9999999995,
+          "run_enter_p50": 109100.0,
+          "run_exit_p50": 90950.0,
+          "run_enter_p99": 305325.0,
+          "run_exit_p99": 263422.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 101,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295357,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 454,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 997650.0,
+          "wrapper_p99": 1676718.9999999998,
+          "run_enter_p50": 108250.0,
+          "run_exit_p50": 84350.0,
+          "run_enter_p99": 213412.0,
+          "run_exit_p99": 166847.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 19
+      },
+      {
+        "seed": 101,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295641,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 598,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 417750.0,
+          "wrapper_p99": 1028976.9999999999,
+          "run_enter_p50": 59900.0,
+          "run_exit_p50": 36500.0,
+          "run_enter_p99": 168728.99999999988,
+          "run_exit_p99": 88914.99999999999
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 11
+      },
+      {
+        "seed": 101,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295460,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 502,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 740050.0,
+          "wrapper_p99": 1510485.9999999998,
+          "run_enter_p50": 91600.0,
+          "run_exit_p50": 61150.0,
+          "run_enter_p99": 192909.0,
+          "run_exit_p99": 149155.99999999994
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 16
+      },
+      {
+        "seed": 101,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295554,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 426,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 992600.0,
+          "wrapper_p99": 2023931.9999999998,
+          "run_enter_p50": 113850.0,
+          "run_exit_p50": 86150.0,
+          "run_enter_p99": 311152.9999999999,
+          "run_exit_p99": 200435.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "matched-negative-controls",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294615,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 360,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 26,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 1006800.0,
+          "wrapper_p99": 2361101.999999999,
+          "run_enter_p50": 107100.0,
+          "run_exit_p50": 88300.0,
+          "run_enter_p99": 262749.99999999994,
+          "run_exit_p99": 252409.99999999953
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 6
+      },
+      {
+        "seed": 103,
+        "variant": "minority-stale-use",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295457,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 415,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 976800.0,
+          "wrapper_p99": 2304968.0,
+          "run_enter_p50": 105700.0,
+          "run_exit_p50": 82500.0,
+          "run_enter_p99": 234659.99999999977,
+          "run_exit_p99": 172045.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "benign-minority-tail",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295429,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 413,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 922650.0,
+          "wrapper_p99": 1944121.0,
+          "run_enter_p50": 96850.0,
+          "run_exit_p50": 80900.0,
+          "run_enter_p99": 388804.0,
+          "run_exit_p99": 217428.99999999997
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 14
+      },
+      {
+        "seed": 103,
+        "variant": "within-range-subgroup",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295667,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 380,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 978050.0,
+          "wrapper_p99": 1969083.9999999988,
+          "run_enter_p50": 99800.0,
+          "run_exit_p50": 81700.0,
+          "run_enter_p99": 218879.99999999994,
+          "run_exit_p99": 161716.0
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 12
+      },
+      {
+        "seed": 103,
+        "variant": "moderate-decoy",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295466,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 395,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 948650.0,
+          "wrapper_p99": 1998140.9999999995,
+          "run_enter_p50": 98950.0,
+          "run_exit_p50": 80750.0,
+          "run_enter_p99": 161648.99999999994,
+          "run_exit_p99": 144037.9999999998
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      },
+      {
+        "seed": 103,
+        "variant": "unrelated-nuisance",
+        "status": "completed",
+        "error": null,
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1295639,
+          "attempted": 1600,
+          "accepted": 1600,
+          "network_requests": 389,
+          "exported": 1600,
+          "acknowledged": 1600,
+          "failed": 0,
+          "dropped": 0,
+          "unknown": 0,
+          "queue_high_water": 0,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 944850.0,
+          "wrapper_p99": 1901707.999999999,
+          "run_enter_p50": 102350.0,
+          "run_exit_p50": 81250.0,
+          "run_enter_p99": 220592.99999999974,
+          "run_exit_p99": 229439.99999999977
+        },
+        "expectation_mismatches": [],
+        "verified_evidence_links": 15
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-tight-phase-full-default-1\\driver\\report.json",
+    "status": "failed",
+    "counts": {
+      "incomplete": 1,
+      "unattempted": 11
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "incomplete",
+        "error": "RuntimeError: transport/capture incomplete; retain case, no zero association",
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 312,
+          "network_requests": 10,
+          "drop_full": 1288,
+          "exported": 312,
+          "acknowledged": 312,
+          "failed": 0,
+          "dropped": 1288,
+          "unknown": 0,
+          "queue_high_water": 256,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 212900.0,
+          "wrapper_p99": 678826.9999999994,
+          "run_enter_p50": 11900.0,
+          "run_exit_p50": 15800.0,
+          "run_enter_p99": 35229.99999999997,
+          "run_exit_p99": 46006.99999999999
+        },
+        "expectation_mismatches": null,
+        "verified_evidence_links": null
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-tight-phase-full-default-2\\driver\\report.json",
+    "status": "failed",
+    "counts": {
+      "incomplete": 1,
+      "unattempted": 11
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "incomplete",
+        "error": "RuntimeError: transport/capture incomplete; retain case, no zero association",
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 320,
+          "network_requests": 10,
+          "drop_full": 1280,
+          "exported": 320,
+          "acknowledged": 320,
+          "failed": 0,
+          "dropped": 1280,
+          "unknown": 0,
+          "queue_high_water": 256,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 215450.0,
+          "wrapper_p99": 716571.9999999995,
+          "run_enter_p50": 12000.0,
+          "run_exit_p50": 16400.0,
+          "run_enter_p99": 43003.0,
+          "run_exit_p99": 63434.99999999997
+        },
+        "expectation_mismatches": null,
+        "verified_evidence_links": null
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-tight-phase-full-default-3\\driver\\report.json",
+    "status": "failed",
+    "counts": {
+      "incomplete": 1,
+      "unattempted": 11
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "incomplete",
+        "error": "RuntimeError: transport/capture incomplete; retain case, no zero association",
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 320,
+          "network_requests": 10,
+          "drop_full": 1280,
+          "exported": 320,
+          "acknowledged": 320,
+          "failed": 0,
+          "dropped": 1280,
+          "unknown": 0,
+          "queue_high_water": 256,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 213550.0,
+          "wrapper_p99": 726335.9999999998,
+          "run_enter_p50": 11900.0,
+          "run_exit_p50": 16000.0,
+          "run_enter_p99": 41504.99999999999,
+          "run_exit_p99": 55833.99999999997
+        },
+        "expectation_mismatches": null,
+        "verified_evidence_links": null
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-tight-phase-full-default-4\\driver\\report.json",
+    "status": "failed",
+    "counts": {
+      "incomplete": 1,
+      "unattempted": 11
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "incomplete",
+        "error": "RuntimeError: transport/capture incomplete; retain case, no zero association",
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 320,
+          "network_requests": 10,
+          "drop_full": 1280,
+          "exported": 320,
+          "acknowledged": 320,
+          "failed": 0,
+          "dropped": 1280,
+          "unknown": 0,
+          "queue_high_water": 256,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 216100.0,
+          "wrapper_p99": 995411.9999999994,
+          "run_enter_p50": 12300.0,
+          "run_exit_p50": 16400.0,
+          "run_enter_p99": 53074.999999999935,
+          "run_exit_p99": 75720.99999999999
+        },
+        "expectation_mismatches": null,
+        "verified_evidence_links": null
+      }
+    ]
+  },
+  {
+    "path": "lane-driver-tight-phase-full-default-5\\driver\\report.json",
+    "status": "failed",
+    "counts": {
+      "incomplete": 1,
+      "unattempted": 11
+    },
+    "cases": [
+      {
+        "seed": 101,
+        "variant": "matched-negative-controls",
+        "status": "incomplete",
+        "error": "RuntimeError: transport/capture incomplete; retain case, no zero association",
+        "capture": {
+          "captured_args": 4800,
+          "serialized": 800,
+          "envelope_bytes": 1294501,
+          "attempted": 1600,
+          "accepted": 320,
+          "network_requests": 10,
+          "drop_full": 1280,
+          "exported": 320,
+          "acknowledged": 320,
+          "failed": 0,
+          "dropped": 1280,
+          "unknown": 0,
+          "queue_high_water": 256,
+          "network_operation_slots": 0,
+          "retry_limit": 0
+        },
+        "overhead_ns": {
+          "wrapper_p50": 216300.0,
+          "wrapper_p99": 670096.9999999997,
+          "run_enter_p50": 12200.0,
+          "run_exit_p50": 16400.0,
+          "run_enter_p99": 39027.99999999997,
+          "run_exit_p99": 57830.99999999997
+        },
+        "expectation_mismatches": null,
+        "verified_evidence_links": null
+      }
+    ]
+  }
+]

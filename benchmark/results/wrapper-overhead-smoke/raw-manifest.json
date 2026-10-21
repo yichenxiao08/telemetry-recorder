@@ -1,0 +1,17 @@
+[
+  {
+    "path": "raw.json.gz",
+    "original_sha256": "c98cd2c3e4ed08cfa8dc592ba82c5e9b677b7a86e585dde37fd587190b3160ac",
+    "original_bytes": 1084636
+  },
+  {
+    "path": "store.db.log",
+    "original_sha256": "6f457f85341d63dfbf296e1c45df7d3921b80b271d6989bad0ca1f5fa9d972de",
+    "original_bytes": 243
+  },
+  {
+    "path": "summary.json",
+    "original_sha256": "9b356453ca4b274823fadfeb0e44f84fc8511a6343c60af83efac01c90c468da",
+    "original_bytes": 10861
+  }
+]

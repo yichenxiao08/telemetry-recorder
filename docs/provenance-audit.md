@@ -478,3 +478,33 @@ then compares all analytic content with stable run references; it matches
 published; no raw new-capture byte-identity claim is made. Full reviewed data:
 benchmark/results/recorder-capture-loss-fix-reviewed. Forty-four Python tests
 pass. The cost gate remains NO-GO; the original reserved trigger remains unknown.
+
+## Wrapper overhead Stage 1: measurement boundary
+
+The next investigation profiles only the unchanged recorder and probe, using
+private diagnostic AST copies and separate uninstrumented/cProfile processes.
+Fixed-clock tests prove diagnostic wire equivalence, mutable snapshots, return
+identity and exception identity. Fifty Python tests pass before the complete
+measurement suite. The first attempt's summary-generation failure and raw data
+are preserved in benchmark/results/wrapper-overhead-interrupted. The correction
+snapshots a GC observation deque; it changes no recorder or probe behavior.
+
+Phase estimates require warmed empty-scope correction and retain negatives and
+unattributed residuals. They are not production cost gates. Worker overlap is
+correlation; quantized Windows thread CPU time cannot identify short scheduler
+or GIL stalls. Only development seeds 101/103 are generated. Lane-02 remains
+closed, and optimization awaits GO OPTIMIZE at Checkpoint A.
+
+Final Stage 1 has 154 process reports. All 60 full paced driver cases complete
+losslessly (96,000 spans); tight attempts overflow and leave 55 cases unattempted.
+Plain paced cost medians are 468.50/912.87 us fixed and 498.85/1,315.68 us lane;
+both miss. Warm tight timing passes drop about 98% of spans. JSON, bounded
+snapshots and binding are corroborated cost areas, but intrusive scopes still
+overstate ordinary costs after calibration. Most plain paced p99 calls do not
+overlap GC/encoding; Windows CPU quantization prevents scheduler attribution.
+
+Every four-state identity is exact, every protected hash matches, and all
+51 Python safety/reporting tests plus Go checks pass. Raw profiles, every miss,
+the interrupted attempt and smoke run are retained. Full findings and limits:
+docs/wrapper-overhead.md. No production optimization, new reserved generation,
+scoring change or later milestone is authorized. Wait for GO OPTIMIZE.

@@ -37,6 +37,65 @@ def f(value):
     return f"{value:.2f}"
 
 
+def profile_readout(source):
+    lines = ["# Separate cProfile readout", "",
+             "One separate process per payload/mode; these are not five-trial budget measurements.",
+             "Cumulative children overlap their parents. Do not sum the whole table.",
+             "Raw profiles also contain background network activity; the caller-only wrapper is the denominator here.",
+             "Function fractions are diagnostic proxies, not promised optimization savings.", "",
+             "| Profile | Caller-only function | Calls | Self ms | Cumulative ms | Fraction of probe wrapper cumulative |",
+             "|---|---|---:|---:|---:|---:|"]
+    for path in sorted(source.glob("*-cprofile-*/profile-functions.json")):
+        functions = json.loads(path.read_text())
+        root = next(v["cumulative_seconds"] for v in functions if v["file"] == "scout_probe.py" and v["function"] == "wrapped")
+        for item in functions:
+            if (item["file"], item["function"]) not in {
+                ("scout_probe.py", "wrapped"), ("recorder.py", "record_decision"),
+                ("recorder.py", "bounded"), ("__init__.py", "dumps"),
+                ("encoder.py", "iterencode"), ("inspect.py", "bind"),
+                ("inspect.py", "apply_defaults"), ("recorder.py", "__enter__"),
+                ("recorder.py", "__exit__"), ("recorder.py", "_enqueue"),
+                ("recorder.py", "_span") }:
+                continue
+            lines.append(f"| {path.parent.name} | {item['file']}:{item['function']} | {item['calls']} | "
+                         f"{item['self_seconds']*1000:.2f} | {item['cumulative_seconds']*1000:.2f} | {item['cumulative_seconds']/root:.1%} |")
+    return "\n".join(lines)+"\n"
+
+
+def context_tail_readout(summaries, analyses):
+    groups = defaultdict(list)
+    for s in summaries:
+        key = Path(s["configuration"]["out"]).name
+        if key in analyses:
+            groups[group_key(s)].append(analyses[key])
+    lines = ["# Context and tail observations", "",
+             "Context values below are raw inclusive scope timings: they include child timing scopes.",
+             "Corrected exclusive context values are in report.md; neither is an unobserved production cost.",
+             "Tail means calls at or above each trial's raw p99 (ties retained). Overlap is not causal attribution.",
+             "Thread CPU accounting can be too coarse for one call; zero CPU is not proof of idle time.", "",
+             "| Group | Enter p50/p99 us | Exit p50/p99 us | Tail calls | Tail GC / encode / either / send overlap | Zero thread CPU calls |",
+             "|---|---:|---:|---:|---:|---:|"]
+    for key, values in sorted(groups.items()):
+        contexts = []
+        for p in ("run_context_enter", "run_context_exit"):
+            contexts.append("not measured" if key[2] != "phase" or key[3] == "bare" else
+                            " / ".join(f(median(v["context_inclusive"][p][q] for v in values)) for q in ("p50_us", "p99_us")))
+        tails = sum(v["tail_calls"] for v in values)
+        overlaps = [sum(v["overlap"][k]["tail"] for v in values) for k in ("gc", "_encode", "gc_or_encode", "_send")]
+        lines.append(f"| {' / '.join(key)} | {contexts[0]} | {contexts[1]} | {tails} | "
+                     f"{' / '.join(map(str, overlaps))} | {sum(v['zero_thread_cpu_calls'] for v in values)}/{sum(v['calls'] for v in values)} |")
+    lines += ["", "## No-worker queue stratification", "",
+              "Nonfull before a call does not ensure two free slots. These are experimental saturation costs, not successful recording costs.", "",
+              "| Trial | Queue group | Calls | Adjusted p50 / p99 us |", "|---|---|---:|---:|"]
+    for name, a in sorted(analyses.items()):
+        if "worker-idle" not in name:
+            continue
+        for group, s in a["queue_groups"].items():
+            if s["calls"]:
+                lines.append(f"| {name} | {group} | {s['calls']} | {f(s['p50_us'])} / {f(s['p99_us'])} |")
+    return "\n".join(lines)+"\n"
+
+
 def tables(summaries):
     groups = defaultdict(list)
     for s in summaries:
@@ -110,6 +169,10 @@ def raw_analysis(raw):
                          ("full_before", [s for s in samples if s.get("queue_depth_before", 0) == 256])):
         queue_groups[name] = {"calls": len(subset), **stats([s["adjusted_total_ns"] for s in subset])}
     return {"calls": len(samples), "tail_calls": len(tails), "overlap": fractions,
+            "context_inclusive": {p: stats([s.get("inclusive_ns", {}).get(p, 0) for s in samples])
+                                  for p in ("run_context_enter", "run_context_exit")},
+            "zero_thread_cpu_calls": sum(s["caller_thread_cpu_ns"] == 0 for s in samples),
+            "thread_cpu_exceeds_wall_calls": sum(s["caller_thread_cpu_ns"] > s["stopped_ns"]-s["started_ns"] for s in samples),
             "tail_off_cpu": stats([max(0, s["stopped_ns"]-s["started_ns"]-s["caller_thread_cpu_ns"]) for s in tails]),
             "queue_groups": queue_groups,
             "clipped_phase_sum_ns": {p: sum(max(0, s["adjusted_exclusive_ns"].get(p, 0)) for s in samples) for p in PHASES},
@@ -121,15 +184,20 @@ def main():
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--allow-interrupted", action="store_true")
+    parser.add_argument("--single-child", action="store_true")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=False)
     manifest, summaries, analyses, cases = [], [], {}, []
-    progress = json.loads((args.source/"progress.json").read_text())
-    plan = json.loads((args.source/"plan.json").read_text())
+    if args.single_child:
+        plan = [{"single_child_smoke": True}]
+        progress = [{"exit_code": 0 if (args.source/"summary.json").exists() else 1}]
+    else:
+        progress = json.loads((args.source/"progress.json").read_text())
+        plan = json.loads((args.source/"plan.json").read_text())
     if len(progress) != len(plan) and not args.allow_interrupted:
         raise ValueError("suite not finished: do not publish partial data as complete")
     for path in sorted(args.source.rglob("*")):
-        if not path.is_file() or path.suffix in (".db", ".db-wal", ".db-shm") or ".db" in path.name:
+        if not path.is_file() or path.name.endswith((".db", ".db-wal", ".db-shm")):
             continue
         relative = path.relative_to(args.source)
         data = path.read_bytes()
@@ -143,7 +211,18 @@ def main():
         elif path.name == "raw.json.gz":
             shutil.copyfile(path, target)  # Exact compressed raw timing bytes.
             with gzip.open(path, "rt", encoding="utf-8") as stream:
-                analyses[str(relative.parent)] = raw_analysis(json.load(stream))
+                raw = json.load(stream)
+            analysis = raw_analysis(raw)
+            if relative.parent.name.startswith("lane-inputs-"):
+                from lane02_generator import VARIANTS
+                per_case = []
+                for index in range(12):
+                    subset = [s for s in raw["samples"] if (s["label"] % 9600)//800 == index]
+                    per_case.append({"seed": (101, 103)[index//6], "variant": VARIANTS[index % 6],
+                                     "calls": len(subset), "raw": stats([s["raw_total_ns"] for s in subset]),
+                                     "adjusted": stats([s["adjusted_total_ns"] for s in subset])})
+                analysis["development_input_cases"] = per_case
+            analyses[str(relative.parent)] = analysis
         elif path.suffix == ".json" and len(data) > 100000:
             with gzip.open(str(target)+".gz", "wt", encoding="utf-8") as stream:
                 json.dump(portable(json.loads(data)), stream)
@@ -161,11 +240,14 @@ def main():
     dump(args.out/"tail-analysis.json", analyses)
     dump(args.out/"driver-case-status.json", cases)
     dump(args.out/"publication.json", {"planned": len(plan), "recorded_exits": len(progress),
+         "single_child_smoke": args.single_child,
          "summaries": len(summaries), "interrupted": len(progress) != len(plan),
          "original_timing_gzip_copied_byte_identically": True,
          "json_metadata_paths_normalized": True, "databases_remain_local": True,
          "raw_pstats_paths_unmodified": True})
     (args.out/"report.md").write_text(tables(summaries), encoding="utf-8")
+    (args.out/"cprofile-readout.md").write_text(profile_readout(args.source), encoding="utf-8")
+    (args.out/"context-and-tail.md").write_text(context_tail_readout(summaries, analyses), encoding="utf-8")
     print(len(summaries), "summaries;", len(cases), "driver attempts; no target rerun")
 
 

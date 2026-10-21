@@ -1,0 +1,205 @@
+{
+  "synthetic_only": true,
+  "configuration": {
+    "out": "<repo>\\.cache\\wrapper-overhead\\stage1-02\\fixed-60hz-phase-full-worker-idle-3",
+    "child": true,
+    "payload": "fixed",
+    "mode": "60hz",
+    "observer": "phase",
+    "feature": "full",
+    "factor": "worker-idle",
+    "trial": 3
+  },
+  "python": "3.12.12 (main, Feb 12 2026, 00:40:26) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "cpu": "Intel64 Family 6 Model 197 Stepping 2, GenuineIntel",
+  "gc_enabled_during_calls": true,
+  "gc_threshold": [
+    700,
+    10,
+    10
+  ],
+  "source_sha256": {
+    "recorder.py": "6605df842c639f57397e44a4c5457b886dc21eaf63fb4a8336bb5365953d5f01",
+    "scout_probe.py": "af61c3e19e44763bb8b10df09cf17420b63b5c5c43cfdb18686dcd710ac21148",
+    "profile_phases.py": "3e829cf904f439e1432e5d26580441081b6d6737989b3161ae31cf38ef19eea0",
+    "profile_wrapper.py": "6283f55286e57234a7d3f20422810bd4d5b8a4da834477b2bdfb248d438f67cf"
+  },
+  "calibration": {
+    "empty_scope_internal_ns": {
+      "p50_us": 0.2,
+      "p99_us": 0.4,
+      "sum_ns": 1775900
+    },
+    "empty_scope_whole_ns": {
+      "p50_us": 1.2,
+      "p99_us": 2.2,
+      "sum_ns": 12833900
+    },
+    "consecutive_timer_ns": {
+      "p50_us": 0.1,
+      "p99_us": 0.1,
+      "sum_ns": 668000
+    },
+    "subtracted_internal_ns": 200.0,
+    "subtracted_whole_ns": 1200.0
+  },
+  "calls": 1800,
+  "raw": {
+    "p50_us": 1146.95,
+    "p99_us": 3037.954,
+    "sum_ns": 2262203400
+  },
+  "adjusted": {
+    "p50_us": 974.15,
+    "p99_us": 2865.154,
+    "sum_ns": 1951163400.0
+  },
+  "phases": {
+    "entry_argument_access": {
+      "p50_us": 152.4,
+      "p99_us": 386.96599999999984,
+      "sum_ns": 296786900.0,
+      "fraction": 0.15210766048604643
+    },
+    "allowlist_privacy": {
+      "p50_us": 60.1,
+      "p99_us": 214.709,
+      "sum_ns": 125639200.0,
+      "fraction": 0.0643919417512649
+    },
+    "value_capture": {
+      "p50_us": 159.6,
+      "p99_us": 588.1919999999998,
+      "sum_ns": 332918300.0,
+      "fraction": 0.17062553551383755
+    },
+    "envelope_json": {
+      "p50_us": 205.65,
+      "p99_us": 693.4069999999999,
+      "sum_ns": 413463400.0,
+      "fraction": 0.21190608638927935
+    },
+    "span_lineage": {
+      "p50_us": 45.85,
+      "p99_us": 178.504,
+      "sum_ns": 94812600.0,
+      "fraction": 0.04859285490902505
+    },
+    "clock": {
+      "p50_us": 15.5,
+      "p99_us": 58.32999999999997,
+      "sum_ns": 32343400.0,
+      "fraction": 0.016576469197812957
+    },
+    "queue_put": {
+      "p50_us": 34.6,
+      "p99_us": 134.42199999999997,
+      "sum_ns": 70425000.0,
+      "fraction": 0.036093850468904856
+    },
+    "exit_path": {
+      "p50_us": 23.8,
+      "p99_us": 96.51399999999998,
+      "sum_ns": 50136100.0,
+      "fraction": 0.025695490188059084
+    },
+    "run_context_enter": {
+      "p50_us": 46.2,
+      "p99_us": 162.602,
+      "sum_ns": 93198800.0,
+      "fraction": 0.047765758623803625
+    },
+    "run_context_exit": {
+      "p50_us": 10.75,
+      "p99_us": 48.11099999999999,
+      "sum_ns": 23760600.0,
+      "fraction": 0.01217765769899128
+    },
+    "counter_bookkeeping": {
+      "p50_us": 17.2,
+      "p99_us": 70.50999999999999,
+      "sum_ns": 35452700.0,
+      "fraction": 0.01817003127467438
+    }
+  },
+  "residual": {
+    "p50_us": 185.9,
+    "p99_us": 570.4779999999998,
+    "sum_ns": 382226400.0
+  },
+  "negative_adjustments": 0,
+  "budget_met": false,
+  "overlap": {
+    "gc": {
+      "all_calls": 16,
+      "top_1_percent_calls": 1
+    },
+    "_encode": {
+      "all_calls": 0,
+      "top_1_percent_calls": 0
+    },
+    "_send": {
+      "all_calls": 0,
+      "top_1_percent_calls": 0
+    }
+  },
+  "tail_off_cpu": {
+    "p50_us": 3841.9,
+    "p99_us": 7631.347999999997,
+    "sum_ns": 68752800
+  },
+  "observer_overflow": 0,
+  "elapsed_seconds": 30.00099689999479,
+  "counts": {
+    "captured_args": 7200,
+    "serialized": 1800,
+    "envelope_bytes": 2139780,
+    "attempted": 3600,
+    "accepted": 256,
+    "drop_full": 3344,
+    "acknowledged": 0,
+    "failed": 0,
+    "dropped": 3344,
+    "unknown": 256,
+    "queue_size": 256,
+    "capacity": 256,
+    "cooldown_active": false,
+    "queue_high_water": 256,
+    "diagnostics": {
+      "counters_spans_except_flush_timeout": {
+        "encode_failure": 0,
+        "timeout": 0,
+        "connection_error": 0,
+        "http_non_2xx": 0,
+        "cooldown_suppressed": 0,
+        "other_failure": 0,
+        "flush_timeout": 1,
+        "cooldown_drop": 0,
+        "queue_full_drop": 3344,
+        "shutdown_drop": 0,
+        "flush_drop": 0
+      },
+      "failures_by_class_spans": {},
+      "last_failures": [],
+      "failure_sample_limit": 64,
+      "worker_batch_sizes": {},
+      "last_worker_batches": [],
+      "batch_sample_limit": 256
+    },
+    "network_operation_slots": 1,
+    "retry_limit": 1,
+    "attempt_budget_seconds": 1.25
+  },
+  "flush_seconds": 0.020326400001067668,
+  "flush": {
+    "attempted": 3600,
+    "acknowledged": 0,
+    "failed": 0,
+    "dropped": 3344,
+    "unknown": 256,
+    "drained": false,
+    "complete": false
+  },
+  "mean_envelope_bytes": 1188.7666666666667
+}

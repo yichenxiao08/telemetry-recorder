@@ -1,0 +1,34 @@
+[
+  {
+    "path": "fixed-60hz-phase-bare-default-1\\store.db.log",
+    "sha256": "1BC0F93A78123582C756ACC1564C6E679CBA5E66AB7EFF5369F7ACD16BB0DCE4"
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-2\\store.db.log",
+    "sha256": "AE67A9F23F2867B0B43EBB2F8EEF7372BF73CD627C2621CC07DE6CC155B3C6A4"
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-3\\store.db.log",
+    "sha256": "EF5EFAE66AA441E79A708F018D97B2DB1E67C9ADB7CCE32D0F127A59BC491172"
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-4\\store.db.log",
+    "sha256": "E34288D717188194A8D98680C906D385527EDB020A7F5867CF1681E8400BC21C"
+  },
+  {
+    "path": "fixed-60hz-phase-bare-default-5\\store.db.log",
+    "sha256": "9FA2AB49F81B956F53F9C9F43A50C37D472767345729ECA1956E2CF429FB7A58"
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-1\\store.db.log",
+    "sha256": "B5B12337F4581C6CC616295171C83BF85856992996660E717788F2426EB5A4B1"
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-2\\store.db.log",
+    "sha256": "47DC640B20F0593ACFFF07E310E64270E424883FC885563E0E9B734C20311984"
+  },
+  {
+    "path": "fixed-60hz-phase-off-default-3\\store.db.log",
+    "sha256": "A7356E14C3F0E23F551B0E9DAC7B560FB87B26943AA8F064DF36085429CFA0C1"
+  }
+]

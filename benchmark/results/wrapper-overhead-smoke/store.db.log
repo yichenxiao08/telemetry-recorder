@@ -1,0 +1,1 @@
+time=2026-10-20T23:46:29.728-04:00 level=INFO msg="OTLP and viewer HTTP listening" address=127.0.0.1:49281 viewer=http://127.0.0.1:49281/runs database=C:\Users\yiche\telemetry-project\.cache\wrapper-overhead\smoke-fixed\store.db queue_size=64

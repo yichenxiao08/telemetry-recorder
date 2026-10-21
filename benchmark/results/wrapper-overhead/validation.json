@@ -1,0 +1,67 @@
+{
+  "calibration": {
+    "subtracted_internal_ns": {
+      "median": 100.0,
+      "min": 100.0,
+      "max": 300.0
+    },
+    "subtracted_whole_ns": {
+      "median": 1000.0,
+      "min": 1000.0,
+      "max": 2500.0
+    }
+  },
+  "identities": [],
+  "source_hashes": {
+    "recorder.py": [
+      "6605df842c639f57397e44a4c5457b886dc21eaf63fb4a8336bb5365953d5f01"
+    ],
+    "scout_probe.py": [
+      "af61c3e19e44763bb8b10df09cf17420b63b5c5c43cfdb18686dcd710ac21148"
+    ],
+    "profile_phases.py": [
+      "3e829cf904f439e1432e5d26580441081b6d6737989b3161ae31cf38ef19eea0"
+    ],
+    "profile_wrapper.py": [
+      "6283f55286e57234a7d3f20422810bd4d5b8a4da834477b2bdfb248d438f67cf"
+    ]
+  },
+  "plain": [
+    {
+      "payload": "fixed",
+      "mode": "60hz",
+      "p50": 468.5,
+      "p99": 912.8679999999999,
+      "ack": 18000,
+      "drops": 0,
+      "flush_median_s": 0.015652900008717552
+    },
+    {
+      "payload": "fixed",
+      "mode": "tight",
+      "p50": 49.9,
+      "p99": 179.40400000000008,
+      "ack": 2048,
+      "drops": 97952,
+      "flush_median_s": 0.30859220000274945
+    },
+    {
+      "payload": "lane-inputs",
+      "mode": "60hz",
+      "p50": 498.85,
+      "p99": 1315.6809999999998,
+      "ack": 18000,
+      "drops": 0,
+      "flush_median_s": 0.0033632000122452155
+    },
+    {
+      "payload": "lane-inputs",
+      "mode": "tight",
+      "p50": 63.1,
+      "p99": 174.70200000000006,
+      "ack": 2240,
+      "drops": 97760,
+      "flush_median_s": 0.30720199999632314
+    }
+  ]
+}

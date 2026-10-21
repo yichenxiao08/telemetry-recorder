@@ -1,0 +1,772 @@
+[
+  {
+    "name": "fixed-60hz-phase-bare-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.12985014915466
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.333735942840576
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.33851456642151
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.48263120651245
+  },
+  {
+    "name": "fixed-60hz-phase-bare-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.589821815490723
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.76753330230713
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.747339963912964
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 32.06547951698303
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.908382177352905
+  },
+  {
+    "name": "fixed-60hz-phase-off-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.00869178771973
+  },
+  {
+    "name": "fixed-60hz-phase-empty-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.18981647491455
+  },
+  {
+    "name": "fixed-60hz-phase-empty-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.87763524055481
+  },
+  {
+    "name": "fixed-60hz-phase-empty-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.975539207458496
+  },
+  {
+    "name": "fixed-60hz-phase-empty-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 32.101807832717896
+  },
+  {
+    "name": "fixed-60hz-phase-empty-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.16035723686218
+  },
+  {
+    "name": "fixed-60hz-phase-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.98852300643921
+  },
+  {
+    "name": "fixed-60hz-phase-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.792543411254883
+  },
+  {
+    "name": "fixed-60hz-phase-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.808777570724487
+  },
+  {
+    "name": "fixed-60hz-phase-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.97319769859314
+  },
+  {
+    "name": "fixed-60hz-phase-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.83613657951355
+  },
+  {
+    "name": "fixed-60hz-plain-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.414976596832275
+  },
+  {
+    "name": "fixed-60hz-plain-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.00575828552246
+  },
+  {
+    "name": "fixed-60hz-plain-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.440486192703247
+  },
+  {
+    "name": "fixed-60hz-plain-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.31234335899353
+  },
+  {
+    "name": "fixed-60hz-plain-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.555665731430054
+  },
+  {
+    "name": "fixed-60hz-phase-full-gc-disabled-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.15578866004944
+  },
+  {
+    "name": "fixed-60hz-phase-full-gc-disabled-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.96529984474182
+  },
+  {
+    "name": "fixed-60hz-phase-full-gc-disabled-3",
+    "exit_code": 0,
+    "elapsed_seconds": 32.00147342681885
+  },
+  {
+    "name": "fixed-60hz-phase-full-gc-disabled-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.75391936302185
+  },
+  {
+    "name": "fixed-60hz-phase-full-gc-disabled-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.880488872528076
+  },
+  {
+    "name": "fixed-60hz-phase-full-worker-idle-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.782546520233154
+  },
+  {
+    "name": "fixed-60hz-phase-full-worker-idle-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.876150369644165
+  },
+  {
+    "name": "fixed-60hz-phase-full-worker-idle-3",
+    "exit_code": 0,
+    "elapsed_seconds": 32.04689645767212
+  },
+  {
+    "name": "fixed-60hz-phase-full-worker-idle-4",
+    "exit_code": 0,
+    "elapsed_seconds": 32.02544903755188
+  },
+  {
+    "name": "fixed-60hz-phase-full-worker-idle-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.07631540298462
+  },
+  {
+    "name": "fixed-60hz-cprofile-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.56040382385254
+  },
+  {
+    "name": "fixed-tight-phase-bare-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 1.3409714698791504
+  },
+  {
+    "name": "fixed-tight-phase-bare-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 1.3689849376678467
+  },
+  {
+    "name": "fixed-tight-phase-bare-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 1.3800315856933594
+  },
+  {
+    "name": "fixed-tight-phase-bare-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 1.3515021800994873
+  },
+  {
+    "name": "fixed-tight-phase-bare-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 1.2932281494140625
+  },
+  {
+    "name": "fixed-tight-phase-off-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 6.040039300918579
+  },
+  {
+    "name": "fixed-tight-phase-off-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 5.834764719009399
+  },
+  {
+    "name": "fixed-tight-phase-off-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 5.917030572891235
+  },
+  {
+    "name": "fixed-tight-phase-off-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 6.542087554931641
+  },
+  {
+    "name": "fixed-tight-phase-off-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 7.213192939758301
+  },
+  {
+    "name": "fixed-tight-phase-empty-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 6.090191125869751
+  },
+  {
+    "name": "fixed-tight-phase-empty-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 6.471647262573242
+  },
+  {
+    "name": "fixed-tight-phase-empty-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 6.247325658798218
+  },
+  {
+    "name": "fixed-tight-phase-empty-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 5.028788805007935
+  },
+  {
+    "name": "fixed-tight-phase-empty-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 6.371604919433594
+  },
+  {
+    "name": "fixed-tight-phase-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 7.445100545883179
+  },
+  {
+    "name": "fixed-tight-phase-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 7.862332105636597
+  },
+  {
+    "name": "fixed-tight-phase-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 7.224133014678955
+  },
+  {
+    "name": "fixed-tight-phase-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 7.688092231750488
+  },
+  {
+    "name": "fixed-tight-phase-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 7.022420883178711
+  },
+  {
+    "name": "fixed-tight-plain-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 2.129840135574341
+  },
+  {
+    "name": "fixed-tight-plain-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 2.156841993331909
+  },
+  {
+    "name": "fixed-tight-plain-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 2.1646225452423096
+  },
+  {
+    "name": "fixed-tight-plain-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 1.9309241771697998
+  },
+  {
+    "name": "fixed-tight-plain-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 1.9713151454925537
+  },
+  {
+    "name": "fixed-tight-phase-full-gc-disabled-1",
+    "exit_code": 0,
+    "elapsed_seconds": 7.216970443725586
+  },
+  {
+    "name": "fixed-tight-phase-full-gc-disabled-2",
+    "exit_code": 0,
+    "elapsed_seconds": 7.801491975784302
+  },
+  {
+    "name": "fixed-tight-phase-full-gc-disabled-3",
+    "exit_code": 0,
+    "elapsed_seconds": 7.792365789413452
+  },
+  {
+    "name": "fixed-tight-phase-full-gc-disabled-4",
+    "exit_code": 0,
+    "elapsed_seconds": 7.271312475204468
+  },
+  {
+    "name": "fixed-tight-phase-full-gc-disabled-5",
+    "exit_code": 0,
+    "elapsed_seconds": 4.874541759490967
+  },
+  {
+    "name": "fixed-tight-phase-full-worker-idle-1",
+    "exit_code": 0,
+    "elapsed_seconds": 4.342031955718994
+  },
+  {
+    "name": "fixed-tight-phase-full-worker-idle-2",
+    "exit_code": 0,
+    "elapsed_seconds": 4.215444564819336
+  },
+  {
+    "name": "fixed-tight-phase-full-worker-idle-3",
+    "exit_code": 0,
+    "elapsed_seconds": 6.7873828411102295
+  },
+  {
+    "name": "fixed-tight-phase-full-worker-idle-4",
+    "exit_code": 0,
+    "elapsed_seconds": 5.9896533489227295
+  },
+  {
+    "name": "fixed-tight-phase-full-worker-idle-5",
+    "exit_code": 0,
+    "elapsed_seconds": 5.810777187347412
+  },
+  {
+    "name": "fixed-tight-cprofile-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 3.1161272525787354
+  },
+  {
+    "name": "lane-inputs-60hz-phase-bare-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.410656452178955
+  },
+  {
+    "name": "lane-inputs-60hz-phase-bare-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.52447772026062
+  },
+  {
+    "name": "lane-inputs-60hz-phase-bare-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.400212049484253
+  },
+  {
+    "name": "lane-inputs-60hz-phase-bare-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.54898691177368
+  },
+  {
+    "name": "lane-inputs-60hz-phase-bare-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.447507858276367
+  },
+  {
+    "name": "lane-inputs-60hz-phase-off-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.22882914543152
+  },
+  {
+    "name": "lane-inputs-60hz-phase-off-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 32.19476842880249
+  },
+  {
+    "name": "lane-inputs-60hz-phase-off-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 32.37640428543091
+  },
+  {
+    "name": "lane-inputs-60hz-phase-off-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 32.222145795822144
+  },
+  {
+    "name": "lane-inputs-60hz-phase-off-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.13109230995178
+  },
+  {
+    "name": "lane-inputs-60hz-phase-empty-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.23925423622131
+  },
+  {
+    "name": "lane-inputs-60hz-phase-empty-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 32.07856583595276
+  },
+  {
+    "name": "lane-inputs-60hz-phase-empty-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 32.476327896118164
+  },
+  {
+    "name": "lane-inputs-60hz-phase-empty-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 32.13992929458618
+  },
+  {
+    "name": "lane-inputs-60hz-phase-empty-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.424805641174316
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.10951256752014
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.997610807418823
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 32.13302564620972
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 32.07691025733948
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.36589217185974
+  },
+  {
+    "name": "lane-inputs-60hz-plain-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.52327585220337
+  },
+  {
+    "name": "lane-inputs-60hz-plain-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.750236988067627
+  },
+  {
+    "name": "lane-inputs-60hz-plain-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.499783515930176
+  },
+  {
+    "name": "lane-inputs-60hz-plain-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.676031589508057
+  },
+  {
+    "name": "lane-inputs-60hz-plain-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.588003873825073
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-gc-disabled-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.14135932922363
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-gc-disabled-2",
+    "exit_code": 0,
+    "elapsed_seconds": 32.015974044799805
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-gc-disabled-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.90498447418213
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-gc-disabled-4",
+    "exit_code": 0,
+    "elapsed_seconds": 32.10285758972168
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-gc-disabled-5",
+    "exit_code": 0,
+    "elapsed_seconds": 32.28383660316467
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-worker-idle-1",
+    "exit_code": 0,
+    "elapsed_seconds": 32.03889036178589
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-worker-idle-2",
+    "exit_code": 0,
+    "elapsed_seconds": 31.94214153289795
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-worker-idle-3",
+    "exit_code": 0,
+    "elapsed_seconds": 31.910887002944946
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-worker-idle-4",
+    "exit_code": 0,
+    "elapsed_seconds": 31.7611083984375
+  },
+  {
+    "name": "lane-inputs-60hz-phase-full-worker-idle-5",
+    "exit_code": 0,
+    "elapsed_seconds": 31.827324628829956
+  },
+  {
+    "name": "lane-inputs-60hz-cprofile-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 31.35305380821228
+  },
+  {
+    "name": "lane-inputs-tight-phase-bare-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 1.1449470520019531
+  },
+  {
+    "name": "lane-inputs-tight-phase-bare-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 1.1832101345062256
+  },
+  {
+    "name": "lane-inputs-tight-phase-bare-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 1.1573259830474854
+  },
+  {
+    "name": "lane-inputs-tight-phase-bare-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 1.1586368083953857
+  },
+  {
+    "name": "lane-inputs-tight-phase-bare-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 1.2421119213104248
+  },
+  {
+    "name": "lane-inputs-tight-phase-off-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 7.320966482162476
+  },
+  {
+    "name": "lane-inputs-tight-phase-off-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 6.998724937438965
+  },
+  {
+    "name": "lane-inputs-tight-phase-off-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 7.186276197433472
+  },
+  {
+    "name": "lane-inputs-tight-phase-off-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 6.816575050354004
+  },
+  {
+    "name": "lane-inputs-tight-phase-off-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 7.33793306350708
+  },
+  {
+    "name": "lane-inputs-tight-phase-empty-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 7.172829627990723
+  },
+  {
+    "name": "lane-inputs-tight-phase-empty-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 7.395828008651733
+  },
+  {
+    "name": "lane-inputs-tight-phase-empty-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 7.306046009063721
+  },
+  {
+    "name": "lane-inputs-tight-phase-empty-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 7.254503488540649
+  },
+  {
+    "name": "lane-inputs-tight-phase-empty-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 7.35406756401062
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 9.205551147460938
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 9.347414255142212
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 8.89870023727417
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 8.725795269012451
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 9.23634386062622
+  },
+  {
+    "name": "lane-inputs-tight-plain-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 2.204770088195801
+  },
+  {
+    "name": "lane-inputs-tight-plain-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 2.3935115337371826
+  },
+  {
+    "name": "lane-inputs-tight-plain-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 2.2794442176818848
+  },
+  {
+    "name": "lane-inputs-tight-plain-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 2.3914682865142822
+  },
+  {
+    "name": "lane-inputs-tight-plain-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 2.173417568206787
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-gc-disabled-1",
+    "exit_code": 0,
+    "elapsed_seconds": 9.134379625320435
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-gc-disabled-2",
+    "exit_code": 0,
+    "elapsed_seconds": 8.973460912704468
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-gc-disabled-3",
+    "exit_code": 0,
+    "elapsed_seconds": 8.957175016403198
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-gc-disabled-4",
+    "exit_code": 0,
+    "elapsed_seconds": 8.848580837249756
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-gc-disabled-5",
+    "exit_code": 0,
+    "elapsed_seconds": 9.5337233543396
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-worker-idle-1",
+    "exit_code": 0,
+    "elapsed_seconds": 8.03516173362732
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-worker-idle-2",
+    "exit_code": 0,
+    "elapsed_seconds": 7.485748529434204
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-worker-idle-3",
+    "exit_code": 0,
+    "elapsed_seconds": 7.7294392585754395
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-worker-idle-4",
+    "exit_code": 0,
+    "elapsed_seconds": 7.7181010246276855
+  },
+  {
+    "name": "lane-inputs-tight-phase-full-worker-idle-5",
+    "exit_code": 0,
+    "elapsed_seconds": 8.18251657485962
+  },
+  {
+    "name": "lane-inputs-tight-cprofile-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 4.519643783569336
+  },
+  {
+    "name": "lane-driver-60hz-phase-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 314.690007686615
+  },
+  {
+    "name": "lane-driver-60hz-phase-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 308.7155065536499
+  },
+  {
+    "name": "lane-driver-60hz-phase-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 311.5776710510254
+  },
+  {
+    "name": "lane-driver-60hz-phase-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 305.2464282512665
+  },
+  {
+    "name": "lane-driver-60hz-phase-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 305.93520975112915
+  },
+  {
+    "name": "lane-driver-tight-phase-full-default-1",
+    "exit_code": 0,
+    "elapsed_seconds": 1.5126972198486328
+  },
+  {
+    "name": "lane-driver-tight-phase-full-default-2",
+    "exit_code": 0,
+    "elapsed_seconds": 1.5342168807983398
+  },
+  {
+    "name": "lane-driver-tight-phase-full-default-3",
+    "exit_code": 0,
+    "elapsed_seconds": 1.5325922966003418
+  },
+  {
+    "name": "lane-driver-tight-phase-full-default-4",
+    "exit_code": 0,
+    "elapsed_seconds": 1.5392036437988281
+  },
+  {
+    "name": "lane-driver-tight-phase-full-default-5",
+    "exit_code": 0,
+    "elapsed_seconds": 2.211665630340576
+  }
+]
