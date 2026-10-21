@@ -1,8 +1,25 @@
 # Provenance capture specification (design v0)
 
-Status: design plus source-level feasibility audit. Executable spike is pending. No new production
-endpoint, table, resolver, capture policy or diff type is implemented here.
+Status (2026-10-21): design plus accepted synthetic spike and a bounded
+read-only `signalscout trace` resolver. The resolver adds no production endpoint,
+table, capture policy or diff type.
 M4b is preserved in PR #1; M5–M8 remain unstarted.
+
+## Implemented single-output trace versus remaining design
+
+`trace <output-ref|native-evidence-id>` and `trace <run-id> <output-name>` read
+v1 decision/lineage envelopes with required time bounds, record limits and
+existing indexes. Opaque refs need a run partition; no whole-history fallback
+or migration. Backward traversal and descriptive `--compare-to` share budgets.
+An optional profile enables the per-output version invariant without a baseline.
+Text/JSON include capture states, integrity findings, truncations, negative-search
+scope and native evidence URLs. See [trace-walkthrough.md](trace-walkthrough.md).
+
+Inputs are "supplied to this step" and "recorded as input". Explicit probe
+`derived_from` edges are boundary assertions, not proof of code reads. Missing
+producers, alternatives, rules and evicted detail remain unknown. Artifact
+fetching, automatic cross-call identity, production recorder work and causal
+diagnosis remain design work. No cohort, diff or scoring behavior changed.
 
 ## Meaning and identity
 
@@ -222,9 +239,29 @@ The synthetic CLI accepts a module:function entry point, not an arbitrary child
 command. It neither edits source nor installs sitecustomize globally. Configuration
 must identify every supported function and explicitly allow its argument names
 and/or return. Doctor is required output, including unsupported targets and loss.
-Safe support is limited to directly defined synchronous Python module functions.
-Framework discovery, aliases already held elsewhere, async/generators, descriptors,
-reload and native functions remain unsupported.
+Safe support includes directly defined synchronous Python module functions and
+instance/class/static methods of top-level plain Python classes. Framework
+discovery, aliases already held elsewhere, async/generators, properties/custom
+descriptors, nested/dunder-heavy classes, reload and native functions remain
+unsupported. Configuration names a class method as `Class.method`; implicit
+self/cls objects are never captured. Explicit `self: [score, steps]` or `cls:
+[family]` allowlists permit only named builtin data, never property getters.
+Override-to-base calls on the same receiver/name record the outer configured
+method once, with visible suppression counts. This is execution-boundary
+deduplication, not provenance linking, a ranking rule or proof of data dependence.
+
+Runner argv is isolated before target import: resolved target filename followed
+only by args after `--`, with the original argv restored afterward. Preflight
+dry-imports and reports attachments/argv without calling the entry; import-time
+side effects and parsers defined inside main are not safely validated. Stderr
+and doctor JSON report coverage and admission/delivery counts. Status 3 means
+unsupported/unattached/uninvoked coverage; 4 means executed target with zero
+captured decisions/run contexts; 5 means delivery/drop failure. Nonzero target
+errors keep their status; normal exit 0 still passes through capture checks.
+See adapters/provenance-python/README.md for bounds, remaining unsupported cases,
+exact PowerShell commands and the single exploratory method-cost observation.
+The full method overhead remains unmeasured against budgets; no optimization,
+privacy productionization or engine/cohort/diff/trace change occurs here.
 
 Short Windows wall-clock samples can be identical. The spike anchors each run to
 UTC once, then uses monotonic elapsed nanoseconds for probe timestamps/durations
@@ -242,3 +279,33 @@ The minimal enriched B adds an import and a selection-semantic call (two lines);
 all ordinary A/B capture works without those edits. Body capture remains OFF
 unless the corresponding field is explicitly allowed. This is synthetic-only,
 not a replacement for P0 recursive privacy/secret tests.
+
+## Optional synthetic tuple/item capture and sampling (2026-10-21)
+
+The Python adapter accepts tuple/namedtuple returns as ordered arrays within its
+existing 32-item/depth-6/256-node/8192-byte bounds. Optional `capture.return_items`
+selects indices or namedtuple field names; default capture is OFF. Unknown slots
+use `{"unknown":"reason"}`; `not_allowlisted` is intentional omission, while
+unsupported/oversized elements increment `drop_element` and output.element_drops.
+`numpy_unsupported` identifies unsupported numpy values without adding numpy.
+Partial item capture and element loss set envelope.complete=false. Existing list
+and dict root rejection behavior remains; whole values/envelopes can still drop.
+
+Optional per-probe `sampling.every_nth` selects indices 1,1+N,... and
+`sampling.max_per_run` caps selection attempts. Rules intersect before binding
+and serialization. Counters belong to the active run, not process history; an
+implicit run per standalone call resets them. Selected records carry optional
+`sampling: {rule: {...}, call_index: <one-based integer>}` and complete=false.
+No sampling configuration means no wire additions. Intentional skips are not
+drops; failed selected captures consume the cap. Queue admissions and export
+acknowledgements remain separate. Root span attributes named
+signalscout.sampling.<index>.{probe,seen,captured,rule,fraction} record run totals.
+Doctor/stderr provide aggregate per-probe totals and a bounded last-32 probe/run
+window with omitted count. They include element reasons and drop counts.
+
+Unsampled calls and unknown markers are UNKNOWN for invariants and negative
+search/absence claims. Captured local values cannot certify unobserved behavior;
+no inference across skipped calls, no automatic value linking. The marker object
+shape is reserved adapter metadata, not an application outcome. Existing trace,
+analysis, status priority (4/3/5), ranking, cohort and diff semantics are unchanged.
+Engine consumers are not extended to make run-wide claims from sampling metadata.

@@ -143,7 +143,7 @@ func timeline(detail model.RunDetail) ([]spanView, []eventView) {
 	}
 	var orphans []eventView
 	for _, s := range signals {
-		if s.Kind != "event" {
+		if s.Kind != "event" && s.Kind != "log" {
 			continue
 		}
 		event := eventView{Signal: s, Anchor: anchor(s.ID), Offset: offset(s.TS), X: x(s.TS)}

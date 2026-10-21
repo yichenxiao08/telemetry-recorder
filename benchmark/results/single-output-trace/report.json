@@ -1,0 +1,947 @@
+{
+  "synthetic_only": true,
+  "target_source_lines_changed": 0,
+  "stale_invariant": "violated",
+  "fresh_invariant": "satisfied",
+  "anchors_checked": 27,
+  "pipeline_decisions": 6,
+  "drops": {},
+  "target_sha256": {
+    "lane_target.py": "829570db26149fbf037c341e481713b6ff0c9306693bb73f4e49482bcd51c2d8",
+    "pipeline_target.py": "4bab612e3af70a3b6365df3a22dde7ad1f53d218805eea7f4367b9473c68f33b"
+  },
+  "traces": [
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 6,
+        "native_lookups": 0,
+        "run_partitions": [
+          "abababababababababababababababab"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:abababababababababababababababab/0000000000000002.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:abababababababababababababababab/0000000000000002",
+            "run_id": "abababababababababababababababab",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "lane_target.decide",
+              "version": "1",
+              "span_ref": "span:abababababababababababababababab/0000000000000002"
+            },
+            "inputs": [
+              {
+                "name": "gap",
+                "ref": "value:abababababababababababababababab/0000000000000002.arg.gap@1",
+                "capture": "allowed",
+                "inline": 0.5,
+                "status": "captured"
+              },
+              {
+                "name": "previous_lane",
+                "ref": "value:abababababababababababababababab/0000000000000002.arg.previous_lane@1",
+                "capture": "allowed",
+                "inline": "left",
+                "status": "captured"
+              },
+              {
+                "name": "previous_frame",
+                "ref": "value:abababababababababababababababab/0000000000000002.arg.previous_frame@1",
+                "capture": "allowed",
+                "inline": 8,
+                "status": "captured"
+              },
+              {
+                "name": "frame",
+                "ref": "value:abababababababababababababababab/0000000000000002.arg.frame@1",
+                "capture": "allowed",
+                "inline": 10,
+                "status": "captured"
+              },
+              {
+                "name": "noise",
+                "ref": "value:abababababababababababababababab/0000000000000002.arg.noise@1",
+                "capture": "allowed",
+                "inline": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:abababababababababababababababab/0000000000000002.return@1",
+              "capture": "allowed",
+              "inline": {
+                "lane": "left",
+                "previous_used": true,
+                "previous_version": 8,
+                "frame": 10
+              },
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:108f8e5074d04b106694cc44bbbf4b280afec2491786495f864d3abf0e1c7049/0",
+              "url": "/run?id=abababababababababababababababab#e-598497db0e6fb59356ae0f5dcd19327aeaaa4a3f54fcc26b7da6ea2487bf3704"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:20d4bf1669942d7da0aa025dac9e39b0afbf0e1f53ba8e1ec28987bf6eb0d9c1/0",
+                "url": "/run?id=abababababababababababababababab#e-e777520430834af71ff49d607b317384ac53543b71efc26ae626b8ae9b711004"
+              },
+              {
+                "id": "event:68781d37992f76c132e2efc5866982909cbc41161cd1612318bfa04c6b9b6c89/0",
+                "url": "/run?id=abababababababababababababababab#e-2f81c0b3f4bb56ff5d20f399e02d0ab37f0746cc6ab27665763e176bed7bf8eb"
+              },
+              {
+                "id": "event:939502d8dd09d88ad4139e89c11d46d3295fd38595c770e03ad9b4f12e921f35/0",
+                "url": "/run?id=abababababababababababababababab#e-ba2aa8bf37ebb7f0397e391e22ab204405810402b366a62698b699d4ee2e6ed7"
+              },
+              {
+                "id": "event:943d67185b7dd4476b494d7dc2dd3b9ae1d9d486edd647f089b31ffba1be269a/0",
+                "url": "/run?id=abababababababababababababababab#e-540c812af8bffc8582eab080c8258e79866c167f01ca7dc10d25a648071a9299"
+              },
+              {
+                "id": "event:b8c6533cd9d9843629d4a1f4a139d266a615cf2c75da95f4dd8ef0a2810b9266/0",
+                "url": "/run?id=abababababababababababababababab#e-a13393145c50784f1c0d211d140acca8d30c18cc2968346453279b3379b36e64"
+              }
+            ],
+            "invariant": {
+              "status": "violated",
+              "observed": 3,
+              "required": 3
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:abababababababababababababababab/0000000000000002.arg.previous_lane@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:abababababababababababababababab/0000000000000002.arg.noise@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:abababababababababababababababab/0000000000000002.arg.previous_frame@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:abababababababababababababababab/0000000000000002.arg.gap@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:abababababababababababababababab/0000000000000002.arg.frame@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 6,
+        "native_lookups": 0,
+        "run_partitions": [
+          "acacacacacacacacacacacacacacacac"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:acacacacacacacacacacacacacacacac/0000000000000002.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:acacacacacacacacacacacacacacacac/0000000000000002",
+            "run_id": "acacacacacacacacacacacacacacacac",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "lane_target.decide",
+              "version": "1",
+              "span_ref": "span:acacacacacacacacacacacacacacacac/0000000000000002"
+            },
+            "inputs": [
+              {
+                "name": "gap",
+                "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.gap@1",
+                "capture": "allowed",
+                "inline": 0.5,
+                "status": "captured"
+              },
+              {
+                "name": "previous_lane",
+                "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.previous_lane@1",
+                "capture": "allowed",
+                "inline": "left",
+                "status": "captured"
+              },
+              {
+                "name": "previous_frame",
+                "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.previous_frame@1",
+                "capture": "allowed",
+                "inline": 9,
+                "status": "captured"
+              },
+              {
+                "name": "frame",
+                "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.frame@1",
+                "capture": "allowed",
+                "inline": 10,
+                "status": "captured"
+              },
+              {
+                "name": "noise",
+                "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.noise@1",
+                "capture": "allowed",
+                "inline": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.return@1",
+              "capture": "allowed",
+              "inline": {
+                "lane": "left",
+                "previous_used": true,
+                "previous_version": 9,
+                "frame": 10
+              },
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:44ade9da6bb101980529287c925194a572691ab794c2265162dca1d1dd060096/0",
+              "url": "/run?id=acacacacacacacacacacacacacacacac#e-fbfae7664e2e106f9d0f8d18127af91fe497bff535c9c5982816138ca3ac33bb"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:20577acf571ff9f9cbc05a6520862760ea38008005221f4eb2c4405abb071f4b/0",
+                "url": "/run?id=acacacacacacacacacacacacacacacac#e-4369719e605afceadec0900baff4524500b48b48c93cc4d3f3e9efca598d035d"
+              },
+              {
+                "id": "event:3193eaf4cf0f92fc5cf4c899b9aaf59da626ca499f02dee4512c5c35976d90bf/0",
+                "url": "/run?id=acacacacacacacacacacacacacacacac#e-e5f0036423bdd1e37d3be5f8796482bdb6324f724c41c61d6a3453f934e3a7dd"
+              },
+              {
+                "id": "event:771bc101074e605fb6cce39d7d290084ceeb61d9fb95ec2e7a1428154c6209dd/0",
+                "url": "/run?id=acacacacacacacacacacacacacacacac#e-d37ed32c328470531d482ede95242983a3469c157d98d0ca5081dbdee11c692d"
+              },
+              {
+                "id": "event:b7e7e17f41d247d579d006ce58532d49a514d809bb1a74a338cefc57e5bfd93d/0",
+                "url": "/run?id=acacacacacacacacacacacacacacacac#e-c03757f3f1471866f52902a9e73683e01b68c69b08885a4a862b0a83dc00e168"
+              },
+              {
+                "id": "event:c6cdee9a313081562a14d4b11ba75c93be37d5ea3bd8677faa6e6293267a2b94/0",
+                "url": "/run?id=acacacacacacacacacacacacacacacac#e-8d17b82881197d764450e70b6d48410d6c9b5e43e732f1698d21615c312d4bb8"
+              }
+            ],
+            "invariant": {
+              "status": "satisfied",
+              "observed": 3,
+              "required": 3
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.previous_frame@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.previous_lane@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.noise@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.frame@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:acacacacacacacacacacacacacacacac/0000000000000002.arg.gap@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 15,
+        "native_lookups": 0,
+        "run_partitions": [
+          "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000002.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000002",
+            "run_id": "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "pipeline_target.turn",
+              "version": "1",
+              "span_ref": "span:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000002"
+            },
+            "inputs": [
+              {
+                "name": "index",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000002.arg.index@1",
+                "capture": "allowed",
+                "inline": 3,
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000002.return@1",
+              "capture": "allowed",
+              "inline": {
+                "index": 3,
+                "status": 200,
+                "reply": "decline"
+              },
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:f166321ad25c5803cef5470562e01a5bd41e40aa3cd428238a116a642cb60b53/0",
+              "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-b2f8c85c6af139887eed40156b728ecfee51988b8ca75d8ff72fc3747e9ef733"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:738d3ca2f17a3ec7952734ef9e3a826ddcc4d787228171553e0c18378cbbb656/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-dd3db979a9b99ddc00ebdb6d53d46cd67edc38be28a963289328f9e016b90264"
+              }
+            ],
+            "invariant": {
+              "status": "not_applicable",
+              "observed": 0,
+              "required": 0
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000002.arg.index@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 15,
+        "native_lookups": 0,
+        "run_partitions": [
+          "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003",
+            "run_id": "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "pipeline_target.context_select",
+              "version": "1",
+              "span_ref": "span:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003"
+            },
+            "inputs": [
+              {
+                "name": "history",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003.arg.history@1",
+                "capture": "allowed",
+                "inline": [
+                  "synthetic-prior-question",
+                  "synthetic-relevant-detail",
+                  "synthetic-followup"
+                ],
+                "status": "captured"
+              },
+              {
+                "name": "limit",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003.arg.limit@1",
+                "capture": "allowed",
+                "inline": 3,
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003.return@1",
+              "capture": "allowed",
+              "inline": [
+                "synthetic-prior-question",
+                "synthetic-relevant-detail",
+                "synthetic-followup"
+              ],
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:46f78fea6a170e92cc4edf8fe0b02a8adff6116838e52a3ffaa1759709d376d3/0",
+              "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-e3908d662867b70baf12372cc2cdf427bc2e675347fa0df49e13af50bbd9843c"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:0987d9e9a876096a44c120407ec503cbbe027d5ebabb027fdad5f9331e68ab91/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-708397c8ab29f972581013f9b9f3d5fe5825066e8684ba3a33abf268799f3b1e"
+              },
+              {
+                "id": "event:58a0f958aeeb93137ca6db79f482b9b8a0e2d58d172954c374bac38e880e3236/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-6101e93f3a310e085d3ada4cb891bb9147367f5961f74feb0c25734c270cd2f3"
+              }
+            ],
+            "invariant": {
+              "status": "not_applicable",
+              "observed": 0,
+              "required": 0
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003.arg.history@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000003.arg.limit@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 15,
+        "native_lookups": 0,
+        "run_partitions": [
+          "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000005.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000005",
+            "run_id": "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "pipeline_target.retrieve",
+              "version": "1",
+              "span_ref": "span:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000005"
+            },
+            "inputs": [
+              {
+                "name": "question",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000005.arg.question@1",
+                "capture": "allowed",
+                "inline": "related",
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000005.return@1",
+              "capture": "allowed",
+              "inline": [
+                "synthetic-doc-relevant",
+                "synthetic-doc-decoy"
+              ],
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:a1c0ec7de6561b703d2b59971df2c250fdc84b15b0d4ead0b6db14a5ac38d862/0",
+              "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-15f11a69f9b74d511a897a7a5e8d764486700174b73e9a868718fe195d6acac3"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:9205eb3f005f5690c9d4347e0bc62cebc03e5ab5f17f852b06a87df8f46b4336/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-18e8b9c8887f2016c86092a3ae3a731a8de11f8a86b1f24ca12b25fa3711610a"
+              }
+            ],
+            "invariant": {
+              "status": "not_applicable",
+              "observed": 0,
+              "required": 0
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000005.arg.question@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 15,
+        "native_lookups": 0,
+        "run_partitions": [
+          "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000007.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000007",
+            "run_id": "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "pipeline_target.select_evidence",
+              "version": "1",
+              "span_ref": "span:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000007"
+            },
+            "inputs": [
+              {
+                "name": "candidates",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000007.arg.candidates@1",
+                "capture": "allowed",
+                "inline": [
+                  "synthetic-doc-relevant",
+                  "synthetic-doc-decoy"
+                ],
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000007.return@1",
+              "capture": "allowed",
+              "inline": [
+                "synthetic-doc-relevant"
+              ],
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:b26f017846af97a75cabe6a55a15875e46006b8247e50284647a00f027e27b14/0",
+              "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-bd00dbe534fd2ae4ceca8f1cba3543c280e91151334e906d29e53a3daf194618"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:8beb4806b277f9fa70b8da183acf4952af0a328887372690ae3442cc235f2244/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-8274211a47d108a526ca0c7c8af55465ee823727cb854247f79607ee8c4fc958"
+              }
+            ],
+            "invariant": {
+              "status": "not_applicable",
+              "observed": 0,
+              "required": 0
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000007.arg.candidates@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 15,
+        "native_lookups": 0,
+        "run_partitions": [
+          "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009",
+            "run_id": "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "pipeline_target.draft",
+              "version": "1",
+              "span_ref": "span:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009"
+            },
+            "inputs": [
+              {
+                "name": "evidence",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.arg.evidence@1",
+                "capture": "allowed",
+                "inline": [
+                  "synthetic-doc-relevant"
+                ],
+                "status": "captured"
+              },
+              {
+                "name": "context",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.arg.context@1",
+                "capture": "allowed",
+                "inline": [
+                  "synthetic-prior-question",
+                  "synthetic-relevant-detail",
+                  "synthetic-followup"
+                ],
+                "status": "captured"
+              },
+              {
+                "name": "strict",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.arg.strict@1",
+                "capture": "allowed",
+                "inline": true,
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.return@1",
+              "capture": "allowed",
+              "inline": "decline",
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:2f84cfa8b75964159156adb4c9b8308d60651b35ae8fff928a75c4baea79bb68/0",
+              "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-b57747951b1cf2ef2c77cead92ca5dc5e9a8222e5120714a575883bbe095e8d1"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:02acbabf4c0ac2a4d226d36fe3515cf35d815d0bc90e9cdf607dfbfd4e033b5f/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-d4d9beb1624187e0c8aa8b7505e43603ef374eb1262ae8b94ac0f5e73d80bf76"
+              },
+              {
+                "id": "event:3bc98282c74d798c1f8d2ab168810c026f75b9ec64f22877b559f20974a71cd7/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-5d464a33806a6eb3cd3c7f733fe9d5730757bbb4877663852a70527e77eec5d2"
+              },
+              {
+                "id": "event:b24b4bb9207b51e4a1afd039843284f5ff961d6570472f112c69c09e1dd8e34e/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-2cdb1b4cf629da5e9525bc84faa38d76dff94ddf1f7dcbde2849b208b7705678"
+              }
+            ],
+            "invariant": {
+              "status": "not_applicable",
+              "observed": 0,
+              "required": 0
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.arg.context@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.arg.strict@1",
+            "detail": "unknown: no producer in search scope"
+          },
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/0000000000000009.arg.evidence@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    },
+    {
+      "scope": {
+        "from_ns": 1767225600000000000,
+        "to_ns": 1798761600000000000,
+        "limit": 200,
+        "records_read": 15,
+        "native_lookups": 0,
+        "run_partitions": [
+          "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd"
+        ],
+        "truncated": false,
+        "negative_search": "Not found means unknown within these run partitions, [from,to), and the shared record limit; it does not establish absence outside this scope or distinguish eviction from missing capture."
+      },
+      "trace": {
+        "target": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/000000000000000b.return@1",
+        "evidence_tier": "Observations from recorded boundary capture and explicit lineage assertions; boundary capture does not prove the code read a value.",
+        "nodes": [
+          {
+            "version": 1,
+            "id": "decision:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/000000000000000b",
+            "run_id": "bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd",
+            "profile": {
+              "id": "synthetic",
+              "version": "1"
+            },
+            "step": {
+              "id": "pipeline_target.review",
+              "version": "1",
+              "span_ref": "span:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/000000000000000b"
+            },
+            "inputs": [
+              {
+                "name": "reply",
+                "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/000000000000000b.arg.reply@1",
+                "capture": "allowed",
+                "inline": "decline",
+                "status": "captured"
+              }
+            ],
+            "output": {
+              "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/000000000000000b.return@1",
+              "capture": "allowed",
+              "inline": "repair",
+              "status": "captured"
+            },
+            "chosen": {
+              "option": "returned"
+            },
+            "alternatives": [],
+            "rule": {
+              "id": "unobserved"
+            },
+            "evidence": {
+              "id": "event:4ca98411ebf0b0d4c3419f41a8f2ff3da15f6582a6719addfe0f71864b337c85/0",
+              "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-a0a99b8090639daa146736c6efa97736baa4968342f094778b8729f01eb8fba1"
+            },
+            "edge_evidence": [
+              {
+                "id": "event:597a1279e8e7efc3d1612a231ef1623ebb6e03917973eeb316fb4f2cfe3fc7d2/0",
+                "url": "/run?id=bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd#e-4ac5836d11da44cde1411342f43e67cd866c832af2dac0f013f42973098fd105"
+              }
+            ],
+            "invariant": {
+              "status": "not_applicable",
+              "observed": 0,
+              "required": 0
+            },
+            "status": "captured",
+            "depth": 0
+          }
+        ],
+        "findings": [
+          {
+            "kind": "dangling",
+            "ref": "value:bdbdbdbdbdbdbdbdbdbdbdbdbdbdbdbd/000000000000000b.arg.reply@1",
+            "detail": "unknown: no producer in search scope"
+          }
+        ],
+        "visited": 1,
+        "budget": {
+          "depth": 16,
+          "nodes": 100
+        },
+        "truncations": 0
+      },
+      "total_nodes_visited": 1,
+      "shared_node_budget": 100
+    }
+  ]
+}

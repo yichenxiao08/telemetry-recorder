@@ -1,0 +1,4880 @@
+{
+  "synthetic_only": true,
+  "trials": 1,
+  "pairs": 300,
+  "warmup_pairs": 20,
+  "total_calls_per_second": 60,
+  "per_kind_calls_per_second": 30,
+  "payload": [
+    0.51,
+    0.2,
+    0.1,
+    7
+  ],
+  "receiver_capture": "OFF",
+  "method_added_cost_against_budgets": "unmeasured; this is one exploratory paired trial, not five-trial qualification",
+  "source_sha256": "59bbe59e19f3677d9979931f1f8d3f0d6dc1b21a4e3f4584a9763b2925d57a57",
+  "flush_complete": true,
+  "counters": {
+    "probe_calls:class_environment.payload": 320,
+    "probe_runs_created": 640,
+    "captured_args": 2560,
+    "serialized": 640,
+    "envelope_bytes": 725120,
+    "attempted": 1280,
+    "accepted": 1280,
+    "probe_decisions_captured": 640,
+    "network_requests": 604,
+    "probe_calls:class_environment.Environment.payload": 320,
+    "exported": 1280,
+    "acknowledged": 1280,
+    "failed": 0,
+    "dropped": 0,
+    "unknown": 0,
+    "queue_size": 0,
+    "capacity": 256,
+    "cooldown_active": false,
+    "queue_high_water": 8,
+    "diagnostics": {
+      "counters_spans_except_flush_timeout": {
+        "encode_failure": 0,
+        "timeout": 0,
+        "connection_error": 0,
+        "http_non_2xx": 0,
+        "cooldown_suppressed": 0,
+        "other_failure": 0,
+        "flush_timeout": 0,
+        "cooldown_drop": 0,
+        "queue_full_drop": 0,
+        "shutdown_drop": 0,
+        "flush_drop": 0
+      },
+      "failures_by_class_spans": {},
+      "last_failures": [],
+      "failure_sample_limit": 64,
+      "worker_batch_sizes": {
+        "2": 580,
+        "4": 14,
+        "6": 8,
+        "8": 2
+      },
+      "last_worker_batches": [
+        {
+          "attempt_unix_ns": 1792567057732710700,
+          "elapsed_ns": 28720900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057761359800,
+          "elapsed_ns": 16182500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057777513100,
+          "elapsed_ns": 2286800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567057782657100,
+          "elapsed_ns": 47604600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792567057830281600,
+          "elapsed_ns": 18224100,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057848575000,
+          "elapsed_ns": 29411400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792567057878293100,
+          "elapsed_ns": 17338500,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057895499400,
+          "elapsed_ns": 2254300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567057899282200,
+          "elapsed_ns": 27673900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057927210100,
+          "elapsed_ns": 15935600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057942884800,
+          "elapsed_ns": 15734700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057958898500,
+          "elapsed_ns": 20670600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057979662800,
+          "elapsed_ns": 14088200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567057993583200,
+          "elapsed_ns": 2886900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567057999173300,
+          "elapsed_ns": 25532300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058024385600,
+          "elapsed_ns": 2807300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058032804800,
+          "elapsed_ns": 2890900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058049003200,
+          "elapsed_ns": 22183500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058071029000,
+          "elapsed_ns": 22806500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058094037800,
+          "elapsed_ns": 2826700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058099395600,
+          "elapsed_ns": 26999200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058126250000,
+          "elapsed_ns": 18831900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058145562700,
+          "elapsed_ns": 17602400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058163062900,
+          "elapsed_ns": 16324800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058179462200,
+          "elapsed_ns": 2381800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058182283700,
+          "elapsed_ns": 2632700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058199192600,
+          "elapsed_ns": 3083500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058216100200,
+          "elapsed_ns": 61753300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792567058278031100,
+          "elapsed_ns": 6066000,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058283929700,
+          "elapsed_ns": 26897200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058311043500,
+          "elapsed_ns": 2771200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058315950300,
+          "elapsed_ns": 2115200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058332569600,
+          "elapsed_ns": 25540900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058358306000,
+          "elapsed_ns": 2657200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058365831800,
+          "elapsed_ns": 2663100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058382707300,
+          "elapsed_ns": 25995500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058409031500,
+          "elapsed_ns": 3340300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058415645100,
+          "elapsed_ns": 26263000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058441961400,
+          "elapsed_ns": 2628800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058449312400,
+          "elapsed_ns": 14186100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058465946400,
+          "elapsed_ns": 3306000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058482622000,
+          "elapsed_ns": 26244800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058509203200,
+          "elapsed_ns": 3364600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058515920200,
+          "elapsed_ns": 27393000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058543445700,
+          "elapsed_ns": 2894300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058549055000,
+          "elapsed_ns": 2428500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058565824200,
+          "elapsed_ns": 18879200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058584962200,
+          "elapsed_ns": 25871000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058610609100,
+          "elapsed_ns": 3664800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058615713700,
+          "elapsed_ns": 2468500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058632510500,
+          "elapsed_ns": 3570300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058649444000,
+          "elapsed_ns": 63229600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792567058712614900,
+          "elapsed_ns": 5839500,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058718757100,
+          "elapsed_ns": 14076700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058732522600,
+          "elapsed_ns": 28862600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058761565800,
+          "elapsed_ns": 17077000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058778873900,
+          "elapsed_ns": 2280000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058782346900,
+          "elapsed_ns": 28132400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058810511100,
+          "elapsed_ns": 14247200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058824893300,
+          "elapsed_ns": 18783400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058843669300,
+          "elapsed_ns": 2600800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058848951100,
+          "elapsed_ns": 29252300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058877948400,
+          "elapsed_ns": 2484200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058882679900,
+          "elapsed_ns": 28411500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058910985100,
+          "elapsed_ns": 3280900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058915714500,
+          "elapsed_ns": 2464000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058932380700,
+          "elapsed_ns": 12832400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058948958800,
+          "elapsed_ns": 28345900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567058977171500,
+          "elapsed_ns": 2705300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567058982404100,
+          "elapsed_ns": 25265300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059007988000,
+          "elapsed_ns": 3433000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059015821300,
+          "elapsed_ns": 13175900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059032604300,
+          "elapsed_ns": 28902400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059061571100,
+          "elapsed_ns": 16371100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059077727300,
+          "elapsed_ns": 15342200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059093447500,
+          "elapsed_ns": 18660200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059112291100,
+          "elapsed_ns": 52657000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792567059164791700,
+          "elapsed_ns": 17084100,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059181957200,
+          "elapsed_ns": 14210000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059196090600,
+          "elapsed_ns": 14300300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059210492500,
+          "elapsed_ns": 15277800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059226086100,
+          "elapsed_ns": 2773000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059232496600,
+          "elapsed_ns": 26158900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059258397400,
+          "elapsed_ns": 19326100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059278014300,
+          "elapsed_ns": 17307700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059295524800,
+          "elapsed_ns": 15537500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059310749800,
+          "elapsed_ns": 3508200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059316082000,
+          "elapsed_ns": 2413600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059332668300,
+          "elapsed_ns": 25441700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059358189200,
+          "elapsed_ns": 17297000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059375712600,
+          "elapsed_ns": 18254200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059393824000,
+          "elapsed_ns": 2608500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059399198900,
+          "elapsed_ns": 26225600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059425383300,
+          "elapsed_ns": 3805300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059432501500,
+          "elapsed_ns": 2345100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059449241700,
+          "elapsed_ns": 27252700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059476602100,
+          "elapsed_ns": 3570600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059482562000,
+          "elapsed_ns": 13459600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059499065500,
+          "elapsed_ns": 26480700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059525475000,
+          "elapsed_ns": 36748400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 4
+        },
+        {
+          "attempt_unix_ns": 1792567059562289600,
+          "elapsed_ns": 6201600,
+          "size": 4,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059567736300,
+          "elapsed_ns": 2701900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059582551100,
+          "elapsed_ns": 28108600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059610713700,
+          "elapsed_ns": 2632700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059615709100,
+          "elapsed_ns": 3151900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059632560700,
+          "elapsed_ns": 12826600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059649185500,
+          "elapsed_ns": 13956600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059665663600,
+          "elapsed_ns": 27920200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059693629500,
+          "elapsed_ns": 3285800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059699299700,
+          "elapsed_ns": 2316600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059715631500,
+          "elapsed_ns": 17404700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059732985300,
+          "elapsed_ns": 26464100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059759470400,
+          "elapsed_ns": 2936600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059765732000,
+          "elapsed_ns": 2369000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059782464600,
+          "elapsed_ns": 3234500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059799114200,
+          "elapsed_ns": 14600000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059815679200,
+          "elapsed_ns": 13558700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059832328600,
+          "elapsed_ns": 13035500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059849055100,
+          "elapsed_ns": 2372000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059865617400,
+          "elapsed_ns": 28394500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059893868600,
+          "elapsed_ns": 2587000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059898983200,
+          "elapsed_ns": 64576900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792567059963304300,
+          "elapsed_ns": 16744800,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059980125400,
+          "elapsed_ns": 15779000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567059995982600,
+          "elapsed_ns": 2179000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567059999069800,
+          "elapsed_ns": 26979100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060025939100,
+          "elapsed_ns": 3643300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060032433800,
+          "elapsed_ns": 26806000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060059354800,
+          "elapsed_ns": 3189000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060065864200,
+          "elapsed_ns": 3168700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060082762000,
+          "elapsed_ns": 13327000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060098986400,
+          "elapsed_ns": 2342700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060116049200,
+          "elapsed_ns": 13707500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060132683600,
+          "elapsed_ns": 2302500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060149326100,
+          "elapsed_ns": 3390600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060165683200,
+          "elapsed_ns": 29264400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060195349800,
+          "elapsed_ns": 3255900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060199245200,
+          "elapsed_ns": 2598700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060216103800,
+          "elapsed_ns": 3070300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060232423800,
+          "elapsed_ns": 28455300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060260708700,
+          "elapsed_ns": 14545800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060275559700,
+          "elapsed_ns": 3059800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060282594600,
+          "elapsed_ns": 14796100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060298965000,
+          "elapsed_ns": 2336500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060315727600,
+          "elapsed_ns": 26737500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060342617700,
+          "elapsed_ns": 56426200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792567060399068800,
+          "elapsed_ns": 29778900,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060428889300,
+          "elapsed_ns": 14116600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060442844300,
+          "elapsed_ns": 18855600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060461823600,
+          "elapsed_ns": 14432600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060476598700,
+          "elapsed_ns": 17235700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060493642900,
+          "elapsed_ns": 16365400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060510279900,
+          "elapsed_ns": 3382200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060515743400,
+          "elapsed_ns": 3040300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060532361900,
+          "elapsed_ns": 26064500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060558805800,
+          "elapsed_ns": 4730000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060565706900,
+          "elapsed_ns": 28265500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060593853500,
+          "elapsed_ns": 15352200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060609336700,
+          "elapsed_ns": 3146600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060615971700,
+          "elapsed_ns": 2372100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060632550700,
+          "elapsed_ns": 3197300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060649100100,
+          "elapsed_ns": 29323900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060678539600,
+          "elapsed_ns": 2968300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060682559500,
+          "elapsed_ns": 13271700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060699111100,
+          "elapsed_ns": 30398100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060729618700,
+          "elapsed_ns": 2589900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060732560300,
+          "elapsed_ns": 26631900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060759216100,
+          "elapsed_ns": 2593900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060765942800,
+          "elapsed_ns": 68845200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 8
+        },
+        {
+          "attempt_unix_ns": 1792567060834938000,
+          "elapsed_ns": 29168700,
+          "size": 8,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060864351700,
+          "elapsed_ns": 12859100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060877137600,
+          "elapsed_ns": 15657300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060892593400,
+          "elapsed_ns": 1722800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060899188200,
+          "elapsed_ns": 25312300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060924508200,
+          "elapsed_ns": 1823600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060932382900,
+          "elapsed_ns": 27867100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060960542000,
+          "elapsed_ns": 16106700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060976618600,
+          "elapsed_ns": 16223900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567060992849900,
+          "elapsed_ns": 2737300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567060999438900,
+          "elapsed_ns": 27835700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061027489700,
+          "elapsed_ns": 2539400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061032770600,
+          "elapsed_ns": 2448000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061048976000,
+          "elapsed_ns": 25311500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061074209200,
+          "elapsed_ns": 3038700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061082417500,
+          "elapsed_ns": 23105700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061105424800,
+          "elapsed_ns": 19733800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061125504200,
+          "elapsed_ns": 19305400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061144921500,
+          "elapsed_ns": 14645500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061159333700,
+          "elapsed_ns": 2449100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061165921300,
+          "elapsed_ns": 14514300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061182339800,
+          "elapsed_ns": 14680200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061200400600,
+          "elapsed_ns": 2786700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061216095700,
+          "elapsed_ns": 17826800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061233917700,
+          "elapsed_ns": 25659500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061259450800,
+          "elapsed_ns": 17570900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061277114100,
+          "elapsed_ns": 2372800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061282392600,
+          "elapsed_ns": 26725800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061309215800,
+          "elapsed_ns": 3753100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061315616700,
+          "elapsed_ns": 2409300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061332431600,
+          "elapsed_ns": 27692900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061360467300,
+          "elapsed_ns": 3294500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061365888300,
+          "elapsed_ns": 28370900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061394275500,
+          "elapsed_ns": 15262300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061409842800,
+          "elapsed_ns": 15981700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061425772300,
+          "elapsed_ns": 2932000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061432628300,
+          "elapsed_ns": 27266500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061460153900,
+          "elapsed_ns": 16645900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061476593700,
+          "elapsed_ns": 18875800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061495695200,
+          "elapsed_ns": 15132100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061510521700,
+          "elapsed_ns": 16318300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061527223000,
+          "elapsed_ns": 2558600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061532327400,
+          "elapsed_ns": 27107700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061559666000,
+          "elapsed_ns": 2852200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061565879400,
+          "elapsed_ns": 13544400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061582384600,
+          "elapsed_ns": 3543100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061599238000,
+          "elapsed_ns": 27332000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061626395100,
+          "elapsed_ns": 16567800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061642968100,
+          "elapsed_ns": 20528100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061663952000,
+          "elapsed_ns": 15091900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061678823500,
+          "elapsed_ns": 13916900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061692862000,
+          "elapsed_ns": 2379200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061699168600,
+          "elapsed_ns": 27027900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061726489500,
+          "elapsed_ns": 3540500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061732590900,
+          "elapsed_ns": 27797400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061760714300,
+          "elapsed_ns": 3966300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061765714800,
+          "elapsed_ns": 28822600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061794639800,
+          "elapsed_ns": 2833200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061799155600,
+          "elapsed_ns": 25724600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061825198500,
+          "elapsed_ns": 19546000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061844352800,
+          "elapsed_ns": 15322100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061860035200,
+          "elapsed_ns": 3202600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061865926600,
+          "elapsed_ns": 3459100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061882374400,
+          "elapsed_ns": 28221600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061910630700,
+          "elapsed_ns": 2443700,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061915777300,
+          "elapsed_ns": 13407400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061932567500,
+          "elapsed_ns": 27254500,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061959716000,
+          "elapsed_ns": 17558600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061977488100,
+          "elapsed_ns": 15303100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567061992579000,
+          "elapsed_ns": 3044900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567061999108700,
+          "elapsed_ns": 28456200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062027592000,
+          "elapsed_ns": 16346600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062043766800,
+          "elapsed_ns": 2295600,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062048992600,
+          "elapsed_ns": 14551900,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062066062000,
+          "elapsed_ns": 63332100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 6
+        },
+        {
+          "attempt_unix_ns": 1792567062129562800,
+          "elapsed_ns": 5972500,
+          "size": 6,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062135221600,
+          "elapsed_ns": 25073000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062160558800,
+          "elapsed_ns": 2572000,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062165845400,
+          "elapsed_ns": 12751200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062182370900,
+          "elapsed_ns": 14155400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062199230500,
+          "elapsed_ns": 27350200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062226579200,
+          "elapsed_ns": 3919300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062232587900,
+          "elapsed_ns": 25250800,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062257546700,
+          "elapsed_ns": 3112300,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062265767400,
+          "elapsed_ns": 26408400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 2
+        },
+        {
+          "attempt_unix_ns": 1792567062292042900,
+          "elapsed_ns": 3040200,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792567062299441700,
+          "elapsed_ns": 25174400,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        }
+      ],
+      "batch_sample_limit": 256
+    },
+    "network_operation_slots": 1,
+    "retry_limit": 1,
+    "attempt_budget_seconds": 1.25
+  },
+  "samples": {
+    "function": [
+      {
+        "caller_us": 310.3,
+        "body_us": 3.9,
+        "total_us": 314.2
+      },
+      {
+        "caller_us": 185.9,
+        "body_us": 2.5,
+        "total_us": 188.4
+      },
+      {
+        "caller_us": 266.4,
+        "body_us": 3.5,
+        "total_us": 269.9
+      },
+      {
+        "caller_us": 184.7,
+        "body_us": 2.9,
+        "total_us": 187.6
+      },
+      {
+        "caller_us": 187.5,
+        "body_us": 2.1,
+        "total_us": 189.6
+      },
+      {
+        "caller_us": 232.6,
+        "body_us": 2.8,
+        "total_us": 235.4
+      },
+      {
+        "caller_us": 204.0,
+        "body_us": 3.3,
+        "total_us": 207.3
+      },
+      {
+        "caller_us": 211.5,
+        "body_us": 3.3,
+        "total_us": 214.8
+      },
+      {
+        "caller_us": 202.9,
+        "body_us": 3.0,
+        "total_us": 205.9
+      },
+      {
+        "caller_us": 198.9,
+        "body_us": 2.8,
+        "total_us": 201.7
+      },
+      {
+        "caller_us": 370.0,
+        "body_us": 4.2,
+        "total_us": 374.2
+      },
+      {
+        "caller_us": 205.1,
+        "body_us": 2.7,
+        "total_us": 207.8
+      },
+      {
+        "caller_us": 280.3,
+        "body_us": 3.2,
+        "total_us": 283.5
+      },
+      {
+        "caller_us": 250.0,
+        "body_us": 3.1,
+        "total_us": 253.1
+      },
+      {
+        "caller_us": 191.2,
+        "body_us": 2.5,
+        "total_us": 193.7
+      },
+      {
+        "caller_us": 297.1,
+        "body_us": 3.2,
+        "total_us": 300.3
+      },
+      {
+        "caller_us": 201.1,
+        "body_us": 2.9,
+        "total_us": 204.0
+      },
+      {
+        "caller_us": 201.4,
+        "body_us": 2.6,
+        "total_us": 204.0
+      },
+      {
+        "caller_us": 185.9,
+        "body_us": 2.7,
+        "total_us": 188.6
+      },
+      {
+        "caller_us": 233.3,
+        "body_us": 3.0,
+        "total_us": 236.3
+      },
+      {
+        "caller_us": 218.6,
+        "body_us": 2.9,
+        "total_us": 221.5
+      },
+      {
+        "caller_us": 229.1,
+        "body_us": 3.3,
+        "total_us": 232.4
+      },
+      {
+        "caller_us": 199.3,
+        "body_us": 2.3,
+        "total_us": 201.6
+      },
+      {
+        "caller_us": 187.7,
+        "body_us": 2.5,
+        "total_us": 190.2
+      },
+      {
+        "caller_us": 182.7,
+        "body_us": 2.8,
+        "total_us": 185.5
+      },
+      {
+        "caller_us": 209.1,
+        "body_us": 3.0,
+        "total_us": 212.1
+      },
+      {
+        "caller_us": 206.7,
+        "body_us": 2.2,
+        "total_us": 208.9
+      },
+      {
+        "caller_us": 213.5,
+        "body_us": 2.8,
+        "total_us": 216.3
+      },
+      {
+        "caller_us": 232.4,
+        "body_us": 3.1,
+        "total_us": 235.5
+      },
+      {
+        "caller_us": 247.8,
+        "body_us": 5.7,
+        "total_us": 253.5
+      },
+      {
+        "caller_us": 197.7,
+        "body_us": 2.3,
+        "total_us": 200.0
+      },
+      {
+        "caller_us": 197.5,
+        "body_us": 2.3,
+        "total_us": 199.8
+      },
+      {
+        "caller_us": 293.2,
+        "body_us": 3.3,
+        "total_us": 296.5
+      },
+      {
+        "caller_us": 283.9,
+        "body_us": 4.7,
+        "total_us": 288.6
+      },
+      {
+        "caller_us": 256.5,
+        "body_us": 3.5,
+        "total_us": 260.0
+      },
+      {
+        "caller_us": 283.9,
+        "body_us": 5.4,
+        "total_us": 289.3
+      },
+      {
+        "caller_us": 199.7,
+        "body_us": 2.9,
+        "total_us": 202.6
+      },
+      {
+        "caller_us": 205.7,
+        "body_us": 3.0,
+        "total_us": 208.7
+      },
+      {
+        "caller_us": 191.7,
+        "body_us": 2.5,
+        "total_us": 194.2
+      },
+      {
+        "caller_us": 218.0,
+        "body_us": 2.9,
+        "total_us": 220.9
+      },
+      {
+        "caller_us": 299.6,
+        "body_us": 5.3,
+        "total_us": 304.9
+      },
+      {
+        "caller_us": 421.2,
+        "body_us": 4.3,
+        "total_us": 425.5
+      },
+      {
+        "caller_us": 201.4,
+        "body_us": 3.0,
+        "total_us": 204.4
+      },
+      {
+        "caller_us": 292.6,
+        "body_us": 3.2,
+        "total_us": 295.8
+      },
+      {
+        "caller_us": 305.4,
+        "body_us": 6.6,
+        "total_us": 312.0
+      },
+      {
+        "caller_us": 199.4,
+        "body_us": 2.7,
+        "total_us": 202.1
+      },
+      {
+        "caller_us": 225.9,
+        "body_us": 3.3,
+        "total_us": 229.2
+      },
+      {
+        "caller_us": 262.6,
+        "body_us": 2.4,
+        "total_us": 265.0
+      },
+      {
+        "caller_us": 199.0,
+        "body_us": 2.8,
+        "total_us": 201.8
+      },
+      {
+        "caller_us": 250.2,
+        "body_us": 4.3,
+        "total_us": 254.5
+      },
+      {
+        "caller_us": 171.1,
+        "body_us": 2.4,
+        "total_us": 173.5
+      },
+      {
+        "caller_us": 259.7,
+        "body_us": 3.0,
+        "total_us": 262.7
+      },
+      {
+        "caller_us": 162.4,
+        "body_us": 2.8,
+        "total_us": 165.2
+      },
+      {
+        "caller_us": 202.9,
+        "body_us": 2.8,
+        "total_us": 205.7
+      },
+      {
+        "caller_us": 214.4,
+        "body_us": 2.6,
+        "total_us": 217.0
+      },
+      {
+        "caller_us": 169.8,
+        "body_us": 2.8,
+        "total_us": 172.6
+      },
+      {
+        "caller_us": 226.9,
+        "body_us": 2.8,
+        "total_us": 229.7
+      },
+      {
+        "caller_us": 220.1,
+        "body_us": 3.1,
+        "total_us": 223.2
+      },
+      {
+        "caller_us": 161.4,
+        "body_us": 2.7,
+        "total_us": 164.1
+      },
+      {
+        "caller_us": 249.0,
+        "body_us": 3.1,
+        "total_us": 252.1
+      },
+      {
+        "caller_us": 219.1,
+        "body_us": 3.0,
+        "total_us": 222.1
+      },
+      {
+        "caller_us": 295.2,
+        "body_us": 4.7,
+        "total_us": 299.9
+      },
+      {
+        "caller_us": 199.0,
+        "body_us": 2.8,
+        "total_us": 201.8
+      },
+      {
+        "caller_us": 213.4,
+        "body_us": 2.6,
+        "total_us": 216.0
+      },
+      {
+        "caller_us": 273.7,
+        "body_us": 3.8,
+        "total_us": 277.5
+      },
+      {
+        "caller_us": 217.2,
+        "body_us": 2.6,
+        "total_us": 219.8
+      },
+      {
+        "caller_us": 365.4,
+        "body_us": 5.4,
+        "total_us": 370.8
+      },
+      {
+        "caller_us": 214.1,
+        "body_us": 2.5,
+        "total_us": 216.6
+      },
+      {
+        "caller_us": 247.0,
+        "body_us": 3.1,
+        "total_us": 250.1
+      },
+      {
+        "caller_us": 318.0,
+        "body_us": 3.7,
+        "total_us": 321.7
+      },
+      {
+        "caller_us": 303.8,
+        "body_us": 3.9,
+        "total_us": 307.7
+      },
+      {
+        "caller_us": 293.6,
+        "body_us": 4.3,
+        "total_us": 297.9
+      },
+      {
+        "caller_us": 319.1,
+        "body_us": 4.3,
+        "total_us": 323.4
+      },
+      {
+        "caller_us": 307.7,
+        "body_us": 4.6,
+        "total_us": 312.3
+      },
+      {
+        "caller_us": 211.4,
+        "body_us": 3.1,
+        "total_us": 214.5
+      },
+      {
+        "caller_us": 232.1,
+        "body_us": 3.2,
+        "total_us": 235.3
+      },
+      {
+        "caller_us": 196.0,
+        "body_us": 2.6,
+        "total_us": 198.6
+      },
+      {
+        "caller_us": 208.9,
+        "body_us": 2.2,
+        "total_us": 211.1
+      },
+      {
+        "caller_us": 200.9,
+        "body_us": 2.6,
+        "total_us": 203.5
+      },
+      {
+        "caller_us": 211.5,
+        "body_us": 2.6,
+        "total_us": 214.1
+      },
+      {
+        "caller_us": 220.6,
+        "body_us": 2.6,
+        "total_us": 223.2
+      },
+      {
+        "caller_us": 206.4,
+        "body_us": 3.1,
+        "total_us": 209.5
+      },
+      {
+        "caller_us": 341.5,
+        "body_us": 5.5,
+        "total_us": 347.0
+      },
+      {
+        "caller_us": 160.8,
+        "body_us": 2.8,
+        "total_us": 163.6
+      },
+      {
+        "caller_us": 210.4,
+        "body_us": 2.7,
+        "total_us": 213.1
+      },
+      {
+        "caller_us": 202.6,
+        "body_us": 2.4,
+        "total_us": 205.0
+      },
+      {
+        "caller_us": 213.0,
+        "body_us": 2.8,
+        "total_us": 215.8
+      },
+      {
+        "caller_us": 259.5,
+        "body_us": 2.6,
+        "total_us": 262.1
+      },
+      {
+        "caller_us": 183.2,
+        "body_us": 2.8,
+        "total_us": 186.0
+      },
+      {
+        "caller_us": 170.0,
+        "body_us": 2.8,
+        "total_us": 172.8
+      },
+      {
+        "caller_us": 212.3,
+        "body_us": 3.0,
+        "total_us": 215.3
+      },
+      {
+        "caller_us": 198.1,
+        "body_us": 2.6,
+        "total_us": 200.7
+      },
+      {
+        "caller_us": 432.1,
+        "body_us": 5.0,
+        "total_us": 437.1
+      },
+      {
+        "caller_us": 183.0,
+        "body_us": 2.8,
+        "total_us": 185.8
+      },
+      {
+        "caller_us": 205.8,
+        "body_us": 3.0,
+        "total_us": 208.8
+      },
+      {
+        "caller_us": 344.6,
+        "body_us": 3.0,
+        "total_us": 347.6
+      },
+      {
+        "caller_us": 194.7,
+        "body_us": 2.4,
+        "total_us": 197.1
+      },
+      {
+        "caller_us": 188.1,
+        "body_us": 2.8,
+        "total_us": 190.9
+      },
+      {
+        "caller_us": 210.6,
+        "body_us": 3.3,
+        "total_us": 213.9
+      },
+      {
+        "caller_us": 222.5,
+        "body_us": 3.1,
+        "total_us": 225.6
+      },
+      {
+        "caller_us": 229.8,
+        "body_us": 3.3,
+        "total_us": 233.1
+      },
+      {
+        "caller_us": 190.5,
+        "body_us": 2.9,
+        "total_us": 193.4
+      },
+      {
+        "caller_us": 200.3,
+        "body_us": 2.7,
+        "total_us": 203.0
+      },
+      {
+        "caller_us": 221.6,
+        "body_us": 2.6,
+        "total_us": 224.2
+      },
+      {
+        "caller_us": 161.3,
+        "body_us": 2.0,
+        "total_us": 163.3
+      },
+      {
+        "caller_us": 213.8,
+        "body_us": 2.4,
+        "total_us": 216.2
+      },
+      {
+        "caller_us": 315.6,
+        "body_us": 4.0,
+        "total_us": 319.6
+      },
+      {
+        "caller_us": 204.1,
+        "body_us": 2.9,
+        "total_us": 207.0
+      },
+      {
+        "caller_us": 231.0,
+        "body_us": 2.9,
+        "total_us": 233.9
+      },
+      {
+        "caller_us": 213.6,
+        "body_us": 2.8,
+        "total_us": 216.4
+      },
+      {
+        "caller_us": 261.7,
+        "body_us": 3.8,
+        "total_us": 265.5
+      },
+      {
+        "caller_us": 200.3,
+        "body_us": 2.8,
+        "total_us": 203.1
+      },
+      {
+        "caller_us": 282.1,
+        "body_us": 3.8,
+        "total_us": 285.9
+      },
+      {
+        "caller_us": 249.0,
+        "body_us": 2.2,
+        "total_us": 251.2
+      },
+      {
+        "caller_us": 199.4,
+        "body_us": 2.7,
+        "total_us": 202.1
+      },
+      {
+        "caller_us": 213.2,
+        "body_us": 3.0,
+        "total_us": 216.2
+      },
+      {
+        "caller_us": 256.4,
+        "body_us": 2.7,
+        "total_us": 259.1
+      },
+      {
+        "caller_us": 202.3,
+        "body_us": 2.9,
+        "total_us": 205.2
+      },
+      {
+        "caller_us": 269.6,
+        "body_us": 3.1,
+        "total_us": 272.7
+      },
+      {
+        "caller_us": 145.2,
+        "body_us": 2.0,
+        "total_us": 147.2
+      },
+      {
+        "caller_us": 296.0,
+        "body_us": 4.6,
+        "total_us": 300.6
+      },
+      {
+        "caller_us": 278.7,
+        "body_us": 4.1,
+        "total_us": 282.8
+      },
+      {
+        "caller_us": 358.6,
+        "body_us": 5.4,
+        "total_us": 364.0
+      },
+      {
+        "caller_us": 169.3,
+        "body_us": 2.2,
+        "total_us": 171.5
+      },
+      {
+        "caller_us": 152.3,
+        "body_us": 2.2,
+        "total_us": 154.5
+      },
+      {
+        "caller_us": 252.2,
+        "body_us": 2.8,
+        "total_us": 255.0
+      },
+      {
+        "caller_us": 151.1,
+        "body_us": 2.2,
+        "total_us": 153.3
+      },
+      {
+        "caller_us": 180.7,
+        "body_us": 2.6,
+        "total_us": 183.3
+      },
+      {
+        "caller_us": 177.2,
+        "body_us": 2.9,
+        "total_us": 180.1
+      },
+      {
+        "caller_us": 181.5,
+        "body_us": 2.1,
+        "total_us": 183.6
+      },
+      {
+        "caller_us": 185.8,
+        "body_us": 2.9,
+        "total_us": 188.7
+      },
+      {
+        "caller_us": 277.5,
+        "body_us": 2.6,
+        "total_us": 280.1
+      },
+      {
+        "caller_us": 316.2,
+        "body_us": 4.6,
+        "total_us": 320.8
+      },
+      {
+        "caller_us": 248.6,
+        "body_us": 3.5,
+        "total_us": 252.1
+      },
+      {
+        "caller_us": 249.8,
+        "body_us": 3.4,
+        "total_us": 253.2
+      },
+      {
+        "caller_us": 210.5,
+        "body_us": 3.2,
+        "total_us": 213.7
+      },
+      {
+        "caller_us": 191.9,
+        "body_us": 3.0,
+        "total_us": 194.9
+      },
+      {
+        "caller_us": 216.5,
+        "body_us": 3.2,
+        "total_us": 219.7
+      },
+      {
+        "caller_us": 202.8,
+        "body_us": 2.7,
+        "total_us": 205.5
+      },
+      {
+        "caller_us": 166.1,
+        "body_us": 2.4,
+        "total_us": 168.5
+      },
+      {
+        "caller_us": 162.9,
+        "body_us": 2.5,
+        "total_us": 165.4
+      },
+      {
+        "caller_us": 225.0,
+        "body_us": 2.6,
+        "total_us": 227.6
+      },
+      {
+        "caller_us": 227.1,
+        "body_us": 3.0,
+        "total_us": 230.1
+      },
+      {
+        "caller_us": 241.7,
+        "body_us": 3.4,
+        "total_us": 245.1
+      },
+      {
+        "caller_us": 229.7,
+        "body_us": 2.7,
+        "total_us": 232.4
+      },
+      {
+        "caller_us": 222.4,
+        "body_us": 2.9,
+        "total_us": 225.3
+      },
+      {
+        "caller_us": 239.9,
+        "body_us": 3.3,
+        "total_us": 243.2
+      },
+      {
+        "caller_us": 151.7,
+        "body_us": 1.9,
+        "total_us": 153.6
+      },
+      {
+        "caller_us": 242.2,
+        "body_us": 2.7,
+        "total_us": 244.9
+      },
+      {
+        "caller_us": 301.7,
+        "body_us": 5.4,
+        "total_us": 307.1
+      },
+      {
+        "caller_us": 170.3,
+        "body_us": 2.4,
+        "total_us": 172.7
+      },
+      {
+        "caller_us": 205.6,
+        "body_us": 2.6,
+        "total_us": 208.2
+      },
+      {
+        "caller_us": 202.7,
+        "body_us": 2.9,
+        "total_us": 205.6
+      },
+      {
+        "caller_us": 256.7,
+        "body_us": 2.3,
+        "total_us": 259.0
+      },
+      {
+        "caller_us": 188.6,
+        "body_us": 2.8,
+        "total_us": 191.4
+      },
+      {
+        "caller_us": 187.1,
+        "body_us": 2.6,
+        "total_us": 189.7
+      },
+      {
+        "caller_us": 214.4,
+        "body_us": 2.1,
+        "total_us": 216.5
+      },
+      {
+        "caller_us": 157.2,
+        "body_us": 2.5,
+        "total_us": 159.7
+      },
+      {
+        "caller_us": 215.1,
+        "body_us": 2.8,
+        "total_us": 217.9
+      },
+      {
+        "caller_us": 224.0,
+        "body_us": 2.7,
+        "total_us": 226.7
+      },
+      {
+        "caller_us": 229.4,
+        "body_us": 3.0,
+        "total_us": 232.4
+      },
+      {
+        "caller_us": 199.1,
+        "body_us": 2.8,
+        "total_us": 201.9
+      },
+      {
+        "caller_us": 252.9,
+        "body_us": 3.2,
+        "total_us": 256.1
+      },
+      {
+        "caller_us": 161.9,
+        "body_us": 2.2,
+        "total_us": 164.1
+      },
+      {
+        "caller_us": 198.9,
+        "body_us": 2.5,
+        "total_us": 201.4
+      },
+      {
+        "caller_us": 141.4,
+        "body_us": 1.9,
+        "total_us": 143.3
+      },
+      {
+        "caller_us": 148.9,
+        "body_us": 2.4,
+        "total_us": 151.3
+      },
+      {
+        "caller_us": 171.1,
+        "body_us": 3.2,
+        "total_us": 174.3
+      },
+      {
+        "caller_us": 249.6,
+        "body_us": 3.5,
+        "total_us": 253.1
+      },
+      {
+        "caller_us": 257.7,
+        "body_us": 3.1,
+        "total_us": 260.8
+      },
+      {
+        "caller_us": 163.0,
+        "body_us": 2.2,
+        "total_us": 165.2
+      },
+      {
+        "caller_us": 228.4,
+        "body_us": 2.9,
+        "total_us": 231.3
+      },
+      {
+        "caller_us": 222.6,
+        "body_us": 2.7,
+        "total_us": 225.3
+      },
+      {
+        "caller_us": 208.4,
+        "body_us": 2.7,
+        "total_us": 211.1
+      },
+      {
+        "caller_us": 206.6,
+        "body_us": 2.7,
+        "total_us": 209.3
+      },
+      {
+        "caller_us": 180.3,
+        "body_us": 2.4,
+        "total_us": 182.7
+      },
+      {
+        "caller_us": 150.9,
+        "body_us": 1.9,
+        "total_us": 152.8
+      },
+      {
+        "caller_us": 540.2,
+        "body_us": 5.1,
+        "total_us": 545.3
+      },
+      {
+        "caller_us": 296.4,
+        "body_us": 3.8,
+        "total_us": 300.2
+      },
+      {
+        "caller_us": 244.8,
+        "body_us": 3.2,
+        "total_us": 248.0
+      },
+      {
+        "caller_us": 166.4,
+        "body_us": 2.3,
+        "total_us": 168.7
+      },
+      {
+        "caller_us": 169.7,
+        "body_us": 2.6,
+        "total_us": 172.3
+      },
+      {
+        "caller_us": 204.8,
+        "body_us": 2.7,
+        "total_us": 207.5
+      },
+      {
+        "caller_us": 227.2,
+        "body_us": 3.2,
+        "total_us": 230.4
+      },
+      {
+        "caller_us": 164.7,
+        "body_us": 2.5,
+        "total_us": 167.2
+      },
+      {
+        "caller_us": 253.9,
+        "body_us": 3.0,
+        "total_us": 256.9
+      },
+      {
+        "caller_us": 250.0,
+        "body_us": 3.4,
+        "total_us": 253.4
+      },
+      {
+        "caller_us": 277.0,
+        "body_us": 2.8,
+        "total_us": 279.8
+      },
+      {
+        "caller_us": 267.9,
+        "body_us": 3.8,
+        "total_us": 271.7
+      },
+      {
+        "caller_us": 227.5,
+        "body_us": 3.4,
+        "total_us": 230.9
+      },
+      {
+        "caller_us": 230.9,
+        "body_us": 3.2,
+        "total_us": 234.1
+      },
+      {
+        "caller_us": 221.0,
+        "body_us": 2.9,
+        "total_us": 223.9
+      },
+      {
+        "caller_us": 148.5,
+        "body_us": 2.1,
+        "total_us": 150.6
+      },
+      {
+        "caller_us": 286.0,
+        "body_us": 3.3,
+        "total_us": 289.3
+      },
+      {
+        "caller_us": 157.9,
+        "body_us": 2.3,
+        "total_us": 160.2
+      },
+      {
+        "caller_us": 181.1,
+        "body_us": 2.3,
+        "total_us": 183.4
+      },
+      {
+        "caller_us": 159.1,
+        "body_us": 2.5,
+        "total_us": 161.6
+      },
+      {
+        "caller_us": 250.7,
+        "body_us": 3.6,
+        "total_us": 254.3
+      },
+      {
+        "caller_us": 191.8,
+        "body_us": 3.0,
+        "total_us": 194.8
+      },
+      {
+        "caller_us": 211.3,
+        "body_us": 3.1,
+        "total_us": 214.4
+      },
+      {
+        "caller_us": 187.3,
+        "body_us": 2.5,
+        "total_us": 189.8
+      },
+      {
+        "caller_us": 197.1,
+        "body_us": 3.0,
+        "total_us": 200.1
+      },
+      {
+        "caller_us": 235.1,
+        "body_us": 2.8,
+        "total_us": 237.9
+      },
+      {
+        "caller_us": 215.4,
+        "body_us": 2.3,
+        "total_us": 217.7
+      },
+      {
+        "caller_us": 161.0,
+        "body_us": 2.4,
+        "total_us": 163.4
+      },
+      {
+        "caller_us": 149.2,
+        "body_us": 2.2,
+        "total_us": 151.4
+      },
+      {
+        "caller_us": 160.1,
+        "body_us": 2.3,
+        "total_us": 162.4
+      },
+      {
+        "caller_us": 159.2,
+        "body_us": 2.4,
+        "total_us": 161.6
+      },
+      {
+        "caller_us": 392.7,
+        "body_us": 4.6,
+        "total_us": 397.3
+      },
+      {
+        "caller_us": 295.3,
+        "body_us": 3.8,
+        "total_us": 299.1
+      },
+      {
+        "caller_us": 166.6,
+        "body_us": 2.6,
+        "total_us": 169.2
+      },
+      {
+        "caller_us": 303.0,
+        "body_us": 3.8,
+        "total_us": 306.8
+      },
+      {
+        "caller_us": 152.0,
+        "body_us": 2.0,
+        "total_us": 154.0
+      },
+      {
+        "caller_us": 157.5,
+        "body_us": 2.3,
+        "total_us": 159.8
+      },
+      {
+        "caller_us": 227.6,
+        "body_us": 3.2,
+        "total_us": 230.8
+      },
+      {
+        "caller_us": 194.5,
+        "body_us": 2.4,
+        "total_us": 196.9
+      },
+      {
+        "caller_us": 228.8,
+        "body_us": 2.8,
+        "total_us": 231.6
+      },
+      {
+        "caller_us": 151.5,
+        "body_us": 2.1,
+        "total_us": 153.6
+      },
+      {
+        "caller_us": 212.2,
+        "body_us": 2.8,
+        "total_us": 215.0
+      },
+      {
+        "caller_us": 213.0,
+        "body_us": 3.0,
+        "total_us": 216.0
+      },
+      {
+        "caller_us": 193.5,
+        "body_us": 2.5,
+        "total_us": 196.0
+      },
+      {
+        "caller_us": 205.2,
+        "body_us": 2.8,
+        "total_us": 208.0
+      },
+      {
+        "caller_us": 220.7,
+        "body_us": 3.2,
+        "total_us": 223.9
+      },
+      {
+        "caller_us": 160.7,
+        "body_us": 2.3,
+        "total_us": 163.0
+      },
+      {
+        "caller_us": 217.8,
+        "body_us": 2.9,
+        "total_us": 220.7
+      },
+      {
+        "caller_us": 177.7,
+        "body_us": 2.7,
+        "total_us": 180.4
+      },
+      {
+        "caller_us": 165.1,
+        "body_us": 2.5,
+        "total_us": 167.6
+      },
+      {
+        "caller_us": 171.5,
+        "body_us": 2.2,
+        "total_us": 173.7
+      },
+      {
+        "caller_us": 316.8,
+        "body_us": 4.1,
+        "total_us": 320.9
+      },
+      {
+        "caller_us": 174.8,
+        "body_us": 2.1,
+        "total_us": 176.9
+      },
+      {
+        "caller_us": 162.7,
+        "body_us": 2.7,
+        "total_us": 165.4
+      },
+      {
+        "caller_us": 171.9,
+        "body_us": 2.7,
+        "total_us": 174.6
+      },
+      {
+        "caller_us": 284.3,
+        "body_us": 4.0,
+        "total_us": 288.3
+      },
+      {
+        "caller_us": 165.0,
+        "body_us": 3.2,
+        "total_us": 168.2
+      },
+      {
+        "caller_us": 216.1,
+        "body_us": 3.2,
+        "total_us": 219.3
+      },
+      {
+        "caller_us": 374.9,
+        "body_us": 4.8,
+        "total_us": 379.7
+      },
+      {
+        "caller_us": 307.4,
+        "body_us": 3.7,
+        "total_us": 311.1
+      },
+      {
+        "caller_us": 209.5,
+        "body_us": 3.0,
+        "total_us": 212.5
+      },
+      {
+        "caller_us": 201.3,
+        "body_us": 2.9,
+        "total_us": 204.2
+      },
+      {
+        "caller_us": 335.8,
+        "body_us": 3.2,
+        "total_us": 339.0
+      },
+      {
+        "caller_us": 308.8,
+        "body_us": 4.0,
+        "total_us": 312.8
+      },
+      {
+        "caller_us": 198.1,
+        "body_us": 2.7,
+        "total_us": 200.8
+      },
+      {
+        "caller_us": 277.7,
+        "body_us": 2.9,
+        "total_us": 280.6
+      },
+      {
+        "caller_us": 256.4,
+        "body_us": 5.9,
+        "total_us": 262.3
+      },
+      {
+        "caller_us": 159.0,
+        "body_us": 2.2,
+        "total_us": 161.2
+      },
+      {
+        "caller_us": 193.8,
+        "body_us": 2.3,
+        "total_us": 196.1
+      },
+      {
+        "caller_us": 170.5,
+        "body_us": 2.6,
+        "total_us": 173.1
+      },
+      {
+        "caller_us": 226.2,
+        "body_us": 3.0,
+        "total_us": 229.2
+      },
+      {
+        "caller_us": 252.8,
+        "body_us": 3.0,
+        "total_us": 255.8
+      },
+      {
+        "caller_us": 281.8,
+        "body_us": 2.7,
+        "total_us": 284.5
+      },
+      {
+        "caller_us": 201.0,
+        "body_us": 2.8,
+        "total_us": 203.8
+      },
+      {
+        "caller_us": 258.4,
+        "body_us": 3.1,
+        "total_us": 261.5
+      },
+      {
+        "caller_us": 224.1,
+        "body_us": 2.9,
+        "total_us": 227.0
+      },
+      {
+        "caller_us": 284.1,
+        "body_us": 4.1,
+        "total_us": 288.2
+      },
+      {
+        "caller_us": 482.2,
+        "body_us": 5.2,
+        "total_us": 487.4
+      },
+      {
+        "caller_us": 203.7,
+        "body_us": 3.0,
+        "total_us": 206.7
+      },
+      {
+        "caller_us": 192.3,
+        "body_us": 2.5,
+        "total_us": 194.8
+      },
+      {
+        "caller_us": 140.1,
+        "body_us": 2.2,
+        "total_us": 142.3
+      },
+      {
+        "caller_us": 188.3,
+        "body_us": 2.7,
+        "total_us": 191.0
+      },
+      {
+        "caller_us": 203.4,
+        "body_us": 2.9,
+        "total_us": 206.3
+      },
+      {
+        "caller_us": 211.6,
+        "body_us": 2.4,
+        "total_us": 214.0
+      },
+      {
+        "caller_us": 172.3,
+        "body_us": 2.4,
+        "total_us": 174.7
+      },
+      {
+        "caller_us": 232.7,
+        "body_us": 2.9,
+        "total_us": 235.6
+      },
+      {
+        "caller_us": 213.3,
+        "body_us": 3.0,
+        "total_us": 216.3
+      },
+      {
+        "caller_us": 206.2,
+        "body_us": 3.1,
+        "total_us": 209.3
+      },
+      {
+        "caller_us": 174.9,
+        "body_us": 2.7,
+        "total_us": 177.6
+      },
+      {
+        "caller_us": 181.3,
+        "body_us": 2.7,
+        "total_us": 184.0
+      },
+      {
+        "caller_us": 210.5,
+        "body_us": 3.0,
+        "total_us": 213.5
+      },
+      {
+        "caller_us": 199.8,
+        "body_us": 3.3,
+        "total_us": 203.1
+      },
+      {
+        "caller_us": 225.1,
+        "body_us": 2.8,
+        "total_us": 227.9
+      },
+      {
+        "caller_us": 162.9,
+        "body_us": 2.8,
+        "total_us": 165.7
+      },
+      {
+        "caller_us": 191.0,
+        "body_us": 2.7,
+        "total_us": 193.7
+      },
+      {
+        "caller_us": 278.1,
+        "body_us": 2.9,
+        "total_us": 281.0
+      },
+      {
+        "caller_us": 244.1,
+        "body_us": 2.6,
+        "total_us": 246.7
+      },
+      {
+        "caller_us": 201.6,
+        "body_us": 2.7,
+        "total_us": 204.3
+      },
+      {
+        "caller_us": 149.3,
+        "body_us": 2.3,
+        "total_us": 151.6
+      },
+      {
+        "caller_us": 200.3,
+        "body_us": 2.3,
+        "total_us": 202.6
+      },
+      {
+        "caller_us": 230.0,
+        "body_us": 2.4,
+        "total_us": 232.4
+      },
+      {
+        "caller_us": 187.5,
+        "body_us": 2.5,
+        "total_us": 190.0
+      },
+      {
+        "caller_us": 204.1,
+        "body_us": 2.3,
+        "total_us": 206.4
+      },
+      {
+        "caller_us": 171.8,
+        "body_us": 2.5,
+        "total_us": 174.3
+      },
+      {
+        "caller_us": 194.8,
+        "body_us": 2.0,
+        "total_us": 196.8
+      },
+      {
+        "caller_us": 187.5,
+        "body_us": 2.8,
+        "total_us": 190.3
+      },
+      {
+        "caller_us": 218.7,
+        "body_us": 4.0,
+        "total_us": 222.7
+      },
+      {
+        "caller_us": 227.0,
+        "body_us": 3.0,
+        "total_us": 230.0
+      },
+      {
+        "caller_us": 189.2,
+        "body_us": 2.5,
+        "total_us": 191.7
+      },
+      {
+        "caller_us": 301.3,
+        "body_us": 4.1,
+        "total_us": 305.4
+      },
+      {
+        "caller_us": 228.5,
+        "body_us": 3.1,
+        "total_us": 231.6
+      },
+      {
+        "caller_us": 170.3,
+        "body_us": 2.3,
+        "total_us": 172.6
+      },
+      {
+        "caller_us": 163.0,
+        "body_us": 2.1,
+        "total_us": 165.1
+      },
+      {
+        "caller_us": 196.4,
+        "body_us": 2.2,
+        "total_us": 198.6
+      },
+      {
+        "caller_us": 154.2,
+        "body_us": 2.2,
+        "total_us": 156.4
+      },
+      {
+        "caller_us": 198.5,
+        "body_us": 2.7,
+        "total_us": 201.2
+      },
+      {
+        "caller_us": 230.5,
+        "body_us": 2.5,
+        "total_us": 233.0
+      },
+      {
+        "caller_us": 220.5,
+        "body_us": 2.5,
+        "total_us": 223.0
+      },
+      {
+        "caller_us": 205.6,
+        "body_us": 2.7,
+        "total_us": 208.3
+      },
+      {
+        "caller_us": 302.6,
+        "body_us": 4.4,
+        "total_us": 307.0
+      },
+      {
+        "caller_us": 176.9,
+        "body_us": 2.5,
+        "total_us": 179.4
+      },
+      {
+        "caller_us": 224.8,
+        "body_us": 2.8,
+        "total_us": 227.6
+      },
+      {
+        "caller_us": 198.5,
+        "body_us": 2.8,
+        "total_us": 201.3
+      }
+    ],
+    "method": [
+      {
+        "caller_us": 228.7,
+        "body_us": 2.5,
+        "total_us": 231.2
+      },
+      {
+        "caller_us": 340.0,
+        "body_us": 4.5,
+        "total_us": 344.5
+      },
+      {
+        "caller_us": 316.8,
+        "body_us": 4.5,
+        "total_us": 321.3
+      },
+      {
+        "caller_us": 181.5,
+        "body_us": 2.1,
+        "total_us": 183.6
+      },
+      {
+        "caller_us": 188.9,
+        "body_us": 2.1,
+        "total_us": 191.0
+      },
+      {
+        "caller_us": 206.1,
+        "body_us": 2.4,
+        "total_us": 208.5
+      },
+      {
+        "caller_us": 209.8,
+        "body_us": 2.4,
+        "total_us": 212.2
+      },
+      {
+        "caller_us": 187.7,
+        "body_us": 2.3,
+        "total_us": 190.0
+      },
+      {
+        "caller_us": 229.1,
+        "body_us": 2.9,
+        "total_us": 232.0
+      },
+      {
+        "caller_us": 278.0,
+        "body_us": 2.6,
+        "total_us": 280.6
+      },
+      {
+        "caller_us": 241.1,
+        "body_us": 2.8,
+        "total_us": 243.9
+      },
+      {
+        "caller_us": 232.9,
+        "body_us": 2.3,
+        "total_us": 235.2
+      },
+      {
+        "caller_us": 207.1,
+        "body_us": 2.6,
+        "total_us": 209.7
+      },
+      {
+        "caller_us": 237.5,
+        "body_us": 2.6,
+        "total_us": 240.1
+      },
+      {
+        "caller_us": 225.2,
+        "body_us": 2.6,
+        "total_us": 227.8
+      },
+      {
+        "caller_us": 197.3,
+        "body_us": 2.6,
+        "total_us": 199.9
+      },
+      {
+        "caller_us": 189.2,
+        "body_us": 2.1,
+        "total_us": 191.3
+      },
+      {
+        "caller_us": 223.0,
+        "body_us": 2.4,
+        "total_us": 225.4
+      },
+      {
+        "caller_us": 271.0,
+        "body_us": 2.2,
+        "total_us": 273.2
+      },
+      {
+        "caller_us": 201.1,
+        "body_us": 2.3,
+        "total_us": 203.4
+      },
+      {
+        "caller_us": 187.0,
+        "body_us": 2.3,
+        "total_us": 189.3
+      },
+      {
+        "caller_us": 163.5,
+        "body_us": 2.2,
+        "total_us": 165.7
+      },
+      {
+        "caller_us": 221.3,
+        "body_us": 2.4,
+        "total_us": 223.7
+      },
+      {
+        "caller_us": 206.4,
+        "body_us": 2.0,
+        "total_us": 208.4
+      },
+      {
+        "caller_us": 238.4,
+        "body_us": 3.1,
+        "total_us": 241.5
+      },
+      {
+        "caller_us": 210.9,
+        "body_us": 2.5,
+        "total_us": 213.4
+      },
+      {
+        "caller_us": 229.6,
+        "body_us": 2.4,
+        "total_us": 232.0
+      },
+      {
+        "caller_us": 212.5,
+        "body_us": 2.6,
+        "total_us": 215.1
+      },
+      {
+        "caller_us": 296.8,
+        "body_us": 2.3,
+        "total_us": 299.1
+      },
+      {
+        "caller_us": 220.4,
+        "body_us": 2.5,
+        "total_us": 222.9
+      },
+      {
+        "caller_us": 355.5,
+        "body_us": 4.4,
+        "total_us": 359.9
+      },
+      {
+        "caller_us": 252.5,
+        "body_us": 5.1,
+        "total_us": 257.6
+      },
+      {
+        "caller_us": 272.3,
+        "body_us": 2.6,
+        "total_us": 274.9
+      },
+      {
+        "caller_us": 183.7,
+        "body_us": 2.0,
+        "total_us": 185.7
+      },
+      {
+        "caller_us": 207.7,
+        "body_us": 2.2,
+        "total_us": 209.9
+      },
+      {
+        "caller_us": 168.6,
+        "body_us": 1.9,
+        "total_us": 170.5
+      },
+      {
+        "caller_us": 217.2,
+        "body_us": 2.5,
+        "total_us": 219.7
+      },
+      {
+        "caller_us": 251.9,
+        "body_us": 1.8,
+        "total_us": 253.7
+      },
+      {
+        "caller_us": 194.4,
+        "body_us": 2.3,
+        "total_us": 196.7
+      },
+      {
+        "caller_us": 206.1,
+        "body_us": 2.3,
+        "total_us": 208.4
+      },
+      {
+        "caller_us": 215.5,
+        "body_us": 2.6,
+        "total_us": 218.1
+      },
+      {
+        "caller_us": 237.0,
+        "body_us": 2.9,
+        "total_us": 239.9
+      },
+      {
+        "caller_us": 228.6,
+        "body_us": 2.5,
+        "total_us": 231.1
+      },
+      {
+        "caller_us": 171.4,
+        "body_us": 2.4,
+        "total_us": 173.8
+      },
+      {
+        "caller_us": 221.4,
+        "body_us": 2.5,
+        "total_us": 223.9
+      },
+      {
+        "caller_us": 216.7,
+        "body_us": 2.7,
+        "total_us": 219.4
+      },
+      {
+        "caller_us": 258.9,
+        "body_us": 2.5,
+        "total_us": 261.4
+      },
+      {
+        "caller_us": 475.0,
+        "body_us": 2.7,
+        "total_us": 477.7
+      },
+      {
+        "caller_us": 245.2,
+        "body_us": 2.8,
+        "total_us": 248.0
+      },
+      {
+        "caller_us": 224.8,
+        "body_us": 2.6,
+        "total_us": 227.4
+      },
+      {
+        "caller_us": 201.9,
+        "body_us": 2.1,
+        "total_us": 204.0
+      },
+      {
+        "caller_us": 213.7,
+        "body_us": 2.2,
+        "total_us": 215.9
+      },
+      {
+        "caller_us": 269.4,
+        "body_us": 2.4,
+        "total_us": 271.8
+      },
+      {
+        "caller_us": 197.1,
+        "body_us": 2.1,
+        "total_us": 199.2
+      },
+      {
+        "caller_us": 204.0,
+        "body_us": 2.5,
+        "total_us": 206.5
+      },
+      {
+        "caller_us": 197.4,
+        "body_us": 2.4,
+        "total_us": 199.8
+      },
+      {
+        "caller_us": 226.7,
+        "body_us": 2.7,
+        "total_us": 229.4
+      },
+      {
+        "caller_us": 218.3,
+        "body_us": 2.6,
+        "total_us": 220.9
+      },
+      {
+        "caller_us": 227.7,
+        "body_us": 2.9,
+        "total_us": 230.6
+      },
+      {
+        "caller_us": 195.5,
+        "body_us": 2.4,
+        "total_us": 197.9
+      },
+      {
+        "caller_us": 296.0,
+        "body_us": 3.2,
+        "total_us": 299.2
+      },
+      {
+        "caller_us": 318.5,
+        "body_us": 4.5,
+        "total_us": 323.0
+      },
+      {
+        "caller_us": 204.0,
+        "body_us": 2.8,
+        "total_us": 206.8
+      },
+      {
+        "caller_us": 187.8,
+        "body_us": 1.8,
+        "total_us": 189.6
+      },
+      {
+        "caller_us": 273.6,
+        "body_us": 4.1,
+        "total_us": 277.7
+      },
+      {
+        "caller_us": 221.2,
+        "body_us": 2.5,
+        "total_us": 223.7
+      },
+      {
+        "caller_us": 223.3,
+        "body_us": 2.2,
+        "total_us": 225.5
+      },
+      {
+        "caller_us": 205.6,
+        "body_us": 2.8,
+        "total_us": 208.4
+      },
+      {
+        "caller_us": 520.2,
+        "body_us": 20.9,
+        "total_us": 541.1
+      },
+      {
+        "caller_us": 386.7,
+        "body_us": 5.3,
+        "total_us": 392.0
+      },
+      {
+        "caller_us": 322.1,
+        "body_us": 3.9,
+        "total_us": 326.0
+      },
+      {
+        "caller_us": 282.2,
+        "body_us": 3.2,
+        "total_us": 285.4
+      },
+      {
+        "caller_us": 333.4,
+        "body_us": 4.0,
+        "total_us": 337.4
+      },
+      {
+        "caller_us": 302.9,
+        "body_us": 3.6,
+        "total_us": 306.5
+      },
+      {
+        "caller_us": 303.9,
+        "body_us": 4.1,
+        "total_us": 308.0
+      },
+      {
+        "caller_us": 282.3,
+        "body_us": 3.6,
+        "total_us": 285.9
+      },
+      {
+        "caller_us": 222.5,
+        "body_us": 2.3,
+        "total_us": 224.8
+      },
+      {
+        "caller_us": 229.5,
+        "body_us": 2.5,
+        "total_us": 232.0
+      },
+      {
+        "caller_us": 282.6,
+        "body_us": 3.2,
+        "total_us": 285.8
+      },
+      {
+        "caller_us": 198.7,
+        "body_us": 2.1,
+        "total_us": 200.8
+      },
+      {
+        "caller_us": 223.1,
+        "body_us": 2.6,
+        "total_us": 225.7
+      },
+      {
+        "caller_us": 283.6,
+        "body_us": 3.3,
+        "total_us": 286.9
+      },
+      {
+        "caller_us": 214.3,
+        "body_us": 2.3,
+        "total_us": 216.6
+      },
+      {
+        "caller_us": 206.9,
+        "body_us": 2.4,
+        "total_us": 209.3
+      },
+      {
+        "caller_us": 299.6,
+        "body_us": 2.4,
+        "total_us": 302.0
+      },
+      {
+        "caller_us": 212.8,
+        "body_us": 2.4,
+        "total_us": 215.2
+      },
+      {
+        "caller_us": 295.1,
+        "body_us": 3.1,
+        "total_us": 298.2
+      },
+      {
+        "caller_us": 215.2,
+        "body_us": 2.5,
+        "total_us": 217.7
+      },
+      {
+        "caller_us": 229.2,
+        "body_us": 2.4,
+        "total_us": 231.6
+      },
+      {
+        "caller_us": 230.1,
+        "body_us": 2.4,
+        "total_us": 232.5
+      },
+      {
+        "caller_us": 273.7,
+        "body_us": 2.6,
+        "total_us": 276.3
+      },
+      {
+        "caller_us": 215.8,
+        "body_us": 2.6,
+        "total_us": 218.4
+      },
+      {
+        "caller_us": 191.8,
+        "body_us": 2.4,
+        "total_us": 194.2
+      },
+      {
+        "caller_us": 208.0,
+        "body_us": 2.5,
+        "total_us": 210.5
+      },
+      {
+        "caller_us": 205.5,
+        "body_us": 2.6,
+        "total_us": 208.1
+      },
+      {
+        "caller_us": 228.7,
+        "body_us": 2.6,
+        "total_us": 231.3
+      },
+      {
+        "caller_us": 209.5,
+        "body_us": 2.0,
+        "total_us": 211.5
+      },
+      {
+        "caller_us": 202.2,
+        "body_us": 2.4,
+        "total_us": 204.6
+      },
+      {
+        "caller_us": 219.3,
+        "body_us": 2.4,
+        "total_us": 221.7
+      },
+      {
+        "caller_us": 179.5,
+        "body_us": 2.5,
+        "total_us": 182.0
+      },
+      {
+        "caller_us": 290.3,
+        "body_us": 2.6,
+        "total_us": 292.9
+      },
+      {
+        "caller_us": 218.4,
+        "body_us": 2.6,
+        "total_us": 221.0
+      },
+      {
+        "caller_us": 241.1,
+        "body_us": 2.5,
+        "total_us": 243.6
+      },
+      {
+        "caller_us": 157.9,
+        "body_us": 2.0,
+        "total_us": 159.9
+      },
+      {
+        "caller_us": 244.7,
+        "body_us": 2.1,
+        "total_us": 246.8
+      },
+      {
+        "caller_us": 215.3,
+        "body_us": 2.6,
+        "total_us": 217.9
+      },
+      {
+        "caller_us": 159.7,
+        "body_us": 1.9,
+        "total_us": 161.6
+      },
+      {
+        "caller_us": 217.3,
+        "body_us": 2.5,
+        "total_us": 219.8
+      },
+      {
+        "caller_us": 177.4,
+        "body_us": 2.4,
+        "total_us": 179.8
+      },
+      {
+        "caller_us": 238.1,
+        "body_us": 2.5,
+        "total_us": 240.6
+      },
+      {
+        "caller_us": 199.5,
+        "body_us": 2.1,
+        "total_us": 201.6
+      },
+      {
+        "caller_us": 145.4,
+        "body_us": 1.9,
+        "total_us": 147.3
+      },
+      {
+        "caller_us": 205.5,
+        "body_us": 2.5,
+        "total_us": 208.0
+      },
+      {
+        "caller_us": 223.5,
+        "body_us": 2.2,
+        "total_us": 225.7
+      },
+      {
+        "caller_us": 348.3,
+        "body_us": 3.1,
+        "total_us": 351.4
+      },
+      {
+        "caller_us": 167.2,
+        "body_us": 2.0,
+        "total_us": 169.2
+      },
+      {
+        "caller_us": 184.0,
+        "body_us": 2.5,
+        "total_us": 186.5
+      },
+      {
+        "caller_us": 176.6,
+        "body_us": 2.3,
+        "total_us": 178.9
+      },
+      {
+        "caller_us": 177.1,
+        "body_us": 2.2,
+        "total_us": 179.3
+      },
+      {
+        "caller_us": 203.4,
+        "body_us": 2.3,
+        "total_us": 205.7
+      },
+      {
+        "caller_us": 330.5,
+        "body_us": 3.8,
+        "total_us": 334.3
+      },
+      {
+        "caller_us": 194.4,
+        "body_us": 2.3,
+        "total_us": 196.7
+      },
+      {
+        "caller_us": 403.2,
+        "body_us": 4.0,
+        "total_us": 407.2
+      },
+      {
+        "caller_us": 206.2,
+        "body_us": 2.3,
+        "total_us": 208.5
+      },
+      {
+        "caller_us": 176.2,
+        "body_us": 2.1,
+        "total_us": 178.3
+      },
+      {
+        "caller_us": 255.7,
+        "body_us": 2.4,
+        "total_us": 258.1
+      },
+      {
+        "caller_us": 150.7,
+        "body_us": 2.0,
+        "total_us": 152.7
+      },
+      {
+        "caller_us": 260.1,
+        "body_us": 1.9,
+        "total_us": 262.0
+      },
+      {
+        "caller_us": 184.8,
+        "body_us": 10.2,
+        "total_us": 195.0
+      },
+      {
+        "caller_us": 371.2,
+        "body_us": 4.4,
+        "total_us": 375.6
+      },
+      {
+        "caller_us": 177.5,
+        "body_us": 2.3,
+        "total_us": 179.8
+      },
+      {
+        "caller_us": 213.2,
+        "body_us": 2.6,
+        "total_us": 215.8
+      },
+      {
+        "caller_us": 332.1,
+        "body_us": 2.5,
+        "total_us": 334.6
+      },
+      {
+        "caller_us": 181.1,
+        "body_us": 2.1,
+        "total_us": 183.2
+      },
+      {
+        "caller_us": 175.1,
+        "body_us": 2.2,
+        "total_us": 177.3
+      },
+      {
+        "caller_us": 218.1,
+        "body_us": 2.5,
+        "total_us": 220.6
+      },
+      {
+        "caller_us": 222.0,
+        "body_us": 2.6,
+        "total_us": 224.6
+      },
+      {
+        "caller_us": 230.4,
+        "body_us": 2.7,
+        "total_us": 233.1
+      },
+      {
+        "caller_us": 228.4,
+        "body_us": 2.6,
+        "total_us": 231.0
+      },
+      {
+        "caller_us": 249.9,
+        "body_us": 2.3,
+        "total_us": 252.2
+      },
+      {
+        "caller_us": 329.2,
+        "body_us": 2.6,
+        "total_us": 331.8
+      },
+      {
+        "caller_us": 199.7,
+        "body_us": 2.3,
+        "total_us": 202.0
+      },
+      {
+        "caller_us": 236.3,
+        "body_us": 3.0,
+        "total_us": 239.3
+      },
+      {
+        "caller_us": 212.5,
+        "body_us": 2.5,
+        "total_us": 215.0
+      },
+      {
+        "caller_us": 279.0,
+        "body_us": 2.5,
+        "total_us": 281.5
+      },
+      {
+        "caller_us": 217.4,
+        "body_us": 2.2,
+        "total_us": 219.6
+      },
+      {
+        "caller_us": 221.8,
+        "body_us": 2.7,
+        "total_us": 224.5
+      },
+      {
+        "caller_us": 397.2,
+        "body_us": 5.4,
+        "total_us": 402.6
+      },
+      {
+        "caller_us": 280.7,
+        "body_us": 3.3,
+        "total_us": 284.0
+      },
+      {
+        "caller_us": 190.3,
+        "body_us": 2.3,
+        "total_us": 192.6
+      },
+      {
+        "caller_us": 298.9,
+        "body_us": 2.4,
+        "total_us": 301.3
+      },
+      {
+        "caller_us": 210.4,
+        "body_us": 2.2,
+        "total_us": 212.6
+      },
+      {
+        "caller_us": 186.6,
+        "body_us": 2.4,
+        "total_us": 189.0
+      },
+      {
+        "caller_us": 234.9,
+        "body_us": 2.2,
+        "total_us": 237.1
+      },
+      {
+        "caller_us": 307.1,
+        "body_us": 4.3,
+        "total_us": 311.4
+      },
+      {
+        "caller_us": 416.9,
+        "body_us": 6.9,
+        "total_us": 423.8
+      },
+      {
+        "caller_us": 179.9,
+        "body_us": 2.1,
+        "total_us": 182.0
+      },
+      {
+        "caller_us": 169.1,
+        "body_us": 2.2,
+        "total_us": 171.3
+      },
+      {
+        "caller_us": 357.6,
+        "body_us": 3.4,
+        "total_us": 361.0
+      },
+      {
+        "caller_us": 171.6,
+        "body_us": 2.3,
+        "total_us": 173.9
+      },
+      {
+        "caller_us": 399.8,
+        "body_us": 2.3,
+        "total_us": 402.1
+      },
+      {
+        "caller_us": 173.4,
+        "body_us": 2.4,
+        "total_us": 175.8
+      },
+      {
+        "caller_us": 198.1,
+        "body_us": 2.3,
+        "total_us": 200.4
+      },
+      {
+        "caller_us": 229.9,
+        "body_us": 2.5,
+        "total_us": 232.4
+      },
+      {
+        "caller_us": 206.7,
+        "body_us": 2.0,
+        "total_us": 208.7
+      },
+      {
+        "caller_us": 186.9,
+        "body_us": 2.1,
+        "total_us": 189.0
+      },
+      {
+        "caller_us": 177.4,
+        "body_us": 1.9,
+        "total_us": 179.3
+      },
+      {
+        "caller_us": 151.7,
+        "body_us": 2.0,
+        "total_us": 153.7
+      },
+      {
+        "caller_us": 221.6,
+        "body_us": 2.1,
+        "total_us": 223.7
+      },
+      {
+        "caller_us": 208.9,
+        "body_us": 2.8,
+        "total_us": 211.7
+      },
+      {
+        "caller_us": 194.9,
+        "body_us": 2.6,
+        "total_us": 197.5
+      },
+      {
+        "caller_us": 209.9,
+        "body_us": 2.5,
+        "total_us": 212.4
+      },
+      {
+        "caller_us": 262.5,
+        "body_us": 2.3,
+        "total_us": 264.8
+      },
+      {
+        "caller_us": 216.6,
+        "body_us": 2.3,
+        "total_us": 218.9
+      },
+      {
+        "caller_us": 280.4,
+        "body_us": 2.8,
+        "total_us": 283.2
+      },
+      {
+        "caller_us": 300.3,
+        "body_us": 4.2,
+        "total_us": 304.5
+      },
+      {
+        "caller_us": 218.2,
+        "body_us": 2.6,
+        "total_us": 220.8
+      },
+      {
+        "caller_us": 236.2,
+        "body_us": 2.5,
+        "total_us": 238.7
+      },
+      {
+        "caller_us": 272.9,
+        "body_us": 3.7,
+        "total_us": 276.6
+      },
+      {
+        "caller_us": 175.2,
+        "body_us": 2.1,
+        "total_us": 177.3
+      },
+      {
+        "caller_us": 235.4,
+        "body_us": 2.6,
+        "total_us": 238.0
+      },
+      {
+        "caller_us": 237.4,
+        "body_us": 2.7,
+        "total_us": 240.1
+      },
+      {
+        "caller_us": 234.4,
+        "body_us": 2.5,
+        "total_us": 236.9
+      },
+      {
+        "caller_us": 157.1,
+        "body_us": 2.1,
+        "total_us": 159.2
+      },
+      {
+        "caller_us": 204.7,
+        "body_us": 2.4,
+        "total_us": 207.1
+      },
+      {
+        "caller_us": 224.0,
+        "body_us": 2.6,
+        "total_us": 226.6
+      },
+      {
+        "caller_us": 258.4,
+        "body_us": 2.7,
+        "total_us": 261.1
+      },
+      {
+        "caller_us": 172.6,
+        "body_us": 2.4,
+        "total_us": 175.0
+      },
+      {
+        "caller_us": 261.9,
+        "body_us": 3.3,
+        "total_us": 265.2
+      },
+      {
+        "caller_us": 172.6,
+        "body_us": 2.1,
+        "total_us": 174.7
+      },
+      {
+        "caller_us": 220.7,
+        "body_us": 2.3,
+        "total_us": 223.0
+      },
+      {
+        "caller_us": 216.9,
+        "body_us": 2.5,
+        "total_us": 219.4
+      },
+      {
+        "caller_us": 287.3,
+        "body_us": 3.7,
+        "total_us": 291.0
+      },
+      {
+        "caller_us": 206.6,
+        "body_us": 2.8,
+        "total_us": 209.4
+      },
+      {
+        "caller_us": 253.8,
+        "body_us": 2.4,
+        "total_us": 256.2
+      },
+      {
+        "caller_us": 161.1,
+        "body_us": 2.2,
+        "total_us": 163.3
+      },
+      {
+        "caller_us": 206.3,
+        "body_us": 2.8,
+        "total_us": 209.1
+      },
+      {
+        "caller_us": 168.0,
+        "body_us": 1.9,
+        "total_us": 169.9
+      },
+      {
+        "caller_us": 215.3,
+        "body_us": 2.7,
+        "total_us": 218.0
+      },
+      {
+        "caller_us": 206.2,
+        "body_us": 2.6,
+        "total_us": 208.8
+      },
+      {
+        "caller_us": 279.4,
+        "body_us": 2.7,
+        "total_us": 282.1
+      },
+      {
+        "caller_us": 249.5,
+        "body_us": 2.4,
+        "total_us": 251.9
+      },
+      {
+        "caller_us": 197.6,
+        "body_us": 1.9,
+        "total_us": 199.5
+      },
+      {
+        "caller_us": 173.0,
+        "body_us": 2.3,
+        "total_us": 175.3
+      },
+      {
+        "caller_us": 239.7,
+        "body_us": 2.6,
+        "total_us": 242.3
+      },
+      {
+        "caller_us": 381.4,
+        "body_us": 2.9,
+        "total_us": 384.3
+      },
+      {
+        "caller_us": 250.7,
+        "body_us": 2.2,
+        "total_us": 252.9
+      },
+      {
+        "caller_us": 151.4,
+        "body_us": 2.0,
+        "total_us": 153.4
+      },
+      {
+        "caller_us": 199.8,
+        "body_us": 1.9,
+        "total_us": 201.7
+      },
+      {
+        "caller_us": 169.7,
+        "body_us": 2.4,
+        "total_us": 172.1
+      },
+      {
+        "caller_us": 352.4,
+        "body_us": 3.9,
+        "total_us": 356.3
+      },
+      {
+        "caller_us": 225.8,
+        "body_us": 2.6,
+        "total_us": 228.4
+      },
+      {
+        "caller_us": 221.1,
+        "body_us": 2.5,
+        "total_us": 223.6
+      },
+      {
+        "caller_us": 305.7,
+        "body_us": 3.1,
+        "total_us": 308.8
+      },
+      {
+        "caller_us": 327.4,
+        "body_us": 2.9,
+        "total_us": 330.3
+      },
+      {
+        "caller_us": 197.4,
+        "body_us": 2.3,
+        "total_us": 199.7
+      },
+      {
+        "caller_us": 186.6,
+        "body_us": 2.2,
+        "total_us": 188.8
+      },
+      {
+        "caller_us": 208.8,
+        "body_us": 2.5,
+        "total_us": 211.3
+      },
+      {
+        "caller_us": 214.0,
+        "body_us": 2.9,
+        "total_us": 216.9
+      },
+      {
+        "caller_us": 176.2,
+        "body_us": 2.4,
+        "total_us": 178.6
+      },
+      {
+        "caller_us": 226.5,
+        "body_us": 2.7,
+        "total_us": 229.2
+      },
+      {
+        "caller_us": 242.0,
+        "body_us": 2.5,
+        "total_us": 244.5
+      },
+      {
+        "caller_us": 205.1,
+        "body_us": 2.3,
+        "total_us": 207.4
+      },
+      {
+        "caller_us": 219.1,
+        "body_us": 2.5,
+        "total_us": 221.6
+      },
+      {
+        "caller_us": 353.6,
+        "body_us": 4.4,
+        "total_us": 358.0
+      },
+      {
+        "caller_us": 218.8,
+        "body_us": 2.0,
+        "total_us": 220.8
+      },
+      {
+        "caller_us": 208.0,
+        "body_us": 2.4,
+        "total_us": 210.4
+      },
+      {
+        "caller_us": 306.2,
+        "body_us": 2.9,
+        "total_us": 309.1
+      },
+      {
+        "caller_us": 239.8,
+        "body_us": 2.6,
+        "total_us": 242.4
+      },
+      {
+        "caller_us": 364.1,
+        "body_us": 4.7,
+        "total_us": 368.8
+      },
+      {
+        "caller_us": 189.6,
+        "body_us": 2.2,
+        "total_us": 191.8
+      },
+      {
+        "caller_us": 224.8,
+        "body_us": 2.9,
+        "total_us": 227.7
+      },
+      {
+        "caller_us": 237.5,
+        "body_us": 2.4,
+        "total_us": 239.9
+      },
+      {
+        "caller_us": 209.7,
+        "body_us": 2.5,
+        "total_us": 212.2
+      },
+      {
+        "caller_us": 174.3,
+        "body_us": 2.4,
+        "total_us": 176.7
+      },
+      {
+        "caller_us": 229.8,
+        "body_us": 2.5,
+        "total_us": 232.3
+      },
+      {
+        "caller_us": 177.6,
+        "body_us": 2.1,
+        "total_us": 179.7
+      },
+      {
+        "caller_us": 221.1,
+        "body_us": 2.5,
+        "total_us": 223.6
+      },
+      {
+        "caller_us": 210.9,
+        "body_us": 2.5,
+        "total_us": 213.4
+      },
+      {
+        "caller_us": 189.4,
+        "body_us": 2.2,
+        "total_us": 191.6
+      },
+      {
+        "caller_us": 303.6,
+        "body_us": 3.0,
+        "total_us": 306.6
+      },
+      {
+        "caller_us": 197.9,
+        "body_us": 2.2,
+        "total_us": 200.1
+      },
+      {
+        "caller_us": 181.9,
+        "body_us": 2.6,
+        "total_us": 184.5
+      },
+      {
+        "caller_us": 296.6,
+        "body_us": 3.4,
+        "total_us": 300.0
+      },
+      {
+        "caller_us": 164.3,
+        "body_us": 2.1,
+        "total_us": 166.4
+      },
+      {
+        "caller_us": 249.9,
+        "body_us": 2.0,
+        "total_us": 251.9
+      },
+      {
+        "caller_us": 289.9,
+        "body_us": 3.4,
+        "total_us": 293.3
+      },
+      {
+        "caller_us": 247.6,
+        "body_us": 3.5,
+        "total_us": 251.1
+      },
+      {
+        "caller_us": 223.5,
+        "body_us": 2.4,
+        "total_us": 225.9
+      },
+      {
+        "caller_us": 320.2,
+        "body_us": 4.7,
+        "total_us": 324.9
+      },
+      {
+        "caller_us": 203.9,
+        "body_us": 2.7,
+        "total_us": 206.6
+      },
+      {
+        "caller_us": 176.2,
+        "body_us": 2.4,
+        "total_us": 178.6
+      },
+      {
+        "caller_us": 230.5,
+        "body_us": 2.8,
+        "total_us": 233.3
+      },
+      {
+        "caller_us": 261.6,
+        "body_us": 2.1,
+        "total_us": 263.7
+      },
+      {
+        "caller_us": 231.8,
+        "body_us": 2.6,
+        "total_us": 234.4
+      },
+      {
+        "caller_us": 230.6,
+        "body_us": 2.4,
+        "total_us": 233.0
+      },
+      {
+        "caller_us": 160.8,
+        "body_us": 2.4,
+        "total_us": 163.2
+      },
+      {
+        "caller_us": 245.7,
+        "body_us": 2.9,
+        "total_us": 248.6
+      },
+      {
+        "caller_us": 328.1,
+        "body_us": 2.4,
+        "total_us": 330.5
+      },
+      {
+        "caller_us": 272.1,
+        "body_us": 3.1,
+        "total_us": 275.2
+      },
+      {
+        "caller_us": 175.1,
+        "body_us": 2.2,
+        "total_us": 177.3
+      },
+      {
+        "caller_us": 267.9,
+        "body_us": 2.9,
+        "total_us": 270.8
+      },
+      {
+        "caller_us": 218.0,
+        "body_us": 2.5,
+        "total_us": 220.5
+      },
+      {
+        "caller_us": 185.8,
+        "body_us": 2.4,
+        "total_us": 188.2
+      },
+      {
+        "caller_us": 226.2,
+        "body_us": 2.9,
+        "total_us": 229.1
+      },
+      {
+        "caller_us": 194.0,
+        "body_us": 2.3,
+        "total_us": 196.3
+      },
+      {
+        "caller_us": 275.6,
+        "body_us": 2.9,
+        "total_us": 278.5
+      },
+      {
+        "caller_us": 221.0,
+        "body_us": 2.7,
+        "total_us": 223.7
+      },
+      {
+        "caller_us": 171.1,
+        "body_us": 2.3,
+        "total_us": 173.4
+      },
+      {
+        "caller_us": 214.4,
+        "body_us": 2.3,
+        "total_us": 216.7
+      },
+      {
+        "caller_us": 257.9,
+        "body_us": 2.9,
+        "total_us": 260.8
+      },
+      {
+        "caller_us": 295.6,
+        "body_us": 2.9,
+        "total_us": 298.5
+      },
+      {
+        "caller_us": 154.8,
+        "body_us": 2.3,
+        "total_us": 157.1
+      },
+      {
+        "caller_us": 166.9,
+        "body_us": 1.9,
+        "total_us": 168.8
+      },
+      {
+        "caller_us": 201.4,
+        "body_us": 2.5,
+        "total_us": 203.9
+      },
+      {
+        "caller_us": 204.6,
+        "body_us": 2.1,
+        "total_us": 206.7
+      },
+      {
+        "caller_us": 215.4,
+        "body_us": 2.3,
+        "total_us": 217.7
+      },
+      {
+        "caller_us": 337.9,
+        "body_us": 4.6,
+        "total_us": 342.5
+      },
+      {
+        "caller_us": 237.1,
+        "body_us": 2.8,
+        "total_us": 239.9
+      },
+      {
+        "caller_us": 218.2,
+        "body_us": 2.3,
+        "total_us": 220.5
+      },
+      {
+        "caller_us": 196.6,
+        "body_us": 2.3,
+        "total_us": 198.9
+      },
+      {
+        "caller_us": 159.1,
+        "body_us": 2.0,
+        "total_us": 161.1
+      },
+      {
+        "caller_us": 185.2,
+        "body_us": 2.3,
+        "total_us": 187.5
+      },
+      {
+        "caller_us": 235.3,
+        "body_us": 2.3,
+        "total_us": 237.6
+      },
+      {
+        "caller_us": 267.0,
+        "body_us": 2.4,
+        "total_us": 269.4
+      },
+      {
+        "caller_us": 162.9,
+        "body_us": 2.1,
+        "total_us": 165.0
+      },
+      {
+        "caller_us": 384.6,
+        "body_us": 5.0,
+        "total_us": 389.6
+      },
+      {
+        "caller_us": 335.6,
+        "body_us": 4.3,
+        "total_us": 339.9
+      },
+      {
+        "caller_us": 172.7,
+        "body_us": 2.2,
+        "total_us": 174.9
+      },
+      {
+        "caller_us": 309.0,
+        "body_us": 3.7,
+        "total_us": 312.7
+      },
+      {
+        "caller_us": 190.5,
+        "body_us": 2.4,
+        "total_us": 192.9
+      },
+      {
+        "caller_us": 230.3,
+        "body_us": 2.6,
+        "total_us": 232.9
+      },
+      {
+        "caller_us": 196.1,
+        "body_us": 2.2,
+        "total_us": 198.3
+      },
+      {
+        "caller_us": 215.6,
+        "body_us": 2.3,
+        "total_us": 217.9
+      },
+      {
+        "caller_us": 165.4,
+        "body_us": 1.9,
+        "total_us": 167.3
+      },
+      {
+        "caller_us": 226.5,
+        "body_us": 2.8,
+        "total_us": 229.3
+      },
+      {
+        "caller_us": 183.2,
+        "body_us": 2.5,
+        "total_us": 185.7
+      },
+      {
+        "caller_us": 215.7,
+        "body_us": 2.2,
+        "total_us": 217.9
+      },
+      {
+        "caller_us": 233.1,
+        "body_us": 2.5,
+        "total_us": 235.6
+      },
+      {
+        "caller_us": 223.5,
+        "body_us": 2.4,
+        "total_us": 225.9
+      }
+    ]
+  },
+  "summary_us": {
+    "function": {
+      "p50": 210.95,
+      "p99": 421.3089999999999
+    },
+    "method": {
+      "p50": 219.2,
+      "p99": 403.3369999999999
+    }
+  },
+  "drops": {},
+  "complete": true,
+  "target_source_unchanged": true
+}

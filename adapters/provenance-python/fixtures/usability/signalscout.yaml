@@ -1,0 +1,16 @@
+version: 1
+synthetic_only: true
+service: synthetic.usability
+probes:
+  - module: class_environment
+    function: Environment.reset
+    capture: {args: [seed], return: true}
+  - module: class_environment
+    function: Environment.step
+    capture: {args: [action], self: [score, steps], return: true}
+  - module: class_environment
+    function: Environment.reward
+    capture: {return: true}
+  - module: class_environment
+    function: Environment.policy
+    capture: {args: [value], return: true}

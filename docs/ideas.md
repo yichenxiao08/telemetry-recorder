@@ -1,5 +1,18 @@
 # Ideas parking lot
 
+## Owner closeout and single-output trace — 2026-10-21
+
+- Optimization NO-GO: retain all wrapper results/misses and both budgets. One
+  time-boxed binding-plan experiment may be reconsidered only if cost blocks
+  real use; not authorized now. Current observer-free cost remains unknown.
+- Design explicit cross-call value identity separately: today's probe argument
+  refs are not upstream return identities. Never infer dependence from nesting,
+  equal values or timing. A future opaque-ref index could improve ergonomics;
+  current bounded run-partition reads need no migration.
+- Artifact dereferencing, digest verification, identifying eviction versus
+  never-captured data and a viewer trace entry point remain deferred. Existing
+  run/event anchors work. No cohort, scoring or causal diagnosis is implied.
+
 - Authentication and multi-tenant isolation (explicit non-goal for current plan).
 - Sampling and retention policy configuration UI (beyond current cleanup configuration).
 - Broader cross-signal correlation heuristics; current behavior requires explicit context.
@@ -198,6 +211,7 @@ for the final validation; the earlier proposal remains historical evidence.
   current fine scopes materially perturb costs, and thread CPU accounting is
   too coarse to prove GIL or scheduler causes. Do not turn a calibrated phase
   estimate into a production budget claim. Full results: docs/wrapper-overhead.md.
+
 ## Real-case gaps proposals only — 2026-10-21
 
 - Prioritize explicit sampled/partial/unknown run capture manifests and exact
@@ -214,3 +228,28 @@ for the final validation; the earlier proposal remains historical evidence.
   general expression languages remain deferred. Eighty aggregate run observations
   cannot meet the unchanged tail minimums; a larger independent synthetic population
   would need a new owner-approved design, never reused lane-02 reserved seeds.
+
+## Probe usability follow-ups (deferred, 2026-10-21)
+
+- A subprocess import sandbox or application-declared argument-parser hook could
+  improve preflight. Current dry import cannot validate main-local argparse or
+  prevent module-level side effects. Do not run whole targets as preflight.
+- Broader callable support (native/async/generators, descriptors, inherited aliases,
+  custom access/metaclasses, reload) needs separate semantics/tests; do not silently
+  skip it. Automatic episode grouping and receiver-object provenance remain out
+  of scope. Boundary capture does not establish reads or return-to-argument links.
+- Measure receiver-field and method cost properly only if authorized later. Keep
+  the one paired observation and all historical budget misses; no optimization.
+
+## Parked after synthetic tuple/sampling work (2026-10-21)
+
+- Application outcome field -> run status: define explicit mapping and conflict
+  semantics before implementing; an RL done/result flag does not currently alter
+  native run status.
+- Bulk mark-from-file: define bounded validation, preview and failure accounting
+  before implementing batch annotations.
+- General behavior expectations need a separate contract from the declared-version
+  invariant; do not reinterpret existing invariant/ranking/cohort/diff results.
+- Future sampling consumers could make incompleteness more visible. Current
+  metadata and documentation establish no evidence for skipped calls; do not
+  infer negative claims or implement new trace behavior in this task.

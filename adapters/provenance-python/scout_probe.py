@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import contextvars
+from collections import deque
 import functools
 import importlib.abc
 import importlib.machinery
@@ -32,8 +33,11 @@ def record_decision(step_id, **fields):
         run = _optional.recorder._active.get()
         if type(output) is dict and "ref" not in output and run and run.valid:
             fields["output"] = {"ref": f"value:{run.trace_id}/{run.next_id}.return@1", **output}
-        return _optional.recorder.record_decision(
+        accepted = _optional.recorder.record_decision(
             step_id, _parent_id=_optional.parent.get(), **fields)
+        if accepted:
+            _optional.recorder._count("probe_decisions_captured")
+        return accepted
     except Exception:
         return False
 
@@ -53,7 +57,7 @@ def load_config(path):
         raise ValueError("invalid probes")
     seen = set()
     for p in probes:
-        if type(p) is not dict or set(p) - {"module", "function", "capture"}:
+        if type(p) is not dict or set(p) - {"module", "function", "capture", "sampling"}:
             raise ValueError("unknown probe key")
         for key in ("module", "function"):
             if type(p.get(key)) is not str or not all(v.isidentifier() for v in p[key].split(".")):
@@ -63,18 +67,31 @@ def load_config(path):
             raise ValueError("duplicate probe")
         seen.add(identity)
         capture = p.get("capture", {})
-        if type(capture) is not dict or set(capture) - {"args", "return"}:
+        sampling = p.get("sampling", {})
+        if type(sampling) is not dict or set(sampling) - {"every_nth", "max_per_run"} or any(type(v) is not int or not 1 <= v <= 2**31-1 for v in sampling.values()):
+            raise ValueError("sampling requires positive bounded integers")
+        if type(capture) is not dict or set(capture) - {"args", "return", "self", "cls", "return_items"}:
             raise ValueError("unknown capture key")
+        if "return_items" in capture:
+            items = capture["return_items"]
+            if type(items) is not list or len(items) > 32 or any(not (type(v) is int and 0 <= v < 32 or type(v) is str and len(v) <= 128 and v.isidentifier()) for v in items) or len(set(items)) != len(items):
+                raise ValueError("return_items requires <=32 unique indices or field names")
+            if capture.get("return", False):
+                raise ValueError("choose whole return or return_items")
         names = capture.get("args", [])
         if type(names) is not list or len(names) > 32 or any(type(v) is not str for v in names):
             raise ValueError("invalid field allowlist")
         if type(capture.get("return", False)) is not bool:
             raise ValueError("return capture must be boolean")
+        for receiver in ("self", "cls"):
+            fields = capture.get(receiver, [])
+            if type(fields) is not list or len(fields) > 16 or any(type(n) is not str or not n.isidentifier() or n.startswith("__") for n in fields) or len(set(fields)) != len(fields):
+                raise ValueError("receiver capture requires <=16 explicit attribute names")
     return cfg
 
 
 class Probe:
-    def __init__(self, owner, function, spec):
+    def __init__(self, owner, function, spec, declaring_class=None, receiver_kind=None):
         if not inspect.isfunction(function) or function.__module__ != spec["module"]:
             raise ValueError("only directly defined module functions supported")
         if inspect.isgeneratorfunction(function) or inspect.iscoroutinefunction(function) or inspect.isasyncgenfunction(function):
@@ -87,10 +104,28 @@ class Probe:
         ):
             raise ValueError("variadic/oversized signatures unsupported")
         self.owner, self.original, self.spec = owner, function, spec
+        self.declaring_class, self.receiver_kind = declaring_class, receiver_kind
+        self.receiver_parameter = next(iter(self.signature.parameters), None) if receiver_kind else None
         self.capture = set(spec.get("capture", {}).get("args", []))
         if self.capture - set(self.signature.parameters):
             raise ValueError("allowlist names not in signature")
-        self.capture_return = spec.get("capture", {}).get("return", False)
+        if self.receiver_parameter in self.capture:
+            raise ValueError("whole self/cls capture forbidden; allowlist attributes instead")
+        self.receiver_fields = spec.get("capture", {}).get(receiver_kind, []) if receiver_kind else []
+        if len(self.signature.parameters) - bool(receiver_kind) + len(self.receiver_fields) > 32:
+            raise ValueError("combined argument/receiver field budget exceeds 32")
+        for name in ("self", "cls"):
+            if spec.get("capture", {}).get(name) and name != receiver_kind:
+                raise ValueError("receiver allowlist does not match callable kind")
+        for name in self.receiver_fields:
+            for cls in declaring_class.__mro__:
+                value = vars(cls).get(name)
+                if isinstance(value, (property, staticmethod, classmethod)) or inspect.getattr_static(type(value), "__get__", None) is not None:
+                    raise ValueError("receiver property/descriptor capture unsupported: " + name)
+        self.return_items = spec.get("capture", {}).get("return_items")
+        self.capture_return = spec.get("capture", {}).get("return", False) or self.return_items is not None
+        self.sampling = spec.get("sampling", {})
+        self.key = spec["module"] + "." + spec["function"]
         self.last = {}
 
     def wrap(self):
@@ -101,26 +136,54 @@ class Probe:
             begin = time.perf_counter_ns()
             run, manager, parent_token, otel_token = None, None, None, None
             entry_ns = exit_ns = 0
+            sampling, stats, selected = None, None, True
             try:
+                recorder._count("probe_calls:" + self.spec["module"] + "." + self.spec["function"])
                 run = recorder._active.get()
                 if run is None:
                     enter = time.perf_counter_ns()
-                    manager = recorder.run(self.spec["module"] + "." + original.__name__)
+                    manager = recorder.run(self.spec["module"] + "." + self.spec["function"])
                     run = manager.__enter__()
+                    if run.valid:
+                        recorder._count("probe_runs_created")
                     entry_ns = time.perf_counter_ns() - enter
-                sid = f"{run.next_id:016x}"
-                run.next_id += 1
-                parent = self.owner.parent.get() or run.span_id
-                parent_token = self.owner.parent.set(sid)
-                span_context = SpanContext(int(run.trace_id, 16), int(sid, 16), False, TraceFlags(1))
-                otel_token = context.attach(trace.set_span_in_context(NonRecordingSpan(span_context)))
+                if self.sampling:
+                    if self.key not in run.probe_sampling:
+                        stats = {"probe": self.key, "run_id": run.trace_id,
+                            "seen": 0, "selected": 0, "captured": 0, "rule": dict(self.sampling)}
+                        run.probe_sampling[self.key] = stats
+                        self.owner.sample_runs.append(stats)
+                        recorder._count("sampling_run_summaries")
+                    stats = run.probe_sampling[self.key]
+                    stats["seen"] += 1
+                    index = stats["seen"]
+                    selected = (index - 1) % self.sampling.get("every_nth", 1) == 0 and stats["selected"] < self.sampling.get("max_per_run", 2**63)
+                    if not selected:
+                        recorder._count("sampled_out:" + self.key)
+                    else:
+                        stats["selected"] += 1
+                        sampling = {"rule": dict(self.sampling), "call_index": index}
+                if not selected:
+                    sid, parent = None, None
+                else:
+                    sid = f"{run.next_id:016x}"
+                    run.next_id += 1
+                    parent = self.owner.parent.get() or run.span_id
+                    parent_token = self.owner.parent.set(sid)
+                    span_context = SpanContext(int(run.trace_id, 16), int(sid, 16), False, TraceFlags(1))
+                    otel_token = context.attach(trace.set_span_in_context(NonRecordingSpan(span_context)))
             except Exception:
                 recorder._count("probe_setup_failed")
+            if not selected:
+                # Outside the setup exception handler: never retry a host call.
+                return self.unsampled(original, args, kwargs, manager)
             fields = {}
             try:
                 bound = self.signature.bind(*args, **kwargs)
                 bound.apply_defaults()
                 for name, value in bound.arguments.items():
+                    if name == self.receiver_parameter:
+                        continue
                     item = {"ref": f"value:{run.trace_id}/{sid}.arg.{name}@1"}
                     if name in self.capture:
                         try:
@@ -129,6 +192,36 @@ class Probe:
                         except Exception:
                             recorder._count("capture_invalid")
                     fields[name] = item
+                if self.receiver_kind and self.receiver_fields:
+                    receiver = bound.arguments[self.receiver_parameter]
+                    if self.receiver_kind == "self":
+                        if len(type(receiver).__mro__) > 64:
+                            raise ValueError("receiver MRO exceeds capture budget")
+                        if any("__dict__" in vars(cls) and type(vars(cls)["__dict__"]) is not types.GetSetDescriptorType for cls in type(receiver).__mro__):
+                            raise ValueError("custom receiver dictionary unsupported")
+                        values = object.__getattribute__(receiver, "__dict__")
+                        if type(values) is not dict:
+                            raise ValueError("custom receiver dictionary unsupported")
+                    else:
+                        if type(receiver) is not type or len(receiver.__mro__) > 64:
+                            raise ValueError("custom/oversized receiver MRO unsupported")
+                        values = {}
+                        for attribute in self.receiver_fields:
+                            for cls in receiver.__mro__:
+                                if attribute in vars(cls):
+                                    values[attribute] = vars(cls)[attribute]
+                                    break
+                    for attribute in self.receiver_fields:
+                        name = self.receiver_kind + "." + attribute
+                        item = {"ref": f"value:{run.trace_id}/{sid}.arg.{name}@1"}
+                        if attribute in values:
+                            try:
+                                item["value"] = bounded(values[attribute])
+                            except Exception:
+                                recorder._count("capture_invalid")
+                        else:
+                            recorder._count("capture_missing")
+                        fields[name] = item
             except Exception:
                 recorder._count("probe_bind_failed")
                 fields = {"unavailable": {"ref": "value:unknown/unavailable@1"}}
@@ -152,14 +245,20 @@ class Probe:
                     output = {"ref": f"value:{run.trace_id}/{sid}.return@1"}
                     if self.capture_return and error is None:
                         output["value"] = result
-                    recorder.record_decision(self.spec["module"] + "." + original.__name__,
+                    accepted = recorder.record_decision(self.spec["module"] + "." + self.spec["function"],
                         output=output, inputs=fields,
                         chosen={"option": "raised" if error is not None else "returned"},
                         alternatives=[], rule={"id": "unobserved"},
                         verdict="raised" if error is not None else "returned",
                         reason_code=type(error).__name__ if error is not None else "",
                         record_id=sid, at_ns=wall_start, end_ns=wall_end,
-                        _span_id=sid, _parent_id=parent, _error=error is not None)
+                        _span_id=sid, _parent_id=parent, _error=error is not None,
+                        _return_items=self.return_items, _sampling=sampling)
+                    if accepted:
+                        recorder._count("probe_decisions_captured")
+                        recorder._count("probe_captured:" + self.key)
+                        if stats is not None:
+                            stats["captured"] += 1
                 except Exception:
                     recorder._count("probe_capture_failed")
                 finally:
@@ -178,7 +277,47 @@ class Probe:
                              "context_exit_ns": exit_ns,
                              "wrapper_ns": time.perf_counter_ns() - begin - body_ns}
         wrapped.__signalscout_probe__ = self
+        if self.declaring_class is not None:
+            @functools.wraps(original)
+            def method_wrapped(*args, **kwargs):
+                token = None
+                suppressed = False
+                try:
+                    receiver = (args[0] if args else kwargs.get(self.receiver_parameter)) if self.receiver_kind else None
+                    stack = self.owner.methods.get()
+                    for obj, name, cls in stack:
+                        if obj is receiver and name == original.__name__ and cls is not self.declaring_class and issubclass(cls, self.declaring_class):
+                            recorder._count("probe_calls:" + self.spec["module"] + "." + self.spec["function"])
+                            recorder._count("probe_super_suppressed")
+                            suppressed = True
+                            break
+                    if len(stack) >= 64:
+                        recorder._count("drop_method_depth")
+                        suppressed = True
+                    if not suppressed:
+                        token = self.owner.methods.set(stack + ((receiver, original.__name__, self.declaring_class),))
+                except Exception:
+                    recorder._count("probe_method_setup_failed")
+                if suppressed:
+                    return original(*args, **kwargs)
+                try:
+                    return wrapped(*args, **kwargs)
+                finally:
+                    if token is not None:
+                        try:
+                            self.owner.methods.reset(token)
+                        except Exception:
+                            recorder._count("probe_cleanup_failed")
+            method_wrapped.__signalscout_probe__ = self
+            return method_wrapped
         return wrapped
+
+    def unsampled(self, original, args, kwargs, manager):
+        try:
+            return original(*args, **kwargs)
+        finally:
+            if manager is not None:
+                manager.__exit__(*sys.exc_info())
 
 
 class Loader(importlib.abc.Loader):
@@ -198,6 +337,8 @@ class Injector(importlib.abc.MetaPathFinder):
     def __init__(self, recorder, specs):
         self.recorder, self.specs, self.results = recorder, specs, []
         self.parent = contextvars.ContextVar("scout_probe_parent", default=None)
+        self.methods = contextvars.ContextVar("scout_probe_methods", default=())
+        self.sample_runs = deque(maxlen=32)
 
     def find_spec(self, fullname, path=None, target=None):
         if fullname not in {p["module"] for p in self.specs}:
@@ -228,15 +369,38 @@ class Injector(importlib.abc.MetaPathFinder):
                 continue
             result = {"module": module.__name__, "function": spec["function"]}
             try:
-                if "." in spec["function"]:
-                    raise ValueError("class/descriptor/nested paths unsupported")
                 if type(module) is not types.ModuleType:
                     raise ValueError("custom module objects unsupported")
-                function = vars(module)[spec["function"]]
+                parts = spec["function"].split(".")
+                container, name, cls, receiver, descriptor = module, parts[-1], None, None, None
+                if len(parts) > 2:
+                    raise ValueError("nested classes/paths unsupported")
+                if len(parts) == 2:
+                    cls = vars(module).get(parts[0])
+                    if type(cls) is not type or cls.__module__ != module.__name__ or cls.__qualname__ != parts[0]:
+                        raise ValueError("only directly defined top-level classes with plain metaclasses supported")
+                    if len(cls.__mro__) > 64:
+                        raise ValueError("class MRO exceeds 64-entry budget")
+                    if name.startswith("__") or any(any(field in vars(base) for field in ("__getattribute__", "__getattr__", "__setattr__", "__slots__", "__new__", "__call__", "__get__", "__del__")) for base in cls.__mro__ if base is not object):
+                        raise ValueError("dunder/custom-access/slots classes unsupported")
+                    if name not in vars(cls):
+                        raise ValueError("missing/inherited method; configure its declaring base class")
+                    container = cls
+                function = vars(container)[name]
+                if isinstance(function, property):
+                    raise ValueError("property probes unsupported")
+                if type(function) is classmethod:
+                    descriptor, receiver, function = classmethod, "cls", function.__func__
+                elif type(function) is staticmethod:
+                    descriptor, function = staticmethod, function.__func__
+                elif cls is not None:
+                    receiver = "self"
+                if not inspect.isfunction(function):
+                    raise ValueError("custom descriptors/native callables unsupported")
                 if hasattr(function, "__signalscout_probe__"):
                     raise ValueError("already wrapped")
-                wrapped = Probe(self, function, spec).wrap()
-                setattr(module, spec["function"], wrapped)
+                wrapped = Probe(self, function, spec, cls, receiver).wrap()
+                setattr(container, name, descriptor(wrapped) if descriptor else wrapped)
                 result.update(status="attached", capture=spec.get("capture", {}))
             except Exception as exc:
                 result.update(status="unsupported", reason=type(exc).__name__ + ": " + str(exc))
@@ -259,8 +423,17 @@ class Injector(importlib.abc.MetaPathFinder):
             if not any(r["module"] == p["module"] and r["function"] == p["function"] for r in result):
                 result.append({"module": p["module"], "function": p["function"],
                                "status": "failed", "reason": "module never imported or unsupported loader"})
+        counters = self.recorder.snapshot()
+        for item in result:
+            item["calls"] = counters.get("probe_calls:" + item["module"] + "." + item["function"], 0)
+            item["records_captured"] = counters.get("probe_captured:" + item["module"] + "." + item["function"], 0)
+            item["fraction"] = item["records_captured"] / item["calls"] if item["calls"] else 0
+            item["sampling"] = next(p.get("sampling", {}) for p in self.specs if (p["module"], p["function"]) == (item["module"], item["function"]))
         return {"privacy": "synthetic-only; per-field capture default OFF; NOT P0",
-                "probes": result, "counters": self.recorder.snapshot()}
+                "probes": result, "counters": counters,
+                "sampling_runs": [{**s, "fraction": s["captured"] / s["seen"] if s["seen"] else 0} for s in self.sample_runs],
+                "sampling_runs_omitted": max(0, counters.get("sampling_run_summaries", 0) - len(self.sample_runs)),
+                "element_reasons": {k.removeprefix("element_reason:"): v for k, v in counters.items() if k.startswith("element_reason:")}}
 
 
 def standard_otel(recorder):
@@ -303,44 +476,105 @@ def standard_otel(recorder):
     return result
 
 
-def main():
+def summary(report):
+    print("Signal Scout probe summary (synthetic only; capture default OFF)", file=sys.stderr)
+    print(f"configured probes: {len(report['probes'])}; attached: {sum(p['status']=='attached' for p in report['probes'])}", file=sys.stderr)
+    for probe in report["probes"]:
+        reason = probe.get("reason", "")
+        if probe["status"] == "attached" and probe["calls"] == 0:
+            reason = "not invoked" if not report["preflight"] else "dry import; target not executed"
+        print(f"  {probe['module']}:{probe['function']}: {probe['status']}; calls={probe['calls']}; records captured={probe['records_captured']}; rule={probe['sampling']}; fraction={probe['records_captured']}/{probe['calls']}; {reason}", file=sys.stderr)
+    for run in report.get("sampling_runs", []):
+        print(f"  run={run['run_id']} probe={run['probe']} calls={run['seen']} records captured={run['captured']} rule={run['rule']} fraction={run['captured']}/{run['seen']}", file=sys.stderr)
+    if report.get("element_reasons"):
+        print(f"element drops/reasons: {report['element_reasons']}", file=sys.stderr)
+    print(f"records captured: {report['records_captured']}; run contexts created: {report['runs_created']}; acknowledged spans: {report['counters'].get('acknowledged', 0)}; flush complete: {bool(report['drained'])}", file=sys.stderr)
+    if not report["preflight"] and (report["records_captured"] == 0 or report["runs_created"] == 0):
+        print("ZERO CAPTURE: configured target produced no probed decisions/run contexts", file=sys.stderr)
+
+
+def main(argv=None):
     global _optional
     import argparse
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument("--config", required=True)
     parser.add_argument("--doctor", required=True)
     parser.add_argument("--path", default=".")
+    parser.add_argument("--preflight", action="store_true", help="Dry import/attachment and isolated argv report; never call the entry point")
     parser.add_argument("entry", help="module:function; the target source remains unmodified")
-    args = parser.parse_args()
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    target_args = []
+    if "--" in arguments:
+        split = arguments.index("--")
+        arguments, target_args = arguments[:split], arguments[split+1:]
+    args = parser.parse_args(arguments)
     cfg = load_config(args.config)
     names = {n for p in cfg["probes"] for n in p.get("capture", {}).get("args", [])}
-    if any(p.get("capture", {}).get("return", False) for p in cfg["probes"]):
+    names.update(receiver + "." + field for p in cfg["probes"] for receiver in ("self", "cls") for field in p.get("capture", {}).get(receiver, []))
+    if any(p.get("capture", {}).get("return", False) or "return_items" in p.get("capture", {}) for p in cfg["probes"]):
         names.add("output")
     recorder = Recorder(cfg.get("endpoint", "http://127.0.0.1:4318"),
-                        service=cfg.get("service", "synthetic.probe"), capture_fields=names)
+                        service=cfg.get("service", "synthetic.probe"), capture_fields=names,
+                        _start_worker=not args.preflight)
     injector = Injector(recorder, cfg["probes"])
-    _optional = injector
+    previous_optional, _optional = _optional, injector
     # python -m names this module __main__; optional target imports must share it.
     sys.modules.setdefault("scout_probe", sys.modules[__name__])
-    auto = standard_otel(recorder) if cfg.get("auto_otel", False) else {"status": "disabled"}
+    auto = standard_otel(recorder) if cfg.get("auto_otel", False) and not args.preflight else {"status": "disabled"}
+    previous_path, previous_argv = list(sys.path), sys.argv
     sys.path.insert(0, str(Path(args.path).resolve()))
     injector.install()
     started = time.perf_counter()
+    target_argv = []
+    target_ran = False
     try:
         import importlib
         module, function = args.entry.split(":")
-        getattr(importlib.import_module(module), function)()
+        if not function.isidentifier():
+            raise ValueError("entry point must be a top-level module:function")
+        spec = importlib.util.find_spec(module)
+        if spec is None:
+            raise ValueError("target module not found")
+        origin = spec.origin
+        target_argv = [str(Path(origin).resolve()) if origin and origin not in ("built-in", "frozen") else module, *target_args]
+        sys.argv = target_argv
+        loaded = importlib.import_module(module)
+        entry = vars(loaded).get(function)
+        if not inspect.isfunction(entry) or inspect.isgeneratorfunction(entry) or inspect.iscoroutinefunction(entry) or inspect.isasyncgenfunction(entry):
+            raise ValueError("entry point must be a plain synchronous function")
+        if not args.preflight:
+            target_ran = True
+            try:
+                entry()
+            except SystemExit as exc:
+                # Normal target completion still passes through capture checks.
+                # Nonzero target exits/errors retain their original status.
+                if exc.code is not None and exc.code != 0:
+                    raise
     finally:
-        _optional = None
+        _optional = previous_optional
         injector.uninstall()
+        sys.argv = previous_argv
+        sys.path[:] = previous_path
         flush_start = time.perf_counter()
         drained = recorder.close(2)
         report = injector.doctor()
         report.update(auto_otel=auto, elapsed_seconds=time.perf_counter()-started,
-                      flush_seconds=time.perf_counter()-flush_start, drained=drained)
+                      flush_seconds=time.perf_counter()-flush_start, drained=drained,
+                      preflight=args.preflight, target_argv=target_argv, target_ran=target_ran,
+                      records_captured=report["counters"].get("probe_decisions_captured",0),
+                      runs_created=report["counters"].get("probe_runs_created",0))
         Path(args.doctor).write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
+        summary(report)
         print(json.dumps(report), file=sys.stderr)
+    if not args.preflight and (report["records_captured"] == 0 or report["runs_created"] == 0):
+        return 4
+    if any(p["status"] != "attached" or not args.preflight and p["calls"] == 0 for p in report["probes"]):
+        return 3
+    if not drained or any(v for k,v in report["counters"].items() if k.startswith("drop") or k in ("failed", "unknown")):
+        return 5
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -457,6 +457,7 @@ benchmark/results/recorder-capture-loss-fix.
 - Most plain paced p99 calls have no GC/encode overlap; quantized thread CPU
   cannot distinguish GIL/scheduling. GC-disable has no consistent benefit.
   Keep these causes unresolved; any optimization still needs GO OPTIMIZE.
+
 ## Real-case gaps: Stage 1 checkpoint — 2026-10-21
 
 - The requested wrapper-overhead base is 474f53f, before method/sampling support.
@@ -483,3 +484,75 @@ benchmark/results/recorder-capture-loss-fix.
   stop and ask. No migration or Stage 2/3 implementation is authorized before GO BUILD.
 - Lane-02 stays closed. A later development-only rerun exception must be explicit;
   never touch historical attempts, locks, specifications, results or reserved seeds.
+
+## Single-output trace — 2026-10-21
+
+- Opaque IDs have no global index. Conservative choice: require --run, explicit
+  bounds and a read limit; discover only bounded run-qualified partitions.
+  No migration/history scan. Missing is unknown in the printed search scope.
+- A/B probe argument refs have no upstream producer identity. Show dangling refs,
+  never infer edges from nesting/equality. This is the riskiest assumption for
+  useful deep tracing across unmodified applications. Artifact refs are not fetched.
+- Conflicts/duplicates/malformed envelopes/cycles produce integrity findings.
+  No arbitrary winner. Captured local values do not certify graph completeness.
+- Optional profiles evaluate declared versions only on captured fields. Off,
+  hash-only, missing and unsafe integer values stay unknown. Lane-01 stale/fresh
+  is violated/satisfied (3/3), but both lanes are left; its known metadata-only
+  limitation is preserved. No counterfactual causal conclusion follows.
+- Wrapper optimization is NO-GO. Latest conservative method-specific observation
+  468.50/912.87 us misses both budgets. Historical 205.15/390.31 passed 330/830;
+  fix-only paired data was 206.60/404.56. Harness hooks, payload details and
+  uncontrolled machine state differ. Current observer-free cost is unknown.
+  No overhead rerun; a future time-boxed binding experiment is deferred.
+
+## Probe usability — 2026-10-21
+
+- Supported method attachment is limited to plain top-level classes and directly
+  declared synchronous methods. Properties, custom descriptors/access/metaclasses,
+  slots, nested classes, native and async/generator callables stay unsupported.
+  Default receiver capture is OFF; selected builtin dict fields only, never self.
+- Child->base same-name chains on one receiver record the outermost configured
+  override once. Suppressed calls remain counted. Explicit base calls in the same
+  chain are treated the same; no bytecode inference that super() was used.
+- Preflight is a dry import, not a sandbox or validation of a parser inside main.
+  It reports isolated argv/attachments. Module import side effects are a risk.
+- Queue-admitted decisions and created contexts are not proof of persisted runs;
+  stderr includes ACK/flush/loss counters. Zero capture now exits 4, coverage gaps
+  3, delivery problems 5. Target nonzero exits/exceptions remain unchanged.
+- One paired 300-sample trial: function 210.95/421.31 us, instance method
+  219.20/403.34 us p50/p99, zero drops; not budget qualification. Full method/state
+  overhead is unmeasured. No optimization or repeated trial is authorized here.
+- Riskiest assumption: monkeypatching plain class descriptors is transparent enough
+  for ordinary callers. Identity/introspection-sensitive code and cached aliases
+  remain outside the supported claim. Synthetic data only; P0 is separate.
+
+## Tuple returns and deterministic sampling — 2026-10-21
+
+- Synthetic tuple-returning class methods were rejected by the bounded serializer
+  (drop_invalid, exit 5); high-rate loops can overflow bounded capture. Ordered
+  tuple/namedtuple capture now retains valid elements and counts explicit unknown
+  element markers. Numpy scalars/arrays remain unsupported with a doctor reason.
+- A sampling index belongs to an explicit active run. Independent implicit runs
+  reset to index 1; application episode boundaries are not inferred. The cap
+  counts selected opportunities, including capture failures. Call order is the
+  synchronous invocation order; cross-thread scheduling is not reproducible.
+- Unsampled calls and omitted/invalid elements are unknown for invariant and
+  absence claims. Existing trace/lane/pipeline analysis is unchanged. Queue
+  admission fractions are not export success fractions. Root summaries can also
+  be lost with a full queue; doctor retains only the last 32 run/probe summaries.
+- Riskiest assumption: callers group repeated steps under the intended run.
+  Misgrouping resets deterministic quotas and makes fractions misleading about
+  episodes. Marker-shaped application dictionaries are not distinguishable from
+  reserved unknown metadata by shape alone; consume only known selected fields.
+- Park only: application outcome field -> run status; bulk mark-from-file;
+  general behavior expectations separate from the declared-version invariant.
+  No implementation of these, M5–M8, linking, optimization or scoring changes.
+
+One local fixed-order cost pair (Windows, Python 3.12.12; 300 calls/arm): whole
+RL tuple capture without sampling measured p50/p99 33.2/174.0 us (mean 45.043);
+every-tenth capture measured 1.3/35.3 us (mean 4.745), capturing 30/300 versus
+300/300. Envelope bytes were 22,569 versus 209,601; queue high-water 31 versus
+301, zero drops. This is caller time including the trivial target with the
+export worker disabled, no pacing, warmup calibration, baseline-revision
+comparison, confidence interval or supported-rate/budget qualification. Added
+baseline-revision cost remains unmeasured. No optimization was performed.

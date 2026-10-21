@@ -1,0 +1,498 @@
+test_duration_survives_coarse_wall_clock (test_breadth.Breadth.test_duration_survives_coarse_wall_clock) ... ok
+test_failed_run_setup_preserves_host (test_breadth.Breadth.test_failed_run_setup_preserves_host) ... ok
+test_optional_fault_never_escapes (test_breadth.Breadth.test_optional_fault_never_escapes) ... ok
+test_plain_and_optional_preserve_replies (test_breadth.Breadth.test_plain_and_optional_preserve_replies) ... ok
+test_analytic_comparison_validates_evidence_without_erasing_values (test_capture_fix_reporting.Reporting.test_analytic_comparison_validates_evidence_without_erasing_values) ... ok
+test_four_state_identity_does_not_hide_unknown (test_capture_fix_reporting.Reporting.test_four_state_identity_does_not_hide_unknown) ... ok
+test_incomplete_flush_counts_survive_explicit_json_conversion (test_capture_fix_reporting.Reporting.test_incomplete_flush_counts_survive_explicit_json_conversion) ... ok
+test_metadata_paths_are_portable_with_json_escaping (test_capture_fix_reporting.Reporting.test_metadata_paths_are_portable_with_json_escaping) ... ok
+test_regression_projection_ignores_only_two_creation_clocks (test_capture_fix_reporting.Reporting.test_regression_projection_ignores_only_two_creation_clocks) ... ok
+test_bounded_counts_samples_and_batches (test_export_diagnostics.ExportDiagnostics.test_bounded_counts_samples_and_batches) ... ok
+test_cooldown_wait_exports_instead_of_suppressing (test_export_diagnostics.ExportDiagnostics.test_cooldown_wait_exports_instead_of_suppressing) ... ok
+test_diagnostics_do_not_change_encoded_bytes (test_export_diagnostics.ExportDiagnostics.test_diagnostics_do_not_change_encoded_bytes) ... ok
+test_doctor_exposes_bounded_diagnostics_and_batch_sizes (test_export_diagnostics.ExportDiagnostics.test_doctor_exposes_bounded_diagnostics_and_batch_sizes) ... ok
+test_drop_flush_shutdown_and_high_water_counters (test_export_diagnostics.ExportDiagnostics.test_drop_flush_shutdown_and_high_water_counters) ... ok
+test_failure_categories_and_safe_samples (test_export_diagnostics.ExportDiagnostics.test_failure_categories_and_safe_samples) ... ok
+test_real_stdlib_phase_hooks_preserve_exception_identity (test_export_diagnostics.ExportDiagnostics.test_real_stdlib_phase_hooks_preserve_exception_identity) ... ok
+test_development_generation_and_noise_independence (test_lane01.LaneDevelopment.test_development_generation_and_noise_independence) ... ok
+test_counterfactuals_and_noise (test_lane02.Lane02Development.test_counterfactuals_and_noise) ... ok
+test_golden_independent_vectors (test_lane02.Lane02Development.test_golden_independent_vectors) ... ok
+test_holdouts_rejected_before_hash_or_generation (test_lane02.Lane02Development.test_holdouts_rejected_before_hash_or_generation) ... ok
+test_plain_target_and_harness_timestamp_origin (test_lane02.Lane02Development.test_plain_target_and_harness_timestamp_origin) ... ok
+test_real_probe_intake_clock_and_evidence (test_lane02.Lane02Development.test_real_probe_intake_clock_and_evidence) ... ERROR
+test_calibration_bounded_samples_and_thread_exclusion (test_profile_phases.ProfilingTests.test_calibration_bounded_samples_and_thread_exclusion) ... ok
+test_exception_identity_and_cleanup (test_profile_phases.ProfilingTests.test_exception_identity_and_cleanup) ... ok
+test_harness_development_only_and_summary (test_profile_phases.ProfilingTests.test_harness_development_only_and_summary) ... ok
+test_original_classes_untouched (test_profile_phases.ProfilingTests.test_original_classes_untouched) ... ok
+test_raw_analysis_retains_negative_corrections_and_merges_intervals (test_profile_phases.ProfilingTests.test_raw_analysis_retains_negative_corrections_and_merges_intervals) ... ok
+test_reporting_uses_one_observation_snapshot (test_profile_phases.ProfilingTests.test_reporting_uses_one_observation_snapshot) ... ERROR
+test_wire_snapshot_and_privacy_equivalence (test_profile_phases.ProfilingTests.test_wire_snapshot_and_privacy_equivalence) ... ok
+test_cooldown_does_not_discard_queued_batches (test_recorder_retry.ExplicitAcceptance.test_cooldown_does_not_discard_queued_batches) ... ok
+test_duplicate_delivery_is_idempotent_after_lost_ack (test_recorder_retry.ExplicitAcceptance.test_duplicate_delivery_is_idempotent_after_lost_ack) ... ERROR
+test_encode_and_terminal_rejection_are_not_retried (test_recorder_retry.RetryLifecycle.test_encode_and_terminal_rejection_are_not_retried) ... ok
+test_saturation_and_flush_unknown_are_exact (test_recorder_retry.RetryLifecycle.test_saturation_and_flush_unknown_are_exact) ... ok
+test_stuck_network_has_total_deadline_and_bounded_threads (test_recorder_retry.RetryLifecycle.test_stuck_network_has_total_deadline_and_bounded_threads) ... ok
+test_sustained_outage_retry_bound_and_unknown (test_recorder_retry.RetryLifecycle.test_sustained_outage_retry_bound_and_unknown) ... ok
+test_transient_failure_recovers_once_with_same_batch (test_recorder_retry.RetryLifecycle.test_transient_failure_recovers_once_with_same_batch) ... ok
+test_blocked_worker_does_not_block_host_or_context_exit (test_safety.BlockedExporter.test_blocked_worker_does_not_block_host_or_context_exit) ... ok
+test_capture_failure_never_changes_host_behavior (test_safety.ExtraSafety.test_capture_failure_never_changes_host_behavior) ... ok
+test_fixed_cost_payload (test_safety.ExtraSafety.test_fixed_cost_payload) ... ok
+test_zero_source_changes_and_all_envelope_fields_match_go (test_safety.FrameReference.test_zero_source_changes_and_all_envelope_fields_match_go) ... ok
+test_real_intake_decodes_probed_otlp_and_lineage (test_safety.Intake.test_real_intake_decodes_probed_otlp_and_lineage) ... ERROR
+test_reload_is_reported_and_doctor_memory_stays_bounded (test_safety.ReloadBound.test_reload_is_reported_and_doctor_memory_stays_bounded) ... ERROR
+test_config_capture_off_and_unknown_keys_rejected (test_safety.Safety.test_config_capture_off_and_unknown_keys_rejected) ... ERROR
+test_default_capture_off_and_snapshot_before_mutation (test_safety.Safety.test_default_capture_off_and_snapshot_before_mutation) ... ok
+test_exit_has_no_flush_join_or_network_and_full_queue_no_wait (test_safety.Safety.test_exit_has_no_flush_join_or_network_and_full_queue_no_wait) ... ok
+test_invalid_values_do_not_raise_or_call_user_hooks (test_safety.Safety.test_invalid_values_do_not_raise_or_call_user_hooks) ... ok
+test_original_exception_and_context_cleanup (test_safety.Safety.test_original_exception_and_context_cleanup) ... ok
+test_overflow_and_bounded_memory (test_safety.Safety.test_overflow_and_bounded_memory) ... ok
+test_server_down_cooldown_preserves_admitted_items_without_host_wait (test_safety.Safety.test_server_down_cooldown_preserves_admitted_items_without_host_wait) ... ok
+test_unsupported_and_import_hook_doctor (test_safety.Safety.test_unsupported_and_import_hook_doctor) ... ERROR
+test_installed_http_and_logging_integrations (test_safety.StandardOtel.test_installed_http_and_logging_integrations) ... ok
+test_real_intake_fixture_a_b_and_all_evidence_anchors (test_trace_cli.TraceCLI.test_real_intake_fixture_a_b_and_all_evidence_anchors) ... ERROR
+
+======================================================================
+ERROR: test_real_probe_intake_clock_and_evidence (test_lane02.Lane02Development.test_real_probe_intake_clock_and_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_lane02.py", line 94, in test_real_probe_intake_clock_and_evidence
+    with tempfile.TemporaryDirectory() as directory, Serving(Path(directory)/"test.db") as server:
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\adapters\provenance-python\spike_support.py", line 23, in __enter__
+    self.log = open(str(self.database)+".log", "w", encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpsaigyidg\\test.db.log'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpsaigyidg'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_lane02.py", line 94, in test_real_probe_intake_clock_and_evidence
+    with tempfile.TemporaryDirectory() as directory, Serving(Path(directory)/"test.db") as server:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpsaigyidg'
+
+======================================================================
+ERROR: test_reporting_uses_one_observation_snapshot (test_profile_phases.ProfilingTests.test_reporting_uses_one_observation_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_profile_phases.py", line 155, in test_reporting_uses_one_observation_snapshot
+    harness.report(args, [sample], calibration, factors, {})
+  File "<repo>\adapters\provenance-python\profile_wrapper.py", line 232, in report
+    with gzip.open(args.out/"raw.json.gz", "wt", encoding="utf-8") as stream:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\gzip.py", line 65, in open
+    binary_file = GzipFile(filename, gz_mode, compresslevel)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\gzip.py", line 201, in __init__
+    fileobj = self.myfileobj = builtins.open(filename, mode or 'rb')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp5vnkx_ws\\raw.json.gz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp5vnkx_ws'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_profile_phases.py", line 152, in test_reporting_uses_one_observation_snapshot
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp5vnkx_ws'
+
+======================================================================
+ERROR: test_duplicate_delivery_is_idempotent_after_lost_ack (test_recorder_retry.ExplicitAcceptance.test_duplicate_delivery_is_idempotent_after_lost_ack)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_recorder_retry.py", line 156, in test_duplicate_delivery_is_idempotent_after_lost_ack
+    with tempfile.TemporaryDirectory() as temp, Serving(Path(temp)/"fresh.db") as server:
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\adapters\provenance-python\spike_support.py", line 23, in __enter__
+    self.log = open(str(self.database)+".log", "w", encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpgqfo6qom\\fresh.db.log'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpgqfo6qom'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_recorder_retry.py", line 156, in test_duplicate_delivery_is_idempotent_after_lost_ack
+    with tempfile.TemporaryDirectory() as temp, Serving(Path(temp)/"fresh.db") as server:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpgqfo6qom'
+
+======================================================================
+ERROR: test_real_intake_decodes_probed_otlp_and_lineage (test_safety.Intake.test_real_intake_decodes_probed_otlp_and_lineage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 1344, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1338, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1384, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1333, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1093, in _send_output
+    self.send(msg)
+  File "<repo>\adapters\provenance-python\export_diagnostics.py", line 31, in call
+    result = original(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1037, in send
+    self.connect()
+  File "<repo>\adapters\provenance-python\export_diagnostics.py", line 31, in call
+    result = original(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1003, in connect
+    self.sock = self._create_connection(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\socket.py", line 865, in create_connection
+    raise exceptions[0]
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\socket.py", line 850, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 212, in test_real_intake_decodes_probed_otlp_and_lineage
+    with urllib.request.urlopen(endpoint+"/runs", timeout=.1):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 1373, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 1347, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error timed out>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 216, in test_real_intake_decodes_probed_otlp_and_lineage
+    self.fail("real intake did not start")
+AssertionError: real intake did not start
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp1yvtpv7v'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 199, in test_real_intake_decodes_probed_otlp_and_lineage
+    with tempfile.TemporaryDirectory() as root:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp1yvtpv7v'
+
+======================================================================
+ERROR: test_reload_is_reported_and_doctor_memory_stays_bounded (test_safety.ReloadBound.test_reload_is_reported_and_doctor_memory_stays_bounded)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 405, in test_reload_is_reported_and_doctor_memory_stays_bounded
+    Path(root,"synthetic_reload_target.py").write_text("def f(a):\n    return a\n")
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpk8_d6jp1\\synthetic_reload_target.py'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpk8_d6jp1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 404, in test_reload_is_reported_and_doctor_memory_stays_bounded
+    with tempfile.TemporaryDirectory() as root:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpk8_d6jp1'
+
+======================================================================
+ERROR: test_config_capture_off_and_unknown_keys_rejected (test_safety.Safety.test_config_capture_off_and_unknown_keys_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 186, in test_config_capture_off_and_unknown_keys_rejected
+    path.write_text("version: 1\nsynthetic_only: true\nprobes:\n - module: x\n   function: y\n")
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmphboa2pig\\signalscout.yaml'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmphboa2pig'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 184, in test_config_capture_off_and_unknown_keys_rejected
+    with tempfile.TemporaryDirectory() as root:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmphboa2pig'
+
+======================================================================
+ERROR: test_unsupported_and_import_hook_doctor (test_safety.Safety.test_unsupported_and_import_hook_doctor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 164, in test_unsupported_and_import_hook_doctor
+    Path(root, "synthetic_hook_target.py").write_text(
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpngzfr5ch\\synthetic_hook_target.py'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpngzfr5ch'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_safety.py", line 163, in test_unsupported_and_import_hook_doctor
+    with tempfile.TemporaryDirectory() as root:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmpngzfr5ch'
+
+======================================================================
+ERROR: test_real_intake_fixture_a_b_and_all_evidence_anchors (test_trace_cli.TraceCLI.test_real_intake_fixture_a_b_and_all_evidence_anchors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_trace_cli.py", line 12, in test_real_intake_fixture_a_b_and_all_evidence_anchors
+    result = exercise(Path(directory))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\adapters\provenance-python\trace_walkthrough.py", line 25, in exercise
+    with Serving(out / "fresh.db") as server:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\adapters\provenance-python\spike_support.py", line 23, in __enter__
+    self.log = open(str(self.database)+".log", "w", encoding="utf-8")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp83rhujvz\\fresh.db.log'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 366, in walk
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp83rhujvz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<repo>\adapters\provenance-python\tests\test_trace_cli.py", line 11, in test_real_intake_fixture_a_b_and_all_evidence_anchors
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 623, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 369, in walk
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\shutil.py", line 621, in onerror
+    onexc(os.scandir, err.filename, err)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "<repo>\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: '<repo>\\.cache\\single-output-trace\\tmp\\tmp83rhujvz'
+
+----------------------------------------------------------------------
+Ran 52 tests in 4.830s
+
+FAILED (errors=8)
