@@ -90,6 +90,64 @@ def attrs(values):
     return out
 
 
+# Optional retained-work bound (items AND estimated bytes), separate from the
+# legacy `capacity` path. Bytes are a deterministic payload ESTIMATE, not RSS.
+SPAN_FIXED_BYTES = 512
+MAX_LIMIT_ITEMS = 65536
+MAX_LIMIT_BYTES = 256 * 1024 * 1024
+
+
+def estimate_span_bytes(item):
+    """UTF-8 payload bytes of names/attributes/events plus a fixed per-span allowance."""
+    def size(value):
+        return len(value.encode("utf-8")) if type(value) is str else 8
+    total = SPAN_FIXED_BYTES + size(item["name"])
+    for key, value in item["attrs"].items():
+        total += size(key) + size(value)
+    for name, _stamp, values in item["events"]:
+        total += size(name) + 8
+        for key, value in values.items():
+            total += size(key) + size(value)
+    return total
+
+
+class RetainedLimits:
+    """Admission bound on queued PLUS in-flight spans. Never waits: the lock
+    guards integer arithmetic only, with no I/O or blocking call inside."""
+    def __init__(self, max_items, max_bytes):
+        for value, ceiling in ((max_items, MAX_LIMIT_ITEMS), (max_bytes, MAX_LIMIT_BYTES)):
+            if type(value) is not int or not 1 <= value <= ceiling:
+                raise ValueError("invalid queue limits")
+        self.max_items, self.max_bytes = max_items, max_bytes
+        self.lock = threading.Lock()
+        self.items = self.bytes = self.peak_items = self.peak_bytes = 0
+
+    def reserve(self, size):
+        """Return None when admitted, otherwise the bound that rejected the span."""
+        with self.lock:
+            if self.items + 1 > self.max_items:
+                return "items"
+            if size > self.max_bytes - self.bytes:
+                return "bytes"
+            self.items += 1
+            self.bytes += size
+            self.peak_items = max(self.peak_items, self.items)
+            self.peak_bytes = max(self.peak_bytes, self.bytes)
+            return None
+
+    def release(self, count, size):
+        with self.lock:
+            self.items -= count
+            self.bytes -= size
+
+    def snapshot(self):
+        with self.lock:
+            return {"limit_max_items": self.max_items, "limit_max_bytes": self.max_bytes,
+                    "retained_items": self.items, "retained_items_peak": self.peak_items,
+                    "retained_bytes_estimate": self.bytes,
+                    "retained_bytes_estimate_peak": self.peak_bytes}
+
+
 class Run:
     def __init__(self, recorder, name, run_id, start_ns, end_ns, attributes):
         self.recorder, self.name, self.trace_id = recorder, name, run_id
@@ -161,8 +219,16 @@ class FlushReport(dict):
 class Recorder:
     def __init__(self, endpoint="http://127.0.0.1:4318", *, service="synthetic.provenance",
                  capture_fields=(), capacity=256, timeout=.5, cooldown=1,
-                 resource_attributes=None, _start_worker=True, retry_limit=1):
-        if not 1 <= capacity <= 4096 or not 0 < timeout <= 5 or not 0 < cooldown <= 60:
+                 resource_attributes=None, _start_worker=True, retry_limit=1, queue_limits=None):
+        # queue_limits=(max_items, max_bytes) replaces `capacity`; default None keeps
+        # the legacy 256-item queue (1..4096 validation) exactly as before.
+        self._limits = None
+        if queue_limits is not None:
+            if capacity != 256:
+                raise ValueError("queue_limits replaces capacity")
+            self._limits = RetainedLimits(*queue_limits)
+            capacity = self._limits.max_items
+        if (self._limits is None and not 1 <= capacity <= 4096) or not 0 < timeout <= 5 or not 0 < cooldown <= 60:
             raise ValueError("invalid recorder bounds")
         self.resource_attributes = bounded({} if resource_attributes is None else resource_attributes)
         self.endpoint, self.service = endpoint.rstrip("/"), service
@@ -198,7 +264,7 @@ class Recorder:
             result = dict(self._counts)
             result["acknowledged"] = result.get("exported", 0)
             result["failed"] = result.get("failed", 0)
-            result["dropped"] = sum(result.get(k, 0) for k in ("drop_full", "drop_closed", "drop_cooldown"))
+            result["dropped"] = sum(result.get(k, 0) for k in ("drop_full", "drop_bytes", "drop_closed", "drop_cooldown"))
             result["unknown"] = result.get("attempted", 0)-result["acknowledged"]-result["failed"]-result["dropped"]
         result.update(queue_size=self._q.qsize(), capacity=self._q.maxsize,
                       cooldown_active=time.monotonic() < self._cooldown_until)
@@ -208,6 +274,11 @@ class Recorder:
             queue_full_drop=result.get("drop_full", 0),
             shutdown_drop=result.get("drop_closed", 0), flush_drop=0)
         result.update(queue_high_water=self._q.high_water, diagnostics=details)
+        if self._limits is not None:
+            result.update(self._limits.snapshot())
+            result["drop_bytes"] = result.get("drop_bytes", 0)
+            result["drop_full"] = result.get("drop_full", 0)
+            details["counters_spans_except_flush_timeout"]["byte_limit_drop"] = result["drop_bytes"]
         result.update(network_operation_slots=1, retry_limit=self.retry_limit,
                       attempt_budget_seconds=self.attempt_budget)
         return result
@@ -225,9 +296,29 @@ class Recorder:
         if self._closed:
             self._count("drop_closed")
             return False
+        limits = self._limits
+        if limits is None:
+            try:
+                self._q.put_nowait(item)
+            except queue.Full:
+                self._count("drop_full")
+                return False
+            self._count("accepted")
+            return True
         try:
-            self._q.put_nowait(item)
+            size = estimate_span_bytes(item)
+        except Exception:
+            # An unsizeable span cannot be proven inside the byte bound: visible drop.
+            self._count("drop_bytes")
+            return False
+        reason = limits.reserve(size)
+        if reason is not None:
+            self._count("drop_full" if reason == "items" else "drop_bytes")
+            return False
+        try:
+            self._q.put_nowait((item, size))
         except queue.Full:
+            limits.release(1, size)
             self._count("drop_full")
             return False
         self._count("accepted")
@@ -462,9 +553,17 @@ class Recorder:
                     batch.append(self._q.get_nowait())
                 except queue.Empty:
                     break
+            retained = None
+            if self._limits is not None:
+                retained = (len(batch), sum(size for _, size in batch))
+                batch = [item for item, _ in batch]
             try:
                 self._deliver(batch)
             finally:
+                if retained is not None:
+                    # In-flight batches stay counted until delivery has settled;
+                    # released before task_done so a finished flush sees zero retained.
+                    self._limits.release(*retained)
                 for _ in batch:
                     self._q.task_done()
 

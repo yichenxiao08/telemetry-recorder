@@ -501,6 +501,10 @@ def main(argv=None):
     parser.add_argument("--doctor", required=True)
     parser.add_argument("--path", default=".")
     parser.add_argument("--preflight", action="store_true", help="Dry import/attachment and isolated argv report; never call the entry point")
+    parser.add_argument("--queue-max-items", type=int, default=None,
+                        help="optional retained-item bound (queued + in-flight); requires --queue-max-bytes")
+    parser.add_argument("--queue-max-bytes", type=int, default=None,
+                        help="optional retained-byte ESTIMATE bound (not RSS); requires --queue-max-items")
     parser.add_argument("entry", help="module:function; the target source remains unmodified")
     arguments = list(sys.argv[1:] if argv is None else argv)
     target_args = []
@@ -508,6 +512,9 @@ def main(argv=None):
         split = arguments.index("--")
         arguments, target_args = arguments[:split], arguments[split+1:]
     args = parser.parse_args(arguments)
+    if (args.queue_max_items is None) != (args.queue_max_bytes is None):
+        parser.error("--queue-max-items and --queue-max-bytes must be given together")
+    queue_limits = None if args.queue_max_items is None else (args.queue_max_items, args.queue_max_bytes)
     cfg = load_config(args.config)
     names = {n for p in cfg["probes"] for n in p.get("capture", {}).get("args", [])}
     names.update(receiver + "." + field for p in cfg["probes"] for receiver in ("self", "cls") for field in p.get("capture", {}).get(receiver, []))
@@ -515,7 +522,7 @@ def main(argv=None):
         names.add("output")
     recorder = Recorder(cfg.get("endpoint", "http://127.0.0.1:4318"),
                         service=cfg.get("service", "synthetic.probe"), capture_fields=names,
-                        _start_worker=not args.preflight)
+                        _start_worker=not args.preflight, queue_limits=queue_limits)
     injector = Injector(recorder, cfg["probes"])
     previous_optional, _optional = _optional, injector
     # python -m names this module __main__; optional target imports must share it.
