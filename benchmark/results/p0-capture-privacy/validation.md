@@ -20,7 +20,8 @@ No GitHub PR is merged and neither annotated engine tag is changed.
 | Added policy overhead | Unmeasured against both budgets; no optimization or performance claim |
 
 Runs 39554316037 (engine-1), 39562411063 (engine-2) and 39557904171
-(separate docs proposal) passed both Windows and Ubuntu. Final P0 revision CI
+(separate docs proposal) passed both Windows and Ubuntu. Integration aa7e6e6
+also passed both systems in run 39564467935. Final P0 revision CI
 is recorded by its exact SHA and run URL in the completion report.
 
 ## Retained failed observations

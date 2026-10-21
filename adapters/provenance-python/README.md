@@ -47,7 +47,8 @@ attributes before the call. `cls: [family]` similarly permits named class data.
 Implicit self/cls objects are never captured. Property/descriptor reads are never
 used to obtain state. Missing or unsupported values remain uncaptured and visible
 in counters. `complete` covers recorded explicit arguments/selected fields only,
-not all receiver state or proof of code reads. No new privacy gate is included.
+not all receiver state or proof of code reads. Method allowlists alone are not a
+privacy gate; the separate opt-in P0 policy is described below.
 
 Only a class's directly defined method can be configured: use the declaring base
 for inherited methods. If both overriding child and base methods are configured,
