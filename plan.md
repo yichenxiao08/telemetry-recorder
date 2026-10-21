@@ -746,3 +746,18 @@ Retain the benign finite-support premise mismatch and recording-cost misses in
 docs/lane02-checkpoint-a.md. Sources are pinned in the lane-02 source-freeze
 manifest; reserved seeds remain ungenerated/unscored pending explicit owner GO.
 No M6–M8, P0–P4 production work or conditional comparison starts.
+
+### Recorder capture-loss checkpoint (owner-authorized; no behavior fix)
+
+Lane-02 is closed as attempted/incomplete due to capture loss. Preserve its lock,
+original attempt, contract/spec/checksums/source freeze and published results.
+The recorder-capture-loss branch adds bounded diagnostics, keeping transport,
+queue/cooldown defaults and exported bytes unchanged. Five 101/103 development
+repetitions complete 60 cases/96,000 acknowledged spans without loss. The original
+initiating exception is not reproduced or recovered. A controlled post-commit
+reply delay demonstrates timeout/cooldown amplification; a burst demonstrates
+finite queue overflow. Costs still miss the unchanged 100/250 us budget. See
+docs/recorder-capture-loss.md and benchmark/results/recorder-capture-loss for every
+run, raw report, limitation and the proposed worker fix. STOP at Checkpoint A
+pending GO FIX; no retry/accounting fix, lane-03 contract or production phase.
+The earlier Stage 1 pending-GO statements above describe that historical checkpoint.

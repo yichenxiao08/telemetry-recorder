@@ -1,0 +1,30 @@
+{
+  "observability_commit": "e948a46b3514ac5117ae8f2c72fc997d9edbca3d",
+  "stage": "Checkpoint A, no fix",
+  "checks": [
+    {
+      "log": "raw/commit2-go-lint.txt.gz",
+      "sha256_original": "a6200eabe79480744a8a5e1c40d35e4a0a3b90c53509ad0617626fd139ce2c3b",
+      "exit_code": 0
+    },
+    {
+      "log": "raw/commit2-go-race.txt.gz",
+      "sha256_original": "9debbc874ebf9c189485bc3ae5c83b221b5d3f9c4f4353ece4815ad3af5eae85",
+      "exit_code": 0
+    },
+    {
+      "log": "raw/commit2-go-build.txt.gz",
+      "sha256_original": "819345f4b30df34798e83156286f6353eed4f28ebac30e1bc8e187a6da9d6c17",
+      "exit_code": 0
+    },
+    {
+      "log": "raw/commit2-python.txt.gz",
+      "sha256_original": "73859b74ac17ac6384fe36a220b1b8ec0c7b7113020a74ea84741afc1ea5c294",
+      "exit_code": 0
+    }
+  ],
+  "python_tests": 32,
+  "measurement_repeated": false,
+  "scope": "Regression tests only; no reserved flag or reserved data",
+  "checked_utc": "2026-10-20T19:53:17.2997199Z"
+}

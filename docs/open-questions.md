@@ -351,3 +351,82 @@ This section supersedes the earlier unresolved full-history-backfill and materia
   and historical 330/830 us budgets; one case is not the five-trial harness.
   Conservative choice: no cost pass, no lane-02 evaluation acceptance and no
   real-world diagnostic claim. See docs/lane02-stage2.md for raw counts/hashes.
+
+## Recorder capture-loss Checkpoint A
+
+- Lane-02 stays closed as attempted/incomplete due to capture loss; the lock,
+  attempt-01, contract, generator/spec/checksums/freeze and published artifacts
+  retain their pre-task hashes. Existing owner edits remain local. New diagnostics
+  intentionally change the recorder, not the historical source-freeze manifest.
+- Five development repetitions (101/103, six variants) complete 60 cases and
+  acknowledge 96,000 spans without drops or failed exports. Natural loss is not
+  reproduced, so the historical initiating exception remains unknown.
+- A deliberate 650 ms post-commit reply delay causes two timed-out spans, 58
+  queued cooldown suppressions and 120 caller cooldown drops. Conservative
+  interpretation: timeout/cooldown amplification is evidenced, not the original
+  SQLite/Defender cause. Failed acknowledgements can follow real commits.
+- Defender status is denied by Windows. Added two-process CPU plus bounded-file
+  fsync load has zero loss in one trial. No security settings/exclusions change;
+  do not attribute original loss to Defender or claim background load is harmless.
+- Queue 256 fills in the tight burst (1,712 drops); 4,096 avoids those drops but
+  drains longer. Conservative choice: keep default 256 pending owner review;
+  normal-rate peaks <=40 and the delayed-ack peak 58 do not support a capacity fix.
+- Exception messages use truncated safe summaries because arbitrary exception
+  text can contain payloads, URLs or response bodies. Keep class/reason/status,
+  phase and timestamp, while documenting the redaction rather than claiming raw
+  message retention. Flush timeout is not a drop; counters keep that distinction.
+- All 60 development cases and all six controls miss 100/250 us on at least one
+  quantile. No budget change or fix-cost claim. Context exit includes observer
+  sampling; raw costs and every miss stay published. Strict global network
+  deadline enforcement remains a proposal requiring proof, not an implemented
+  property of urllib's per-socket timeout.
+- Stop at Checkpoint A: the bounded worker-retry/queue-admission/accounting design
+  in docs/recorder-capture-loss.md needs GO FIX. No behavior fix or Stage 4 work,
+  lane-03 contract, scoring change or production phase starts here.
+
+## Recorder capture-loss: GO FIX Stage 3–4
+
+This section supersedes the proposal/awaiting-approval status above. Owner
+approved GO FIX, including separate cooldown-preservation and duplicate-delivery
+acceptance tests. The implementation is `a8453cb`; protocol, measured results
+and remaining misses are in docs/recorder-capture-loss-fix.md and
+benchmark/results/recorder-capture-loss-fix.
+
+- The original reserved-run initiating failure remains unproven. The induced
+  slow-acknowledgement/cooldown amplification is evidenced; do not attribute it
+  to SQLite or Defender without an isolated measurement. Keep lane-02 closed
+  as attempted/incomplete and preserve all old artifacts and owner edits.
+- Queue capacity remains 256; one worker retry, 50 ms backoff and a 1.25 s
+  logical batch budget are fixed. A quarantined OS network call can outlive
+  that budget. Conservative choice: one I/O slot, no replacement threads, no
+  late acknowledgement credit, bounded pending memory and explicit unknowns.
+  No RAM queue can guarantee delivery across arbitrary outages/process exit.
+- Flush now exposes exact acknowledged/failed/dropped/unknown producer counts;
+  its truth means completeness, not drain. Invalid captures stay separately
+  visible. Per-attempt diagnostics can include recovered timeouts without a
+  final failed producer span. Conservative choice: unknown never means delivered.
+- Python's indented JSON encoder checks dict truthiness. Structured flush
+  reports must be copied with `dict(report)` before encoding; all spike report
+  boundaries do so and a regression test covers incomplete reports. External
+  callers using `flush(...) is True` need the documented completeness check.
+  This remains a synthetic helper API, not a production compatibility promise.
+- Real intake duplicate span/event delivery is tested with stable IDs and two
+  committed requests. Log/metric exporter idempotency is not established here;
+  defer any broader duplicate guarantee.
+- Keep the 100/250 us overhead budget and every paired-trial miss. A clean
+  transport streak cannot waive the cost gate or establish that recording is
+  cheap in another application. No scoring or performance tuning is authorized.
+- A future zero-drop gate is proposed only: ten consecutive full clean
+  development repetitions, exact expected counts, unchanged analytic outputs,
+  resolved evidence and passing safety controls. Preserve a miss, reset the
+  qualifying streak and obtain owner authorization before any reserved attempt.
+  No lane-03 contract or later milestone is created by this task.
+- Final results: benchmark/results/recorder-capture-loss-fix-reviewed. All
+  120 new development cases acknowledge 192,000 spans without loss; all paced
+  overhead trials still miss 100/250 us. No cost-gate override is inferred.
+- The first strict fresh-byte comparison (retained in the original results
+  directory) fails because measured timestamp offsets change event hashes and
+  anchors. Existing-store JSON/text bytes match; a separate evidence-validated
+  analytic comparison preserves every score/count/value and matches all 120
+  replays. Conservative choice: retain both results, never call new raw reports
+  byte-identical, and do not change clocks, engine IDs or scores to erase it.
