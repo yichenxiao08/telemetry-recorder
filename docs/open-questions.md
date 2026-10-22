@@ -633,3 +633,10 @@ Owner-accepted choices (synthetic/development data only; no migration; legacy co
   especially unsampled/control-flow-changing calls, is unresolved. No value or
   time-based matching is assumed. Synthetic authored fixtures establish mechanics,
   not real-world diagnostic accuracy; no external report or prohibited data read.
+
+# Declared-relation fixture caveat — 2026-10-22
+
+- The first declared-relation fixtures were shaped by an example in the owner's
+  request: an absolute-difference relation over a nested return item. The earlier
+  RL blind-test project is therefore not a clean test of this feature. Require a
+  second blind project with a different bug before making any accuracy claim.
