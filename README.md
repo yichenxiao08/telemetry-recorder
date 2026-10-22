@@ -166,3 +166,12 @@ See [the PowerShell explorer walkthrough](docs/explorer-walkthrough.md),
 The original combined-ingest targets were missed and then changed by the owner;
 the revised profiles also retain their per-seed misses. Saved seed 1 did not
 sample an in-use peak; its missing context detection is reported explicitly.
+
+## Check local setup
+
+Run `.\bin\signalscout.exe doctor` after `task build` from this repository's root.
+It reports the binary, Python tools/imports, database-path access and loopback port
+availability, then prints a tiny synthetic PowerShell example. Use `--json <new-path>`
+for a versioned report. It starts no server or recording and installs nothing.
+New database paths warn because creation permissions are not tested by writing.
+See [doctor details and limits](docs/doctor.md).

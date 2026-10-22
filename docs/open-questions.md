@@ -667,3 +667,17 @@ Owner-accepted choices (synthetic/development data only; no migration; legacy co
   report; unknown root searches with no evidence yield unsupported unknowns.
   Hypotheses enter only through supplied JSON and remain unsupported, even with
   valid citations. This is partial M7, with no LLM or experiment executor.
+
+# Doctor setup check — 2026-10-22
+
+- Proving that a new database can be created conflicts with the owner's zero-file
+  reporting requirement. Inspect its parent without writing and return WARN with
+  creation permissions explicitly untested; missing/inaccessible parents fail.
+  Existing files are opened O_RDWR without creation/truncation/writes, not as SQLite.
+  WAL permissions, locks and disk capacity remain untested.
+- Use an existing adapter virtual environment first, then py -3, then python;
+  allow an explicit executable override. Report all three PATH tools independently
+  and recommend the README's uv/3.12.12 frozen environment. Check only dependency
+  imports, never claim capture/analysis or infer runtime compatibility from imports.
+  Five-second subprocess bounds limit unhealthy diagnostics; installed Python and
+  dependencies are trusted code. No automatic installation or uv synchronization.
