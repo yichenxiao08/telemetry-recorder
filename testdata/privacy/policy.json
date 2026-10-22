@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profiles": {
+    "synthetic": {
+      "fields": {
+        "inputs.frame": {"kind": "number"},
+        "inputs.self.score": {"kind": "number"},
+        "output.lane": {"kind": "enum", "values": ["left", "right"]},
+        "attributes.safe.number": {"kind": "number"},
+        "resource.attributes.service.name": {"kind": "enum", "values": ["synthetic.frame"]}
+      }
+    }
+  }
+}
