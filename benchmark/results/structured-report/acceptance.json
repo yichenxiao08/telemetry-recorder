@@ -1,0 +1,606 @@
+{
+  "accepted_relation_fixture_report": {
+    "capture_off_unknown": 40,
+    "citation_validity_rate": 1,
+    "claim_support_rate": 1,
+    "original_rule_counts_retained": true,
+    "valid_claims": 295
+  },
+  "database": ".cache/structured-report/fixture-459368538/fresh.db",
+  "fabricated_id_invalid": 1,
+  "flag_truth_table": {
+    "satisfied_flag_false": 18,
+    "satisfied_flag_true": 18,
+    "violated_flag_false": 2,
+    "violated_flag_true": 2
+  },
+  "lane_reports": [
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 1009,
+      "variant": "base"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 1009,
+      "variant": "decoy-heavy"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 1009,
+      "variant": "harder"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 2027,
+      "variant": "base"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 2027,
+      "variant": "decoy-heavy"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 2027,
+      "variant": "harder"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 3037,
+      "variant": "base"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 3037,
+      "variant": "decoy-heavy"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 3037,
+      "variant": "harder"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 4051,
+      "variant": "base"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 4051,
+      "variant": "decoy-heavy"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 4051,
+      "variant": "harder"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 5059,
+      "variant": "base"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 5059,
+      "variant": "decoy-heavy"
+    },
+    {
+      "citation_validity_rate": 1,
+      "citations": 309,
+      "claim_support_rate": 1,
+      "claims": 218,
+      "seed": 5059,
+      "variant": "harder"
+    }
+  ],
+  "minority_violations": 4,
+  "real_serve": true,
+  "report_path": ".cache/structured-report/fixture-459368538/report.json",
+  "resolved_native_anchors": 10,
+  "runs_list_count": 40,
+  "synthetic_only": true,
+  "verification": {
+    "claims": [
+      {
+        "id": "completeness/synthetic-p",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "completeness/synthetic-r",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "completeness/synthetic-v",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/step/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000001/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000002/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000003/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000004/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000005/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000006/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000007/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000008/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000009/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000000a/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000000b/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000000c/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000000d/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000000e/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000000f/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000010/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000011/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000012/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000013/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000014/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000015/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000016/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000017/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000018/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000019/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000001a/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000001b/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000001c/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000001d/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000001e/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/0000000000000000000000000000001f/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000020/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000021/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000022/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000023/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000024/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000025/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000026/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000027/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "relations/synthetic-v/run/00000000000000000000000000000028/increment",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/the_problem/0",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/candidate_median/0",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/candidate_tail/0",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/0",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/1",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/2",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/3",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/4",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/5",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/6",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/7",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/8",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/9",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/10",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/11",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/12",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/13",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/14",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/15",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/16",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/17",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/18",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/19",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/20",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/21",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/22",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/23",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/24",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/25",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/26",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/27",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/28",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/29",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/30",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/31",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/32",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/33",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/34",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/35",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/36",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/37",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/38",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "comparison/0/invariant/39",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "trace/0/coverage",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "trace/0/node/0",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      },
+      {
+        "id": "trace/0/invariant/0",
+        "status": "valid",
+        "reason": "structured quotation and scoped citations match rebuilt evidence"
+      }
+    ],
+    "valid": 90,
+    "invalid": 0,
+    "unsupported": 0,
+    "citations": 118,
+    "valid_citations": 118,
+    "citation_validity_rate": 1,
+    "claim_support_rate": 1
+  }
+}
