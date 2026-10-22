@@ -458,6 +458,33 @@ benchmark/results/recorder-capture-loss-fix.
   cannot distinguish GIL/scheduling. GC-disable has no consistent benefit.
   Keep these causes unresolved; any optimization still needs GO OPTIMIZE.
 
+## Real-case gaps: Stage 1 checkpoint — 2026-10-21
+
+- The requested wrapper-overhead base is 474f53f, before method/sampling support.
+  Keep the design branch there and measure isolated, unchanged a2c2cee, confirmed
+  by the owner as the scenario engine. No behavior is cherry-picked into Stage 1.
+- Plain reproduction: 80 target rows / 17 failures / 63 successes; 19 stored run
+  IDs, 1,464/1,834 spans dropped, exit 5. This differs from the supplied 14-run /
+  1,554-drop historical summary. Preserve it; do not tune to match. ACK 370,
+  failed 0, unknown 0. Stored run IDs do not establish complete episode capture.
+- Sampling already precedes snapshot/JSON on a2c2cee. Instrumented sampled-out
+  calls are cheaper but not free; the phase observer changes capture scheduling.
+  Keep the 29-run diagnostic separate from the 19-run plain reproduction.
+- Per-run sampling summaries are bounded to the last 32; this run reports 128
+  omitted summaries. Global per-probe counters remain available, but a durable
+  full-run completeness manifest is not present. Missing final state is unknown.
+- Difference via NumericFeature.Subtract and scalar equality predicates already
+  exist. Missing features are escaped literal-key selection, optional invariants,
+  a bounded expression extension, numeric inequalities and pinned per-run aggregates.
+- Keep tail >=30 problem / >=100 reference observations and >=5 known sessions
+  per arm. Eighty per-run units cannot qualify even with perfect capture; 17/63
+  misses both count gates. Do not inflate n with correlated loop steps.
+- Existing telemetry/cohort JSON may hold versioned manifests/aggregates without
+  a migration. If correct durable/bounded indexed reads require schema changes,
+  stop and ask. No migration or Stage 2/3 implementation is authorized before GO BUILD.
+- Lane-02 stays closed. A later development-only rerun exception must be explicit;
+  never touch historical attempts, locks, specifications, results or reserved seeds.
+
 ## Single-output trace — 2026-10-21
 
 - Opaque IDs have no global index. Conservative choice: require --run, explicit
@@ -553,3 +580,22 @@ every-tenth capture measured 1.3/35.3 us (mean 4.745), capturing 30/300 versus
 export worker disabled, no pacing, warmup calibration, baseline-revision
 comparison, confidence interval or supported-rate/budget qualification. Added
 baseline-revision cost remains unmeasured. No optimization was performed.
+
+## Real-case gaps Phase 1B: run completeness manifests — 2026-10-21
+
+Owner-accepted choices (synthetic/development data only; no migration; legacy cohort and OTLP bytes unchanged when `--manifest` is off):
+
+- **Stricter `--require-complete` (accepted).** It rejects cohort creation when any candidate run is unknown or unassessed, when any run a capture scope expected is absent, or when the run population is unknown (no final scope record, or ledger/scope capacity exhausted). The original request named only unknown and unassessed; absent and unknown-population were added so a run lost entirely cannot shrink the denominator silently. `--require-complete` with `--include-partial` is a contradiction and is rejected. Partial runs are still excluded by default, so a required-complete cohort contains only complete runs.
+- **Drain-timeout flag and explicit ceiling (accepted).** `--drain-timeout SECONDS` defaults to 2 and applies only to the runner's single `Recorder.close()` at process shutdown; a host call never flushes, joins or waits. `Recorder.flush()` and `close()` previously clamped silently to 10 s. They now accept 0 to 60 s and raise `ValueError` outside that range (the CLI reports a usage error, exit 2). A longer drain gives the worker more time; it cannot recover items already dropped at admission.
+- **Classification precedence.** Absent, then unassessed, then unknown (marker missing, unreadable, inconsistent or unsettled), then partial (any confirmed lost selected item), then unknown (unresolved terminal state or acknowledged spans missing from the store), then complete. Partial wins over unknown, and the unknown item count stays visible in `Completeness`.
+- **Scope discovery.** A cohort finds capture scopes through its candidates' manifest epochs and through scope traces started in the window or up to one hour after it. A run whose manifest and scope record are both lost looks like a legacy run (unassessed). It is never complete, and `--require-complete` rejects it.
+- **10,000-record read budget unchanged.** Each manifest adds one span record per run to the count; the budget was not raised.
+- **The B2 queue bound is not a general default.** The optional `--queue-max-items`/`--queue-max-bytes` pair (3,280 items, 26,869,760 estimated bytes in experiment B2) was chosen on a single scenario: 80 episodes, seed 20261020, the unchanged YAML. It is a measurement setting for that workload, not a recommendation for other workloads, and it is not a claim that loss is solved (a finite nonblocking queue still cannot promise zero loss for arbitrary unpaced work). The default remains the 256-item queue with no byte bound. Retained bytes are an estimate, not process memory.
+- **Default settings lose runs at exit; the B2 bound and 30 s drain were chosen on this one scenario.** Two single observations on the scenario copy (80 episodes, seed 20261020, unchanged YAML, 3,280-item / 26,869,760-byte queue), classified by the Go `cohort completeness` reader against the capture-scope record of 80 expected runs:
+
+  | Drain at shutdown | runner exit | span attempted / ack / unknown | complete | partial | unknown | absent |
+  | --- | --- | --- | ---: | ---: | ---: | ---: |
+  | default 2 s (`--drain-timeout` omitted) | 5 | 1834 / 1210 / 624 | 51 | 0 | 3 | 26 |
+  | 30 s (`--drain-timeout 30`) | 0 | 1834 / 1834 / 0 | 80 | 0 | 0 | 0 |
+
+  At the production default drain, 29 of 80 runs did not reach the store cleanly: 26 absent (no spans stored before the worker was abandoned at exit) and 3 unknown (final marker missing). The longer drain let the worker deliver every run's spans and manifest, so all 80 classified complete. These are single observations and run-to-run capture variance is real; the point is directional and a caution, not a tuned success. Neither the 3,280-item queue bound nor the 30 s drain is a recommended default: the queue default stays 256 items, and the drain default stays 2 s. A finite nonblocking recorder cannot promise zero loss for arbitrary unpaced workloads; longer drains and larger bounds reduce loss on this workload but do not eliminate the constraint.

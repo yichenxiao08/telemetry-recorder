@@ -10,10 +10,21 @@ import threading
 import time
 import urllib.request
 
+from capture_manifest import DIRECT, ROOT, ManifestState
 from export_diagnostics import Diagnostics, observe
 
 from opentelemetry.proto.collector.trace.v1.trace_service_pb2 import ExportTraceServiceRequest
 from opentelemetry.proto.common.v1.common_pb2 import AnyValue
+
+# Explicit, validated ceiling for flush()/close() drain waits. Values above it
+# are rejected, never silently shortened. The default drain stays 2 seconds.
+MAX_DRAIN_SECONDS = 60
+
+
+def check_drain_seconds(value):
+    if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= MAX_DRAIN_SECONDS:
+        raise ValueError(f"drain timeout must be a number in 0..{MAX_DRAIN_SECONDS} seconds")
+    return float(value)
 
 
 def sequence_fields(value):
@@ -90,6 +101,64 @@ def attrs(values):
     return out
 
 
+# Optional retained-work bound (items AND estimated bytes), separate from the
+# legacy `capacity` path. Bytes are a deterministic payload ESTIMATE, not RSS.
+SPAN_FIXED_BYTES = 512
+MAX_LIMIT_ITEMS = 65536
+MAX_LIMIT_BYTES = 256 * 1024 * 1024
+
+
+def estimate_span_bytes(item):
+    """UTF-8 payload bytes of names/attributes/events plus a fixed per-span allowance."""
+    def size(value):
+        return len(value.encode("utf-8")) if type(value) is str else 8
+    total = SPAN_FIXED_BYTES + size(item["name"])
+    for key, value in item["attrs"].items():
+        total += size(key) + size(value)
+    for name, _stamp, values in item["events"]:
+        total += size(name) + 8
+        for key, value in values.items():
+            total += size(key) + size(value)
+    return total
+
+
+class RetainedLimits:
+    """Admission bound on queued PLUS in-flight spans. Never waits: the lock
+    guards integer arithmetic only, with no I/O or blocking call inside."""
+    def __init__(self, max_items, max_bytes):
+        for value, ceiling in ((max_items, MAX_LIMIT_ITEMS), (max_bytes, MAX_LIMIT_BYTES)):
+            if type(value) is not int or not 1 <= value <= ceiling:
+                raise ValueError("invalid queue limits")
+        self.max_items, self.max_bytes = max_items, max_bytes
+        self.lock = threading.Lock()
+        self.items = self.bytes = self.peak_items = self.peak_bytes = 0
+
+    def reserve(self, size):
+        """Return None when admitted, otherwise the bound that rejected the span."""
+        with self.lock:
+            if self.items + 1 > self.max_items:
+                return "items"
+            if size > self.max_bytes - self.bytes:
+                return "bytes"
+            self.items += 1
+            self.bytes += size
+            self.peak_items = max(self.peak_items, self.items)
+            self.peak_bytes = max(self.peak_bytes, self.bytes)
+            return None
+
+    def release(self, count, size):
+        with self.lock:
+            self.items -= count
+            self.bytes -= size
+
+    def snapshot(self):
+        with self.lock:
+            return {"limit_max_items": self.max_items, "limit_max_bytes": self.max_bytes,
+                    "retained_items": self.items, "retained_items_peak": self.peak_items,
+                    "retained_bytes_estimate": self.bytes,
+                    "retained_bytes_estimate_peak": self.peak_bytes}
+
+
 class Run:
     def __init__(self, recorder, name, run_id, start_ns, end_ns, attributes):
         if recorder.capture_policy is not None:
@@ -105,6 +174,7 @@ class Run:
         self.span_id, self.next_id = "0000000000000001", 2
         self.valid, self.token = False, None
         self.probe_sampling = {}
+        self.ledger = None  # only set when the recorder was built with manifest=True
 
     def __enter__(self):
         try:
@@ -120,6 +190,8 @@ class Run:
             self.start_ns = self.start_ns or time.time_ns()
             self.monotonic_start = time.perf_counter_ns()
             self.valid = True
+            if self.recorder._manifest is not None:
+                self.ledger = self.recorder._manifest.open_run(self.trace_id)
             self.token = self.recorder._active.set(self)
         except Exception:
             self.recorder._count("drop_invalid")
@@ -134,10 +206,16 @@ class Run:
                         prefix + "seen": stats["seen"], prefix + "captured": stats["captured"],
                         prefix + "rule": json.dumps(stats["rule"], sort_keys=True),
                         prefix + "fraction": stats["captured"] / stats["seen"] if stats["seen"] else 0})
-                self.recorder._enqueue(self.recorder._span(
-                    self, self.span_id, "", self.name, self.start_ns,
-                    self.end_ns or self.start_ns + time.perf_counter_ns() - self.monotonic_start,
-                    self.attributes, [], typ is not None))
+                end = self.end_ns or self.start_ns + time.perf_counter_ns() - self.monotonic_start
+                root = self.recorder._span(self, self.span_id, "", self.name, self.start_ns,
+                                           end, self.attributes, [], typ is not None)
+                if self.ledger is not None:
+                    root["ledger"] = self.ledger.bucket(ROOT)
+                try:
+                    self.recorder._enqueue(root)
+                finally:
+                    if self.ledger is not None:
+                        self.recorder._manifest.close_run(self.ledger, end)
         except Exception:
             self.recorder._count("drop_invalid")
         finally:
@@ -169,9 +247,17 @@ class FlushReport(dict):
 class Recorder:
     def __init__(self, endpoint="http://127.0.0.1:4318", *, service="synthetic.provenance",
                  capture_fields=(), capacity=256, timeout=.5, cooldown=1,
-                 resource_attributes=None, _start_worker=True, retry_limit=1,
-                 capture_policy=None, capture_profile=""):
-        if not 1 <= capacity <= 4096 or not 0 < timeout <= 5 or not 0 < cooldown <= 60:
+                 resource_attributes=None, _start_worker=True, retry_limit=1, queue_limits=None,
+                 manifest=False, capture_policy=None, capture_profile=""):
+        # queue_limits=(max_items, max_bytes) replaces `capacity`; default None keeps
+        # the legacy 256-item queue (1..4096 validation) exactly as before.
+        self._limits = None
+        if queue_limits is not None:
+            if capacity != 256:
+                raise ValueError("queue_limits replaces capacity")
+            self._limits = RetainedLimits(*queue_limits)
+            capacity = self._limits.max_items
+        if (self._limits is None and not 1 <= capacity <= 4096) or not 0 < timeout <= 5 or not 0 < cooldown <= 60:
             raise ValueError("invalid recorder bounds")
         self.resource_attributes = bounded({} if resource_attributes is None else resource_attributes)
         self.endpoint, self.service = endpoint.rstrip("/"), service
@@ -201,6 +287,17 @@ class Recorder:
         self._network_stop = threading.Event()
         self._network_thread = None
         self._flight = None
+        # Opt-in completeness manifests. With manifest=False nothing below is
+        # installed, so the admission, delivery and settlement code paths are the
+        # original ones (no extra frame, lock or dict lookup).
+        self._manifest = None
+        self._finalize, self._manifest_done = threading.Event(), threading.Event()
+        self._tracked_batch = None
+        if manifest:
+            self._manifest = ManifestState()
+            self._enqueue = self._enqueue_tracked
+            self._deliver = self._deliver_tracked
+            self._settle = self._settle_tracked
         # One delivery worker and at most one daemon I/O worker. An I/O call
         # stuck in DNS/headers is quarantined, never replaced by more threads.
         # Neither holds the statistics lock during I/O or worker-only waits.
@@ -217,7 +314,7 @@ class Recorder:
             result = dict(self._counts)
             result["acknowledged"] = result.get("exported", 0)
             result["failed"] = result.get("failed", 0)
-            result["dropped"] = sum(result.get(k, 0) for k in ("drop_full", "drop_closed", "drop_cooldown"))
+            result["dropped"] = sum(result.get(k, 0) for k in ("drop_full", "drop_bytes", "drop_closed", "drop_cooldown"))
             result["unknown"] = result.get("attempted", 0)-result["acknowledged"]-result["failed"]-result["dropped"]
         result.update(queue_size=self._q.qsize(), capacity=self._q.maxsize,
                       cooldown_active=time.monotonic() < self._cooldown_until)
@@ -227,8 +324,15 @@ class Recorder:
             queue_full_drop=result.get("drop_full", 0),
             shutdown_drop=result.get("drop_closed", 0), flush_drop=0)
         result.update(queue_high_water=self._q.high_water, diagnostics=details)
+        if self._limits is not None:
+            result.update(self._limits.snapshot())
+            result["drop_bytes"] = result.get("drop_bytes", 0)
+            result["drop_full"] = result.get("drop_full", 0)
+            details["counters_spans_except_flush_timeout"]["byte_limit_drop"] = result["drop_bytes"]
         result.update(network_operation_slots=1, retry_limit=self.retry_limit,
                       attempt_budget_seconds=self.attempt_budget)
+        if self._manifest is not None:
+            result["manifest"] = self._manifest.snapshot()
         return result
 
     def run(self, name, *, run_id=None, start_ns=None, end_ns=None, attributes=None):
@@ -251,18 +355,63 @@ class Recorder:
         if self._closed:
             self._count("drop_closed")
             return False
+        limits = self._limits
+        if limits is None:
+            try:
+                self._q.put_nowait(item)
+            except queue.Full:
+                self._count("drop_full")
+                return False
+            self._count("accepted")
+            return True
         try:
-            self._q.put_nowait(item)
+            size = estimate_span_bytes(item)
+        except Exception:
+            # An unsizeable span cannot be proven inside the byte bound: visible drop.
+            self._count("drop_bytes")
+            return False
+        reason = limits.reserve(size)
+        if reason is not None:
+            self._count("drop_full" if reason == "items" else "drop_bytes")
+            return False
+        try:
+            self._q.put_nowait((item, size))
         except queue.Full:
+            limits.release(1, size)
             self._count("drop_full")
             return False
         self._count("accepted")
         return True
 
+    # Installed per instance only when manifest=True (see __init__).
+    def _enqueue_tracked(self, item):
+        bucket = item.get("ledger")
+        if bucket is None:
+            return Recorder._enqueue(self, item)
+        state = self._manifest
+        state.begin(bucket)
+        admitted = False
+        try:
+            admitted = Recorder._enqueue(self, item)
+            return admitted
+        finally:
+            state.finish(bucket, admitted)
+
+    def _deliver_tracked(self, batch):
+        self._tracked_batch = batch
+        try:
+            Recorder._deliver(self, batch)
+        finally:
+            self._tracked_batch = None
+
+    def _settle_tracked(self, size, state):
+        Recorder._settle(self, size, state)
+        self._manifest.settle(self._tracked_batch or (), state)
+
     def record_decision(self, step_id, *, output, inputs, chosen, alternatives,
                         rule, config_refs=(), verdict="selected", reason_code="",
                         record_id=None, at_ns=None, end_ns=None, _span_id=None, _parent_id=None,
-                        _error=False, _return_items=None, _sampling=None):
+                        _error=False, _return_items=None, _sampling=None, _ledger=None):
         try:
             # Closing still rejects immediately. Cooldown is worker-only:
             # existing and newly admitted queue items must not be discarded.
@@ -273,6 +422,12 @@ class Recorder:
             run = self._active.get()
             if run is None or not run.valid or type(inputs) is not dict or len(inputs) > 32:
                 raise ValueError("invalid run or inputs")
+            bucket = None
+            if self._manifest is not None and run.ledger is not None:
+                bucket = _ledger
+                if bucket is None:  # direct (non-probe) call: this decision is its own seen+selected call
+                    bucket = run.ledger.bucket(DIRECT)
+                    self._manifest.call(bucket, True)
             if type(config_refs) not in (list, tuple) or len(config_refs) > 32:
                 raise ValueError("invalid config refs")
             for stamp in (at_ns, end_ns):
@@ -304,6 +459,8 @@ class Recorder:
                     element_drops.append(reason)
                     self._count("drop_element")
                     self._count("element_reason:" + reason)
+                    if bucket is not None:
+                        self._manifest.detail_loss(bucket)
                 tolerant = type(output["value"]) is tuple or sequence_fields(output["value"]) is not None or _return_items is not None
                 out.update(inline=bounded(output["value"], on_unknown=unknown if tolerant else None,
                                           return_items=_return_items), capture="allowed")
@@ -348,7 +505,11 @@ class Recorder:
             # survives this snapshot to be mutated while the worker exports.
             self._count("serialized")
             self._count("envelope_bytes", len(body.encode("utf-8")))
-            return self._enqueue(self._span(run, sid, _parent_id or run.span_id, step_id, ts, end_ns or ts + 1, {}, events, _error))
+            item = self._span(run, sid, _parent_id or run.span_id, step_id, ts, end_ns or ts + 1, {}, events, _error)
+            if bucket is not None:
+                item["ledger"] = bucket
+                self._manifest.serialized(bucket)
+            return self._enqueue(item)
         except Exception as error:
             if type(error) is ValueError and str(error) == "numpy_unsupported":
                 self._count("element_reason:numpy_unsupported")
@@ -458,6 +619,48 @@ class Recorder:
         self._settle(len(batch), "unknown" if ambiguous else "failed")
         self._cooldown_until = time.monotonic()+self.cooldown
 
+    def _deliver_manifest(self, batch):
+        """Deliver manifest/scope spans. Same single network slot, deadline and one-retry
+        budget as _deliver, but never touches the span accounting counters or diagnostics."""
+        state, deadline, ambiguous = self._manifest, time.monotonic()+self.attempt_budget, False
+        for attempt in range(self.retry_limit+1):
+            if attempt:
+                self._network_stop.wait(min(self.retry_backoff, max(0, deadline-time.monotonic())))
+                if time.monotonic() >= deadline:
+                    break
+            operation = {"batch": batch, "done": threading.Event(), "error": None, "phase": "encode"}
+            self._flight = operation
+            self._network_jobs.put_nowait(operation)
+            if not operation["done"].wait(max(0, deadline-time.monotonic())):
+                state.settle_records(len(batch), "unknown")  # _flight stays set; the loop waits for it
+                self._cooldown_until = time.monotonic()+self.cooldown
+                return
+            self._flight = None
+            error = operation["error"]
+            if error is None:
+                state.settle_records(len(batch), "acknowledged")
+                return
+            status = getattr(error, "code", None)
+            terminal = operation["phase"] == "encode" or (
+                isinstance(status, int) and 400 <= status < 500 and status not in (408, 429))
+            ambiguous |= not (operation["phase"] in ("encode", "connect") or terminal)
+            if terminal or attempt == self.retry_limit:
+                break
+        state.settle_records(len(batch), "unknown" if ambiguous else "failed")
+        self._cooldown_until = time.monotonic()+self.cooldown
+
+    def _service_manifests(self):
+        """Worker thread only. Returns True when it delivered something."""
+        state = self._manifest
+        state.collect(self._finalize.is_set(), time.time_ns())
+        batch = state.take(32)
+        if batch:
+            self._deliver_manifest(batch)
+            return True
+        if self._finalize.is_set() and self._q.unfinished_tasks == 0:
+            self._manifest_done.set()
+        return False
+
     def _work(self):
         self._network_thread = threading.Thread(target=self._network_loop, name="signalscout-network", daemon=True)
         self._network_thread.start()
@@ -479,6 +682,8 @@ class Recorder:
             if remaining > 0:
                 self._network_stop.wait(min(.05, remaining))
                 continue
+            if self._manifest is not None and self._service_manifests():
+                continue
             try:
                 batch = [self._q.get(timeout=.05)]
             except queue.Empty:
@@ -488,14 +693,22 @@ class Recorder:
                     batch.append(self._q.get_nowait())
                 except queue.Empty:
                     break
+            retained = None
+            if self._limits is not None:
+                retained = (len(batch), sum(size for _, size in batch))
+                batch = [item for item, _ in batch]
             try:
                 self._deliver(batch)
             finally:
+                if retained is not None:
+                    # In-flight batches stay counted until delivery has settled;
+                    # released before task_done so a finished flush sees zero retained.
+                    self._limits.release(*retained)
                 for _ in batch:
                     self._q.task_done()
 
     def flush(self, timeout=2):
-        deadline = time.monotonic() + max(0, min(timeout, 10))
+        deadline = time.monotonic() + check_drain_seconds(timeout)
         with self._q.all_tasks_done:
             while self._q.unfinished_tasks:
                 left = deadline - time.monotonic()
@@ -512,7 +725,15 @@ class Recorder:
         return result
 
     def close(self, timeout=2):
+        """Process-shutdown drain, called by the runner, never from a host call.
+        One deadline covers the span drain and the manifest drain."""
+        timeout = check_drain_seconds(timeout)
+        started = time.monotonic()
+        if self._manifest is not None:
+            self._finalize.set()  # the worker emits the scope tail between batches
         result = self.flush(timeout)
         self._closed = True
+        if self._manifest is not None and self._worker.is_alive():
+            self._manifest_done.wait(max(0, timeout - (time.monotonic() - started)))
         self._stop.set()
         return result

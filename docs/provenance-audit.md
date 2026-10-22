@@ -508,3 +508,34 @@ Every four-state identity is exact, every protected hash matches, and all
 the interrupted attempt and smoke run are retained. Full findings and limits:
 docs/wrapper-overhead.md. No production optimization, new reserved generation,
 scoring change or later milestone is authorized. Wait for GO OPTIMIZE.
+## Real-case gaps: measured Stage 1 only (2026-10-21)
+
+Owner-authorized non-blind reproduction used unchanged a2c2cee in an isolated
+worktree, on a target-only copy and a byte-identical 27-line probe config. No target
+implementation or blind-test report was opened; source hashes show zero edits.
+The ordinary target writes 80 rows, 17 failures, 63 successes. Plain capture exits
+5: 1,834 spans attempted = 370 ACK + 0 failed + 1,464 queue drops + 0 unknown;
+19 run IDs stored. This is different from the owner-supplied historical summary
+(1,554 drops / 14 stored runs), and is retained without tuning or best-run selection.
+
+Both high-rate probes see 20,580 calls, omit 19,743 by configured sampling and
+serialize 837. Admission succeeds for 170 each; 667 each are dropped. Episode
+summaries serialize 80 and admit 15, with another 80 roots / 15 admitted roots.
+The per-probe serialized attribution is checked against native global counters;
+per-probe ACK allocation is not available. Stored runs do not prove completeness.
+
+A separate AST-copy diagnostic shows sampling already runs before snapshots.
+Only 837/20,580 calls per high-rate probe reach argument snapshots; instrumented
+sampled-out wrapper means are ~7.4 us versus ~282/317 us selected, excluding target
+body and the outer method guard. This is not a cost qualification. Observation
+changes scheduling: diagnostic ACK 452, drops 1,382, 29 stored runs, exit 5. Target
+CSV bytes match baseline/plain/diagnostic exactly. Fixed-record OTLP equivalence,
+exception identity and bounded diagnostic aggregation are tested separately.
+
+Existing features include Subtract and scalar equality predicates. Design-only
+gaps and trade-offs are in docs/real-case-gaps.md. Tail minimums stay unchanged:
+an 80-episode per-run aggregate population cannot provide 30 problem plus 100
+reference samples, regardless of how many loop calls it emits. No new cohort,
+rank, score, invariant result, migration, Stage 2 fix or Stage 3 retest is produced.
+This single revealed case supports an operational capture-gap observation, not
+general diagnostic accuracy or a causal ranking claim. Stop at Checkpoint A.

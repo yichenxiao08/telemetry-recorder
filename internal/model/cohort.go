@@ -62,17 +62,49 @@ type CohortSelection struct {
 	Value     string `json:"value,omitempty"`
 	Predicate string `json:"predicate,omitempty"`
 	Equals    string `json:"equals,omitempty"`
+	// IncludePartial keeps runs with confirmed lost selected items (excluded by default).
+	IncludePartial bool `json:"include_partial,omitempty"`
+	// RequireComplete rejects the cohort unless every candidate run is demonstrably assessed.
+	RequireComplete bool `json:"require_complete,omitempty"`
+}
+
+// CompletenessCounts are run counts by capture-completeness status. Items are
+// summed over the assessed runs' manifests; they are never silently dropped.
+type CompletenessCounts struct {
+	Complete           int   `json:"complete"`
+	Partial            int   `json:"partial"`
+	Unknown            int   `json:"unknown"`
+	Absent             int   `json:"absent"`
+	Unassessed         int   `json:"unassessed"`
+	PartialWithUnknown int   `json:"partial_with_unknown"`
+	LostItems          int64 `json:"lost_items"`
+	UnknownItems       int64 `json:"unknown_items"`
+	DetailLossItems    int64 `json:"detail_loss_items"`
+}
+
+// CohortCompleteness is pinned at creation. It is nil (and omitted from the
+// JSON) when no candidate run has manifest or capture-scope evidence, so
+// cohorts built from legacy runs serialize exactly as before.
+type CohortCompleteness struct {
+	Version         int                `json:"version"`
+	Mode            string             `json:"mode"`
+	Candidates      CompletenessCounts `json:"candidates"`
+	Selected        CompletenessCounts `json:"selected"`
+	RunStatus       map[string]string  `json:"run_status"`
+	PopulationKnown bool               `json:"population_known"`
+	Scopes          []string           `json:"scopes,omitempty"`
 }
 type Cohort struct {
-	ID          string            `json:"id"`
-	Profile     AnalysisProfile   `json:"profile"`
-	Selection   CohortSelection   `json:"selection"`
-	CreatedAt   int64             `json:"created_at"`
-	RunIDs      []string          `json:"run_ids"`
-	LabelIDs    []string          `json:"label_ids"`
-	DecisionIDs map[string]string `json:"decision_ids"`
-	Sessions    map[string]string `json:"sessions"`
-	Excluded    map[string]int    `json:"excluded"`
+	ID           string              `json:"id"`
+	Profile      AnalysisProfile     `json:"profile"`
+	Selection    CohortSelection     `json:"selection"`
+	CreatedAt    int64               `json:"created_at"`
+	RunIDs       []string            `json:"run_ids"`
+	LabelIDs     []string            `json:"label_ids"`
+	DecisionIDs  map[string]string   `json:"decision_ids"`
+	Sessions     map[string]string   `json:"sessions"`
+	Excluded     map[string]int      `json:"excluded"`
+	Completeness *CohortCompleteness `json:"completeness,omitempty"`
 }
 
 type DecisionObservation struct {

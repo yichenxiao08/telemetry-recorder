@@ -155,7 +155,30 @@ func newLabelsCommand(database *string) *cobra.Command {
 	root.AddCommand(list)
 	return root
 }
-func newCohortCommand() *cobra.Command {
+func newCompletenessCommand(database *string) *cobra.Command {
+	var scope string
+	var full bool
+	cmd := &cobra.Command{Use: "completeness", Short: "Read-only capture completeness of the runs one capture scope lists", Args: cobra.NoArgs, RunE: func(cmd *cobra.Command, _ []string) error {
+		reader, err := store.OpenReader(cmd.Context(), *database)
+		if err != nil {
+			return err
+		}
+		defer func() { _ = reader.Close() }()
+		report, err := reader.Completeness(cmd.Context(), scope)
+		if err != nil {
+			return err
+		}
+		if !full {
+			report.Runs = nil
+		}
+		return jsonOutput(cmd, report)
+	}}
+	cmd.Flags().StringVar(&scope, "scope", "", "Capture-scope epoch (the recorder's manifest epoch)")
+	cmd.Flags().BoolVar(&full, "runs", false, "Also list every run's status")
+	_ = cmd.MarkFlagRequired("scope")
+	return cmd
+}
+func newCohortCommand(database *string) *cobra.Command {
 	root := &cobra.Command{Use: "cohort", Short: "Pin a bounded synthetic problem or reference selection"}
 	var profile, from, to, endpoint string
 	request := cohortRequest{}
@@ -194,7 +217,9 @@ func newCohortCommand() *cobra.Command {
 	f.StringVar(&request.Selection.Value, "value", "", "Selected active mark/label value")
 	f.StringVar(&request.Selection.Predicate, "predicate", "", "Captured value selector for equality")
 	f.StringVar(&request.Selection.Equals, "equals", "", "Expected JSON scalar for predicate")
-	root.AddCommand(create)
+	f.BoolVar(&request.Selection.IncludePartial, "include-partial", false, "Keep runs with confirmed lost selected items; completeness counts stay in the cohort")
+	f.BoolVar(&request.Selection.RequireComplete, "require-complete", false, "Reject the cohort unless every candidate run is demonstrably complete (unknown and unassessed runs are rejected)")
+	root.AddCommand(create, newCompletenessCommand(database))
 	return root
 }
 func newExplainCohortCommand(database *string) *cobra.Command {
@@ -215,6 +240,14 @@ func newExplainCohortCommand(database *string) *cobra.Command {
 		}
 		var text strings.Builder
 		fmt.Fprintf(&text, "%s; %d problem runs / %d sessions vs %d reference runs / %d sessions; unknown sessions %d; shared clusters %d; independence unknown\nSelection exclusions: problem=%v reference=%v\n", result.Status, result.ProblemRuns, result.ProblemSessions, result.ReferenceRuns, result.ReferenceSessions, result.UnknownSessions, result.SharedSessions, result.Problem.Excluded, result.Reference.Excluded)
+		for _, arm := range []struct {
+			name string
+			c    model.Cohort
+		}{{"problem", result.Problem}, {"reference", result.Reference}} {
+			if cc := arm.c.Completeness; cc != nil {
+				fmt.Fprintf(&text, "Capture completeness (%s, %s): candidates %+v; selected %+v; population known %v\n", arm.name, cc.Mode, cc.Candidates, cc.Selected, cc.PopulationKnown)
+			}
+		}
 		if result.Presentation != nil {
 			fmt.Fprintln(&text, "The problem (symptoms; excluded from candidate lists):")
 			for _, f := range result.Presentation.Problem {
