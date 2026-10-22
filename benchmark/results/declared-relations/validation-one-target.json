@@ -1,0 +1,24 @@
+{
+  "synthetic_only": true,
+  "base_main": "13509b0c52644f7d9ed5cc1bfb386bcbed285936",
+  "go_top_level_tests": 172,
+  "go_test_packages": 30,
+  "race_failures": 0,
+  "python_tests": 118,
+  "python": "3.12.12",
+  "python_native_pass": true,
+  "sandbox_attempt": "20 existing temporary-directory permission errors; retained in python-tests.txt",
+  "lint": "0 issues",
+  "build": "pass",
+  "lane01_cases_byte_identical": 15,
+  "trace_cli_outputs_byte_identical": 30,
+  "shop_comparisons": 72,
+  "shop_excluded_metadata": [
+    "created_at",
+    "elapsed_ns"
+  ],
+  "config_lines": 13,
+  "target_instrumentation_edits": 0,
+  "baseline_binary_sha256": "d4fdacfacadd6a2da78c1a646923fd21a5aea0c19e0382bab13c26fb102a831f",
+  "new_binary_sha256": "fe4aaa1be8b00048d9a81f45b37fbf4e4d8801ab218db366aec68d1dafc8b832"
+}

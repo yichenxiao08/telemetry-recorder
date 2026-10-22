@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "name": "shop seed 1 context=false",
+      "count": 18,
+      "canonical_results_sha256": "60b7a5f8ebb41ac5669372e1d2d62f2f52fc24fa9200a25a8eef54d7e5e09606"
+    },
+    {
+      "name": "shop seed 2 context=false",
+      "count": 18,
+      "canonical_results_sha256": "3a47206f3e8531feb01d8ba84d3e82bd62f18ec30369736ccc4d45408a2f5a6b"
+    },
+    {
+      "name": "shop seed 1 context=true",
+      "count": 18,
+      "canonical_results_sha256": "917f993fc76c57acd0693b537588078a0d48d68db75459edb85aad4b865e2b89"
+    },
+    {
+      "name": "shop seed 2 context=true",
+      "count": 18,
+      "canonical_results_sha256": "e7e7df8c47f853364685e50e82fa6cfaadd5db0eaac6a207cdb11104597db5c8"
+    },
+    {
+      "name": "lane-01 trace CLI JSON and text",
+      "count": 30,
+      "canonical_results_sha256": "188c33e29e59bb22667cc9acaaa9d74fe3075394a2ac47bd98e55841069e74f2"
+    }
+  ],
+  "shop_metadata_exclusion": "Only created_at and elapsed_ns vary by execution; all other serialized result bytes must match frozen reports.",
+  "synthetic": true,
+  "trace_comparison": "Entire CLI output bytes, no normalization."
+}
