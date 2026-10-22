@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import contextvars
+import os
+import base64
 from collections import deque
 import functools
 import importlib.abc
@@ -50,7 +52,7 @@ def load_config(path):
     cfg = yaml.safe_load(text)
     if type(cfg) is not dict or cfg.get("version") != 1 or cfg.get("synthetic_only") is not True:
         raise ValueError("only version 1 synthetic configs supported")
-    if set(cfg) - {"version", "synthetic_only", "endpoint", "service", "probes", "auto_otel"}:
+    if set(cfg) - {"version", "synthetic_only", "endpoint", "service", "probes", "auto_otel", "capture_policy", "capture_profile"}:
         raise ValueError("unknown config key")
     probes = cfg.get("probes", [])
     if type(probes) is not list or len(probes) > 32:
@@ -426,13 +428,16 @@ class Injector(importlib.abc.MetaPathFinder):
             if not any(r["module"] == p["module"] and r["function"] == p["function"] for r in result):
                 result.append({"module": p["module"], "function": p["function"],
                                "status": "failed", "reason": "module never imported or unsupported loader"})
+        privacy = "synthetic-only; per-field capture default OFF; NOT P0"
+        if self.recorder.capture_policy is not None:
+            privacy = "synthetic-only; explicit strict P0 policy; default OFF; no real-data authorization"
         counters = self.recorder.snapshot()
         for item in result:
             item["calls"] = counters.get("probe_calls:" + item["module"] + "." + item["function"], 0)
             item["records_captured"] = counters.get("probe_captured:" + item["module"] + "." + item["function"], 0)
             item["fraction"] = item["records_captured"] / item["calls"] if item["calls"] else 0
             item["sampling"] = next(p.get("sampling", {}) for p in self.specs if (p["module"], p["function"]) == (item["module"], item["function"]))
-        return {"privacy": "synthetic-only; per-field capture default OFF; NOT P0",
+        return {"privacy": privacy,
                 "probes": result, "counters": counters,
                 "sampling_runs": [{**s, "fraction": s["captured"] / s["seen"] if s["seen"] else 0} for s in self.sample_runs],
                 "sampling_runs_omitted": max(0, counters.get("sampling_run_summaries", 0) - len(self.sample_runs)),
@@ -532,9 +537,17 @@ def main(argv=None):
     names.update(receiver + "." + field for p in cfg["probes"] for receiver in ("self", "cls") for field in p.get("capture", {}).get(receiver, []))
     if any(p.get("capture", {}).get("return", False) or "return_items" in p.get("capture", {}) for p in cfg["probes"]):
         names.add("output")
+    policy = None
+    if "capture_policy" in cfg:
+        from capture_policy import Policy
+        policy = Policy.load(Path(args.config).resolve().parent / cfg["capture_policy"],
+                             base64.b64decode(os.environ.get("SIGNALSCOUT_P0_HMAC_KEY", ""), validate=True))
+    elif "capture_profile" in cfg:
+        raise ValueError("capture_profile requires capture_policy")
     recorder = Recorder(cfg.get("endpoint", "http://127.0.0.1:4318"),
                         service=cfg.get("service", "synthetic.probe"), capture_fields=names,
-                        _start_worker=not args.preflight, queue_limits=queue_limits, manifest=args.manifest)
+                        _start_worker=not args.preflight, queue_limits=queue_limits, manifest=args.manifest,
+                        capture_policy=policy, capture_profile=cfg.get("capture_profile", ""))
     injector = Injector(recorder, cfg["probes"])
     previous_optional, _optional = _optional, injector
     # python -m names this module __main__; optional target imports must share it.

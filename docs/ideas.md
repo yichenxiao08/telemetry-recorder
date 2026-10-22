@@ -241,6 +241,26 @@ for the final validation; the earlier proposal remains historical evidence.
 - Measure receiver-field and method cost properly only if authorized later. Keep
   the one paired observation and all historical budget misses; no optimization.
 
+## Deferred after the P0 synthetic gate (2026-10-21)
+
+- Approve consent, access control, deletion and real-data retention policies
+  separately before any real content. An allowlist does not establish that a
+  developer's numeric/enum field is nonpersonal; arbitrary free-text redaction
+  by pattern alone is not a safe capture design.
+- A policy for opaque generated provenance identities, typed semantic metadata,
+  annotation text and scalar metrics could recover strict-mode utility. The
+  current gate conservatively omits those fields and blocks HTTP metadata writes;
+  do not infer missing provenance or enable direct metadata writers as a bypass.
+- Future P0 qualification needs cross-language policy conformance, wider
+  adversarial/covert-encoding tests, key provisioning/rotation and clear store
+  policy ownership. No migrations or production rollout are included here.
+- Measure added redaction caller cost separately if authorized. Current policy
+  cost is unmeasured and wrapper budgets remain missed/unresolved; do not use
+  the pre-policy method observation as a privacy-mode budget claim.
+- The return-to-argument identity proposal lives on codex/p0-spec-gates, design
+  only. Mutable version tracking is unresolved; equal primitives stay unknown
+  without a declared link/tag. Do not implement it as part of this gate.
+
 ## Parked after synthetic tuple/sampling work (2026-10-21)
 
 - Application outcome field -> run status: define explicit mapping and conflict

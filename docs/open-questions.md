@@ -526,6 +526,30 @@ benchmark/results/recorder-capture-loss-fix.
   for ordinary callers. Identity/introspection-sensitive code and cached aliases
   remain outside the supported claim. Synthetic data only; P0 is separate.
 
+## P0 capture gate — 2026-10-21
+
+- Owner delegated compatibility choice: retain legacy synthetic operation and add
+  explicit P0 policy mode, strict default OFF within it. Legacy is NOT privacy-
+  safe. Real data remains forbidden; use a fresh store, no mixed legacy writers.
+- Strict mode deliberately drops identity/semantic envelope metadata and metric
+  values. Provenance/invariant results can be unknown; metadata HTTP writes are
+  blocked. A safe semantic-field policy and store policy ownership are unresolved.
+- Approved typed fields still require trustworthy domain classification. Numeric
+  personal values or credentials disguised as safe enums cannot be ruled out by
+  syntax alone. P0 is not consent, access control, deletion or retention policy;
+  it does not solve arbitrary free-text redaction, covert protocol IDs, console
+  output, direct metadata CLI writes, external artifacts or existing stored data.
+- HMAC scope/key/version rules are explicit, but provisioning/rotation and token
+  authenticity are not productionized. Artifact hashes cover approved redacted
+  nonpersonal bytes only. No general personal hash or URI fetch is supported.
+- Planted synthetic storage test ends at 0/77 cells; tests exposed sfixed64,
+  repeated-histogram and unknown-wire gaps before fixes. Passing this finite set
+  is not proof of zero real-world leakage. Added policy cost is unmeasured against
+  both budgets, and no optimization is authorized.
+- The lane-02 seeds were already attempted historically. Docs-only reconfirmation
+  cannot create fresh holdouts; no reserved seed is rerun. Any new evaluation
+  needs untouched owner-approved seeds. Linking proposal remains design only.
+
 ## Tuple returns and deterministic sampling — 2026-10-21
 
 - Synthetic tuple-returning class methods were rejected by the bounded serializer

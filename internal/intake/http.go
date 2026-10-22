@@ -15,6 +15,7 @@ import (
 	"strings"
 
 	"github.com/signalscout/signalscout/internal/model"
+	"github.com/signalscout/signalscout/internal/redaction"
 	"github.com/signalscout/signalscout/internal/runs"
 	"github.com/signalscout/signalscout/internal/store"
 	logscol "go.opentelemetry.io/proto/otlp/collector/logs/v1"
@@ -32,10 +33,16 @@ type Submitter interface {
 type Handler struct {
 	queue      Submitter
 	normalizer *runs.Normalizer
+	policy     *redaction.Policy
+	profile    string
 }
 
 func New(queue Submitter) http.Handler {
-	h := &Handler{queue: queue, normalizer: runs.NewNormalizer()}
+	return NewWithPolicy(queue, nil, "")
+}
+
+func NewWithPolicy(queue Submitter, policy *redaction.Policy, profile string) http.Handler {
+	h := &Handler{queue: queue, normalizer: runs.NewNormalizer(), policy: policy, profile: profile}
 	mux := http.NewServeMux()
 	for _, kind := range []string{"traces", "logs", "metrics"} {
 		mux.Handle("POST /v1/"+kind, h)
@@ -109,6 +116,9 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "malformed OTLP payload", http.StatusBadRequest)
 		return
+	}
+	if h.policy != nil {
+		h.policy.OTLP(request, h.profile)
 	}
 	batch, err := decode(request, h.normalizer)
 	if err != nil {

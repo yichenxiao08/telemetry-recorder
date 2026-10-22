@@ -7,8 +7,9 @@ from pathlib import Path
 
 
 class Serving:
-    def __init__(self, database):
+    def __init__(self, database, extra_args=()):
         self.database = Path(database)
+        self.extra_args = list(extra_args)
         self.repo = Path(__file__).resolve().parents[2]
 
     def __enter__(self):
@@ -22,7 +23,7 @@ class Serving:
         self.binary = self.repo/"bin"/"signalscout.exe"
         self.log = open(str(self.database)+".log", "w", encoding="utf-8")
         self.process = subprocess.Popen([str(self.binary), "--db", str(self.database), "serve",
-            "--listen", f"127.0.0.1:{self.port}", "--retention", "0"],
+            "--listen", f"127.0.0.1:{self.port}", "--retention", "0", *self.extra_args],
             stdout=self.log, stderr=self.log)
         deadline = time.monotonic()+15
         while True:
