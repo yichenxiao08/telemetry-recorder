@@ -773,3 +773,17 @@ docs/recorder-capture-loss.md and benchmark/results/recorder-capture-loss for ev
 run, raw report, limitation and the proposed worker fix. STOP at Checkpoint A
 pending GO FIX; no retry/accounting fix, lane-03 contract or production phase.
 The earlier Stage 1 pending-GO statements above describe that historical checkpoint.
+
+### M7 deterministic reporting first half — 2026-10-22
+
+Owner-authorized partial implementation: version-one structured observation,
+association and supplied-hypothesis reports compose existing relation,
+completeness, explain-cohort, invariant and trace outputs. The read-only verifier
+rebuilds scoped facts and checks citations, membership, quantities and tiers,
+with explicit unsupported/unknown results and rates. No LLM client, prompt,
+hypothesis generation, experiment executor, ranking change or migration is
+implemented. Historical "M7 unstarted" text refers to the full agent milestone;
+its deterministic first half is now built. Numeric assertions use structured
+quotations rather than unreliable natural-language extraction. Synthetic authored
+fixtures establish mechanics only; see docs/report-walkthrough.md and the dated
+implementation note in docs/provenance-spec.md for exact limits.

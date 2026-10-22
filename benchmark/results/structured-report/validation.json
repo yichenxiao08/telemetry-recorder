@@ -1,0 +1,29 @@
+{
+  "synthetic_only": true,
+  "implementation_commit": "2c5f78e117d1d42e821fa2d94b9eba9ed8864ed1",
+  "base_main": "86a0e158b756bcd7000388f93626c9c7f56af50e",
+  "go_top_level_tests": 185,
+  "go_test_packages": 31,
+  "race_failures": 0,
+  "python_tests": 119,
+  "python_version": "3.12.12",
+  "lint_issues": 0,
+  "build": "pass",
+  "lane01_byte_identical_cases": 15,
+  "trace_cli_byte_identical_outputs": 30,
+  "shop_comparisons": 72,
+  "shop_excluded_metadata": [
+    "created_at",
+    "elapsed_ns"
+  ],
+  "own_fixture_runs": 40,
+  "own_fixture_violations": 4,
+  "supported_claims_own_fixture": 90,
+  "supported_claims_accepted_relation_fixture": 295,
+  "accepted_relation_capture_off_unknown": 40,
+  "http_native_anchors_resolved": 10,
+  "main_binary_sha256": "5f063785764314eddb1a22907b33f6e3323e26856f89cc52e2c22d69b5de073d",
+  "tested_binary_sha256": "772000414ad30180ab42b21165af9863b97656bec86e39adc6f599842588f83c",
+  "no_migration": true,
+  "llm_integration": false
+}

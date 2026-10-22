@@ -478,3 +478,37 @@ no inference across skipped calls, no automatic value linking. The marker object
 shape is reserved adapter metadata, not an application outcome. Existing trace,
 analysis, status priority (4/3/5), ranking, cohort and diff semantics are unchanged.
 Engine consumers are not extended to make run-wide claims from sampling metadata.
+
+## Implemented: structured reports and deterministic verification (2026-10-22)
+
+`signalscout report build --request <JSON> [--hypotheses <JSON>] [--json]`
+composes existing pinned relation and cohort completeness snapshots,
+explain-cohort symptom/candidate/tail outputs, invariants, native recorded
+values and bounded single-output trace results. `report verify --input <JSON>`
+rebuilds the same facts against a read-only store and emits per-claim
+valid/invalid/unsupported results plus citation/support rates.
+
+The closed version-one schema has observation, association and hypothesis tiers
+only. Associations carry raw numerators/denominators, runs, session identifiers,
+independence-known state, missing/excluded counts and exact selection/overlap
+policy beside the claim. Existing median/tail formulas and all source outputs
+are preserved. Hypotheses are supplied explicitly from a file, require alternatives,
+missing evidence, experiment, predicted and falsifying results, and remain
+unsupported as explanations. There is no LLM client, prompt, hypothesis generator
+or experiment execution. This is the deterministic first half of revised M7.
+
+The verifier checks scoped native/logical citations, pinned cohort membership,
+structured numeric quotations and closed states against rebuilt facts. Required
+association quantities cannot be omitted even when zero. It rejects the lexical
+causal phrases specified by the owner; this is not a semantic or causal-truth
+checker. Numeric assertions belong in structured quantities, not free prose.
+Unknown capture stays unknown; unobserved sampled calls never enter satisfied
+counts. Negative searches with no root produce unsupported unknowns.
+
+All reads have explicit time, row, byte and deadline budgets; no history search,
+artifact dereference, migration or operational writer. The full grammar, bounds,
+PowerShell examples, numeric tolerance and limits are in
+[report-walkthrough.md](report-walkthrough.md). Authored synthetic fixtures prove
+mechanics only. Semantic truth, causal overinterpretation in free text and
+subjective quality cannot be established by this verifier. Value linking and
+first-divergence comparison remain design-only.
