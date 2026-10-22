@@ -1,0 +1,4 @@
+task: [lint] go run ./scripts/checkfmt
+task: [lint] go vet ./...
+task: [lint] golangci-lint run
+0 issues.

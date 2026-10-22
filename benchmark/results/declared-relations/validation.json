@@ -1,0 +1,37 @@
+{
+  "synthetic_only": true,
+  "base_main": "13509b0c52644f7d9ed5cc1bfb386bcbed285936",
+  "go_top_level_tests": 172,
+  "go_test_packages": 30,
+  "race_failures": 0,
+  "python_tests": 119,
+  "python": "3.12.12",
+  "python_native_pass": true,
+  "sandbox_attempt": "20 existing temporary-directory permission errors; retained in python-tests.txt",
+  "lint": "0 issues",
+  "build": "pass",
+  "lane01_cases_byte_identical": 15,
+  "trace_cli_outputs_byte_identical": 30,
+  "shop_comparisons": 72,
+  "shop_excluded_metadata": [
+    "created_at",
+    "elapsed_ns"
+  ],
+  "config_lines": 18,
+  "target_instrumentation_edits": 0,
+  "baseline_binary_sha256": "d4fdacfacadd6a2da78c1a646923fd21a5aea0c19e0382bab13c26fb102a831f",
+  "new_binary_sha256": "fe4aaa1be8b00048d9a81f45b37fbf4e4d8801ab218db366aec68d1dafc8b832",
+  "source_sha256": {
+    "adapters/provenance-python/fixtures/relations/relation_target.py": "96102d7035d75e366c95ca72d230f6bda2641c6042f3fb9a0ecd1084913344de",
+    "adapters/provenance-python/fixtures/relations/range_target.py": "1041ac38778bedeba16d45fb0728824c79d4ddc4095392d8c5ddbc44968fd1c1",
+    "adapters/provenance-python/fixtures/relations/signalscout.yaml": "361408a2445d1adcbcd5af0e19136ab17783cfba5f10eb8261cc3f5c4c5d18b0",
+    "testdata/relations/profile.json": "fe25787c831f38a87383d2513240f8d263efd7e85a942a162759b33ecc08fafd",
+    "testdata/relations/bounds-profile.json": "9013fbb174bee73d33a5fbc84c011dfed596fe28d35b785ac1e7cbcee903a12f"
+  },
+  "fresh_run_counts": [
+    40,
+    16
+  ],
+  "resolved_violation_anchors": 11,
+  "implementation_commit": "08b4abce670822134cc794c35aff34c5650bd4ff"
+}

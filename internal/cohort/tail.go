@@ -123,14 +123,14 @@ type Presentation struct {
 	Tail    []TailFinding `json:"candidate_tail"`
 }
 
-func observedNumber(x model.DecisionObservation, f model.NumericFeature) (float64, bool) {
-	a, ok := provenance.Get(x.Values, f.Selector)
+func observedNumber(x model.DecisionObservation, f model.NumericFeature, syntax string) (float64, bool) {
+	a, ok := provenance.GetProfile(x.Values, f.Selector, syntax)
 	v, valid := a.(float64)
 	if !ok || !valid {
 		return 0, false
 	}
 	if f.Subtract != "" {
-		a, ok = provenance.Get(x.Values, f.Subtract)
+		a, ok = provenance.GetProfile(x.Values, f.Subtract, syntax)
 		other, valid := a.(float64)
 		if !ok || !valid {
 			return 0, false
@@ -139,12 +139,16 @@ func observedNumber(x model.DecisionObservation, f model.NumericFeature) (float6
 	}
 	return v, !math.IsNaN(v) && !math.IsInf(v, 0)
 }
-func numericObservations(xs []model.DecisionObservation, f model.NumericFeature) ([]float64, map[string]bool, int) {
+func numericObservations(xs []model.DecisionObservation, f model.NumericFeature, syntax ...string) ([]float64, map[string]bool, int) {
+	s := ""
+	if len(syntax) > 0 {
+		s = syntax[0]
+	}
 	values := []float64{}
 	sessions := map[string]bool{}
 	unknown := 0
 	for _, x := range xs {
-		v, valid := observedNumber(x, f)
+		v, valid := observedNumber(x, f, s)
 		if !valid {
 			continue
 		}
@@ -157,7 +161,11 @@ func numericObservations(xs []model.DecisionObservation, f model.NumericFeature)
 	}
 	return values, sessions, unknown
 }
-func tailEvidence(base *Finding, xs []model.DecisionObservation, f model.NumericFeature, t TailTerms) {
+func tailEvidence(base *Finding, xs []model.DecisionObservation, f model.NumericFeature, t TailTerms, syntax ...string) {
+	s := ""
+	if len(syntax) > 0 {
+		s = syntax[0]
+	}
 	selected := map[string]bool{}
 	// Prefer actual outside witnesses, then fill the bounded sample with observed
 	// values. This changes only new tail citations, never legacy median evidence.
@@ -166,7 +174,7 @@ func tailEvidence(base *Finding, xs []model.DecisionObservation, f model.Numeric
 			if len(selected) == 3 {
 				return
 			}
-			v, valid := observedNumber(x, f)
+			v, valid := observedNumber(x, f, s)
 			if !valid || selected[x.EvidenceID] {
 				continue
 			}
@@ -206,8 +214,8 @@ func present(profile model.AnalysisProfile, findings []Finding, p, r []model.Dec
 		if f.Role == "symptom" {
 			continue
 		}
-		pv, ps, pu := numericObservations(p, f)
-		rv, rs, ru := numericObservations(r, f)
+		pv, ps, pu := numericObservations(p, f, profile.SelectorSyntax)
+		rv, rs, ru := numericObservations(r, f, profile.SelectorSyntax)
 		var base Finding
 		for _, x := range findings {
 			if x.Feature == f.Name {
@@ -229,8 +237,8 @@ func present(profile model.AnalysisProfile, findings []Finding, p, r []model.Dec
 		base.ProblemNumerator, base.ReferenceNumerator = terms.ProblemOutside, terms.ReferenceOutside
 		base.Summary = "Reference-tail association; strict outside padded reference interval, not causal relevance"
 		base.EvidenceIDs, base.EvidenceURLs = nil, nil
-		tailEvidence(&base, p, f, terms)
-		tailEvidence(&base, r, f, terms)
+		tailEvidence(&base, p, f, terms, profile.SelectorSyntax)
+		tailEvidence(&base, r, f, terms, profile.SelectorSyntax)
 		base.Tier = "association"
 		if terms.Status != "ok" {
 			base.Tier = "observation"

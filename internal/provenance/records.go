@@ -12,6 +12,10 @@ import (
 )
 
 func ValidateProfile(p model.AnalysisProfile) error {
+	if p.SelectorSyntax != "" && p.SelectorSyntax != "escaped-v1" {
+		return fmt.Errorf("unsupported selector_syntax")
+	}
+	validSelector := func(s string) bool { _, ok := SelectorParts(s, p.SelectorSyntax); return ok }
 	if p.ID == "" || p.Unit == "" || p.Workload == "" || p.Step == "" || p.EnvelopeProfile == "" || p.EnvelopeVersion == "" || len(p.Numeric)+len(p.Categories) > 32 {
 		return fmt.Errorf("bounded unit/profile/workload/step required")
 	}
@@ -20,7 +24,7 @@ func ValidateProfile(p model.AnalysisProfile) error {
 		if err := validateRole(f.Role, f.Rationale, p.RoleAuthor); err != nil {
 			return err
 		}
-		if f.Name == "" || names[f.Name] || f.Unit == "" || !finitePositive(f.Epsilon) || !finitePositive(f.Floor) || !selectorValid(f.Selector) || f.Subtract != "" && !selectorValid(f.Subtract) {
+		if f.Name == "" || names[f.Name] || f.Unit == "" || !finitePositive(f.Epsilon) || !finitePositive(f.Floor) || !validSelector(f.Selector) || f.Subtract != "" && !validSelector(f.Subtract) {
 			return fmt.Errorf("invalid numeric feature %q", f.Name)
 		}
 		names[f.Name] = true
@@ -29,20 +33,22 @@ func ValidateProfile(p model.AnalysisProfile) error {
 		if err := validateRole(f.Role, f.Rationale, p.RoleAuthor); err != nil {
 			return err
 		}
-		if f.Name == "" || names[f.Name] || !selectorValid(f.Selector) {
+		if f.Name == "" || names[f.Name] || !validSelector(f.Selector) {
 			return fmt.Errorf("invalid categorical feature %q", f.Name)
 		}
 		names[f.Name] = true
 	}
-	for _, s := range []string{p.Invariant.Declared, p.Invariant.Current, p.Invariant.Used} {
-		if !selectorValid(s) {
-			return fmt.Errorf("invalid invariant selector")
+	if p.Invariant != (model.VersionInvariant{}) {
+		for _, s := range []string{p.Invariant.Declared, p.Invariant.Current, p.Invariant.Used} {
+			if !validSelector(s) {
+				return fmt.Errorf("invalid invariant selector")
+			}
+		}
+		if !finitePositive(p.Invariant.Delta) {
+			return fmt.Errorf("positive version delta required")
 		}
 	}
-	if !finitePositive(p.Invariant.Delta) {
-		return fmt.Errorf("positive version delta required")
-	}
-	return nil
+	return ValidateRelations(p)
 }
 func validateRole(role, rationale, author string) error {
 	if role == "" {
@@ -57,11 +63,13 @@ func validateRole(role, rationale, author string) error {
 	return nil
 }
 func finitePositive(x float64) bool { return x > 0 && !math.IsInf(x, 0) && !math.IsNaN(x) }
-func selectorValid(s string) bool   { return s != "" && len(s) <= 256 && len(strings.Split(s, ".")) <= 8 }
 
 func Get(values map[string]any, path string) (any, bool) {
+	return getParts(values, strings.Split(path, "."))
+}
+func getParts(values map[string]any, parts []string) (any, bool) {
 	var value any = values
-	for _, key := range strings.Split(path, ".") {
+	for _, key := range parts {
 		switch x := value.(type) {
 		case map[string]any:
 			var ok bool
@@ -104,9 +112,10 @@ func Decode(signal model.Signal, profile model.AnalysisProfile) (model.DecisionO
 			Inline  json.RawMessage
 			Capture string
 		} `json:"output"`
-		Verdict *string        `json:"verdict"`
-		Reason  *string        `json:"reason_code"`
-		Chosen  map[string]any `json:"chosen"`
+		Verdict  *string         `json:"verdict"`
+		Reason   *string         `json:"reason_code"`
+		Chosen   map[string]any  `json:"chosen"`
+		Sampling json.RawMessage `json:"sampling"`
 	}
 	if json.Unmarshal([]byte(body), &env) != nil || env.Version != 1 || env.Profile.ID != profile.EnvelopeProfile || env.Profile.Version != profile.EnvelopeVersion || env.Step.ID != profile.Step || len(env.Inputs) > 32 {
 		return out, false
@@ -140,5 +149,6 @@ func Decode(signal model.Signal, profile model.AnalysisProfile) (model.DecisionO
 		out.Values["reason_code"] = *env.Reason
 	}
 	out.Values["chosen"] = env.Chosen
+	out.Sampled = len(env.Sampling) > 0 && string(env.Sampling) != "null"
 	return out, true
 }

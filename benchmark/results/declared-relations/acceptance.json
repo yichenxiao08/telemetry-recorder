@@ -1,0 +1,3888 @@
+{
+  "evidence_anchors_resolved": 8,
+  "flag_truth_table": {
+    "satisfied_flag_false": 18,
+    "satisfied_flag_true": 18,
+    "violated_flag_false": 2,
+    "violated_flag_true": 2
+  },
+  "real_serve": true,
+  "report": {
+    "version": 1,
+    "evidence_tier": "observation",
+    "step": "relation_target.Calculator.calculate",
+    "profile": {
+      "selector_syntax": "escaped-v1",
+      "relations": {
+        "version": 1,
+        "rules": [
+          {
+            "id": "flag-equality",
+            "unit": "boolean",
+            "tolerance": 0,
+            "assert": {
+              "op": "eq",
+              "args": [
+                {
+                  "op": "field",
+                  "field": "output.2"
+                },
+                {
+                  "op": "field",
+                  "field": "inputs.flag"
+                }
+              ]
+            }
+          },
+          {
+            "id": "absolute-difference",
+            "unit": "synthetic-count",
+            "tolerance": 0.125,
+            "assert": {
+              "op": "eq",
+              "args": [
+                {
+                  "op": "field",
+                  "field": "output.1"
+                },
+                {
+                  "op": "abs",
+                  "args": [
+                    {
+                      "op": "sub",
+                      "args": [
+                        {
+                          "op": "field",
+                          "field": "output.0.3"
+                        },
+                        {
+                          "op": "field",
+                          "field": "output.0.0"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "bounds",
+            "unit": "synthetic-count",
+            "tolerance": 0,
+            "assert": {
+              "op": "and",
+              "args": [
+                {
+                  "op": "ge",
+                  "args": [
+                    {
+                      "op": "field",
+                      "field": "output.1"
+                    },
+                    {
+                      "op": "number",
+                      "number": 0
+                    }
+                  ]
+                },
+                {
+                  "op": "le",
+                  "args": [
+                    {
+                      "op": "field",
+                      "field": "output.1"
+                    },
+                    {
+                      "op": "number",
+                      "number": 3
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "ordering",
+            "unit": "synthetic-count",
+            "tolerance": 0,
+            "assert": {
+              "op": "le",
+              "args": [
+                {
+                  "op": "field",
+                  "field": "inputs.x"
+                },
+                {
+                  "op": "field",
+                  "field": "inputs.y"
+                }
+              ]
+            }
+          },
+          {
+            "id": "literal-dotted-key",
+            "unit": "synthetic-count",
+            "tolerance": 0,
+            "assert": {
+              "op": "le",
+              "args": [
+                {
+                  "op": "field",
+                  "field": "inputs.self\\.score"
+                },
+                {
+                  "op": "field",
+                  "field": "inputs.y"
+                }
+              ]
+            }
+          },
+          {
+            "id": "conditional",
+            "unit": "synthetic-count",
+            "tolerance": 0,
+            "when": {
+              "op": "field",
+              "field": "inputs.enabled"
+            },
+            "assert": {
+              "op": "ge",
+              "args": [
+                {
+                  "op": "field",
+                  "field": "output.1"
+                },
+                {
+                  "op": "number",
+                  "number": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "capture-off",
+            "unit": "synthetic-count",
+            "tolerance": 0,
+            "assert": {
+              "op": "eq",
+              "args": [
+                {
+                  "op": "field",
+                  "field": "inputs.private"
+                },
+                {
+                  "op": "number",
+                  "number": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "id": "synthetic-relations-v1",
+      "unit": "call",
+      "workload": "relation_target.run_case",
+      "step": "relation_target.Calculator.calculate",
+      "envelope_profile": "synthetic",
+      "envelope_version": "1",
+      "numeric": null,
+      "categories": [
+        {
+          "name": "flag",
+          "selector": "inputs.flag"
+        },
+        {
+          "name": "frame",
+          "selector": "inputs.frame"
+        }
+      ],
+      "invariant": {
+        "declared": "",
+        "current": "",
+        "used": "",
+        "delta": 0
+      }
+    },
+    "from": 1792648006850292500,
+    "to": 1792648009346180400,
+    "run_limit": 40,
+    "record_limit": 100000,
+    "candidate_runs": 40,
+    "runs_without_supported_decision": [],
+    "step_counts": {
+      "absolute-difference": {
+        "recorded_decisions": 40,
+        "satisfied": 36,
+        "violated": 4,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:cc37cc70047507c9e13f0c5cb3702b406ef53002872f204a278fd7df69a9f8cb/0",
+          "event:c6195496549440f18e88326d6edd520fae3aab9dabf523fde28bfd21712359a7/0",
+          "event:411e6cc1b88ec50a505a07360eb8db20fceedb5552e191ae1787a259c1950ca0/0"
+        ],
+        "violation_urls": [
+          "/run?id=b62615ff5555898b3b532987d13efdaf#e-cd8717568f9f5798c972995f295dc21f45b938c85ed02e571049e90a15e410fe",
+          "/run?id=9b5a44edd85f978a36311606eb826ddb#e-3a87829548a9b4a9960c50306e94309c409869a46b39bb6d5aaa2c6012ecd4eb",
+          "/run?id=07b7f37695a9d8c2fcf0f3867a0ebd21#e-b79a463f373b60c89f2b04dc67a6522810d4a662d02bb5aa86141dad3f66fe8d"
+        ],
+        "evidence_omitted": 1,
+        "last_violation": "event:251523bebfb87b1c32d825e6b214d7c9f27202629006d5fe53dd315ca728bc27/0",
+        "unknown_reasons": {}
+      },
+      "bounds": {
+        "recorded_decisions": 40,
+        "satisfied": 36,
+        "violated": 4,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:cc37cc70047507c9e13f0c5cb3702b406ef53002872f204a278fd7df69a9f8cb/0",
+          "event:c6195496549440f18e88326d6edd520fae3aab9dabf523fde28bfd21712359a7/0",
+          "event:411e6cc1b88ec50a505a07360eb8db20fceedb5552e191ae1787a259c1950ca0/0"
+        ],
+        "violation_urls": [
+          "/run?id=b62615ff5555898b3b532987d13efdaf#e-cd8717568f9f5798c972995f295dc21f45b938c85ed02e571049e90a15e410fe",
+          "/run?id=9b5a44edd85f978a36311606eb826ddb#e-3a87829548a9b4a9960c50306e94309c409869a46b39bb6d5aaa2c6012ecd4eb",
+          "/run?id=07b7f37695a9d8c2fcf0f3867a0ebd21#e-b79a463f373b60c89f2b04dc67a6522810d4a662d02bb5aa86141dad3f66fe8d"
+        ],
+        "evidence_omitted": 1,
+        "last_violation": "event:251523bebfb87b1c32d825e6b214d7c9f27202629006d5fe53dd315ca728bc27/0",
+        "unknown_reasons": {}
+      },
+      "capture-off": {
+        "recorded_decisions": 40,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 40,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {
+          "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 40
+        }
+      },
+      "conditional": {
+        "recorded_decisions": 40,
+        "satisfied": 34,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 6,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "flag-equality": {
+        "recorded_decisions": 40,
+        "satisfied": 40,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "literal-dotted-key": {
+        "recorded_decisions": 40,
+        "satisfied": 40,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "ordering": {
+        "recorded_decisions": 40,
+        "satisfied": 40,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "run_counts": {
+      "07b7f37695a9d8c2fcf0f3867a0ebd21": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:411e6cc1b88ec50a505a07360eb8db20fceedb5552e191ae1787a259c1950ca0/0"
+          ],
+          "violation_urls": [
+            "/run?id=07b7f37695a9d8c2fcf0f3867a0ebd21#e-b79a463f373b60c89f2b04dc67a6522810d4a662d02bb5aa86141dad3f66fe8d"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:411e6cc1b88ec50a505a07360eb8db20fceedb5552e191ae1787a259c1950ca0/0",
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:411e6cc1b88ec50a505a07360eb8db20fceedb5552e191ae1787a259c1950ca0/0"
+          ],
+          "violation_urls": [
+            "/run?id=07b7f37695a9d8c2fcf0f3867a0ebd21#e-b79a463f373b60c89f2b04dc67a6522810d4a662d02bb5aa86141dad3f66fe8d"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:411e6cc1b88ec50a505a07360eb8db20fceedb5552e191ae1787a259c1950ca0/0",
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "081d496c0ff4b699872ee0f65e0c7a31": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "0983a8130a77a82519d7dca1132ee062": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 1,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "0a94f64ca094839cf683d566f9457290": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "101fb8c3fa78441addab1bd7ab1e5424": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 1,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "12080b44662c7d36f3ce344c02d914f0": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "17038fbf3b01cc5571210a2dfd0a19b0": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 1,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "18952ce8c68dbecf6fa82d8d24b309ba": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "1c2057016c8bba68564f2fc860a6021d": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "23fa36b21fac465759602d96f7a06e31": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "5e64d9876809f6b987cd284653f1f964": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "5f24aed39eaf787d5f2a339e513d2ead": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 1,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "6ebf3215cfee9cf30be4b8178100cef8": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "77db4f1fa20907bf78020053f09416c8": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "792ec0463c6a8aa424d04609a3235132": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "79d00377d8e98d112e2d3d52c6e8d4a0": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "7a49d9cc675e992f17563416e3084487": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "7de0d88639276d34f46f5d036ddc7e7b": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "86cf5f480a7b30673fe39b7cc6b4f515": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "8760090eac319cae193fec937f08dad2": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "8a58552c04ce356289a46a33165d4686": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "8c01ff36d090307ef944bf8aba2f3114": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "90db4e89658d7623660765a5f6af7ac8": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "9a19adf783371f68d3e4342e1f4bec08": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "9b5a44edd85f978a36311606eb826ddb": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:c6195496549440f18e88326d6edd520fae3aab9dabf523fde28bfd21712359a7/0"
+          ],
+          "violation_urls": [
+            "/run?id=9b5a44edd85f978a36311606eb826ddb#e-3a87829548a9b4a9960c50306e94309c409869a46b39bb6d5aaa2c6012ecd4eb"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:c6195496549440f18e88326d6edd520fae3aab9dabf523fde28bfd21712359a7/0",
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:c6195496549440f18e88326d6edd520fae3aab9dabf523fde28bfd21712359a7/0"
+          ],
+          "violation_urls": [
+            "/run?id=9b5a44edd85f978a36311606eb826ddb#e-3a87829548a9b4a9960c50306e94309c409869a46b39bb6d5aaa2c6012ecd4eb"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:c6195496549440f18e88326d6edd520fae3aab9dabf523fde28bfd21712359a7/0",
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "9bf0ea07917f4836e76a1eee518ba4f5": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "a2ec1320a4ff45626d7d6c12cd6df191": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "a7b17fed8ee352838f84dfd72510f130": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "b429c3201d194ddf33d179b12037a732": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "b62615ff5555898b3b532987d13efdaf": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:cc37cc70047507c9e13f0c5cb3702b406ef53002872f204a278fd7df69a9f8cb/0"
+          ],
+          "violation_urls": [
+            "/run?id=b62615ff5555898b3b532987d13efdaf#e-cd8717568f9f5798c972995f295dc21f45b938c85ed02e571049e90a15e410fe"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:cc37cc70047507c9e13f0c5cb3702b406ef53002872f204a278fd7df69a9f8cb/0",
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:cc37cc70047507c9e13f0c5cb3702b406ef53002872f204a278fd7df69a9f8cb/0"
+          ],
+          "violation_urls": [
+            "/run?id=b62615ff5555898b3b532987d13efdaf#e-cd8717568f9f5798c972995f295dc21f45b938c85ed02e571049e90a15e410fe"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:cc37cc70047507c9e13f0c5cb3702b406ef53002872f204a278fd7df69a9f8cb/0",
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 1,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "b83c2925c94958fba99c336ac1e3d059": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 1,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "ca51df78f889b0aca7054d7889fa32d5": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "cd076cdbe7b2fce8722da3651d109483": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "d754a675ce0ef0a275c9b1cef59a4227": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "d861729dd86b72b68452e5431cddf726": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "dcd9df25dbaca2433e0d60e333669c6e": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "dda4458f01d79d981b57ece2b26b9076": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "e547731c372b04f42ed65722ec20f320": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "eb9f19e1f5d04e6e5f89f75990cb5060": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      },
+      "f928705cdce9a5025d52020a8c9e4734": {
+        "absolute-difference": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:251523bebfb87b1c32d825e6b214d7c9f27202629006d5fe53dd315ca728bc27/0"
+          ],
+          "violation_urls": [
+            "/run?id=f928705cdce9a5025d52020a8c9e4734#e-998afe60921d72f0cfcd7c19c8465ff03a3c8e353d6ce174ee590c1f205f056b"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:251523bebfb87b1c32d825e6b214d7c9f27202629006d5fe53dd315ca728bc27/0",
+          "unknown_reasons": {}
+        },
+        "bounds": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 1,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [
+            "event:251523bebfb87b1c32d825e6b214d7c9f27202629006d5fe53dd315ca728bc27/0"
+          ],
+          "violation_urls": [
+            "/run?id=f928705cdce9a5025d52020a8c9e4734#e-998afe60921d72f0cfcd7c19c8465ff03a3c8e353d6ce174ee590c1f205f056b"
+          ],
+          "evidence_omitted": 0,
+          "last_violation": "event:251523bebfb87b1c32d825e6b214d7c9f27202629006d5fe53dd315ca728bc27/0",
+          "unknown_reasons": {}
+        },
+        "capture-off": {
+          "recorded_decisions": 1,
+          "satisfied": 0,
+          "violated": 0,
+          "unknown": 1,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {
+            "operand missing, capture-off/hash-only, unsupported type or nonfinite arithmetic": 1
+          }
+        },
+        "conditional": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "flag-equality": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "literal-dotted-key": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        },
+        "ordering": {
+          "recorded_decisions": 1,
+          "satisfied": 1,
+          "violated": 0,
+          "unknown": 0,
+          "not_applicable": 0,
+          "sampled_records": 0,
+          "violation_evidence": [],
+          "violation_urls": [],
+          "evidence_omitted": 0,
+          "unknown_reasons": {}
+        }
+      }
+    },
+    "sampling_note": "Counts are recorded decisions, not total host calls. Sampled capture is incomplete: unsampled calls are unknown, never satisfied or evidence of absence. Without a complete capture manifest, missing calls cannot be counted. Boundary capture does not prove the code read a value."
+  },
+  "runs_list_count": 40,
+  "source_lines_changed_for_probes": 0,
+  "synthetic": true,
+  "truth_table_source": "independent Python fixture test (not inferred from outcome)",
+  "violation_cohort_runs": 4
+}

@@ -69,9 +69,12 @@ func metadataPost(ctx context.Context, endpoint, path string, value any, out any
 		return fmt.Errorf("use the serving writer endpoint (start serve first): %w", err)
 	}
 	defer func() { _ = response.Body.Close() }()
-	body, err := io.ReadAll(io.LimitReader(response.Body, 1<<20))
+	body, err := io.ReadAll(io.LimitReader(response.Body, (32<<20)+1))
 	if err != nil {
 		return err
+	}
+	if len(body) > 32<<20 {
+		return fmt.Errorf("metadata response exceeds 32 MiB; the write may already be committed, inspect the requested ID before retrying")
 	}
 	if response.StatusCode != 200 {
 		return fmt.Errorf("metadata HTTP %d: %s", response.StatusCode, body)
@@ -217,6 +220,8 @@ func newCohortCommand(database *string) *cobra.Command {
 	f.StringVar(&request.Selection.Value, "value", "", "Selected active mark/label value")
 	f.StringVar(&request.Selection.Predicate, "predicate", "", "Captured value selector for equality")
 	f.StringVar(&request.Selection.Equals, "equals", "", "Expected JSON scalar for predicate")
+	f.StringVar(&request.Selection.Relation, "violates", "", "Select runs with any recorded violation of this declared relation; pins counts and witnesses")
+	f.IntVar(&request.Selection.RecordLimit, "record-limit", 0, "Span/event read cap 1..1000000; omitted uses 100000; overflow rejects all candidates")
 	f.BoolVar(&request.Selection.IncludePartial, "include-partial", false, "Keep runs with confirmed lost selected items; completeness counts stay in the cohort")
 	f.BoolVar(&request.Selection.RequireComplete, "require-complete", false, "Reject the cohort unless every candidate run is demonstrably complete (unknown and unassessed runs are rejected)")
 	root.AddCommand(create, newCompletenessCommand(database))

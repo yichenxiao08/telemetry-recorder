@@ -1,0 +1,25 @@
+{
+  "id": "synthetic-admission-v1", "unit": "call", "workload": "range_target.admit",
+  "step": "range_target.admit", "envelope_profile": "synthetic", "envelope_version": "1",
+  "relations": {"version": 1, "rules": [
+    {"id": "admission", "unit": "synthetic-count", "tolerance": 0,
+     "assert": {"op": "eq", "args": [
+       {"op": "field", "field": "output.accepted"},
+       {"op": "and", "args": [{"op": "field", "field": "inputs.enabled"},
+         {"op": "and", "args": [
+           {"op": "ge", "args": [{"op": "field", "field": "inputs.value"}, {"op": "field", "field": "inputs.low"}]},
+           {"op": "le", "args": [{"op": "field", "field": "inputs.value"}, {"op": "field", "field": "inputs.high"}]}
+         ]}]}
+     ]}},
+    {"id": "ordered-bounds", "unit": "synthetic-count", "tolerance": 0,
+     "assert": {"op": "le", "args": [{"op": "field", "field": "inputs.low"}, {"op": "field", "field": "inputs.high"}]}},
+    {"id": "clipped", "unit": "synthetic-count", "tolerance": 0,
+     "when": {"op": "le", "args": [{"op": "field", "field": "inputs.low"}, {"op": "field", "field": "inputs.high"}]},
+     "assert": {"op": "and", "args": [
+       {"op": "ge", "args": [{"op": "field", "field": "output.clipped"}, {"op": "field", "field": "inputs.low"}]},
+       {"op": "le", "args": [{"op": "field", "field": "output.clipped"}, {"op": "field", "field": "inputs.high"}]}
+     ]}},
+    {"id": "object-sequence", "unit": "synthetic-count", "tolerance": 0,
+     "assert": {"op": "eq", "args": [{"op": "field", "field": "output.limits.0"}, {"op": "field", "field": "inputs.low"}]}}
+  ]}
+}

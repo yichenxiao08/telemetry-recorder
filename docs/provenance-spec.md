@@ -1,5 +1,88 @@
 # Provenance capture specification (design v0)
 
+## Implemented decoded selectors and declared relations (2026-10-22)
+
+See [declared-relations.md](declared-relations.md) for the implemented closed,
+versioned JSON expression grammar and PowerShell commands. Selectors address
+`inputs.<name>`, allowed `output` items (e.g. `output.1`, `output.0.3`), chosen,
+verdict and reason. Opt-in `selector_syntax: escaped-v1` addresses literal dotted
+keys; omitted syntax retains legacy meaning. Categorical inputs can be strings,
+booleans or safe integers without conflating their types. This adds no automatic
+capture and no expression evaluation on the application's call path.
+
+`relations` reads every matching decision within a bounded candidate selection.
+Its developer-declared rules report satisfied/violated/unknown/not_applicable
+counts per step and per run, with recorded-decision denominators, sampled-capture
+limitations and native violation witnesses. `cohort create --violates` pins
+violating runs, counts, declaration and witness decisions through the existing
+writer. The documented 100,000 default / 1,000,000 maximum span/event read cap
+replaces the previous 10,000-row rejection; overflow rejects the whole request
+explicitly. This changes neither median/tail constants nor structural diff types.
+No migration is required: existing immutable cohort JSON holds the new policy
+and report. A profile may omit the unrelated declared-version invariant; partial
+invariant declarations remain invalid. Synthetic data only.
+
+## Proposed: first observed divergence between recorded versions
+
+Design only. Compare two declared versions of the **same** program executed on
+the same synthetic seeds. Pin version/config/profile/capture policy, seed,
+run identity, probe identity and logical call index. Align only exact
+`(seed, probe, call_index)` keys, with uniqueness and bounded time/run/record
+limits. Session/episode identity must disambiguate repeated seeds. Timestamps,
+equal values or span nesting cannot substitute for call identity. Current probes
+emit call indices for sampled records only; a feasibility harness must first
+provide/verify compatible indices for both versions, without pretending the
+present exporter already covers every call.
+
+Walk aligned calls in declared order and report the earliest **observed** output
+difference per run, alongside both native evidence IDs, captured inputs and
+known preceding coverage. Use declared field comparisons/tolerances; record any
+ignored fields and their rationale before viewing differences. A first observed
+difference is not necessarily the first execution difference, a defect or a
+cause. A version/config mismatch, duplicate index or missing output is an
+integrity/unknown finding rather than a guessed alignment.
+
+For several probes, the initial experiment needs a sequential harness with a
+declared global call ordinal in addition to each probe's call index. Per-probe
+indices alone do not order interleaved calls. Without a stable cross-probe order,
+report earliest observed differences per probe and global ordering unknown.
+Concurrent partial orders can have several incomparable first differences; do
+not invent a unique first event from wall-clock timestamps.
+
+When control flow diverges, show unmatched calls and the last contiguous aligned
+prefix. Do not shift subsequent indices to make outputs agree. Equal call counts
+do not establish equivalent paths: require stable declared probe/iteration
+identities or report alignment unknown. A sampled-out call can hide the true
+divergence; a gap before a differing output prevents an exact first-divergence
+claim. Complete manifests support population accounting but cannot restore
+missing values. Later convergence does not erase the gap.
+
+Nondeterminism and clocks require repeated unchanged-version controls on the
+same seeds, separately recorded run IDs and declared treatment of time/random
+fields. If these controls differ, report unstable comparison rather than
+silently masking fields or selecting a favorable repetition. Seed equality alone
+does not control thread scheduling, external services or environment state.
+Off/hash-only/missing detail remains unknown. Equality of explicitly permitted
+scoped HMACs is equality within that key/version scope only; no value reconstruction
+or cross-scope join. Apply existing capture/privacy policy independently to both
+versions; no artifact fetching, raw-output spill or default text capture.
+
+Smallest proposed experiment: two versions of our plain lane and staged pipeline
+fixtures, development seeds 101/103, one deliberately changed arithmetic/selection
+step and one unchanged-version control. Predeclare expected aligned indices,
+changed step and bounded call counts. Acceptance tests: known first observed
+difference found with fully contiguous capture; identical controls report none
+within coverage; inserted/deleted calls, duplicate keys, nondeterministic control,
+missing return and sampling that skips the changed call all report unknown/gaps;
+every citation resolves and private/off fields never reappear. Stop if stable
+call identity cannot be supplied without guessing, controls are unstable, any
+record is lost, or indexing changes host behavior. Report feasibility and capture
+cost separately; do not implement alignment, new probes or comparison commands
+as part of the declared-relations task.
+The existing wrapper cost remains unresolved against its budgets; this proposal
+does not claim that extra identity/order capture will be cheap or authorize
+optimization.
+
 Status (2026-10-21): design plus accepted synthetic spike and a bounded
 read-only `signalscout trace` resolver. The resolver adds no production endpoint,
 table, capture policy or diff type.

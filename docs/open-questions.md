@@ -2,6 +2,10 @@
 
 The choices below are implemented unless marked pending validation. Product choices remain open for the owner; they do not block implementation.
 
+This is a chronological record. The 2026-10-22 declared-relations decisions below
+supersede the historical pending escaped-selector/optional-invariant statements
+and the Phase 1B 10,000-record limit. Existing measurement results remain history.
+
 | Ambiguity or risk | Conservative choice |
 |---|---|
 | Module owner and supplied filename | Provisional module `github.com/signalscout/signalscout`; the supplied `plan (1).md` is preserved and `plan.md` is the working specification. |
@@ -599,3 +603,33 @@ Owner-accepted choices (synthetic/development data only; no migration; legacy co
   | 30 s (`--drain-timeout 30`) | 0 | 1834 / 1834 / 0 | 80 | 0 | 0 | 0 |
 
   At the production default drain, 29 of 80 runs did not reach the store cleanly: 26 absent (no spans stored before the worker was abandoned at exit) and 3 unknown (final marker missing). The longer drain let the worker deliver every run's spans and manifest, so all 80 classified complete. These are single observations and run-to-run capture variance is real; the point is directional and a caution, not a tuned success. Neither the 3,280-item queue bound nor the 30 s drain is a recommended default: the queue default stays 256 items, and the drain default stays 2 s. A finite nonblocking recorder cannot promise zero loss for arbitrary unpaced workloads; longer drains and larger bounds reduce loss on this workload but do not eliminate the constraint.
+# Declared relations decisions — 2026-10-22
+
+- Selector compatibility: adopt fc22ea0's explicit `escaped-v1` opt-in. Omitted
+  syntax preserves all legacy backslash/dot behavior; no fallback that guesses
+  literal keys. Trace's original selector interpretation is unchanged.
+- Relation-only profiles should not invent a version invariant. A wholly absent
+  invariant is allowed; partial declarations still fail validation. Existing
+  populated version invariants and frozen comparisons retain their formulas.
+- Numeric semantics: closed JSON tree, explicit tolerance/unit, float64 interval
+  comparisons, no coercion or inferred units. Missing/off/hash-only, wrong types,
+  reserved unknown markers and overflow yield unknown. Dimensional correctness
+  remains the profile author's responsibility. No string rule operands yet.
+- Population: evaluate every matching recorded decision, select a run if any
+  decision violates, and pin its last violating native decision for existing
+  one-decision cohort comparisons. Pin all candidate counts/declarations and
+  three witnesses per row with exact omitted counts. This does not implement
+  per-run aggregate ranking or certify capture completeness.
+- Read limits: use the existing bounded run-start window and indexes, streaming
+  span/event rows with a documented 100,000 default and 1,000,000 maximum cap.
+  Overflow rejects the whole request; cap errors state rejected population/scope.
+  This is a bounded higher limit, not a latency/performance guarantee. Deadline
+  failures require narrower selection; no timeout was increased.
+- Sampling: per-record metadata identifies sampled capture; unobserved calls are
+  unknown and excluded from recorded-decision denominators. Historical records
+  without metadata are not proof of full capture. Existing opt-in manifests and
+  completeness flags remain the source for assessed run completeness.
+- First-divergence design remains proposed: stable cross-version call identity,
+  especially unsampled/control-flow-changing calls, is unresolved. No value or
+  time-based matching is assumed. Synthetic authored fixtures establish mechanics,
+  not real-world diagnostic accuracy; no external report or prohibited data read.

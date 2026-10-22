@@ -224,6 +224,10 @@ for the final validation; the earlier proposal remains historical evidence.
   optional, preserve Subtract and equality predicates, then add only bounded
   numeric predicates/aggregates/expressions with pinned source evidence. No eval,
   query language, new score/diff type, unit changes or feature-name boosts.
+
+  Update 2026-10-22: escaped selectors and optional invariants are implemented;
+  a bounded relation grammar supports declared single-decision inequalities and
+  arithmetic. Aggregate ranking and general derived numeric features stay parked.
 - Durable disk spooling, adaptive/random sampling, automatic threshold search and
   general expression languages remain deferred. Eighty aggregate run observations
   cannot meet the unchanged tail minimums; a larger independent synthetic population
@@ -273,3 +277,18 @@ for the final validation; the earlier proposal remains historical evidence.
 - Future sampling consumers could make incompleteness more visible. Current
   metadata and documentation establish no evidence for skipped calls; do not
   infer negative claims or implement new trace behavior in this task.
+# Parked after declared relations — 2026-10-22
+
+- First-divergence comparison is design only in provenance-spec.md. Stable
+  same-seed call identity, contiguous capture and unchanged-version controls must
+  pass a small authored-fixture experiment before any implementation.
+- Per-run aggregate ranking remains deferred. `--violates` checks all recorded
+  decisions but existing comparison features use one pinned violation witness;
+  do not present that as an aggregate. Numeric cohort selection can currently be
+  expressed only as an explicit declared relation, not an ad hoc predicate DSL.
+- Wider rule operators (division, strings, cross-record temporal relations), unit
+  conversion/inference, automatic rule discovery and aggregate hypothesis/ranking
+  are out of this slice. Keep the grammar closed; collect a concrete need first.
+- A paginated immutable record manifest could replace large one-snapshot reads
+  later. For now hard caps reject the whole selection; no partial cohort or
+  silent truncation. No ingestion/wrapper optimization or overhead claim added.

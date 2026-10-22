@@ -1,5 +1,12 @@
 # Signal Scout
 
+Decoded decision selectors and declared relations: see
+[the syntax, closed grammar and PowerShell walkthrough](docs/declared-relations.md).
+`inputs.x`, `output.1` and `output.0.3` address captured decoded values.
+Literal dotted input names require the opt-in `escaped-v1` profile syntax.
+`signalscout relations` checks one step's recorded calls without a baseline;
+`cohort create --violates <rule>` pins runs with recorded violations.
+
 Signal Scout receives all OpenTelemetry traces, logs and metrics, stores them in SQLite, and groups evidence into workload runs. M0–M4b provide intake, a seeded shop demo, ranked structural and context differences against passing history, and a local viewer and telemetry explorer. See [plan.md](plan.md) for the full milestone plan; agent explanations belong to later milestones.
 
 ## Windows / PowerShell quick start
