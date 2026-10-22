@@ -11,7 +11,7 @@ import (
 	"github.com/signalscout/signalscout/internal/model"
 )
 
-const reportSignalsSQL = `SELECT CASE WHEN length(CAST(data AS BLOB))<=1048576 THEN data ELSE '' END FROM signals INDEXED BY signals_run WHERE run_id=? AND ts_ns>=? AND ts_ns<? ORDER BY kind,ts_ns,evidence_id LIMIT ?`
+const reportSignalsSQL = `SELECT CASE WHEN length(CAST(data AS BLOB))<=1048576 THEN data ELSE '' END FROM signals INDEXED BY signals_run WHERE run_id=? AND kind IN ('span','event','log','metric') AND ts_ns>=? AND ts_ns<? ORDER BY kind,ts_ns,evidence_id LIMIT ?`
 const reportNativeSQL = `SELECT CASE WHEN length(CAST(data AS BLOB))<=1048576 THEN data ELSE '' END FROM signals WHERE evidence_id=? AND ts_ns>=? AND ts_ns<? LIMIT 1`
 
 type ReportRequest struct {

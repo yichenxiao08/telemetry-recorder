@@ -41,7 +41,7 @@ func TestReportReadBoundsAndQueryPlan(t *testing.T) {
 	if err = rows.Err(); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(plan, "SCAN signals") || !strings.Contains(plan, "signals_run") {
+	if strings.Contains(plan, "SCAN signals") || !strings.Contains(plan, "signals_run") || !strings.Contains(plan, "ts_ns>?") || !strings.Contains(plan, "ts_ns<?") {
 		t.Fatal(plan)
 	}
 	ctx, cancel := context.WithCancel(context.Background())
