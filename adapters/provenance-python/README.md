@@ -365,3 +365,15 @@ calls remain unknown; a recorded pass is not proof that every call passed.
 The plain synthetic target/config lives in `fixtures/relations/`; it needs zero
 instrumentation edits. Run its real-server acceptance from the repo root with
 `go run ./scripts/relationscheck` after `task build` and environment setup.
+
+### Structured reports and verification (implemented, no LLM)
+
+From the repository root, `signalscout report build --request <JSON> --json`
+composes pinned rule/completeness reports, existing cohort comparisons,
+single-output traces and explicitly scoped native evidence. `report verify
+--input <JSON>` checks citations, ownership, quantities, coverage and evidence
+tiers against the store. Hypotheses require an explicit `--hypotheses <JSON>`
+input and remain unsupported as explanations. Sampling holes are unknown.
+No capture/probe/recorder changes are needed. See
+[the PowerShell walkthrough](../../docs/report-walkthrough.md) for the closed
+schema, bounded reads, numeric tolerance and the limits of structural verification.

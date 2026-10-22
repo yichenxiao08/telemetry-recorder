@@ -292,3 +292,18 @@ for the final validation; the earlier proposal remains historical evidence.
 - A paginated immutable record manifest could replace large one-snapshot reads
   later. For now hard caps reject the whole selection; no partial cohort or
   silent truncation. No ingestion/wrapper optimization or overhead claim added.
+
+## Parked after structured reporting (2026-10-22)
+
+- Semantic claim checking, subjective-quality assessment and actual hypothesis
+  testing need independent evidence and controlled experiments. Citation validity
+  and structural support are not diagnostic accuracy. Do not add an LLM in this
+  task; retain supplied hypotheses as unsupported proposed experiments.
+- A future immutable export snapshot could make report replay resilient to
+  retention and concurrent arrivals. Current bounded store reads reject changed
+  sources; do not add storage/migrations or copy artifacts without a reviewed need.
+- Exact large-integer and decimal quotation types, provenance-qualified ambient
+  context citations and dedicated M3/M4b diff-baseline report sources are deferred.
+  Preserve existing ownership/ranking semantics while gathering a concrete use.
+- Value linking and first-divergence remain proposed only; reporting does not
+  authorize their implementation. No changes to probe/recorder or scoring.

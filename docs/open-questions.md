@@ -640,3 +640,30 @@ Owner-accepted choices (synthetic/development data only; no migration; legacy co
   request: an absolute-difference relation over a nested return item. The earlier
   RL blind-test project is therefore not a clean test of this feature. Require a
   second blind project with a different bug before making any accuracy claim.
+
+# Structured report decisions — 2026-10-22
+
+- Compose immutable existing cohort relation/completeness snapshots and rebuild
+  existing comparison/trace outputs. Treat the reference cohort as the pinned
+  comparison population; this slice does not add a separate M3/M4b diff-baseline
+  report input. Native evidence must match its actual owner; ambient context
+  signals cannot be relabeled as run-owned citations.
+- Numeric claims use a complete structured quantity map, not natural-language
+  extraction. Integer quantities compare exactly; nonintegral values use relative
+  tolerance 1e-9 with an absolute floor. Omit numeric quotations outside exact
+  float64 integer range; retain original source timestamps. ASCII digits in claim
+  text are rejected. Words spelling out numbers and semantic misrepresentation
+  remain unresolved; do not call a structurally valid claim semantically true.
+- A fact binding plus original source outputs makes quotations reproducible.
+  Store evidence is the trust anchor, not the supplied report. Causal phrase
+  rejection is conservative and lexical (also rejects negation/quotation).
+  Paraphrases, subjective quality, false declared rules and dishonest recorded
+  inputs cannot be detected. Named sessions are proxies, not proven independence.
+- Trace reads and the main cohort snapshot are separate bounded snapshots.
+  Concurrent retention/late arrivals can make source equality fail. Require a
+  quiescent synthetic store for reproducibility; fail explicitly rather than
+  silently accepting an evicted citation or upgrading unknown capture.
+- Reports do not persist to SQLite. Scope/byte/row cap failures reject the whole
+  report; unknown root searches with no evidence yield unsupported unknowns.
+  Hypotheses enter only through supplied JSON and remain unsupported, even with
+  valid citations. This is partial M7, with no LLM or experiment executor.
