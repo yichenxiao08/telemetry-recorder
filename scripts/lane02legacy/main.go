@@ -18,7 +18,8 @@ import (
 )
 
 func run() error {
-	before := flag.String("before", ".cache/lane02-legacy/signalscout-before.exe", "binary built from 70ce5ac")
+	before := flag.String("before", ".cache/lane02-legacy/signalscout-before.exe", "before binary")
+	beforeRevision := flag.String("before-revision", "unknown", "Verified source revision of the before binary (report metadata only)")
 	after := flag.String("after", "bin/signalscout.exe", "Stage 1 binary")
 	db := flag.String("db", ".cache/lane-01/eval-002/fresh.db", "existing read-only store")
 	out := flag.String("out", "benchmark/results/lane02-stage1-legacy.json", "new report")
@@ -92,7 +93,7 @@ func run() error {
 		return fmt.Errorf("expected 15 cases")
 	}
 	frozenHash := sha256.Sum256(raw)
-	data, err := json.MarshalIndent(map[string]any{"before_revision": "70ce5acc8db6679535dc660278215dc4fdceb22b", "frozen_file_sha256": hex.EncodeToString(frozenHash[:]), "cases": reports}, "", "  ")
+	data, err := json.MarshalIndent(map[string]any{"before_revision": *beforeRevision, "frozen_file_sha256": hex.EncodeToString(frozenHash[:]), "cases": reports}, "", "  ")
 	if err != nil {
 		return err
 	}

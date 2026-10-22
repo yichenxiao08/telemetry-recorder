@@ -344,3 +344,24 @@ returning `(state, reward, done)` and a high-rate loop. Run the full unittest su
 with Python 3.12; new tests also verify real serve, runs list and bounded trace.
 `measure_tuple_sampling.py` retains one optional small paired local cost harness;
 it does not optimize or establish a supported rate or performance budget.
+# Decoded selectors and declared checks (2026-10-22)
+
+Capture allowlists name producer fields; analysis selectors address their decoded
+values. `inputs.action` selects a named input, `output.1` selects the second
+returned tuple item, and `output.0.3` selects a nested item. Do not include
+`inline` in analysis paths. An input named `self.score` requires the JSON profile
+selector `"inputs.self\\.score"` and `"selector_syntax":"escaped-v1"`.
+Legacy profiles retain literal dot splitting and literal backslashes. Escaped
+syntax also supports `\\` for a literal backslash, rejects malformed escapes,
+and never guesses between a literal and nested name.
+
+`signalscout relations` evaluates declared numeric/boolean checks over each
+recorded decision with explicit time/run/record bounds. Equality, absolute
+difference, bounds, ordering and nested tuple examples, four statuses, tolerances,
+cohort creation and PowerShell commands are in
+[`docs/declared-relations.md`](../../docs/declared-relations.md). Capture stays
+default off; rules do not enable capture or change the probe/recorder. Sampled-out
+calls remain unknown; a recorded pass is not proof that every call passed.
+The plain synthetic target/config lives in `fixtures/relations/`; it needs zero
+instrumentation edits. Run its real-server acceptance from the repo root with
+`go run ./scripts/relationscheck` after `task build` and environment setup.

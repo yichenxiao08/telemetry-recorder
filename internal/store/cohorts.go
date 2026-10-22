@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"sort"
-	"strings"
 	"time"
 
 	"github.com/signalscout/signalscout/internal/completeness"
@@ -14,9 +13,16 @@ import (
 	"github.com/signalscout/signalscout/internal/provenance"
 )
 
+const cohortRunsSQL = "SELECT run_id FROM runs INDEXED BY runs_time WHERE started_at>=? AND started_at<? AND workload=? ORDER BY started_at,run_id LIMIT ?"
+const cohortRunCountSQL = "SELECT count(*) FROM runs INDEXED BY runs_time WHERE started_at>=? AND started_at<? AND workload=?"
+const cohortRecordsSQL = "SELECT data FROM signals WHERE run_id=? AND kind IN ('span','event') ORDER BY ts_ns,evidence_id LIMIT ?"
+
 func selectionBounds(s model.CohortSelection) error {
 	if s.From < 0 || s.To <= s.From || time.Duration(s.To-s.From) > 31*24*time.Hour || s.Limit < 1 || s.Limit > 1000 {
 		return fmt.Errorf("cohort needs explicit time range <=31 days and limit 1..1000")
+	}
+	if s.RecordLimit < 0 || s.RecordLimit > 1000000 {
+		return fmt.Errorf("record_limit must be 1..1000000 (0 uses 100000)")
 	}
 	return nil
 }
@@ -40,10 +46,14 @@ func (r *Reader) Decisions(ctx context.Context, p model.AnalysisProfile, b model
 }
 
 func readDecisions(ctx context.Context, tx *sql.Tx, p model.AnalysisProfile, b model.CohortSelection) ([]model.DecisionObservation, map[string]int, []runEvidence, error) {
+	return walkDecisions(ctx, tx, p, b, nil)
+}
+
+func walkDecisions(ctx context.Context, tx *sql.Tx, p model.AnalysisProfile, b model.CohortSelection, visit func(model.DecisionObservation)) ([]model.DecisionObservation, map[string]int, []runEvidence, error) {
 	if p.Workload == completeness.ScopeWorkload {
 		return nil, nil, nil, fmt.Errorf("workload %q is reserved for capture-scope records and is never a cohort population", p.Workload)
 	}
-	rows, err := tx.QueryContext(ctx, "SELECT run_id FROM runs INDEXED BY runs_time WHERE started_at>=? AND started_at<? AND workload=? ORDER BY started_at,run_id LIMIT ?", b.From, b.To, p.Workload, b.Limit+1)
+	rows, err := tx.QueryContext(ctx, cohortRunsSQL, b.From, b.To, p.Workload, b.Limit+1)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -63,14 +73,22 @@ func readDecisions(ctx context.Context, tx *sql.Tx, p model.AnalysisProfile, b m
 		return nil, nil, nil, err
 	}
 	if len(ids) > b.Limit {
-		return nil, nil, nil, fmt.Errorf("eligible population exceeds explicit limit; narrow time range")
+		var count int
+		if err = tx.QueryRowContext(ctx, cohortRunCountSQL, b.From, b.To, p.Workload).Scan(&count); err != nil {
+			return nil, nil, nil, err
+		}
+		return nil, nil, nil, fmt.Errorf("eligible population %d exceeds explicit run limit %d; all %d candidate runs rejected, no cohort/report created; narrow time range", count, b.Limit, count)
 	}
 	out := []model.DecisionObservation{}
 	excluded := map[string]int{}
 	evidence := make([]runEvidence, 0, len(ids))
 	total := 0
+	cap := b.RecordLimit
+	if cap == 0 {
+		cap = 100000
+	}
 	for _, id := range ids {
-		rows, err = tx.QueryContext(ctx, "SELECT data FROM signals WHERE run_id=? AND kind IN ('span','event') ORDER BY ts_ns,evidence_id LIMIT ?", id, 10001-total)
+		rows, err = tx.QueryContext(ctx, cohortRecordsSQL, id, cap+1-total)
 		if err != nil {
 			return nil, nil, nil, err
 		}
@@ -79,9 +97,9 @@ func readDecisions(ctx context.Context, tx *sql.Tx, p model.AnalysisProfile, b m
 		seen := runEvidence{RunID: id}
 		for rows.Next() {
 			total++
-			if total > 10000 {
+			if total > cap {
 				_ = rows.Close()
-				return nil, nil, nil, fmt.Errorf("decision evidence exceeds 10000 records")
+				return nil, nil, nil, fmt.Errorf("record limit %d exceeded (%d rows inspected including sentinel); entire selection rejected; no cohort/report created; all %d candidate run IDs: %q", cap, total, len(ids), ids)
 			}
 			var raw string
 			var signal model.Signal
@@ -96,6 +114,9 @@ func readDecisions(ctx context.Context, tx *sql.Tx, p model.AnalysisProfile, b m
 			}
 			seen.observeSignal(signal)
 			if obs, ok := provenance.Decode(signal, p); ok {
+				if visit != nil {
+					visit(obs)
+				}
 				if selected == nil || obs.TS > selected.TS || obs.TS == selected.TS && obs.EvidenceID > selected.EvidenceID {
 					copy := obs
 					selected = &copy
@@ -132,14 +153,20 @@ func (r *Reader) SelectCohort(ctx context.Context, id string, p model.AnalysisPr
 	if err := selectionBounds(b); err != nil {
 		return c, err
 	}
-	if (b.Dimension == "") == (b.Predicate == "") {
-		return c, fmt.Errorf("choose exactly one label/mark dimension or captured equality predicate")
+	modes := 0
+	for _, s := range []string{b.Dimension, b.Predicate, b.Relation} {
+		if s != "" {
+			modes++
+		}
+	}
+	if modes != 1 {
+		return c, fmt.Errorf("choose exactly one label/mark dimension, captured equality predicate, or violated relation")
 	}
 	if b.RequireComplete && b.IncludePartial {
 		return c, fmt.Errorf("require_complete and include_partial contradict each other")
 	}
 	if b.Predicate != "" {
-		if len(b.Predicate) > 256 || len(strings.Split(b.Predicate, ".")) > 8 {
+		if _, ok := provenance.SelectorParts(b.Predicate, p.SelectorSyntax); !ok {
 			return c, fmt.Errorf("bounded predicate selector required")
 		}
 		var scalar any
@@ -163,11 +190,31 @@ func (r *Reader) SelectCohort(ctx context.Context, id string, p model.AnalysisPr
 		return c, err
 	}
 	defer func() { _ = tx.Rollback() }()
-	observations, excluded, evidence, err := readDecisions(ctx, tx, p, b)
+	var relations *model.RelationReport
+	var visit func(model.DecisionObservation)
+	if b.Relation != "" {
+		if p.Relations == nil {
+			return c, fmt.Errorf("no relations declared")
+		}
+		found := false
+		for _, r := range p.Relations.Rules {
+			found = found || r.ID == b.Relation
+		}
+		if !found {
+			return c, fmt.Errorf("unknown declared relation %q", b.Relation)
+		}
+		relations = newRelationReport(p, b)
+		visit = func(obs model.DecisionObservation) { observeRelations(relations, p, obs) }
+	}
+	observations, excluded, evidence, err := walkDecisions(ctx, tx, p, b, visit)
 	if err != nil {
 		return c, err
 	}
 	c.Excluded = excluded
+	if relations != nil {
+		finishRelations(relations, evidence)
+	}
+	c.Relations = relations
 	assessed, err := assess(ctx, tx, b.From, b.To, evidence)
 	if err != nil {
 		return c, err
@@ -183,7 +230,7 @@ func (r *Reader) SelectCohort(ctx context.Context, id string, p model.AnalysisPr
 			continue
 		}
 		if b.Predicate != "" {
-			value, ok := provenance.Get(obs.Values, b.Predicate)
+			value, ok := provenance.GetProfile(obs.Values, b.Predicate, p.SelectorSyntax)
 			data, _ := json.Marshal(value)
 			if !ok {
 				c.Excluded["predicate_unknown"]++
@@ -195,6 +242,17 @@ func (r *Reader) SelectCohort(ctx context.Context, id string, p model.AnalysisPr
 			}
 			c.RunIDs = append(c.RunIDs, obs.RunID)
 			c.DecisionIDs[obs.RunID] = obs.EvidenceID
+			c.Sessions[obs.RunID] = obs.Session
+			continue
+		}
+		if b.Relation != "" {
+			row := relations.Runs[obs.RunID][b.Relation]
+			if row.Violated == 0 {
+				c.Excluded["relation_no_recorded_violation"]++
+				continue
+			}
+			c.RunIDs = append(c.RunIDs, obs.RunID)
+			c.DecisionIDs[obs.RunID] = row.LastViolation
 			c.Sessions[obs.RunID] = obs.Session
 			continue
 		}

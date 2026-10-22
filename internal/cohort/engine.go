@@ -161,10 +161,29 @@ func Compare(p, r model.Cohort, problem, reference []model.DecisionObservation) 
 		out.Differences = append(out.Differences, f)
 	}
 	for _, feature := range p.Profile.Categories {
+		typed := false
+		for _, xs := range [][]model.DecisionObservation{problem, reference} {
+			for _, x := range xs {
+				v, ok := provenance.GetProfile(x.Values, feature.Selector, p.Profile.SelectorSyntax)
+				if ok {
+					if _, s := v.(string); !s {
+						if _, valid := provenance.Category(v); valid {
+							typed = true
+						}
+					}
+				}
+			}
+		}
 		values := func(xs []model.DecisionObservation) []string {
 			out := []string{}
 			for _, x := range xs {
-				if v, ok := provenance.Get(x.Values, feature.Selector); ok {
+				if v, ok := provenance.GetProfile(x.Values, feature.Selector, p.Profile.SelectorSyntax); ok {
+					if typed {
+						if s, valid := provenance.Category(v); valid {
+							out = append(out, s)
+						}
+						continue
+					}
 					if s, ok := v.(string); ok {
 						out = append(out, s)
 					}
@@ -180,13 +199,13 @@ func Compare(p, r model.Cohort, problem, reference []model.DecisionObservation) 
 		values := func(xs []model.DecisionObservation) []float64 {
 			out := []float64{}
 			for _, x := range xs {
-				v, ok := provenance.Get(x.Values, feature.Selector)
+				v, ok := provenance.GetProfile(x.Values, feature.Selector, p.Profile.SelectorSyntax)
 				number, valid := v.(float64)
 				if !ok || !valid {
 					continue
 				}
 				if feature.Subtract != "" {
-					v, ok = provenance.Get(x.Values, feature.Subtract)
+					v, ok = provenance.GetProfile(x.Values, feature.Subtract, p.Profile.SelectorSyntax)
 					other, valid := v.(float64)
 					if !ok || !valid {
 						continue
@@ -235,17 +254,19 @@ func Compare(p, r model.Cohort, problem, reference []model.DecisionObservation) 
 		return a.Feature < b.Feature
 	})
 	inv := p.Profile.Invariant
-	for _, xs := range [][]model.DecisionObservation{problem, reference} {
-		for _, x := range xs {
-			flat := map[string]any{}
-			for _, key := range []string{inv.Declared, inv.Current, inv.Used} {
-				if value, ok := provenance.Get(x.Values, key); ok {
-					flat[key] = value
+	if inv != (model.VersionInvariant{}) {
+		for _, xs := range [][]model.DecisionObservation{problem, reference} {
+			for _, x := range xs {
+				flat := map[string]any{}
+				for _, key := range []string{inv.Declared, inv.Current, inv.Used} {
+					if value, ok := provenance.GetProfile(x.Values, key, p.Profile.SelectorSyntax); ok {
+						flat[key] = value
+					}
 				}
+				status := VersionCheck(flat, inv.Declared, inv.Current, inv.Used, inv.Delta)
+				out.InvariantCounts[status]++
+				out.Invariants = append(out.Invariants, InvariantResult{x.RunID, status, x.EvidenceID})
 			}
-			status := VersionCheck(flat, inv.Declared, inv.Current, inv.Used, inv.Delta)
-			out.InvariantCounts[status]++
-			out.Invariants = append(out.Invariants, InvariantResult{x.RunID, status, x.EvidenceID})
 		}
 	}
 	out.Presentation = present(p.Profile, out.Differences, problem, reference)

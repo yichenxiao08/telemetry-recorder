@@ -683,6 +683,18 @@ Start with **M0**, then proceed to **M1**. After M1 is complete, stop and summar
 
 ## Implementation decisions and deviations (maintained by Codex; recorded after M1)
 
+- Owner-authorized declared relations (2026-10-22): decoded escaped selectors
+  opt in by profile; integer/boolean categories retain existing scoring formulas.
+  Bounded cohort reads now default to 100,000 span/event rows (explicit maximum
+  1,000,000), rejecting the entire request with population/scope details at a cap.
+  Optional version-1 numeric/boolean relation trees check every matching recorded
+  decision without a baseline; relation selection pins counts, declaration and
+  native violation witnesses in existing cohort JSON. An absent version invariant
+  is permitted for rule-only profiles; partial declarations remain invalid.
+  Existing one-decision rankings, median/tail constants, diff types and trace
+  behavior remain; no migration. First-divergence comparison is proposed only.
+  See docs/declared-relations.md for exact grammar, scope and limitations.
+
 > These record what was actually built. Where this section conflicts with the design sketches above (for example the schema in section 5), this section and the migrations in `internal/store/` are authoritative.
 
 - M4b's first plan tests exposed the missing service/time path for spans and metric points. Migration 008 adds a partial (resource_id,kind,ts_ns) index for those two kinds only, retaining migration 007's resource-service, log-resource/time and trace/time paths. Explorer filters require an explicit bounded range and limit plus a service, explicit no-service partition, or trace; the no-service partition uses resources_service IS NULL for independent host-only telemetry browsing. Query-plan tests reject signal scans and require indexed time bounds. Run context uses the existing run/rule interval indexes because host-only resources deliberately have no service name. No throughput experiment from the parking lot is implemented.

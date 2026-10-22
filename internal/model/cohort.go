@@ -42,6 +42,8 @@ type VersionInvariant struct {
 	Delta    float64 `json:"delta"`
 }
 type AnalysisProfile struct {
+	SelectorSyntax  string            `json:"selector_syntax,omitempty"`
+	Relations       *RelationPolicy   `json:"relations,omitempty"`
 	ID              string            `json:"id"`
 	Unit            string            `json:"unit"`
 	Workload        string            `json:"workload"`
@@ -55,13 +57,15 @@ type AnalysisProfile struct {
 	ReferenceTail   bool              `json:"reference_tail,omitempty"`
 }
 type CohortSelection struct {
-	From      int64  `json:"from"`
-	To        int64  `json:"to"`
-	Limit     int    `json:"limit"`
-	Dimension string `json:"dimension,omitempty"`
-	Value     string `json:"value,omitempty"`
-	Predicate string `json:"predicate,omitempty"`
-	Equals    string `json:"equals,omitempty"`
+	RecordLimit int    `json:"record_limit,omitempty"`
+	Relation    string `json:"relation,omitempty"`
+	From        int64  `json:"from"`
+	To          int64  `json:"to"`
+	Limit       int    `json:"limit"`
+	Dimension   string `json:"dimension,omitempty"`
+	Value       string `json:"value,omitempty"`
+	Predicate   string `json:"predicate,omitempty"`
+	Equals      string `json:"equals,omitempty"`
 	// IncludePartial keeps runs with confirmed lost selected items (excluded by default).
 	IncludePartial bool `json:"include_partial,omitempty"`
 	// RequireComplete rejects the cohort unless every candidate run is demonstrably assessed.
@@ -95,6 +99,7 @@ type CohortCompleteness struct {
 	Scopes          []string           `json:"scopes,omitempty"`
 }
 type Cohort struct {
+	Relations    *RelationReport     `json:"relations,omitempty"`
 	ID           string              `json:"id"`
 	Profile      AnalysisProfile     `json:"profile"`
 	Selection    CohortSelection     `json:"selection"`
@@ -108,6 +113,7 @@ type Cohort struct {
 }
 
 type DecisionObservation struct {
+	Sampled    bool           `json:"sampled,omitempty"`
 	RunID      string         `json:"run_id"`
 	EvidenceID string         `json:"evidence_id"`
 	TS         int64          `json:"ts_ns"`

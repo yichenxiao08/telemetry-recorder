@@ -1,0 +1,18 @@
+version: 1
+synthetic_only: true
+endpoint: http://127.0.0.1:4318
+service: synthetic.relations
+probes:
+  - module: relation_target
+    function: run_case
+  - module: relation_target
+    function: Calculator.calculate
+    capture:
+      args: [x, y, frame, flag, enabled]
+      self: [score]
+      return: true
+  - module: range_target
+    function: admit
+    capture:
+      args: [value, low, high, enabled]
+      return: true

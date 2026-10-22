@@ -1,5 +1,11 @@
 # Real-case gaps — Stage 1 / Checkpoint A
 
+2026-10-22 update: the owner released GO BUILD with a revised order. This document
+retains the Stage 1 design record; escaped selectors, optional version invariant
+and closed single-decision relations are implemented as described in
+declared-relations.md. Pinned per-run aggregate ranking and first-divergence
+comparison remain deferred/design only. No historical result is rewritten.
+
 2026-10-21. Synthetic/development data only. **Design, not implementation.**
 Stop here pending the owner's literal `GO BUILD`. No selector, cohort, scoring,
 trace, probe, recorder or schema behavior is changed. Lane-02 remains closed;

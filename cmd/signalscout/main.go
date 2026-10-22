@@ -18,6 +18,7 @@ func newRootCommand() *cobra.Command {
 	root.AddCommand(newServeCommand(&database), newRunsCommand(&database), newDiffCommand(&database))
 	root.AddCommand(newMarkCommand(), newLabelsCommand(&database), newCohortCommand(&database), newExplainCohortCommand(&database))
 	root.AddCommand(newTraceCommand(&database))
+	root.AddCommand(newRelationsCommand(&database))
 	root.CompletionOptions.DisableDefaultCmd = true
 	return root
 }

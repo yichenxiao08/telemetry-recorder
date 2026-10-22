@@ -1,0 +1,36 @@
+{
+  "id": "synthetic-relations-v1",
+  "unit": "call",
+  "workload": "relation_target.run_case",
+  "step": "relation_target.Calculator.calculate",
+  "envelope_profile": "synthetic",
+  "envelope_version": "1",
+  "selector_syntax": "escaped-v1",
+  "categories": [
+    {"name": "flag", "selector": "inputs.flag"},
+    {"name": "frame", "selector": "inputs.frame"}
+  ],
+  "relations": {
+    "version": 1,
+    "rules": [
+      {"id": "flag-equality", "unit": "boolean", "tolerance": 0,
+       "assert": {"op": "eq", "args": [{"op": "field", "field": "output.2"}, {"op": "field", "field": "inputs.flag"}]}},
+      {"id": "absolute-difference", "unit": "synthetic-count", "tolerance": 0.125,
+       "assert": {"op": "eq", "args": [{"op": "field", "field": "output.1"}, {"op": "abs", "args": [{"op": "sub", "args": [{"op": "field", "field": "output.0.3"}, {"op": "field", "field": "output.0.0"}]}]}]}},
+      {"id": "bounds", "unit": "synthetic-count", "tolerance": 0,
+       "assert": {"op": "and", "args": [
+         {"op": "ge", "args": [{"op": "field", "field": "output.1"}, {"op": "number", "number": 0}]},
+         {"op": "le", "args": [{"op": "field", "field": "output.1"}, {"op": "number", "number": 3}]}
+       ]}},
+      {"id": "ordering", "unit": "synthetic-count", "tolerance": 0,
+       "assert": {"op": "le", "args": [{"op": "field", "field": "inputs.x"}, {"op": "field", "field": "inputs.y"}]}},
+      {"id": "literal-dotted-key", "unit": "synthetic-count", "tolerance": 0,
+       "assert": {"op": "le", "args": [{"op": "field", "field": "inputs.self\\.score"}, {"op": "field", "field": "inputs.y"}]}},
+      {"id": "conditional", "unit": "synthetic-count", "tolerance": 0,
+       "when": {"op": "field", "field": "inputs.enabled"},
+       "assert": {"op": "ge", "args": [{"op": "field", "field": "output.1"}, {"op": "number", "number": 0}]}},
+      {"id": "capture-off", "unit": "synthetic-count", "tolerance": 0,
+       "assert": {"op": "eq", "args": [{"op": "field", "field": "inputs.private"}, {"op": "number", "number": 0}]}}
+    ]
+  }
+}

@@ -175,8 +175,10 @@ Cohorts require explicit start-time bounds <=31 days and eligible-population lim
 label and native decision revisions, unit/profile/workload, selection/exclusions,
 and session IDs. The last decision per configured step/run is chosen when creating
 cohorts; later decisions never replace it in a saved selection. Overlap or profile
-mismatch is rejected. Raw event reads are bounded to 10,000 records per selection;
-annotation reads are bounded; labels are never inferred from log-template text.
+mismatch is rejected. The historical 10,000-row bound is superseded by the
+2026-10-22 documented 100,000 default / 1,000,000 maximum span/event record cap;
+overflow rejects the whole selection with scope details (declared-relations.md).
+Annotation reads are bounded; labels are never inferred from log-template text.
 
 The formulas above are implemented unchanged in internal/cohort. Numeric units,
 epsilon and absolute floor come from a validated immutable profile; subtraction
