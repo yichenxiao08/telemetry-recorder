@@ -365,3 +365,33 @@ the opt-in/legacy distinction, fresh-store requirement and uncovered channels.
 P0 added caller cost is unmeasured against both existing budgets; no optimization
 or real-data authorization follows from passing synthetic leak checks. Return-
 to-argument linking is still design only on the separate docs proposal branch.
+
+## Optional synthetic tuple/item capture and sampling (2026-10-21)
+
+The Python adapter accepts tuple/namedtuple returns as ordered arrays within its
+existing 32-item/depth-6/256-node/8192-byte bounds. Optional `capture.return_items`
+selects indices or namedtuple field names; default capture is OFF. Unknown slots
+use `{"unknown":"reason"}`; `not_allowlisted` is intentional omission, while
+unsupported/oversized elements increment `drop_element` and output.element_drops.
+`numpy_unsupported` identifies unsupported numpy values without adding numpy.
+Partial item capture and element loss set envelope.complete=false. Existing list
+and dict root rejection behavior remains; whole values/envelopes can still drop.
+
+Optional per-probe `sampling.every_nth` selects indices 1,1+N,... and
+`sampling.max_per_run` caps selection attempts. Rules intersect before binding
+and serialization. Counters belong to the active run, not process history; an
+implicit run per standalone call resets them. Selected records carry optional
+`sampling: {rule: {...}, call_index: <one-based integer>}` and complete=false.
+No sampling configuration means no wire additions. Intentional skips are not
+drops; failed selected captures consume the cap. Queue admissions and export
+acknowledgements remain separate. Root span attributes named
+signalscout.sampling.<index>.{probe,seen,captured,rule,fraction} record run totals.
+Doctor/stderr provide aggregate per-probe totals and a bounded last-32 probe/run
+window with omitted count. They include element reasons and drop counts.
+
+Unsampled calls and unknown markers are UNKNOWN for invariants and negative
+search/absence claims. Captured local values cannot certify unobserved behavior;
+no inference across skipped calls, no automatic value linking. The marker object
+shape is reserved adapter metadata, not an application outcome. Existing trace,
+analysis, status priority (4/3/5), ranking, cohort and diff semantics are unchanged.
+Engine consumers are not extended to make run-wide claims from sampling metadata.

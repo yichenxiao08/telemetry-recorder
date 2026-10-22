@@ -4,6 +4,7 @@ from __future__ import annotations
 import contextvars
 import os
 import base64
+from collections import deque
 import functools
 import importlib.abc
 import importlib.machinery
@@ -58,7 +59,7 @@ def load_config(path):
         raise ValueError("invalid probes")
     seen = set()
     for p in probes:
-        if type(p) is not dict or set(p) - {"module", "function", "capture"}:
+        if type(p) is not dict or set(p) - {"module", "function", "capture", "sampling"}:
             raise ValueError("unknown probe key")
         for key in ("module", "function"):
             if type(p.get(key)) is not str or not all(v.isidentifier() for v in p[key].split(".")):
@@ -68,8 +69,17 @@ def load_config(path):
             raise ValueError("duplicate probe")
         seen.add(identity)
         capture = p.get("capture", {})
-        if type(capture) is not dict or set(capture) - {"args", "return", "self", "cls"}:
+        sampling = p.get("sampling", {})
+        if type(sampling) is not dict or set(sampling) - {"every_nth", "max_per_run"} or any(type(v) is not int or not 1 <= v <= 2**31-1 for v in sampling.values()):
+            raise ValueError("sampling requires positive bounded integers")
+        if type(capture) is not dict or set(capture) - {"args", "return", "self", "cls", "return_items"}:
             raise ValueError("unknown capture key")
+        if "return_items" in capture:
+            items = capture["return_items"]
+            if type(items) is not list or len(items) > 32 or any(not (type(v) is int and 0 <= v < 32 or type(v) is str and len(v) <= 128 and v.isidentifier()) for v in items) or len(set(items)) != len(items):
+                raise ValueError("return_items requires <=32 unique indices or field names")
+            if capture.get("return", False):
+                raise ValueError("choose whole return or return_items")
         names = capture.get("args", [])
         if type(names) is not list or len(names) > 32 or any(type(v) is not str for v in names):
             raise ValueError("invalid field allowlist")
@@ -114,7 +124,10 @@ class Probe:
                 value = vars(cls).get(name)
                 if isinstance(value, (property, staticmethod, classmethod)) or inspect.getattr_static(type(value), "__get__", None) is not None:
                     raise ValueError("receiver property/descriptor capture unsupported: " + name)
-        self.capture_return = spec.get("capture", {}).get("return", False)
+        self.return_items = spec.get("capture", {}).get("return_items")
+        self.capture_return = spec.get("capture", {}).get("return", False) or self.return_items is not None
+        self.sampling = spec.get("sampling", {})
+        self.key = spec["module"] + "." + spec["function"]
         self.last = {}
 
     def wrap(self):
@@ -125,6 +138,7 @@ class Probe:
             begin = time.perf_counter_ns()
             run, manager, parent_token, otel_token = None, None, None, None
             entry_ns = exit_ns = 0
+            sampling, stats, selected = None, None, True
             try:
                 recorder._count("probe_calls:" + self.spec["module"] + "." + self.spec["function"])
                 run = recorder._active.get()
@@ -135,14 +149,36 @@ class Probe:
                     if run.valid:
                         recorder._count("probe_runs_created")
                     entry_ns = time.perf_counter_ns() - enter
-                sid = f"{run.next_id:016x}"
-                run.next_id += 1
-                parent = self.owner.parent.get() or run.span_id
-                parent_token = self.owner.parent.set(sid)
-                span_context = SpanContext(int(run.trace_id, 16), int(sid, 16), False, TraceFlags(1))
-                otel_token = context.attach(trace.set_span_in_context(NonRecordingSpan(span_context)))
+                if self.sampling:
+                    if self.key not in run.probe_sampling:
+                        stats = {"probe": self.key, "run_id": run.trace_id,
+                            "seen": 0, "selected": 0, "captured": 0, "rule": dict(self.sampling)}
+                        run.probe_sampling[self.key] = stats
+                        self.owner.sample_runs.append(stats)
+                        recorder._count("sampling_run_summaries")
+                    stats = run.probe_sampling[self.key]
+                    stats["seen"] += 1
+                    index = stats["seen"]
+                    selected = (index - 1) % self.sampling.get("every_nth", 1) == 0 and stats["selected"] < self.sampling.get("max_per_run", 2**63)
+                    if not selected:
+                        recorder._count("sampled_out:" + self.key)
+                    else:
+                        stats["selected"] += 1
+                        sampling = {"rule": dict(self.sampling), "call_index": index}
+                if not selected:
+                    sid, parent = None, None
+                else:
+                    sid = f"{run.next_id:016x}"
+                    run.next_id += 1
+                    parent = self.owner.parent.get() or run.span_id
+                    parent_token = self.owner.parent.set(sid)
+                    span_context = SpanContext(int(run.trace_id, 16), int(sid, 16), False, TraceFlags(1))
+                    otel_token = context.attach(trace.set_span_in_context(NonRecordingSpan(span_context)))
             except Exception:
                 recorder._count("probe_setup_failed")
+            if not selected:
+                # Outside the setup exception handler: never retry a host call.
+                return self.unsampled(original, args, kwargs, manager)
             fields = {}
             try:
                 bound = self.signature.bind(*args, **kwargs)
@@ -218,9 +254,13 @@ class Probe:
                         verdict="raised" if error is not None else "returned",
                         reason_code=type(error).__name__ if error is not None else "",
                         record_id=sid, at_ns=wall_start, end_ns=wall_end,
-                        _span_id=sid, _parent_id=parent, _error=error is not None)
+                        _span_id=sid, _parent_id=parent, _error=error is not None,
+                        _return_items=self.return_items, _sampling=sampling)
                     if accepted:
                         recorder._count("probe_decisions_captured")
+                        recorder._count("probe_captured:" + self.key)
+                        if stats is not None:
+                            stats["captured"] += 1
                 except Exception:
                     recorder._count("probe_capture_failed")
                 finally:
@@ -274,6 +314,13 @@ class Probe:
             return method_wrapped
         return wrapped
 
+    def unsampled(self, original, args, kwargs, manager):
+        try:
+            return original(*args, **kwargs)
+        finally:
+            if manager is not None:
+                manager.__exit__(*sys.exc_info())
+
 
 class Loader(importlib.abc.Loader):
     def __init__(self, owner, original):
@@ -293,6 +340,7 @@ class Injector(importlib.abc.MetaPathFinder):
         self.recorder, self.specs, self.results = recorder, specs, []
         self.parent = contextvars.ContextVar("scout_probe_parent", default=None)
         self.methods = contextvars.ContextVar("scout_probe_methods", default=())
+        self.sample_runs = deque(maxlen=32)
 
     def find_spec(self, fullname, path=None, target=None):
         if fullname not in {p["module"] for p in self.specs}:
@@ -383,8 +431,14 @@ class Injector(importlib.abc.MetaPathFinder):
         counters = self.recorder.snapshot()
         for item in result:
             item["calls"] = counters.get("probe_calls:" + item["module"] + "." + item["function"], 0)
+            item["records_captured"] = counters.get("probe_captured:" + item["module"] + "." + item["function"], 0)
+            item["fraction"] = item["records_captured"] / item["calls"] if item["calls"] else 0
+            item["sampling"] = next(p.get("sampling", {}) for p in self.specs if (p["module"], p["function"]) == (item["module"], item["function"]))
         return {"privacy": privacy,
-                "probes": result, "counters": counters}
+                "probes": result, "counters": counters,
+                "sampling_runs": [{**s, "fraction": s["captured"] / s["seen"] if s["seen"] else 0} for s in self.sample_runs],
+                "sampling_runs_omitted": max(0, counters.get("sampling_run_summaries", 0) - len(self.sample_runs)),
+                "element_reasons": {k.removeprefix("element_reason:"): v for k, v in counters.items() if k.startswith("element_reason:")}}
 
 
 def standard_otel(recorder):
@@ -434,7 +488,11 @@ def summary(report):
         reason = probe.get("reason", "")
         if probe["status"] == "attached" and probe["calls"] == 0:
             reason = "not invoked" if not report["preflight"] else "dry import; target not executed"
-        print(f"  {probe['module']}:{probe['function']}: {probe['status']}; calls={probe['calls']}; {reason}", file=sys.stderr)
+        print(f"  {probe['module']}:{probe['function']}: {probe['status']}; calls={probe['calls']}; records captured={probe['records_captured']}; rule={probe['sampling']}; fraction={probe['records_captured']}/{probe['calls']}; {reason}", file=sys.stderr)
+    for run in report.get("sampling_runs", []):
+        print(f"  run={run['run_id']} probe={run['probe']} calls={run['seen']} records captured={run['captured']} rule={run['rule']} fraction={run['captured']}/{run['seen']}", file=sys.stderr)
+    if report.get("element_reasons"):
+        print(f"element drops/reasons: {report['element_reasons']}", file=sys.stderr)
     print(f"records captured: {report['records_captured']}; run contexts created: {report['runs_created']}; acknowledged spans: {report['counters'].get('acknowledged', 0)}; flush complete: {bool(report['drained'])}", file=sys.stderr)
     if not report["preflight"] and (report["records_captured"] == 0 or report["runs_created"] == 0):
         print("ZERO CAPTURE: configured target produced no probed decisions/run contexts", file=sys.stderr)
@@ -458,7 +516,7 @@ def main(argv=None):
     cfg = load_config(args.config)
     names = {n for p in cfg["probes"] for n in p.get("capture", {}).get("args", [])}
     names.update(receiver + "." + field for p in cfg["probes"] for receiver in ("self", "cls") for field in p.get("capture", {}).get(receiver, []))
-    if any(p.get("capture", {}).get("return", False) for p in cfg["probes"]):
+    if any(p.get("capture", {}).get("return", False) or "return_items" in p.get("capture", {}) for p in cfg["probes"]):
         names.add("output")
     policy = None
     if "capture_policy" in cfg:

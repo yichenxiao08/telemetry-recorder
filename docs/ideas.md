@@ -243,3 +243,16 @@ for the final validation; the earlier proposal remains historical evidence.
 - The return-to-argument identity proposal lives on codex/p0-spec-gates, design
   only. Mutable version tracking is unresolved; equal primitives stay unknown
   without a declared link/tag. Do not implement it as part of this gate.
+
+## Parked after synthetic tuple/sampling work (2026-10-21)
+
+- Application outcome field -> run status: define explicit mapping and conflict
+  semantics before implementing; an RL done/result flag does not currently alter
+  native run status.
+- Bulk mark-from-file: define bounded validation, preview and failure accounting
+  before implementing batch annotations.
+- General behavior expectations need a separate contract from the declared-version
+  invariant; do not reinterpret existing invariant/ranking/cohort/diff results.
+- Future sampling consumers could make incompleteness more visible. Current
+  metadata and documentation establish no evidence for skipped calls; do not
+  infer negative claims or implement new trace behavior in this task.
