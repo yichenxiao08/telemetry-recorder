@@ -18,6 +18,8 @@ import (
 //go:embed analyze.py
 var analysisProgram string
 
+const hotAdvice = "INCOMPLETE sampling suggestion: every_nth 25, max_per_run 40. Unsampled calls are unknown for absence and invariant claims. Optional paired --queue-max-items <items> --queue-max-bytes <bytes>; memory estimate >= items * average serialized record bytes, plus object/worker overhead. No queue size is a default or delivery guarantee."
+
 type Signal struct {
 	Kind string `json:"kind"`
 	File string `json:"file"`

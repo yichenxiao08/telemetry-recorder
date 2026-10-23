@@ -28,6 +28,7 @@ type Candidate struct {
 	TieCount          int      `json:"tie_count"`
 	Config            string   `json:"config"`
 	Hot               bool     `json:"hot"`
+	Advice            string   `json:"advice"`
 }
 type Entry struct {
 	Path   string `json:"path"`
@@ -243,6 +244,7 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 				c.Signals = append(c.Signals, c.Details[j].Kind)
 				if c.Details[j].Kind == "loop_call_site" {
 					c.Hot = true
+					c.Advice = hotAdvice
 				}
 			}
 			c.Score = len(c.Signals)

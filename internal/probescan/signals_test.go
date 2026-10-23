@@ -108,6 +108,9 @@ func TestSelectorsRankingAndStableJSON(t *testing.T) {
 		if c.Score == 1 && c.TieCount < 2 {
 			t.Fatal("tie missing")
 		}
+		if c.Hot && !strings.Contains(c.Advice, "Unsampled calls are unknown") {
+			t.Fatal("missing JSON warning", c)
+		}
 		if !strings.Contains(c.Config, "capture: {}") {
 			t.Fatal(c)
 		}
