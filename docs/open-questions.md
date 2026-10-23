@@ -681,3 +681,20 @@ Owner-accepted choices (synthetic/development data only; no migration; legacy co
   imports, never claim capture/analysis or infer runtime compatibility from imports.
   Five-second subprocess bounds limit unhealthy diagnostics; installed Python and
   dependencies are trusted code. No automatic installation or uv synchronization.
+
+# Doctor probe lookup and help — 2026-10-23
+
+- Isolated Python normally removes CWD. For find_spec checks, explicitly add only
+  the requested working directory to isolated/no-bytecode Python. Find the probe
+  without importing it; report the current-directory observation separately from
+  adapter readiness. Ignore PYTHONPATH and user-site overrides rather than infer
+  an import path that the printed command does not reproduce.
+- Help must load the adapter. Use -E -s -B -m scout_probe --help in its directory,
+  with bounded suppressed output and a five-second deadline; no target/config is
+  supplied. The accepted adapter's help exits before recorder creation. Trusting
+  a supplied adapter and its imports not to perform initialization side effects
+  remains an assumption; bytecode suppression is not a sandbox. No capture claim.
+- Print a selected-interpreter command with an explicit required --doctor path,
+  stable schema-one check IDs and the same working-directory convention. Always
+  use selected Python in the synthetic example, even if uv exists, so a different
+  manager-selected environment cannot silently replace the interpreter checked.

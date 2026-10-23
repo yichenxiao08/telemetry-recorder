@@ -28,16 +28,17 @@ frozen lockfile. Selection is an existing adapter `.venv`, then `py -3`, then
 defaults to `adapters/provenance-python` relative to the working directory.
 Outside the repository, supply the adapter's absolute path. A selected Python
 that differs from 3.12.12 warns, including a different 3.12 patch version.
-The adapter's `scout_probe.py` must be a regular accessible file; doctor checks
-its presence without importing it. A missing adapter is a FAIL.
+The adapter's `scout_probe.py` must be a regular accessible file. A missing
+adapter is a FAIL; presence alone does not establish module lookup or execution.
 
 The selected interpreter runs isolated, bytecode-disabled `importlib` checks for
 PyYAML, OTel SDK trace, OTel OTLP/HTTP trace exporter and requests. It suppresses
 import stdout/stderr and reports booleans only. A missing/broken dependency is a
 FAIL with a PowerShell `-m pip install` command pinned to the adapter's package
 versions. If pip is also absent, the printed command first runs `-m ensurepip`.
-These are repair suggestions; doctor never installs, syncs uv, downloads Python,
-imports the probe or runs the application. The recommended frozen `uv sync`
+These are repair suggestions; doctor never installs, syncs uv, downloads Python
+or runs the application. The separate help check loads the probe only for help.
+The recommended frozen `uv sync`
 command restores the full locked environment, including instrumentation packages;
 doctor's four imports alone do not certify all instrumentations or version
 compatibility. Trusted installed Python/packages may execute initialization code
@@ -58,10 +59,44 @@ network requests. Use `--listen ''` to skip it. A numeric port in 1..65535 and a
 loopback IP or localhost are required. Availability is a momentary observation,
 not a reservation for a subsequent serve process.
 
+The new `probe.importable` check uses selected Python with `-I -B`, the adapter as
+its working directory and `importlib.util.find_spec("scout_probe")`. Because `-I`
+removes CWD from the search path, the tiny lookup script explicitly inserts only
+that working directory. It locates the top-level module without importing it or
+its heavy dependencies. `probe.cwd` repeats lookup from doctor's current directory:
+its informational message is PASS when found and WARN with a working command when
+absent or unknown. The lookup ignores PYTHONPATH/user-site overrides deliberately.
+
+`probe.help` runs the selected interpreter's `-E -s -B -m scout_probe --help` from
+the adapter. Only exit zero within five seconds and the output bound is PASS.
+This loads the adapter and required imports, but argparse help exits before config,
+targets, recorder construction or recording. `-E -s` ignores Python environment
+overrides and user-site packages while retaining CWD for normal `-m` resolution;
+`-B` prevents bytecode files. Each lookup/help has its own five-second deadline,
+16 KiB stdout bound and discarded stderr. Output and exception text are never
+passed through. A timeout, malformed lookup result or overflow cannot pass.
+Installed packages and the selected adapter are trusted code during help/import.
+
+All old check IDs and JSON keys remain; only `probe.importable`, `probe.cwd` and
+`probe.help` are added under schema version one. The working command and notes
+are also included in the existing `examples` array. The working block uses the
+absolute selected interpreter and adapter, Push-Location/Pop-Location in try/finally,
+explicit --config, required --doctor, --path, --manifest, --drain-timeout 30,
+module:function and `--` before target arguments. Replace the quoted placeholders
+with absolute paths and your target; do not execute them literally.
+
+PowerShell may display probe stderr as a red error even on successful execution.
+Inspect the saved `$probeExit` and printed probe summary. For hot functions,
+`--queue-max-items` and `--queue-max-bytes` are optional and must be supplied
+together; a larger bounded queue does not guarantee delivery. Complex return
+objects can fail bounded capture (`drop_invalid`); explicitly allowlisted scalars
+are safer. Probe lookup/help PASS establishes neither capture nor delivery.
+
 Doctor prints a synthetic tiny Python script, allowlisted probe config, empty DB
 file creation, a generated serve command for a second PowerShell window, probe
 invocation and `runs list`. It executes none of these instructions. The example
-needs the README's uv setup; wait for serve to listen before invoking the probe.
+uses the selected Python directly, including when uv is absent, and supplies the
+required --doctor report path. Wait for serve to listen before invoking the probe.
 PASS means only that the stated setup checks succeeded. It does not establish
 capture, delivery, run grouping, completeness, analysis quality or privacy safety.
 Synthetic data only continues to apply.
