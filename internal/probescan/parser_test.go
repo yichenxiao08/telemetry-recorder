@@ -23,6 +23,9 @@ func TestRealASTNoExecution(t *testing.T) {
 	if e = parse(context.Background(), source); e != nil {
 		t.Fatal(e)
 	}
+	if _, e = PythonAnalyzer(p)(context.Background(), source); e != nil {
+		t.Fatal(e)
+	}
 	if _, e = os.Stat(sentinel); !os.IsNotExist(e) {
 		t.Fatal("target executed")
 	}

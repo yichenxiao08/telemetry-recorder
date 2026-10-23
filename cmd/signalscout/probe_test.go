@@ -22,3 +22,13 @@ func TestScanRefusesOverwrite(t *testing.T) {
 		t.Fatal(string(b))
 	}
 }
+
+func TestLimitValidation(t *testing.T) {
+	for _, v := range []string{"0", "-1", "201"} {
+		c := newProbeCommand()
+		c.SetArgs([]string{"scan", "--limit", v})
+		if err := c.Execute(); err == nil {
+			t.Fatal("accepted limit", v)
+		}
+	}
+}
