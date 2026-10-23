@@ -759,3 +759,30 @@ or report was read for this entry.
 6. Honest read, unchanged: the tool records and compares well. It has never
    located a planted cause that a reader could not find from source, and the
    hard-bug question is untested.
+
+# Run 6 BugsInPy evaluation — 2026-10-23
+
+These notes record the supplied run 6 evaluation summary. The bugs were
+prepared as deterministic offline reproductions and each reproduced 20/20 on
+Python 3.12.12.
+
+1. BugsInPy `pysnooper` bug 1. Answer hash:
+   `8bf8d2c3d41c06ebca7d86782f40c2d1aeaf3e4844b1aa8c586bd88edea88064`. The
+   baseline named a specific cause in 5 commands. It was not graded. Its
+   preparer added in-process compatibility shims, so this is only a baseline
+   self-report.
+2. BugsInPy `tqdm` bug 2. Answer hash:
+   `a33c835a571e6d638786d66a7d6323e8e6f74a6c70dec89d9f98b0a252d65cd8`. The
+   baseline named a specific cause in 13 commands. The official grader result
+   was Found, and it named the answer's function or input: yes.
+3. BugsInPy `tqdm` bug 3. Answer hash:
+   `0352142f154f16b55f86796c77baa9b7d9a999e2f89a42a57b1aaeeaf716af58`. The
+   baseline named a specific cause in 11 commands. The official grader result
+   was Found, and it named the answer's function or input: yes.
+4. The baseline gate fails on both graded bugs. These were real, unplanted bugs,
+   so planter design is not the whole explanation. A likely common factor is
+   that a small deterministic reproducer with a precise numeric symptom is easy
+   to localize by reading. These are public bugs; a model may recall them rather
+   than find them by reading, and recall cannot be separated from reading here.
+5. No scanner evaluation or tester run was spent. The scanner source remains
+   unfrozen for evaluation.
