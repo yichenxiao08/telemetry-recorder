@@ -1,0 +1,3 @@
+# Foundation fixture contract
+
+All fixtures are synthetic. No signal detection is expected. Package/src/namespace layouts exercise enumeration only. sentinel.py raises if executed and contains async/generator syntax. vendor, venv and __pycache__ contain malformed excluded source. Tests create oversized files, dangling/escape links and unreadable entries in temporary directories because permissions and Windows reparse points cannot be represented portably in Git. Unreadability is tested by parser error injection and a dangling link; native permission denial may require ACL privileges. Never execute these files.

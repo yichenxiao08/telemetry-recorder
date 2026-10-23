@@ -56,6 +56,8 @@ Before scanning any evaluation project, commit scanner source hash, rules, fixtu
 
 ## Known weaknesses
 
+Enumeration has no hard memory or time bound before caps apply. File and byte caps bound source reads; walking and collecting eligible paths can still consume unbounded time and memory on a sufficiently large tree.
+
 Static syntax cannot identify runtime ownership, actual call frequency or which boundary carries useful evidence. Dynamic Python, aliases and dependencies can defeat resolution. More signals may merely select larger stateful functions. Candidate recall does not show that recording those boundaries explains a failure. Default-off capture still requires developer choices and may omit necessary fields. Source paths and identifiers can themselves be sensitive; keep output local and explicitly exclude private trees.
 
 ## Ordered implementation proposal
@@ -74,3 +76,7 @@ Static syntax cannot identify runtime ownership, actual call frequency or which 
 - Who will author and grade the independent fixtures without sharing their answers?
 - What project-size budget is representative for the intended users?
 - Is top-5/top-20 recall sufficient to justify a later usability trial, and what minimum coverage should that trial require?
+
+## Owner decisions — 2026-10-23
+
+The future planter and grader are separate fresh Codex chats; the answer stays sealed. First evaluation is feasibility evidence only. Before results, the usability bar is fixed: planted function in the top 20 on most evaluation projects, beating the unchanged naive loop-call baseline at that cutoff, with at least 90% parse coverage of eligible files and every gap stated. Unresolved dynamic candidates belong in a separate bounded section. Ambiguous layouts require explicit --import-root; otherwise print no selector and a reason. Size defaults remain 2000 files and 20 MB.

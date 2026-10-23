@@ -21,6 +21,7 @@ func newRootCommand() *cobra.Command {
 	root.AddCommand(newRelationsCommand(&database))
 	root.AddCommand(newReportCommand(&database))
 	root.AddCommand(newDoctorCommand(&database))
+	root.AddCommand(newProbeCommand())
 	root.CompletionOptions.DisableDefaultCmd = true
 	return root
 }
