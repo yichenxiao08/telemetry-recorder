@@ -787,3 +787,12 @@ its deterministic first half is now built. Numeric assertions use structured
 quotations rather than unreliable natural-language extraction. Synthetic authored
 fixtures establish mechanics only; see docs/report-walkthrough.md and the dated
 implementation note in docs/provenance-spec.md for exact limits.
+
+### Doctor implementation note — 2026-10-22
+
+Owner-authorized `signalscout doctor` adds a reporting-only local setup checklist
+and optional version-one JSON file. It inspects binary metadata, Python tools and
+dependency imports, existing file access and a transient loopback bind. A new DB
+path warns without creating any file; creation/WAL permissions remain untested.
+It prints a synthetic PowerShell example, installs/records nothing, and changes
+no store schema, scoring or analysis behavior. See docs/doctor.md.

@@ -20,6 +20,7 @@ func newRootCommand() *cobra.Command {
 	root.AddCommand(newTraceCommand(&database))
 	root.AddCommand(newRelationsCommand(&database))
 	root.AddCommand(newReportCommand(&database))
+	root.AddCommand(newDoctorCommand(&database))
 	root.CompletionOptions.DisableDefaultCmd = true
 	return root
 }
