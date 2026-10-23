@@ -95,6 +95,8 @@ The tool added structured, citable timing measurements and completeness accounti
 
 5. The first staged diff check found doubled CR line endings in Python-captured logs and trailing whitespace in build/hash output. A follow-up normalizes display copies only; exact original bytes and hashes are retained in raw-artifacts.zip and evidence-normalization.json. No test or recording was repeated.
 
+6. Publication setup: the GitHub app rejected PR creation with HTTP 403. Expanded compare-page/browser reads timed out, as did a screenshot and a DOM read; no GitHub CLI was installed. GitHub quick_pull=1 loaded the compact form, and PR #29 was created and confirmed through the connector. No target/test run was repeated for publication.
+
 No temporary-permission failures, probe attachment failures, drops or test-body setup failures occurred in round 2. No tracked-code changes were needed. Collector starts/stops and queries can affect timing, so the recording arm is not an unbiased failure-rate estimate.
 
 ## Command accounting and retained artifacts
