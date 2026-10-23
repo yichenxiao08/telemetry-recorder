@@ -1,11 +1,11 @@
-Source commit: fca5f04d8e14d3512626b3248caad75aa79e6e5d
+Source commit: 55735d93f40cb0612ce5d7585c02ccc0579fca7c
 Hash method: SHA-256 of exact committed Git blob bytes (not checkout CRLF bytes).
 Aggregate: SHA-256 of sorted hash-space-space-path lines with LF, UTF-8.
-6e55df36d7ea620c4c9a80fe942f51ed482fd7a89a1ce29605a6248b10b8fa33  manifest-lines
+abf9a49ad1f9ec08149d06a82f6b65bf0a19e89f1360acd16f8a06926ba62105  manifest-lines
 
 b90dee627abe4d00bed1d1a23e31f7449763c99cf16fac2f951f31981926a24c  cmd/signalscout/probe.go
 33aa68ff70c190bc7b0e522fcb3d37c62f654d2607f71cc606df7cdaee83a25d  cmd/signalscout/probe_test.go
-0d7d03e48e3f24f0539f522272e16a3bd5b2db1e0971e6020919d918fff569b9  docs/design-probe-scan.md
+8740bc29db1ee664a766479e78d66e33eb6e7538b6907ca62d4a6fbc53d9f149  docs/design-probe-scan.md
 8d4a46bd12a02ddad1306dddc6ef1650cc77881226261735694e7ddedd1b2cdc  docs/probe-scan-schema-v1.md
 a2bb473ef9055a96847f3e0a5401dcb3d57aae68418843801c44167c5c2484fc  internal/probescan/analyze.py
 0f3ca4519812037323a145318d4b5aeac3c27547f4b4982593362af1f39abde5  internal/probescan/junction_windows_test.go
