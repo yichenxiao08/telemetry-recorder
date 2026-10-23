@@ -1,6 +1,6 @@
 bin/signalscout.exe: go1.27.0
 	path	github.com/signalscout/signalscout/cmd/signalscout
-	mod	github.com/signalscout/signalscout	v0.0.0-20261023203604-40628db33ffd	
+	mod	github.com/signalscout/signalscout	v0.0.0-20261023203604-40628db33ffd
 	dep	github.com/dustin/go-humanize	v1.0.1	h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
 	dep	github.com/grpc-ecosystem/grpc-gateway/v2	v2.20.0	h1:bkypFPDjIYGfCYD5mRBvpqxfYX1YCS1PXdKYWi8FsN0=
 	dep	github.com/inconshreveable/mousetrap	v1.1.0	h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=

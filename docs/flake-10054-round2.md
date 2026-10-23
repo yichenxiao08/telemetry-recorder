@@ -93,6 +93,8 @@ The tool added structured, citable timing measurements and completeness accounti
 3. Analysis looked for doctor.recorder instead of doctor.counters, causing KeyError after one successful CLI read. Corrected scratch script and restarted collector; retained CLI ledger.
 4. First analysis profile used floor 0, rejected by validation (positive floor required). Corrected to floor 1 before any valid comparison; no scoring result was seen/tuned before that correction.
 
+5. The first staged diff check found doubled CR line endings in Python-captured logs and trailing whitespace in build/hash output. A follow-up normalizes display copies only; exact original bytes and hashes are retained in raw-artifacts.zip and evidence-normalization.json. No test or recording was repeated.
+
 No temporary-permission failures, probe attachment failures, drops or test-body setup failures occurred in round 2. No tracked-code changes were needed. Collector starts/stops and queries can affect timing, so the recording arm is not an unbiased failure-rate estimate.
 
 ## Command accounting and retained artifacts

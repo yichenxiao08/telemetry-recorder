@@ -2,5 +2,3 @@
 Algorithm : SHA256
 Hash      : 1DB6A7662BFAAC6805DCC9916D575E467A06CBCEDA73C22916804EA2253251C3
 Path      : C:\Users\yiche\telemetry-project\bin\signalscout.exe
-
-
