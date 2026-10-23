@@ -1,0 +1,164 @@
+test_duration_survives_coarse_wall_clock (test_breadth.Breadth.test_duration_survives_coarse_wall_clock) ... ok
+test_failed_run_setup_preserves_host (test_breadth.Breadth.test_failed_run_setup_preserves_host) ... ok
+test_optional_fault_never_escapes (test_breadth.Breadth.test_optional_fault_never_escapes) ... ok
+test_plain_and_optional_preserve_replies (test_breadth.Breadth.test_plain_and_optional_preserve_replies) ... ok
+test_analytic_comparison_validates_evidence_without_erasing_values (test_capture_fix_reporting.Reporting.test_analytic_comparison_validates_evidence_without_erasing_values) ... ok
+test_four_state_identity_does_not_hide_unknown (test_capture_fix_reporting.Reporting.test_four_state_identity_does_not_hide_unknown) ... ok
+test_incomplete_flush_counts_survive_explicit_json_conversion (test_capture_fix_reporting.Reporting.test_incomplete_flush_counts_survive_explicit_json_conversion) ... ok
+test_metadata_paths_are_portable_with_json_escaping (test_capture_fix_reporting.Reporting.test_metadata_paths_are_portable_with_json_escaping) ... ok
+test_regression_projection_ignores_only_two_creation_clocks (test_capture_fix_reporting.Reporting.test_regression_projection_ignores_only_two_creation_clocks) ... ok
+test_bounded_counts_samples_and_batches (test_export_diagnostics.ExportDiagnostics.test_bounded_counts_samples_and_batches) ... ok
+test_cooldown_wait_exports_instead_of_suppressing (test_export_diagnostics.ExportDiagnostics.test_cooldown_wait_exports_instead_of_suppressing) ... ok
+test_diagnostics_do_not_change_encoded_bytes (test_export_diagnostics.ExportDiagnostics.test_diagnostics_do_not_change_encoded_bytes) ... ok
+test_doctor_exposes_bounded_diagnostics_and_batch_sizes (test_export_diagnostics.ExportDiagnostics.test_doctor_exposes_bounded_diagnostics_and_batch_sizes) ... ok
+test_drop_flush_shutdown_and_high_water_counters (test_export_diagnostics.ExportDiagnostics.test_drop_flush_shutdown_and_high_water_counters) ... ok
+test_failure_categories_and_safe_samples (test_export_diagnostics.ExportDiagnostics.test_failure_categories_and_safe_samples) ... ok
+test_real_stdlib_phase_hooks_preserve_exception_identity (test_export_diagnostics.ExportDiagnostics.test_real_stdlib_phase_hooks_preserve_exception_identity) ... ok
+test_development_generation_and_noise_independence (test_lane01.LaneDevelopment.test_development_generation_and_noise_independence) ... ok
+test_counterfactuals_and_noise (test_lane02.Lane02Development.test_counterfactuals_and_noise) ... ok
+test_golden_independent_vectors (test_lane02.Lane02Development.test_golden_independent_vectors) ... ok
+test_holdouts_rejected_before_hash_or_generation (test_lane02.Lane02Development.test_holdouts_rejected_before_hash_or_generation) ... ok
+test_plain_target_and_harness_timestamp_origin (test_lane02.Lane02Development.test_plain_target_and_harness_timestamp_origin) ... ok
+test_real_probe_intake_clock_and_evidence (test_lane02.Lane02Development.test_real_probe_intake_clock_and_evidence) ... ok
+test_bucket_cap_collapses_into_a_visible_overflow_bucket (test_manifest.Bounds.test_bucket_cap_collapses_into_a_visible_overflow_bucket) ... ok
+test_pending_ledgers_scope_ids_and_outbox_are_bounded_and_overflow_is_visible (test_manifest.Bounds.test_pending_ledgers_scope_ids_and_outbox_are_bounded_and_overflow_is_visible) ... ok
+test_reused_run_id_is_counted_not_silently_merged (test_manifest.Bounds.test_reused_run_id_is_counted_not_silently_merged) ... ok
+test_scope_chunks_are_emitted_when_full (test_manifest.Bounds.test_scope_chunks_are_emitted_when_full) ... ok
+test_unemitted_scope_tail_reports_overflow_never_a_clean_population (test_manifest.Bounds.test_unemitted_scope_tail_reports_overflow_never_a_clean_population) ... ok
+test_host_exception_and_return_value_are_unchanged (test_manifest.Caller.test_host_exception_and_return_value_are_unchanged) ... ok
+test_host_exit_never_flushes_joins_or_touches_the_network_with_manifest_on (test_manifest.Caller.test_host_exit_never_flushes_joins_or_touches_the_network_with_manifest_on) ... ok
+test_duplicate_delivery_after_lost_ack_is_credited_once (test_manifest.Conservation.test_duplicate_delivery_after_lost_ack_is_credited_once) ... ok
+test_failed_and_unknown_terminal_states_are_credited (test_manifest.Conservation.test_failed_and_unknown_terminal_states_are_credited) ... ok
+test_lost_marker_leaves_spans_accounted_and_visible (test_manifest.Conservation.test_lost_marker_leaves_spans_accounted_and_visible) ... ok
+test_marker_follows_settlement_of_every_referenced_item (test_manifest.Conservation.test_marker_follows_settlement_of_every_referenced_item) ... ok
+test_marker_is_not_a_span_attempt (test_manifest.Conservation.test_marker_is_not_a_span_attempt) ... ok
+test_state_conservation_with_drops_and_concurrency (test_manifest.Conservation.test_state_conservation_with_drops_and_concurrency) ... ok
+test_a_timeout_above_the_old_ceiling_is_honoured (test_manifest.DrainTimeout.test_a_timeout_above_the_old_ceiling_is_honoured) ... ok
+test_cli_default_is_two_seconds_and_bad_values_are_usage_errors (test_manifest.DrainTimeout.test_cli_default_is_two_seconds_and_bad_values_are_usage_errors) ... ok
+test_drain_applies_at_close_only (test_manifest.DrainTimeout.test_drain_applies_at_close_only) ... ok
+test_flush_and_close_reject_instead_of_silently_clamping (test_manifest.DrainTimeout.test_flush_and_close_reject_instead_of_silently_clamping) ... ok
+test_validated_ceiling_is_explicit_and_documented (test_manifest.DrainTimeout.test_validated_ceiling_is_explicit_and_documented) ... ok
+test_complete_partial_and_absent_survive_the_wire (test_manifest.RealIntake.test_complete_partial_and_absent_survive_the_wire) ... ok
+test_manifest_off_installs_nothing_and_bytes_are_unchanged (test_manifest.WirePaths.test_manifest_off_installs_nothing_and_bytes_are_unchanged) ... ok
+test_manifest_span_is_a_non_root_child_inside_the_run_interval (test_manifest.WirePaths.test_manifest_span_is_a_non_root_child_inside_the_run_interval) ... ok
+test_ordinary_run_items_carry_no_ledger_and_no_extra_spans_when_off (test_manifest.WirePaths.test_ordinary_run_items_carry_no_ledger_and_no_extra_spans_when_off) ... ok
+test_before_queue_redaction_and_default_off (test_privacy.Privacy.test_before_queue_redaction_and_default_off) ... ok
+test_exception_identity_and_message_not_buffered (test_privacy.Privacy.test_exception_identity_and_message_not_buffered) ... ok
+test_hmac_and_artifact_policy (test_privacy.Privacy.test_hmac_and_artifact_policy) ... ok
+test_method_fields_obey_profile_policy_without_mutating_host (test_privacy.Privacy.test_method_fields_obey_profile_policy_without_mutating_host) ... ok
+test_real_probe_intake_and_log_raw_copies (test_privacy.Privacy.test_real_probe_intake_and_log_raw_copies) ... ERROR
+test_unknown_versions_and_invalid_policy (test_privacy.Privacy.test_unknown_versions_and_invalid_policy) ... ok
+test_function_static_and_class_method_wire_values_match (test_probe_usability.Methods.test_function_static_and_class_method_wire_values_match) ... ok
+test_methods_identity_snapshot_and_default_receiver_off (test_probe_usability.Methods.test_methods_identity_snapshot_and_default_receiver_off) ... ok
+test_super_exception_is_not_caught_or_retried_by_probe (test_probe_usability.Methods.test_super_exception_is_not_caught_or_retried_by_probe) ... ok
+test_super_is_one_outer_decision (test_probe_usability.Methods.test_super_is_one_outer_decision) ... ok
+test_unsupported_specific_reasons_without_property_execution (test_probe_usability.Methods.test_unsupported_specific_reasons_without_property_execution) ... ok
+test_direct_argv_zero_capture_preflight_and_restoration (test_probe_usability.Runner.test_direct_argv_zero_capture_preflight_and_restoration) ... ok
+test_preflight_reports_unsupported_without_target_execution (test_probe_usability.Runner.test_preflight_reports_unsupported_without_target_execution) ... ok
+test_real_binary_strict_argparse_and_runs_list (test_probe_usability.Runner.test_real_binary_strict_argparse_and_runs_list) ... ok
+test_calibration_bounded_samples_and_thread_exclusion (test_profile_phases.ProfilingTests.test_calibration_bounded_samples_and_thread_exclusion) ... ok
+test_exception_identity_and_cleanup (test_profile_phases.ProfilingTests.test_exception_identity_and_cleanup) ... ok
+test_harness_development_only_and_summary (test_profile_phases.ProfilingTests.test_harness_development_only_and_summary) ... ok
+test_original_classes_untouched (test_profile_phases.ProfilingTests.test_original_classes_untouched) ... ok
+test_raw_analysis_retains_negative_corrections_and_merges_intervals (test_profile_phases.ProfilingTests.test_raw_analysis_retains_negative_corrections_and_merges_intervals) ... ok
+test_reporting_uses_one_observation_snapshot (test_profile_phases.ProfilingTests.test_reporting_uses_one_observation_snapshot) ... ok
+test_wire_snapshot_and_privacy_equivalence (test_profile_phases.ProfilingTests.test_wire_snapshot_and_privacy_equivalence) ... ok
+test_accounting_identity_with_concurrent_producers (test_queue_bound.QueueBound.test_accounting_identity_with_concurrent_producers) ... ok
+test_bound_by_bytes (test_queue_bound.QueueBound.test_bound_by_bytes) ... ok
+test_bound_by_items (test_queue_bound.QueueBound.test_bound_by_items) ... ok
+test_caller_never_blocks_when_full_and_worker_is_stalled (test_queue_bound.QueueBound.test_caller_never_blocks_when_full_and_worker_is_stalled) ... ok
+test_cli_requires_both_bounds (test_queue_bound.QueueBound.test_cli_requires_both_bounds) ... ok
+test_default_behavior_unchanged (test_queue_bound.QueueBound.test_default_behavior_unchanged) ... ok
+test_estimate_is_deterministic_and_counts_payload (test_queue_bound.QueueBound.test_estimate_is_deterministic_and_counts_payload) ... ok
+test_in_flight_batch_counts_toward_the_bound (test_queue_bound.QueueBound.test_in_flight_batch_counts_toward_the_bound) ... ok
+test_limits_replace_capacity_and_validate (test_queue_bound.QueueBound.test_limits_replace_capacity_and_validate) ... ok
+test_otlp_bytes_unchanged_by_the_bound (test_queue_bound.QueueBound.test_otlp_bytes_unchanged_by_the_bound) ... ok
+test_real_decision_span_is_sized_and_released (test_queue_bound.QueueBound.test_real_decision_span_is_sized_and_released) ... ok
+test_single_oversized_span_is_a_visible_byte_drop (test_queue_bound.QueueBound.test_single_oversized_span_is_a_visible_byte_drop) ... ok
+test_private_copy_is_wire_identical_on_fixed_record (test_real_case_diagnostic.Diagnostic.test_private_copy_is_wire_identical_on_fixed_record) ... ok
+test_scope_preserves_exception_and_bounded_aggregate (test_real_case_diagnostic.Diagnostic.test_scope_preserves_exception_and_bounded_aggregate) ... ok
+test_cooldown_does_not_discard_queued_batches (test_recorder_retry.ExplicitAcceptance.test_cooldown_does_not_discard_queued_batches) ... ok
+test_duplicate_delivery_is_idempotent_after_lost_ack (test_recorder_retry.ExplicitAcceptance.test_duplicate_delivery_is_idempotent_after_lost_ack) ... ok
+test_encode_and_terminal_rejection_are_not_retried (test_recorder_retry.RetryLifecycle.test_encode_and_terminal_rejection_are_not_retried) ... ok
+test_saturation_and_flush_unknown_are_exact (test_recorder_retry.RetryLifecycle.test_saturation_and_flush_unknown_are_exact) ... ok
+test_stuck_network_has_total_deadline_and_bounded_threads (test_recorder_retry.RetryLifecycle.test_stuck_network_has_total_deadline_and_bounded_threads) ... ok
+test_sustained_outage_retry_bound_and_unknown (test_recorder_retry.RetryLifecycle.test_sustained_outage_retry_bound_and_unknown) ... ok
+test_transient_failure_recovers_once_with_same_batch (test_recorder_retry.RetryLifecycle.test_transient_failure_recovers_once_with_same_batch) ... ok
+test_admission_fixture_has_independent_boolean_and_bounds_cases (test_relations_fixture.RelationFixtureTests.test_admission_fixture_has_independent_boolean_and_bounds_cases) ... ok
+test_minority_violation_is_independent_of_flag (test_relations_fixture.RelationFixtureTests.test_minority_violation_is_independent_of_flag) ... ok
+test_blocked_worker_does_not_block_host_or_context_exit (test_safety.BlockedExporter.test_blocked_worker_does_not_block_host_or_context_exit) ... ok
+test_capture_failure_never_changes_host_behavior (test_safety.ExtraSafety.test_capture_failure_never_changes_host_behavior) ... ok
+test_fixed_cost_payload (test_safety.ExtraSafety.test_fixed_cost_payload) ... ok
+test_zero_source_changes_and_all_envelope_fields_match_go (test_safety.FrameReference.test_zero_source_changes_and_all_envelope_fields_match_go) ... ok
+test_real_intake_decodes_probed_otlp_and_lineage (test_safety.Intake.test_real_intake_decodes_probed_otlp_and_lineage) ... ok
+test_reload_is_reported_and_doctor_memory_stays_bounded (test_safety.ReloadBound.test_reload_is_reported_and_doctor_memory_stays_bounded) ... ok
+test_config_capture_off_and_unknown_keys_rejected (test_safety.Safety.test_config_capture_off_and_unknown_keys_rejected) ... ok
+test_default_capture_off_and_snapshot_before_mutation (test_safety.Safety.test_default_capture_off_and_snapshot_before_mutation) ... ok
+test_exit_has_no_flush_join_or_network_and_full_queue_no_wait (test_safety.Safety.test_exit_has_no_flush_join_or_network_and_full_queue_no_wait) ... ok
+test_invalid_values_do_not_raise_or_call_user_hooks (test_safety.Safety.test_invalid_values_do_not_raise_or_call_user_hooks) ... ok
+test_original_exception_and_context_cleanup (test_safety.Safety.test_original_exception_and_context_cleanup) ... ok
+test_overflow_and_bounded_memory (test_safety.Safety.test_overflow_and_bounded_memory) ... ok
+test_server_down_cooldown_preserves_admitted_items_without_host_wait (test_safety.Safety.test_server_down_cooldown_preserves_admitted_items_without_host_wait) ... ok
+test_unsupported_and_import_hook_doctor (test_safety.Safety.test_unsupported_and_import_hook_doctor) ... ok
+test_installed_http_and_logging_integrations (test_safety.StandardOtel.test_installed_http_and_logging_integrations) ... ok
+test_real_intake_fixture_a_b_and_all_evidence_anchors (test_trace_cli.TraceCLI.test_real_intake_fixture_a_b_and_all_evidence_anchors) ... ok
+test_bounds_and_exception_identity (test_tuple_sampling.TupleSampling.test_bounds_and_exception_identity) ... ok
+test_config_validates_sampling_and_allowlists (test_tuple_sampling.TupleSampling.test_config_validates_sampling_and_allowlists) ... ok
+test_default_capture_off (test_tuple_sampling.TupleSampling.test_default_capture_off) ... ok
+test_default_off_empty_allowlist_and_nonsequence_cannot_leak (test_tuple_sampling.TupleSampling.test_default_off_empty_allowlist_and_nonsequence_cannot_leak) ... ok
+test_element_drop_exit_five_real_serve (test_tuple_sampling.TupleSampling.test_element_drop_exit_five_real_serve) ... ok
+test_element_failures_are_visible_and_do_not_discard_record (test_tuple_sampling.TupleSampling.test_element_failures_are_visible_and_do_not_discard_record) ... ok
+test_every_nth_only_and_bounded_per_run_reporting (test_tuple_sampling.TupleSampling.test_every_nth_only_and_bounded_per_run_reporting) ... ok
+test_index_allowlist_on_plain_tuple_and_depth_unknown (test_tuple_sampling.TupleSampling.test_index_allowlist_on_plain_tuple_and_depth_unknown) ... ok
+test_index_and_field_allowlists_default_off (test_tuple_sampling.TupleSampling.test_index_and_field_allowlists_default_off) ... ok
+test_no_user_hooks_and_numpy_array_reason (test_tuple_sampling.TupleSampling.test_no_user_hooks_and_numpy_array_reason) ... ok
+test_overflow_remains_a_drop_with_sampling (test_tuple_sampling.TupleSampling.test_overflow_remains_a_drop_with_sampling) ... ok
+test_queue_drop_exit_five (test_tuple_sampling.TupleSampling.test_queue_drop_exit_five) ... ok
+test_real_serve_sampled_steps_runs_and_trace (test_tuple_sampling.TupleSampling.test_real_serve_sampled_steps_runs_and_trace) ... ok
+test_sampling_is_before_serialization_and_resets_per_run (test_tuple_sampling.TupleSampling.test_sampling_is_before_serialization_and_resets_per_run) ... ok
+test_tuple_namedtuple_snapshot_and_identity (test_tuple_sampling.TupleSampling.test_tuple_namedtuple_snapshot_and_identity) ... ok
+
+======================================================================
+ERROR: test_real_probe_intake_and_log_raw_copies (test_privacy.Privacy.test_real_probe_intake_and_log_raw_copies)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\tests\test_privacy.py", line 124, in test_real_probe_intake_and_log_raw_copies
+    urllib.request.urlopen(blocked, timeout=5)
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 1373, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\urllib\request.py", line 1348, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\adapters\provenance-python\export_diagnostics.py", line 31, in call
+    result = original(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yiche\telemetry-project\.cache\uv-python\cpython-3.12.12-windows-x86_64-none\Lib\socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+----------------------------------------------------------------------
+Ran 119 tests in 16.470s
+
+FAILED (errors=1)

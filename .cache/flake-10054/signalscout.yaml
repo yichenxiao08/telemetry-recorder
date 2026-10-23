@@ -1,0 +1,13 @@
+version: 1
+synthetic_only: true
+endpoint: http://127.0.0.1:4318
+service: synthetic.privacy10054
+capture_policy: policy.json
+capture_profile: synthetic
+probes:
+  - module: flake10054_harness
+    function: main
+    capture: {}
+  - module: flake10054_harness
+    function: test_urlopen
+    capture: {}
