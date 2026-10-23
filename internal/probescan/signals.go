@@ -159,5 +159,11 @@ func (r Report) Text() string {
 			}
 		}
 	}
+	if len(r.ProbeCommand) > 0 {
+		fmt.Fprintln(&b, "Working probe command (template; --doctor is required; replace placeholders):")
+		for _, line := range r.ProbeCommand {
+			fmt.Fprintln(&b, line)
+		}
+	}
 	return b.String()
 }

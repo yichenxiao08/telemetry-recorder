@@ -13,3 +13,7 @@ Candidate retains every existing key and adds details (array of Signal), score, 
 The original fixed parser remains for parse-only tests. CLI analysis uses a fixed embedded AST program with 4 MiB output cap and 256 candidate entries per file, reporting omitted counts; failures remain errors. Module resolution is relative to explicit --import-root, otherwise root-level modules and uninterrupted __init__.py package chains only. Ambiguous src/namespace layouts have no selector. No new top-level keys were introduced.
 
 Hot candidates additionally expose advice (string), carrying the same INCOMPLETE sampling, unknown-unsampled and optional paired queue/memory warning as text, including unsupported hot call sites.
+
+## Additive step 5 field
+
+probe_command is an array of PowerShell instruction lines using the shared doctor renderer. CLI text prints the same array under a heading stating that --doctor is required. Existing fields and schema_version 1 remain unchanged. Parse-only library reports default to an empty array; CLI reports include the block with explicit unresolved-path placeholders. Rendering is static inspection only; the AST parser retains its existing subprocess behavior.

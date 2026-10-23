@@ -3,6 +3,7 @@ package doctor
 import (
 	"context"
 	"encoding/json"
+	"github.com/signalscout/signalscout/internal/probetemplate"
 	"path/filepath"
 	"strings"
 	"time"
@@ -55,20 +56,11 @@ sys.path.insert(0, os.getcwd())
 print(json.dumps({"found": importlib.util.find_spec("scout_probe") is not None}))`
 }
 
-func pythonInvocation(p Python) string {
-	return "& " + quote(p.Command) + " " + strings.Join(appendArgs(p.Arguments, "-E", "-s", "-B", "-m", "scout_probe"), " ")
+func templateContext(p Python) probetemplate.Context {
+	return probetemplate.Context{Python: p.Command, Adapter: p.Adapter, Arguments: p.Arguments}
 }
-
-func probeBlock(p Python, call string) []string {
-	return []string{"Push-Location -LiteralPath " + quote(p.Adapter), "try {", "  " + pythonInvocation(p) + " " + call, "  $probeExit = $LASTEXITCODE", "} finally {", "  Pop-Location", "}"}
-}
-
-func WorkingProbeCommand(p Python) []string {
-	if p.Command == "" {
-		return []string{"# Select a working Python and adapter before using the probe command template."}
-	}
-	return probeBlock(p, "--config '<absolute-config-path>' --doctor '<new-probe-doctor-json-path>' --path '<absolute-target-directory>' --manifest --drain-timeout 30 'module:function' -- '<target-arguments>'")
-}
+func probeBlock(p Python, call string) []string { return probetemplate.Block(templateContext(p), call) }
+func WorkingProbeCommand(p Python) []string     { return probetemplate.Render(templateContext(p)) }
 
 func absolutePython(path string) string {
 	if path == "" {

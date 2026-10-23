@@ -46,6 +46,7 @@ type Limits struct {
 	MaxBytes int64 `json:"max_bytes"`
 }
 type Report struct {
+	ProbeCommand  []string    `json:"probe_command"`
 	SchemaVersion int         `json:"schema_version"`
 	Candidates    []Candidate `json:"candidates"`
 	Unresolved    []Candidate `json:"unresolved"`
@@ -102,7 +103,7 @@ func (b *bounded) Write(p []byte) (int, error) {
 }
 
 func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
-	r := Report{SchemaVersion: 1, Candidates: []Candidate{}, Unresolved: []Candidate{}, Exclusions: []Entry{}, Errors: []Entry{}, Truncations: []Entry{}, Limits: o.Limits}
+	r := Report{ProbeCommand: []string{}, SchemaVersion: 1, Candidates: []Candidate{}, Unresolved: []Candidate{}, Exclusions: []Entry{}, Errors: []Entry{}, Truncations: []Entry{}, Limits: o.Limits}
 	if o.Limits.MaxFiles < 1 || o.Limits.MaxFiles > 2000 || o.Limits.MaxBytes < 1 || o.Limits.MaxBytes > 20000000 {
 		return r, fmt.Errorf("bounds must be positive and at most 2000 files / 20000000 bytes")
 	}
