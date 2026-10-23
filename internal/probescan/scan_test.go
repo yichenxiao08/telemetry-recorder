@@ -70,7 +70,7 @@ func TestJSONKeys(t *testing.T) {
 	b, _ := json.Marshal(r)
 	var m map[string]json.RawMessage
 	_ = json.Unmarshal(b, &m)
-	want := []string{"schema_version", "candidates", "unresolved", "coverage", "exclusions", "errors", "truncations", "limits"}
+	want := []string{"schema_version", "candidates", "unresolved", "coverage", "exclusions", "errors", "truncations", "limits", "probe_command"}
 	if len(m) != len(want) {
 		t.Fatal(m)
 	}

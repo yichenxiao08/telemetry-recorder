@@ -13,7 +13,7 @@ import (
 func newProbeCommand() *cobra.Command {
 	p := &cobra.Command{Use: "probe"}
 	var o probescan.Options
-	var output string
+	var output, adapter string
 	c := &cobra.Command{Use: "scan", Short: "Suggest functions worth probing from Python syntax", Args: cobra.NoArgs, RunE: func(c *cobra.Command, _ []string) error {
 		if o.Limit < 1 || o.Limit > 200 {
 			return fmt.Errorf("candidate limit must be 1..200")
@@ -34,6 +34,7 @@ func newProbeCommand() *cobra.Command {
 		if e != nil {
 			return e
 		}
+		r.ProbeCommand = probescan.CommandTemplate(r, o.Root, o.ImportRoot, adapter, o.Python)
 		b, e := json.MarshalIndent(r, "", "  ")
 		if e != nil {
 			return e
@@ -63,6 +64,7 @@ func newProbeCommand() *cobra.Command {
 	c.Flags().StringVar(&output, "json", "", "Write JSON to a new path")
 	c.Flags().IntVar(&o.Limit, "limit", 20, "Maximum candidates per section (cap 200)")
 	c.Flags().StringVar(&o.ImportRoot, "import-root", "", "Explicit Python import root for ambiguous layouts")
+	c.Flags().StringVar(&adapter, "adapter", "adapters/provenance-python", "Probe adapter directory for printed instructions (not executed)")
 	p.AddCommand(c)
 	return p
 }
