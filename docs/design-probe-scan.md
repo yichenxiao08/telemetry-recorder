@@ -56,6 +56,8 @@ Before scanning any evaluation project, commit scanner source hash, rules, fixtu
 
 ## Known weaknesses
 
+Scores cluster at 1 to 2. Ties are broken by path and line (then qualified name), so top-N membership within a tie is arbitrary with respect to any bug. A good top-20 result must be read with the tie counts.
+
 Enumeration has no hard memory or time bound before caps apply. File and byte caps bound source reads; walking and collecting eligible paths can still consume unbounded time and memory on a sufficiently large tree.
 
 Static syntax cannot identify runtime ownership, actual call frequency or which boundary carries useful evidence. Dynamic Python, aliases and dependencies can defeat resolution. More signals may merely select larger stateful functions. Candidate recall does not show that recording those boundaries explains a failure. Default-off capture still requires developer choices and may omit necessary fields. Source paths and identifiers can themselves be sensitive; keep output local and explicitly exclude private trees.
