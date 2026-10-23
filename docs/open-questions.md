@@ -725,3 +725,37 @@ projects or evaluation reports.
    its lookup and help checks do not prove that capture works.
 6. Honest read: the tool records and compares well. It has never located a
    planted cause that a reader could not find from source.
+
+# Run 5 evaluation and next steps — 2026-10-23
+
+These notes record the supplied run 5 evaluation facts. No blind-test project
+or report was read for this entry.
+
+1. Run 5 (kitcheck, seed 42, 100 runs) was planted by a fresh planter. The
+   symptom reproduces through the documented command in 19 of 100 runs (19%),
+   identically on repeat, within the required 10–25% window. The project has
+   9 files. Answer hash: `eb74d8ae9d327fc3b21a550dc40ac5601d5df203395a8842177c7dca71667ec1`.
+2. The baseline named the cause in 5 of 150 commands: a position in the
+   SKU-sorted plan was reused as an index into the original cart, across
+   fulfillment and inventory. The official grader result is Found. The baseline
+   named the answer's function or input: yes. The gate fails because the bug was
+   too easy. The tester run was not spent.
+3. Runs 2, 4 and 5 were each found by a code-reading baseline in 5 or 6
+   commands. All three bugs were wrong-index, wrong-key or wrong-state bugs
+   readable in one pass. Spreading run 5's cause across modules did not make it
+   harder: the baseline read all files in a single command. Run 3 was invalid.
+   The planter constraint list, rather than chance, is the likely cause of this
+   pattern.
+4. Stop planting synthetic bugs with Codex. The next evaluation will use real
+   bugs from BugsInPy, prepared by a fresh preparer chat. Public bugs may be
+   recalled by a model rather than found by reading; record this caveat with any
+   result. BugsInPy bugs ship with failing unit tests rather than documented
+   seeded run commands, so a driver must be written. Its scripts assume Linux
+   and conda, so some bugs will not run natively on Windows. The buggy function
+   must be probeable.
+5. The probe scan evaluation (step 6) and scanner source freeze are on hold
+   until a project passes the baseline gate. Scanner hashes are not yet frozen
+   for an evaluation.
+6. Honest read, unchanged: the tool records and compares well. It has never
+   located a planted cause that a reader could not find from source, and the
+   hard-bug question is untested.
