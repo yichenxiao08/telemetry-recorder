@@ -140,6 +140,6 @@ func newReportCommand(database *string) *cobra.Command {
 	build.Flags().BoolVar(&buildJSON, "json", false, "Structured report")
 	verify.Flags().StringVar(&input, "input", "", "Report JSON to verify against the store")
 	verify.Flags().BoolVar(&verifyJSON, "json", false, "Per-claim results and report-level rates")
-	root.AddCommand(build, verify)
+	root.AddCommand(build, verify, newProposeCommand())
 	return root
 }
