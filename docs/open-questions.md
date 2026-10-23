@@ -698,3 +698,30 @@ Owner-accepted choices (synthetic/development data only; no migration; legacy co
   stable schema-one check IDs and the same working-directory convention. Always
   use selected Python in the synthetic example, even if uv exists, so a different
   manager-selected environment cannot silently replace the interpreter checked.
+
+# Blind evaluation lessons — 2026-10-23
+
+These notes record the owner's supplied evaluation summary, without reading the
+projects or evaluation reports.
+
+1. Run 2 (mutable default argument): capture worked, 80/80 runs, zero drops.
+   Provisional Hit. A code-reading baseline found the cause in 6 commands; the
+   bug was easy. Hit with generous attribution; the tool did not beat the baseline.
+2. Run 3 (inventory replenishment): INVALID. The documented run command never
+   reproduces the symptom: all 60 CLI runs gave identical totals. It must not
+   count for or against the tool. The gate result for run 3 is also in doubt for
+   the same reason.
+3. Run 4 (retrybench, seed 41, 80 runs): the symptom reproduces through the
+   documented command in 12 of 80 runs (15%). The baseline reported Found in
+   6 of 150 commands: a cache key omits a value the calculation depends on.
+   The grader's confirmation is pending; this is the baseline's self-report.
+   The bug is too easy, the gate fails, and the tester run was not spent.
+4. Two planted bugs in a row (runs 2 and 4) were single-shared-object, cross-call
+   state bugs readable from one pass over the source. A harder bug needs a
+   non-local cause. The hard-bug question remains untested.
+5. Doctor did not check that scout_probe was importable from the working
+   directory. This was fixed in PR #19, which was not yet merged at the time of
+   the supplied lesson summary. PR #19 is merged in this entry's branch base;
+   its lookup and help checks do not prove that capture works.
+6. Honest read: the tool records and compares well. It has never located a
+   planted cause that a reader could not find from source.
