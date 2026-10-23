@@ -1,0 +1,1 @@
+time=2026-10-23T17:09:21.647-04:00 level=INFO msg="OTLP and viewer HTTP listening" address=127.0.0.1:59122 viewer=http://127.0.0.1:59122/runs database=C:\Users\yiche\telemetry-project\.cache\flake-10054-r2\phase3\recordings.db queue_size=64
