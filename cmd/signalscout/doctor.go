@@ -41,7 +41,8 @@ func doctorCommand(database *string, environment doctor.Environment) *cobra.Comm
 					return fmt.Errorf("JSON output must differ from the database path")
 				}
 			}
-			ctx, cancel := context.WithTimeout(cmd.Context(), 35*time.Second)
+			// Eight Python subprocesses have individual five-second deadlines.
+			ctx, cancel := context.WithTimeout(cmd.Context(), 55*time.Second)
 			defer cancel()
 			result := doctor.Inspect(ctx, options, environment)
 			if _, err := fmt.Fprint(cmd.OutOrStdout(), result.Text()); err != nil {

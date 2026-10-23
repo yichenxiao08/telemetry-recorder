@@ -13,7 +13,7 @@ import (
 )
 
 func SystemEnvironment() Environment {
-	return Environment{Lookup: exec.LookPath, Run: runCommand, Executable: os.Executable, Version: buildVersion(), Stat: os.Stat,
+	return Environment{Lookup: exec.LookPath, Run: runCommand, RunIn: runCommandIn, Cwd: os.Getwd, Executable: os.Executable, Version: buildVersion(), Stat: os.Stat,
 		Writable: func(path string) error {
 			f, err := os.OpenFile(path, os.O_RDWR, 0)
 			if err != nil {
@@ -52,9 +52,14 @@ func buildVersion() string {
 // Bounded output and deadlines prevent an unhealthy interpreter from flooding
 // diagnostics or waiting indefinitely. Stderr and unparsed output are not shown.
 func runCommand(ctx context.Context, path string, args []string) (string, error) {
+	return runCommandIn(ctx, path, args, "")
+}
+
+func runCommandIn(ctx context.Context, path string, args []string, dir string) (string, error) {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, path, args...)
+	cmd.Dir = dir
 	cmd.WaitDelay = time.Second
 	var output boundedOutput
 	cmd.Stdout = &output
@@ -62,6 +67,9 @@ func runCommand(ctx context.Context, path string, args []string) (string, error)
 	err := cmd.Run()
 	if output.overflow {
 		return "", fmt.Errorf("diagnostic output exceeded limit")
+	}
+	if err != nil {
+		return "", err
 	}
 	return output.text.String(), err
 }

@@ -27,6 +27,8 @@ type Options struct{ Database, Adapter, Python, Listen string }
 type Environment struct {
 	Lookup     func(string) (string, error)
 	Run        func(context.Context, string, []string) (string, error)
+	RunIn      func(context.Context, string, []string, string) (string, error)
+	Cwd        func() (string, error)
 	Executable func() (string, error)
 	Version    string
 	Stat       func(string) (os.FileInfo, error)
@@ -137,7 +139,7 @@ func Inspect(ctx context.Context, o Options, e Environment) Report {
 	if info, statErr := e.Stat(filepath.Join(adapter, "scout_probe.py")); statErr != nil || !info.Mode().IsRegular() {
 		add("adapter", Fail, "Probe adapter scout_probe.py is missing or inaccessible: "+adapter, "Pass --adapter <directory> for this repository's adapters/provenance-python.")
 	} else {
-		add("adapter", Pass, "Probe adapter file is present: "+adapter+"; it was not imported or executed.", "")
+		add("adapter", Pass, "Probe adapter file is present: "+adapter+"; lookup and help are checked separately.", "")
 	}
 	selected := o.Python
 	if selected != "" {
@@ -153,6 +155,7 @@ func Inspect(ctx context.Context, o Options, e Environment) Report {
 	} else {
 		selected = available["python"]
 	}
+	selected = absolutePython(selected)
 	r.Python.Command = selected
 	add("python.recommendation", Pass, r.Python.Recommendation, "uv sync --project "+quote(adapter)+" --python "+PinnedPython+" --frozen")
 	ready := false
@@ -209,7 +212,8 @@ func Inspect(ctx context.Context, o Options, e Environment) Report {
 	} else {
 		add("port", Pass, o.Listen+" could be bound and was immediately released; availability can change.", "")
 	}
-	r.Examples = Examples(r.Binary.Path, adapter, o.Listen)
+	probeChecks(ctx, r.Python, ready, e, add)
+	r.Examples = Examples(r.Binary.Path, r.Python, o.Listen)
 	return r
 }
 
@@ -284,28 +288,40 @@ print(json.dumps(results))`
 }
 
 // Examples are instructions only. No target or probe is executed by doctor.
-func Examples(binary, adapter, address string) []string {
+func Examples(binary string, python Python, address string) []string {
 	if binary == "" {
 		binary = "signalscout"
 	}
 	if !validAddress(address) {
 		address = "127.0.0.1:4318"
 	}
-	return []string{
+	lines := []string{"Working probe command (template; replace placeholders and fix failed checks first):"}
+	lines = append(lines, WorkingProbeCommand(python)...)
+	lines = append(lines,
+		"# PowerShell may show probe stderr as a red error; judge $probeExit and the printed probe summary.",
+		"# For hot functions, --queue-max-items and --queue-max-bytes are optional and must be supplied together; they do not guarantee delivery.",
+		"# Complex return objects can fail capture (drop_invalid); explicitly allowlisted scalars are safer. Help/import checks do not prove capture.",
+		"PowerShell example:",
 		"# Synthetic example only. Run these yourself; doctor ran none of them.",
 		"$demo = Join-Path ([IO.Path]::GetTempPath()) ('signalscout-example-' + [guid]::NewGuid())",
 		"New-Item -ItemType Directory -Path $demo | Out-Null",
 		"$db = Join-Path $demo 'example.db'",
 		"New-Item -ItemType File -Path $db | Out-Null",
 		"Set-Content -Path (Join-Path $demo 'scout_example.py') -Encoding ascii -Value 'def main(): return 1 + 1'",
-		"@'\nversion: 1\nsynthetic_only: true\nendpoint: http://" + address + "\nservice: synthetic.doctor\nprobes:\n  - module: scout_example\n    function: main\n    capture:\n      return: true\n'@ | Set-Content -Path (Join-Path $demo 'signalscout.yaml') -Encoding ascii",
+		"@'\nversion: 1\nsynthetic_only: true\nendpoint: http://"+address+"\nservice: synthetic.doctor\nprobes:\n  - module: scout_example\n    function: main\n    capture:\n      return: true\n'@ | Set-Content -Path (Join-Path $demo 'signalscout.yaml') -Encoding ascii",
 		"# Copy the next command's OUTPUT into a second PowerShell window; leave serve running:",
-		"Write-Output (" + quote("& "+quote(binary)+" --db '") + " + $db.Replace(\"'\", \"''\") + " + quote("' serve --listen "+quote(address)+" --retention 0") + ")",
-		"# Back in this window after serve is listening (uv setup from the adapter README is required):",
-		"uv run --directory " + quote(adapter) + " --frozen python -m scout_probe --config (Join-Path $demo 'signalscout.yaml') --path $demo --manifest --drain-timeout 30 scout_example:main",
-		"& " + quote(binary) + " --db $db runs list",
-		"# These checks establish dependency/path readiness only, not successful probe capture or analysis.",
+		"Write-Output ("+quote("& "+quote(binary)+" --db '")+" + $db.Replace(\"'\", \"''\") + "+quote("' serve --listen "+quote(address)+" --retention 0")+")",
+		"# Back in this window after serve is listening, use the selected Python:",
+	)
+	if python.Command != "" {
+		lines = append(lines, probeBlock(python, "--config (Join-Path $demo 'signalscout.yaml') --doctor (Join-Path $demo 'probe-doctor.json') --path $demo --manifest --drain-timeout 30 scout_example:main --")...)
+	} else {
+		lines = append(lines, "# Select a working Python before launching this synthetic example.")
 	}
+	return append(lines,
+		"& "+quote(binary)+" --db $db runs list",
+		"# These checks establish dependency/path readiness only, not successful probe capture or analysis.",
+	)
 }
 
 func (r Report) Text() string {
@@ -319,7 +335,6 @@ func (r Report) Text() string {
 	}
 	fmt.Fprintf(&b, "Summary: %d PASS, %d WARN, %d FAIL\n", r.Summary.Pass, r.Summary.Warn, r.Summary.Fail)
 	fmt.Fprintln(&b, "Checks do not prove probe capture or analysis; no server or recording was started.")
-	fmt.Fprintln(&b, "PowerShell example:")
 	for _, line := range r.Examples {
 		fmt.Fprintln(&b, line)
 	}

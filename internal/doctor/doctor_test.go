@@ -16,6 +16,8 @@ func fakeEnvironment(t *testing.T) Environment {
 	dir := t.TempDir()
 	return Environment{
 		Lookup: func(name string) (string, error) { return name, nil },
+		Cwd:    func() (string, error) { return dir, nil },
+		RunIn:  func(context.Context, string, []string, string) (string, error) { return `{"found":true}`, nil },
 		Run: func(_ context.Context, name string, args []string) (string, error) {
 			if args[len(args)-1] == "--version" {
 				if name == "uv" {
@@ -231,7 +233,7 @@ func TestStableSchema(t *testing.T) {
 			t.Fatal(key)
 		}
 	}
-	if r.Summary.Fail != 0 || !reflect.DeepEqual(r.Examples, Examples(r.Binary.Path, r.Python.Adapter, "127.0.0.1:4318")) {
+	if r.Summary.Fail != 0 || !reflect.DeepEqual(r.Examples, Examples(r.Binary.Path, r.Python, "127.0.0.1:4318")) {
 		t.Fatal("unexpected summary/examples")
 	}
 }
@@ -320,7 +322,7 @@ func TestSelectedInterpreterAndImports(t *testing.T) {
 			r := Inspect(context.Background(), o, e)
 			want := venv
 			if explicit {
-				want = "chosen"
+				want = absolutePython("chosen")
 			}
 			if used != want || r.Python.Command != want {
 				t.Fatalf("got %q, want %q", used, want)
