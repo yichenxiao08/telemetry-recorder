@@ -14,7 +14,10 @@ func newProbeCommand() *cobra.Command {
 	p := &cobra.Command{Use: "probe"}
 	var o probescan.Options
 	var output string
-	c := &cobra.Command{Use: "scan", Short: "Enumerate and parse Python source; candidate detection is not implemented", Args: cobra.NoArgs, RunE: func(c *cobra.Command, _ []string) error {
+	c := &cobra.Command{Use: "scan", Short: "Suggest functions worth probing from Python syntax", Args: cobra.NoArgs, RunE: func(c *cobra.Command, _ []string) error {
+		if o.Limit < 1 || o.Limit > 200 {
+			return fmt.Errorf("candidate limit must be 1..200")
+		}
 		if o.Python == "" {
 			o.Python = filepath.FromSlash("adapters/provenance-python/.venv/Scripts/python.exe")
 			if _, e := os.Stat(o.Python); e != nil {
@@ -26,6 +29,7 @@ func newProbeCommand() *cobra.Command {
 			}
 			o.Python = path
 		}
+		o.Analyze = probescan.PythonAnalyzer(o.Python)
 		r, e := probescan.Scan(c.Context(), o, probescan.PythonParser(o.Python))
 		if e != nil {
 			return e
@@ -48,7 +52,7 @@ func newProbeCommand() *cobra.Command {
 				return ce
 			}
 		}
-		_, e = fmt.Fprintf(c.OutOrStdout(), "Parsed %d/%d eligible files; read %d bytes. Complete: %t. Excluded: %d; errors: %d; truncated: %d.\nCandidates: 0 (signal detection is not implemented).\n", r.Coverage.Parsed, r.Coverage.Eligible, r.Coverage.Bytes, r.Coverage.Complete, len(r.Exclusions), len(r.Errors), len(r.Truncations))
+		_, e = fmt.Fprint(c.OutOrStdout(), r.Text())
 		return e
 	}}
 	c.Flags().StringVar(&o.Root, "root", ".", "Source root")
@@ -57,6 +61,8 @@ func newProbeCommand() *cobra.Command {
 	c.Flags().Int64Var(&o.Limits.MaxBytes, "max-bytes", 20000000, "Maximum source bytes read (cap 20000000)")
 	c.Flags().StringSliceVar(&o.Exclude, "exclude", nil, "Root-relative excluded paths")
 	c.Flags().StringVar(&output, "json", "", "Write JSON to a new path")
+	c.Flags().IntVar(&o.Limit, "limit", 20, "Maximum candidates per section (cap 200)")
+	c.Flags().StringVar(&o.ImportRoot, "import-root", "", "Explicit Python import root for ambiguous layouts")
 	p.AddCommand(c)
 	return p
 }

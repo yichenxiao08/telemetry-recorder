@@ -22,6 +22,12 @@ type Candidate struct {
 	Signals           []string `json:"signals"`
 	Selector          string   `json:"selector"`
 	UnsupportedReason string   `json:"unsupported_reason"`
+	Details           []Signal `json:"details"`
+	Score             int      `json:"score"`
+	Rank              int      `json:"rank"`
+	TieCount          int      `json:"tie_count"`
+	Config            string   `json:"config"`
+	Hot               bool     `json:"hot"`
 }
 type Entry struct {
 	Path   string `json:"path"`
@@ -50,6 +56,9 @@ type Report struct {
 }
 type Options struct {
 	Root, Python string
+	ImportRoot   string
+	Limit        int
+	Analyze      Analyzer
 	Exclude      []string
 	Limits       Limits
 	Open         func(string) (*os.File, error)
@@ -95,6 +104,12 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 	r := Report{SchemaVersion: 1, Candidates: []Candidate{}, Unresolved: []Candidate{}, Exclusions: []Entry{}, Errors: []Entry{}, Truncations: []Entry{}, Limits: o.Limits}
 	if o.Limits.MaxFiles < 1 || o.Limits.MaxFiles > 2000 || o.Limits.MaxBytes < 1 || o.Limits.MaxBytes > 20000000 {
 		return r, fmt.Errorf("bounds must be positive and at most 2000 files / 20000000 bytes")
+	}
+	if o.Limit == 0 {
+		o.Limit = 20
+	}
+	if o.Limit < 1 || o.Limit > 200 {
+		return r, fmt.Errorf("candidate limit must be 1..200")
 	}
 	root, err := filepath.Abs(o.Root)
 	if err != nil {
@@ -205,12 +220,49 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 		}
 		r.Coverage.Read++
 		r.Coverage.Bytes += int64(len(b))
-		if e = parse(ctx, b); e != nil {
+		var analysis Analysis
+		if o.Analyze != nil {
+			analysis, e = o.Analyze(ctx, b)
+		} else {
+			e = parse(ctx, b)
+		}
+		if e != nil {
 			r.Errors = append(r.Errors, Entry{rel, e.Error()})
 			continue
 		}
 		r.Coverage.Parsed++
+		if analysis.Truncated > 0 {
+			r.Truncations = append(r.Truncations, Entry{rel, fmt.Sprintf("per-file analysis limit: omitted %d", analysis.Truncated)})
+		}
+		module, reason := moduleName(root, path, o.ImportRoot)
+		for _, c := range analysis.Items {
+			c.File = rel
+			c.Signals = []string{}
+			for j := range c.Details {
+				c.Details[j].File = rel
+				c.Signals = append(c.Signals, c.Details[j].Kind)
+				if c.Details[j].Kind == "loop_call_site" {
+					c.Hot = true
+				}
+			}
+			c.Score = len(c.Signals)
+			if c.UnsupportedReason == "" {
+				c.UnsupportedReason = reason
+			}
+			if c.UnsupportedReason == "" {
+				c.Selector = module + ":" + c.Function
+				c.Config = fmt.Sprintf("- module: %q\n  function: %q\n  capture: {}", module, c.Function)
+				if c.Hot {
+					c.Config += "\n  sampling: {every_nth: 25, max_per_run: 40}"
+				}
+				r.Candidates = append(r.Candidates, c)
+			} else {
+				r.Unresolved = append(r.Unresolved, c)
+			}
+		}
 	}
+	r.Coverage.Complete = len(r.Errors) == 0 && len(r.Truncations) == 0
+	finalize(&r, o.Limit)
 	r.Coverage.Complete = len(r.Errors) == 0 && len(r.Truncations) == 0
 	return r, nil
 }
