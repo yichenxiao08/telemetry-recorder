@@ -56,6 +56,8 @@ Before scanning any evaluation project, commit scanner source hash, rules, fixtu
 
 ## Known weaknesses
 
+The synthetic module_read_only.py control declares a module-level dictionary that is only read by read_only, never mutated or aliased. It still produces module_mutable_state (one point), with no other signal. This is a known false positive: the signal recognizes a mutable container declaration and reference, not observed mutation or a bug.
+
 Scores cluster at 1 to 2. Ties are broken by path and line (then qualified name), so top-N membership within a tie is arbitrary with respect to any bug. A good top-20 result must be read with the tie counts.
 
 Enumeration has no hard memory or time bound before caps apply. File and byte caps bound source reads; walking and collecting eligible paths can still consume unbounded time and memory on a sufficiently large tree.

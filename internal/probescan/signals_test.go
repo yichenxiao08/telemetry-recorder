@@ -160,3 +160,23 @@ func TestCompleteKeyAndPureLoop(t *testing.T) {
 		}
 	}
 }
+
+func TestModuleReadOnlyActualResult(t *testing.T) {
+	source, err := os.ReadFile("testdata/signals/module_read_only.py")
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := analyzerForTest(t)(context.Background(), source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Truncated != 0 || len(result.Items) != 1 {
+		t.Fatalf("unexpected result: %+v", result)
+	}
+	c := result.Items[0]
+	want := []Signal{{Kind: "module_mutable_state", Line: 5, Fact: "direct reference to module mutable name LOOKUP", Tier: "observation"}}
+	if c.Function != "read_only" || c.Line != 4 || c.UnsupportedReason != "" || !reflect.DeepEqual(c.Details, want) {
+		t.Fatalf("actual read-only control result changed: %+v", c)
+	}
+	t.Log("Known false positive: read-only module dictionary produces module_mutable_state only")
+}
