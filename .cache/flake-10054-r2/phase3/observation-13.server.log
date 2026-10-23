@@ -1,0 +1,1 @@
+time=2026-10-23T17:07:29.449-04:00 level=INFO msg="OTLP and viewer HTTP listening" address=127.0.0.1:59266 viewer=http://127.0.0.1:59266/runs database=C:\Users\yiche\AppData\Local\Temp\tmp8bp1io5t\fresh.db queue_size=64

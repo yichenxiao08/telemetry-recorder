@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "synthetic_only": true,
+  "endpoint": "http://127.0.0.1:59122",
+  "service": "synthetic.privacy10054.r2",
+  "probes": [
+    {
+      "module": "r2_capture",
+      "function": "main",
+      "capture": {
+        "return": true
+      }
+    },
+    {
+      "module": "r2_capture",
+      "function": "observe",
+      "capture": {
+        "args": [
+          "kind",
+          "port",
+          "body_bytes",
+          "status",
+          "reset",
+          "elapsed_ms"
+        ]
+      }
+    }
+  ]
+}

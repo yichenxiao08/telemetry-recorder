@@ -1,0 +1,45 @@
+{
+  "counted_runs": 79,
+  "phase1": {
+    "pass": 26,
+    "fail": 4,
+    "reset10054": 4,
+    "seconds_total": 19.40284339999198,
+    "seconds_min": 0.5674642999947537,
+    "seconds_median": 0.611081800001557,
+    "seconds_max": 1.7053799999994226
+  },
+  "phase2": {
+    "pass": 30,
+    "fail": 0,
+    "seconds_total": 18.606807599862805,
+    "seconds_min": 0.5496917999989819,
+    "seconds_median": 0.6020266000123229,
+    "seconds_max": 0.708054800023092
+  },
+  "phase3": {
+    "pass": 14,
+    "fail": 5,
+    "complete_store_manifests": 19,
+    "drained_totals": {
+      "attempted": 95,
+      "acknowledged": 95,
+      "failed": 0,
+      "dropped": 0,
+      "unknown": 0
+    },
+    "scope_tail_sent": 19,
+    "pending_runs": 0,
+    "independence": {
+      "problem_sessions": 0,
+      "reference_sessions": 0,
+      "unknown_sessions": 19
+    },
+    "explain_status": "insufficient_evidence"
+  },
+  "analysis_cli_invocations": 45,
+  "hypothesis": {
+    "utc": "2026-10-23T21:05:10.020882+00:00",
+    "sha256": "db597352410fb6f142cd8c957414d18d2c14ab0940011bda8ed74fab9a0b75b5"
+  }
+}

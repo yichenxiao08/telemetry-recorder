@@ -1,0 +1,12 @@
+{
+  "startup_ms": 192.47809998341836,
+  "ready": true,
+  "port": 59161,
+  "body_bytes": 184,
+  "status": 403,
+  "reset": false,
+  "request_ms": 15.799299988429993,
+  "failed": false,
+  "error_number": 0,
+  "test_ms": 342.6818000152707
+}

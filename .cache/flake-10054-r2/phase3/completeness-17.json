@@ -1,0 +1,22 @@
+{
+  "epoch": "d976f065228b3a2ead2f85bfbe6f5db7",
+  "scope_final": true,
+  "scope_expected": 1,
+  "listed_runs": 1,
+  "population_known": true,
+  "counts": {
+    "complete": 1,
+    "partial": 0,
+    "unknown": 0,
+    "absent": 0,
+    "unassessed": 0,
+    "partial_with_unknown": 0,
+    "lost_items": 0,
+    "unknown_items": 0,
+    "detail_loss_items": 0
+  },
+  "reasons": {
+    "complete: final marker; every selected item acknowledged": 1
+  },
+  "runs": null
+}
