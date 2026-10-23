@@ -1,0 +1,135 @@
+{
+  "privacy": "synthetic-only; explicit strict P0 policy; default OFF; no real-data authorization",
+  "probes": [
+    {
+      "module": "flake10054_harness",
+      "function": "main",
+      "status": "attached",
+      "capture": {},
+      "calls": 1,
+      "records_captured": 1,
+      "fraction": 1.0,
+      "sampling": {}
+    },
+    {
+      "module": "flake10054_harness",
+      "function": "test_urlopen",
+      "status": "attached",
+      "capture": {},
+      "calls": 2,
+      "records_captured": 2,
+      "fraction": 1.0,
+      "sampling": {}
+    }
+  ],
+  "counters": {
+    "probe_calls:flake10054_harness.main": 1,
+    "probe_runs_created": 1,
+    "probe_calls:flake10054_harness.test_urlopen": 2,
+    "serialized": 3,
+    "envelope_bytes": 2565,
+    "attempted": 4,
+    "privacy_checked_batches": 4,
+    "accepted": 4,
+    "probe_decisions_captured": 3,
+    "probe_captured:flake10054_harness.test_urlopen": 2,
+    "network_requests": 4,
+    "exported": 4,
+    "probe_captured:flake10054_harness.main": 1,
+    "acknowledged": 4,
+    "failed": 0,
+    "dropped": 0,
+    "unknown": 0,
+    "queue_size": 0,
+    "capacity": 256,
+    "cooldown_active": false,
+    "queue_high_water": 2,
+    "diagnostics": {
+      "counters_spans_except_flush_timeout": {
+        "encode_failure": 0,
+        "timeout": 0,
+        "connection_error": 0,
+        "http_non_2xx": 0,
+        "cooldown_suppressed": 0,
+        "other_failure": 0,
+        "flush_timeout": 0,
+        "cooldown_drop": 0,
+        "queue_full_drop": 0,
+        "shutdown_drop": 0,
+        "flush_drop": 0
+      },
+      "failures_by_class_spans": {},
+      "last_failures": [],
+      "failure_sample_limit": 64,
+      "worker_batch_sizes": {
+        "1": 2,
+        "2": 1
+      },
+      "last_worker_batches": [
+        {
+          "attempt_unix_ns": 1792780688246157500,
+          "elapsed_ns": 3545500,
+          "size": 1,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792780688353823300,
+          "elapsed_ns": 4655100,
+          "size": 1,
+          "outcome": "exported",
+          "queue_depth": 0
+        },
+        {
+          "attempt_unix_ns": 1792780688361197500,
+          "elapsed_ns": 2932100,
+          "size": 2,
+          "outcome": "exported",
+          "queue_depth": 0
+        }
+      ],
+      "batch_sample_limit": 256
+    },
+    "network_operation_slots": 1,
+    "retry_limit": 1,
+    "attempt_budget_seconds": 1.25,
+    "manifest": {
+      "manifests_built": 0,
+      "scope_records_built": 1,
+      "records_acked": 1,
+      "records_failed": 0,
+      "records_unknown": 0,
+      "epoch": "18a05ca3daecbfee2115a3dbcd4dbffd",
+      "expected_runs": 1,
+      "pending_runs": 1,
+      "outbox": 0,
+      "ledger_overflow": 0,
+      "population_overflow": 0,
+      "scope_tail_sent": true
+    }
+  },
+  "sampling_runs": [],
+  "sampling_runs_omitted": 0,
+  "element_reasons": {},
+  "auto_otel": {
+    "status": "disabled"
+  },
+  "elapsed_seconds": 0.35661160000017844,
+  "flush_seconds": 0.004912700009299442,
+  "drained": {
+    "attempted": 4,
+    "acknowledged": 4,
+    "failed": 0,
+    "dropped": 0,
+    "unknown": 0,
+    "drained": true,
+    "complete": true
+  },
+  "preflight": false,
+  "target_argv": [
+    "C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054\\flake10054_harness.py"
+  ],
+  "target_ran": true,
+  "records_captured": 3,
+  "runs_created": 1
+}

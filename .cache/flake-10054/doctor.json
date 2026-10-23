@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "binary": {
+    "path": "C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054\\signalscout.exe",
+    "version": "v0.0.0-20261023180356-e183e726ad29 revision=e183e726ad29f23ff36c89912493c443b1fe0fd8 modified=false"
+  },
+  "python": {
+    "command": "C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python\\.venv\\Scripts\\python.exe",
+    "arguments": [],
+    "version": "3.12.12",
+    "pinned_version": "3.12.12",
+    "recommendation": "Adapter README recommends uv with CPython 3.12.12 and --frozen (uv.lock).",
+    "adapter": "C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python"
+  },
+  "checks": [
+    {
+      "id": "binary",
+      "status": "PASS",
+      "message": "v0.0.0-20261023180356-e183e726ad29 revision=e183e726ad29f23ff36c89912493c443b1fe0fd8 modified=false; C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054\\signalscout.exe",
+      "fix": ""
+    },
+    {
+      "id": "tool.py",
+      "status": "PASS",
+      "message": "py 3.14.7; C:\\Windows\\py.exe",
+      "fix": ""
+    },
+    {
+      "id": "tool.python",
+      "status": "PASS",
+      "message": "python 3.14.7; C:\\Python314\\python.exe",
+      "fix": ""
+    },
+    {
+      "id": "tool.uv",
+      "status": "WARN",
+      "message": "uv is not on PATH.",
+      "fix": ""
+    },
+    {
+      "id": "adapter",
+      "status": "PASS",
+      "message": "Probe adapter file is present: C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python; lookup and help are checked separately.",
+      "fix": ""
+    },
+    {
+      "id": "python.recommendation",
+      "status": "PASS",
+      "message": "Adapter README recommends uv with CPython 3.12.12 and --frozen (uv.lock).",
+      "fix": "uv sync --project 'C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python' --python 3.12.12 --frozen"
+    },
+    {
+      "id": "python.selected",
+      "status": "PASS",
+      "message": "Selected C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python\\.venv\\Scripts\\python.exe ; Python 3.12.12",
+      "fix": ""
+    },
+    {
+      "id": "dependency.yaml",
+      "status": "PASS",
+      "message": "yaml imports in the selected Python.",
+      "fix": ""
+    },
+    {
+      "id": "dependency.opentelemetry.sdk.trace",
+      "status": "PASS",
+      "message": "opentelemetry.sdk.trace imports in the selected Python.",
+      "fix": ""
+    },
+    {
+      "id": "dependency.opentelemetry.exporter.otlp.proto.http.trace_exporter",
+      "status": "PASS",
+      "message": "opentelemetry.exporter.otlp.proto.http.trace_exporter imports in the selected Python.",
+      "fix": ""
+    },
+    {
+      "id": "dependency.requests",
+      "status": "PASS",
+      "message": "requests imports in the selected Python.",
+      "fix": ""
+    },
+    {
+      "id": "database",
+      "status": "WARN",
+      "message": "Database does not exist; parent directory exists: C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python\\signalscout.db. No file was created; create/write permission, SQLite and WAL readiness remain untested.",
+      "fix": ""
+    },
+    {
+      "id": "port",
+      "status": "PASS",
+      "message": "127.0.0.1:4318 could be bound and was immediately released; availability can change.",
+      "fix": ""
+    },
+    {
+      "id": "probe.importable",
+      "status": "PASS",
+      "message": "scout_probe is findable from the adapter directory without importing it; capture is untested.",
+      "fix": ""
+    },
+    {
+      "id": "probe.cwd",
+      "status": "PASS",
+      "message": "INFO: scout_probe is also findable from the current working directory: C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python",
+      "fix": ""
+    },
+    {
+      "id": "probe.help",
+      "status": "PASS",
+      "message": "scout_probe --help exited zero from the adapter directory; no target was run and capture is untested.",
+      "fix": ""
+    }
+  ],
+  "summary": {
+    "pass": 14,
+    "warn": 2,
+    "fail": 0
+  },
+  "examples": [
+    "Working probe command (template; replace placeholders and fix failed checks first):",
+    "Push-Location -LiteralPath 'C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python'",
+    "try {",
+    "  \u0026 'C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python\\.venv\\Scripts\\python.exe' -E -s -B -m scout_probe --config '\u003cabsolute-config-path\u003e' --doctor '\u003cnew-probe-doctor-json-path\u003e' --path '\u003cabsolute-target-directory\u003e' --manifest --drain-timeout 30 'module:function' -- '\u003ctarget-arguments\u003e'",
+    "  $probeExit = $LASTEXITCODE",
+    "} finally {",
+    "  Pop-Location",
+    "}",
+    "# PowerShell may show probe stderr as a red error; judge $probeExit and the printed probe summary.",
+    "# For hot functions, --queue-max-items and --queue-max-bytes are optional and must be supplied together; they do not guarantee delivery.",
+    "# Complex return objects can fail capture (drop_invalid); explicitly allowlisted scalars are safer. Help/import checks do not prove capture.",
+    "PowerShell example:",
+    "# Synthetic example only. Run these yourself; doctor ran none of them.",
+    "$demo = Join-Path ([IO.Path]::GetTempPath()) ('signalscout-example-' + [guid]::NewGuid())",
+    "New-Item -ItemType Directory -Path $demo | Out-Null",
+    "$db = Join-Path $demo 'example.db'",
+    "New-Item -ItemType File -Path $db | Out-Null",
+    "Set-Content -Path (Join-Path $demo 'scout_example.py') -Encoding ascii -Value 'def main(): return 1 + 1'",
+    "@'\nversion: 1\nsynthetic_only: true\nendpoint: http://127.0.0.1:4318\nservice: synthetic.doctor\nprobes:\n  - module: scout_example\n    function: main\n    capture:\n      return: true\n'@ | Set-Content -Path (Join-Path $demo 'signalscout.yaml') -Encoding ascii",
+    "# Copy the next command's OUTPUT into a second PowerShell window; leave serve running:",
+    "Write-Output ('\u0026 ''C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054\\signalscout.exe'' --db ''' + $db.Replace(\"'\", \"''\") + ''' serve --listen ''127.0.0.1:4318'' --retention 0')",
+    "# Back in this window after serve is listening, use the selected Python:",
+    "Push-Location -LiteralPath 'C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python'",
+    "try {",
+    "  \u0026 'C:\\Users\\yiche\\telemetry-project\\adapters\\provenance-python\\.venv\\Scripts\\python.exe' -E -s -B -m scout_probe --config (Join-Path $demo 'signalscout.yaml') --doctor (Join-Path $demo 'probe-doctor.json') --path $demo --manifest --drain-timeout 30 scout_example:main --",
+    "  $probeExit = $LASTEXITCODE",
+    "} finally {",
+    "  Pop-Location",
+    "}",
+    "\u0026 'C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054\\signalscout.exe' --db $db runs list",
+    "# These checks establish dependency/path readiness only, not successful probe capture or analysis."
+  ]
+}

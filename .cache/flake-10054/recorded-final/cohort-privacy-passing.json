@@ -1,0 +1,65 @@
+{
+  "id": "privacy-passing",
+  "profile": {
+    "id": "flake-10054-empty-synthetic",
+    "unit": "per-run",
+    "workload": "redacted",
+    "step": "privacy-test",
+    "envelope_profile": "synthetic",
+    "envelope_version": "1",
+    "numeric": [],
+    "categories": [],
+    "invariant": {
+      "declared": "",
+      "current": "",
+      "used": "",
+      "delta": 0
+    }
+  },
+  "selection": {
+    "from": 1792780200000000000,
+    "to": 1792781100000000000,
+    "limit": 100,
+    "dimension": "observed_test_outcome",
+    "value": "pass"
+  },
+  "created_at": 1792781071357720900,
+  "run_ids": [],
+  "label_ids": [],
+  "decision_ids": {},
+  "sessions": {},
+  "excluded": {
+    "no_supported_decision": 1
+  },
+  "completeness": {
+    "version": 1,
+    "mode": "exclude_partial",
+    "candidates": {
+      "complete": 0,
+      "partial": 0,
+      "unknown": 1,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "selected": {
+      "complete": 0,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "run_status": {},
+    "population_known": true,
+    "scopes": [
+      "ea34be5035508c7b2c6f0f1aa04236cd"
+    ]
+  }
+}

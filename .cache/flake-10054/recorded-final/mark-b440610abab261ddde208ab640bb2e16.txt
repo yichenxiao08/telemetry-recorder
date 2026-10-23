@@ -1,0 +1,16 @@
+{
+  "id": "a45002e0825df8fca7e23c4ce22ed0df",
+  "run_id": "b440610abab261ddde208ab640bb2e16",
+  "dimension": "observed_test_outcome",
+  "value": "pass",
+  "source": "cli-mark",
+  "reviewer": "synthetic-investigator",
+  "synthetic": true,
+  "rubric_id": "python-privacy-test-log",
+  "rubric_version": "1",
+  "created_at": 1792781070783538200,
+  "recorded_at": 1792781070787165500,
+  "evidence_ids": [
+    "span:b440610abab261ddde208ab640bb2e16/0000000000000001"
+  ]
+}

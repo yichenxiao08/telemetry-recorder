@@ -1,0 +1,10 @@
+run,timestamp_local,duration_seconds,test_status,runner_exit_code,log,doctor
+1,2026-10-23T14:37:28.1787010-04:00,0.890,PASS,0,run-01.log,run-01-doctor.json
+2,2026-10-23T14:38:05.4819674-04:00,0.823,PASS,0,run-02.log,run-02-doctor.json
+3,2026-10-23T14:38:06.3353878-04:00,0.720,PASS,0,run-03.log,run-03-doctor.json
+4,2026-10-23T14:38:07.0590614-04:00,0.710,PASS,0,run-04.log,run-04-doctor.json
+5,2026-10-23T14:38:07.7709836-04:00,0.718,FAIL_10054,1,run-05.log,run-05-doctor.json
+6,2026-10-23T14:38:08.4917249-04:00,0.690,PASS,0,run-06.log,run-06-doctor.json
+7,2026-10-23T14:38:09.1841057-04:00,0.700,PASS,0,run-07.log,run-07-doctor.json
+8,2026-10-23T14:38:09.8868726-04:00,0.833,FAIL_10054,1,run-08.log,run-08-doctor.json
+9,2026-10-23T14:40:18.7488408-04:00,0.812,PASS,0,run-09.log,run-09-doctor.json
