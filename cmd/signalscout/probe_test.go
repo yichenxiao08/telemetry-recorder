@@ -41,17 +41,18 @@ func TestScanTemplateStableCommandOutput(t *testing.T) {
 	if e := os.WriteFile(filepath.Join(d, "demo.py"), []byte(source), 0600); e != nil {
 		t.Fatal(e)
 	}
+	output := t.TempDir() // Keep the scanned tree identical across runs, including non-Python entries.
 	texts := []string{}
 	jsons := []string{}
 	for _, name := range []string{"one.json", "two.json"} {
 		c := newProbeCommand()
 		var out bytes.Buffer
 		c.SetOut(&out)
-		c.SetArgs([]string{"scan", "--root", d, "--import-root", d, "--adapter", filepath.Join(d, "missing-adapter"), "--json", filepath.Join(d, name)})
+		c.SetArgs([]string{"scan", "--root", d, "--import-root", d, "--adapter", filepath.Join(d, "missing-adapter"), "--json", filepath.Join(output, name)})
 		if e := c.Execute(); e != nil {
 			t.Fatal(e)
 		}
-		b, e := os.ReadFile(filepath.Join(d, name))
+		b, e := os.ReadFile(filepath.Join(output, name))
 		if e != nil {
 			t.Fatal(e)
 		}

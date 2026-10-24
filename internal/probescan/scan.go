@@ -11,7 +11,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sort"
-	"strings"
 	"time"
 )
 
@@ -35,35 +34,40 @@ type Entry struct {
 	Reason string `json:"reason"`
 }
 type Coverage struct {
-	Eligible int   `json:"eligible"`
-	Parsed   int   `json:"parsed"`
-	Read     int   `json:"read"`
-	Bytes    int64 `json:"bytes"`
-	Complete bool  `json:"complete"`
+	Eligible      int   `json:"eligible"`
+	Parsed        int   `json:"parsed"`
+	Read          int   `json:"read"`
+	Bytes         int64 `json:"bytes"`
+	Complete      bool  `json:"complete"`
+	EligibleKnown bool  `json:"eligible_known"`
 }
 type Limits struct {
 	MaxFiles int   `json:"max_files"`
 	MaxBytes int64 `json:"max_bytes"`
 }
 type Report struct {
-	ProbeCommand  []string    `json:"probe_command"`
-	SchemaVersion int         `json:"schema_version"`
-	Candidates    []Candidate `json:"candidates"`
-	Unresolved    []Candidate `json:"unresolved"`
-	Coverage      Coverage    `json:"coverage"`
-	Exclusions    []Entry     `json:"exclusions"`
-	Errors        []Entry     `json:"errors"`
-	Truncations   []Entry     `json:"truncations"`
-	Limits        Limits      `json:"limits"`
+	Enumeration        Enumeration `json:"enumeration"`
+	DiagnosticsOmitted int         `json:"diagnostics_omitted"`
+	ProbeCommand       []string    `json:"probe_command"`
+	SchemaVersion      int         `json:"schema_version"`
+	Candidates         []Candidate `json:"candidates"`
+	Unresolved         []Candidate `json:"unresolved"`
+	Coverage           Coverage    `json:"coverage"`
+	Exclusions         []Entry     `json:"exclusions"`
+	Errors             []Entry     `json:"errors"`
+	Truncations        []Entry     `json:"truncations"`
+	Limits             Limits      `json:"limits"`
 }
 type Options struct {
-	Root, Python string
-	ImportRoot   string
-	Limit        int
-	Analyze      Analyzer
-	Exclude      []string
-	Limits       Limits
-	Open         func(string) (*os.File, error)
+	Enumeration   EnumerationLimits
+	readDirectory func(string) (directoryReader, error)
+	Root, Python  string
+	ImportRoot    string
+	Limit         int
+	Analyze       Analyzer
+	Exclude       []string
+	Limits        Limits
+	Open          func(string) (*os.File, error)
 }
 type Parser func(context.Context, []byte) error
 
@@ -103,7 +107,11 @@ func (b *bounded) Write(p []byte) (int, error) {
 }
 
 func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
-	r := Report{ProbeCommand: []string{}, SchemaVersion: 1, Candidates: []Candidate{}, Unresolved: []Candidate{}, Exclusions: []Entry{}, Errors: []Entry{}, Truncations: []Entry{}, Limits: o.Limits}
+	limits, err := enumerationDefaults(o.Enumeration)
+	if err != nil {
+		return Report{}, err
+	}
+	r := Report{Enumeration: Enumeration{Limits: limits}, ProbeCommand: []string{}, SchemaVersion: 1, Candidates: []Candidate{}, Unresolved: []Candidate{}, Exclusions: []Entry{}, Errors: []Entry{}, Truncations: []Entry{}, Limits: o.Limits}
 	if o.Limits.MaxFiles < 1 || o.Limits.MaxFiles > 2000 || o.Limits.MaxBytes < 1 || o.Limits.MaxBytes > 20000000 {
 		return r, fmt.Errorf("bounds must be positive and at most 2000 files / 20000000 bytes")
 	}
@@ -126,6 +134,10 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 	}
 	// Reject linked ancestors too, rather than silently resolving them.
 	for p := filepath.Dir(root); ; p = filepath.Dir(p) {
+		if ctx.Err() != nil {
+			r.diagnostic(&r.Errors, Entry{".", "scan canceled"})
+			return r, nil
+		}
 		i, e := os.Lstat(p)
 		if e != nil {
 			return r, e
@@ -137,68 +149,33 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 			break
 		}
 	}
-	paths := []string{}
-	err = filepath.WalkDir(root, func(path string, d os.DirEntry, e error) error {
-		rel, _ := filepath.Rel(root, path)
-		rel = filepath.ToSlash(rel)
-		if e != nil {
-			r.Errors = append(r.Errors, Entry{rel, "unreadable entry"})
-			return nil
-		}
-		if path == root {
-			return nil
-		}
-		name := strings.ToLower(d.Name())
-		excluded := name == ".venv" || name == "venv" || name == "__pycache__" || name == "vendor" || name == ".git" || name == ".cache"
-		for _, x := range o.Exclude {
-			x = strings.TrimSuffix(filepath.ToSlash(filepath.Clean(x)), "/")
-			if rel == x || strings.HasPrefix(rel, x+"/") {
-				excluded = true
-			}
-		}
-		if excluded {
-			r.Exclusions = append(r.Exclusions, Entry{rel, "excluded before reading"})
-			if d.IsDir() {
-				return filepath.SkipDir
-			}
-			return nil
-		}
-		i, e := d.Info()
-		if e != nil {
-			r.Errors = append(r.Errors, Entry{rel, "unreadable metadata"})
-			return nil
-		}
-		if unsafeLink(i) {
-			r.Exclusions = append(r.Exclusions, Entry{rel, "symlink/reparse point rejected"})
-			if d.IsDir() {
-				return filepath.SkipDir
-			}
-			return nil
-		}
-		if !d.IsDir() && strings.HasSuffix(d.Name(), ".py") {
-			paths = append(paths, path)
-		}
-		return nil
-	})
-	if err != nil {
-		return r, err
+	paths, enumerated := enumerate(ctx, root, o, &r)
+	if !enumerated {
+		r.Coverage.Eligible = 0
+		r.Coverage.EligibleKnown = false
+		return r, nil
 	}
+	r.Coverage.EligibleKnown = len(r.Errors) == 0 && r.DiagnosticsOmitted == 0
 	sort.Slice(paths, func(i, j int) bool { return filepath.ToSlash(paths[i]) < filepath.ToSlash(paths[j]) })
 	r.Coverage.Eligible = len(paths)
 	for _, path := range paths {
+		if ctx.Err() != nil {
+			r.diagnostic(&r.Errors, Entry{".", "scan canceled"})
+			break
+		}
 		rel, _ := filepath.Rel(root, path)
 		rel = filepath.ToSlash(rel)
 		if r.Coverage.Read >= o.Limits.MaxFiles {
-			r.Truncations = append(r.Truncations, Entry{rel, "file limit"})
+			r.diagnostic(&r.Truncations, Entry{rel, "file limit"})
 			continue
 		}
 		i, e := os.Lstat(path)
 		if e != nil || unsafeLink(i) {
-			r.Errors = append(r.Errors, Entry{rel, "unreadable or replaced entry"})
+			r.diagnostic(&r.Errors, Entry{rel, "unreadable or replaced entry"})
 			continue
 		}
 		if i.Size() > o.Limits.MaxBytes-r.Coverage.Bytes {
-			r.Truncations = append(r.Truncations, Entry{rel, "byte limit"})
+			r.diagnostic(&r.Truncations, Entry{rel, "byte limit"})
 			continue
 		}
 		open := o.Open
@@ -207,17 +184,17 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 		}
 		f, e := open(path)
 		if e != nil {
-			r.Errors = append(r.Errors, Entry{rel, "unreadable source"})
+			r.diagnostic(&r.Errors, Entry{rel, "unreadable source"})
 			continue
 		}
-		b, e := io.ReadAll(io.LimitReader(f, o.Limits.MaxBytes-r.Coverage.Bytes+1))
+		b, e := io.ReadAll(io.LimitReader(contextReader{ctx, f}, o.Limits.MaxBytes-r.Coverage.Bytes+1))
 		_ = f.Close()
 		if e != nil {
-			r.Errors = append(r.Errors, Entry{rel, "unreadable source"})
+			r.diagnostic(&r.Errors, Entry{rel, "unreadable source"})
 			continue
 		}
 		if int64(len(b)) > o.Limits.MaxBytes-r.Coverage.Bytes {
-			r.Truncations = append(r.Truncations, Entry{rel, "byte limit"})
+			r.diagnostic(&r.Truncations, Entry{rel, "byte limit"})
 			continue
 		}
 		r.Coverage.Read++
@@ -229,12 +206,16 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 			e = parse(ctx, b)
 		}
 		if e != nil {
-			r.Errors = append(r.Errors, Entry{rel, e.Error()})
+			r.diagnostic(&r.Errors, Entry{rel, e.Error()})
 			continue
+		}
+		if ctx.Err() != nil {
+			r.diagnostic(&r.Errors, Entry{rel, "scan canceled"})
+			break
 		}
 		r.Coverage.Parsed++
 		if analysis.Truncated > 0 {
-			r.Truncations = append(r.Truncations, Entry{rel, fmt.Sprintf("per-file analysis limit: omitted %d", analysis.Truncated)})
+			r.diagnostic(&r.Truncations, Entry{rel, fmt.Sprintf("per-file analysis limit: omitted %d", analysis.Truncated)})
 		}
 		module, reason := moduleName(root, path, o.ImportRoot)
 		for _, c := range analysis.Items {
@@ -264,8 +245,8 @@ func Scan(ctx context.Context, o Options, parse Parser) (Report, error) {
 			}
 		}
 	}
-	r.Coverage.Complete = len(r.Errors) == 0 && len(r.Truncations) == 0
-	finalize(&r, o.Limit)
-	r.Coverage.Complete = len(r.Errors) == 0 && len(r.Truncations) == 0
+	r.Coverage.Complete = r.Coverage.EligibleKnown && len(r.Errors) == 0 && len(r.Truncations) == 0 && r.DiagnosticsOmitted == 0
+	finalize(ctx, &r, o.Limit)
+	r.Coverage.Complete = r.Coverage.EligibleKnown && len(r.Errors) == 0 && len(r.Truncations) == 0 && r.DiagnosticsOmitted == 0
 	return r, nil
 }

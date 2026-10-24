@@ -15,6 +15,14 @@ func newProbeCommand() *cobra.Command {
 	var o probescan.Options
 	var output, adapter string
 	c := &cobra.Command{Use: "scan", Short: "Suggest functions worth probing from Python syntax", Args: cobra.NoArgs, RunE: func(c *cobra.Command, _ []string) error {
+		for _, name := range []string{"max-entries", "max-path-bytes", "max-depth", "max-diagnostics"} {
+			if c.Flags().Changed(name) {
+				v, _ := c.Flags().GetInt(name)
+				if v < 1 {
+					return fmt.Errorf("%s must be positive", name)
+				}
+			}
+		}
 		if o.Limit < 1 || o.Limit > 200 {
 			return fmt.Errorf("candidate limit must be 1..200")
 		}
@@ -60,6 +68,10 @@ func newProbeCommand() *cobra.Command {
 	c.Flags().StringVar(&o.Python, "python", "", "Parser Python executable (no target imports)")
 	c.Flags().IntVar(&o.Limits.MaxFiles, "max-files", 2000, "Maximum source files read (cap 2000)")
 	c.Flags().Int64Var(&o.Limits.MaxBytes, "max-bytes", 20000000, "Maximum source bytes read (cap 20000000)")
+	c.Flags().IntVar(&o.Enumeration.MaxEntries, "max-entries", 20000, "Enumeration entries including non-Python files (cap 200000)")
+	c.Flags().IntVar(&o.Enumeration.MaxPathBytes, "max-path-bytes", 8388608, "Cumulative full entry path bytes (cap 33554432)")
+	c.Flags().IntVar(&o.Enumeration.MaxDepth, "max-depth", 64, "Directory depth (cap 128)")
+	c.Flags().IntVar(&o.Enumeration.MaxDiagnostics, "max-diagnostics", 1000, "Retained diagnostic entries across arrays (cap 10000)")
 	c.Flags().StringSliceVar(&o.Exclude, "exclude", nil, "Root-relative excluded paths")
 	c.Flags().StringVar(&output, "json", "", "Write JSON to a new path")
 	c.Flags().IntVar(&o.Limit, "limit", 20, "Maximum candidates per section (cap 200)")

@@ -51,13 +51,13 @@ func CommandTemplate(r Report, root, importRoot, adapter, python string) []strin
 			}
 		}
 		// Hidden entries could contain an ambiguous layout, so leave the path unknown.
-		if !ambiguous && len(r.Truncations) == 0 && len(r.Errors) == 0 {
+		if !ambiguous && len(r.Truncations) == 0 && len(r.Errors) == 0 && r.DiagnosticsOmitted == 0 {
 			if p := directory(root); p != "" {
 				c.ImportRoot = p
 			}
 		}
 	}
-	if len(r.Candidates) == 1 && r.Candidates[0].Selector != "" && len(r.Truncations) == 0 && len(r.Errors) == 0 {
+	if len(r.Candidates) == 1 && r.Candidates[0].Selector != "" && len(r.Truncations) == 0 && len(r.Errors) == 0 && r.DiagnosticsOmitted == 0 {
 		c.Selector = r.Candidates[0].Selector
 	}
 	return probetemplate.Render(c)
