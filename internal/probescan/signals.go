@@ -101,7 +101,16 @@ func moduleName(root, path, importRoot string) (string, string) {
 	return strings.Join(parts, "."), ""
 }
 
-func finalize(r *Report, limit int) {
+func finalize(ctx context.Context, r *Report, limit int) {
+	canceled := func() bool {
+		if ctx.Err() == nil {
+			return false
+		}
+		r.Candidates = []Candidate{}
+		r.Unresolved = []Candidate{}
+		r.diagnostic(&r.Errors, Entry{".", "scan canceled during ranking"})
+		return true
+	}
 	less := func(a, b Candidate) bool {
 		if a.Score != b.Score {
 			return a.Score > b.Score
@@ -115,18 +124,30 @@ func finalize(r *Report, limit int) {
 		return a.Function < b.Function
 	}
 	for section, list := range []*[]Candidate{&r.Candidates, &r.Unresolved} {
+		if canceled() {
+			return
+		}
 		sort.Slice(*list, func(i, j int) bool { return less((*list)[i], (*list)[j]) })
+		if canceled() {
+			return
+		}
+		counts := map[int]int{}
+		for _, c := range *list {
+			if canceled() {
+				return
+			}
+			counts[c.Score]++
+		}
 		for i := range *list {
+			if canceled() {
+				return
+			}
 			c := &(*list)[i]
 			c.Rank = i + 1
-			for _, other := range *list {
-				if other.Score == c.Score {
-					c.TieCount++
-				}
-			}
+			c.TieCount = counts[c.Score]
 		}
 		if len(*list) > limit {
-			r.Truncations = append(r.Truncations, Entry{Path: []string{"primary", "unresolved"}[section], Reason: fmt.Sprintf("post-ranking limit: omitted %d", len(*list)-limit)})
+			r.diagnostic(&r.Truncations, Entry{Path: []string{"primary", "unresolved"}[section], Reason: fmt.Sprintf("post-ranking limit: omitted %d", len(*list)-limit)})
 			*list = (*list)[:limit]
 		}
 	}
@@ -134,6 +155,10 @@ func finalize(r *Report, limit int) {
 func (r Report) Text() string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "Parsed %d/%d eligible files; read %d bytes. Complete: %t. Excluded: %d; errors: %d.\n", r.Coverage.Parsed, r.Coverage.Eligible, r.Coverage.Bytes, r.Coverage.Complete, len(r.Exclusions), len(r.Errors))
+	if !r.Coverage.EligibleKnown {
+		fmt.Fprintln(&b, "Eligible total UNKNOWN; enumeration incomplete. Candidates do not establish global top-N.")
+	}
+	fmt.Fprintf(&b, "Enumeration: entries %d/%d, retained path budget %d bytes, depth %d; diagnostics omitted %d (cap %d).\n", r.Enumeration.Entries, r.Enumeration.Limits.MaxEntries, r.Enumeration.Limits.MaxPathBytes, r.Enumeration.Limits.MaxDepth, r.DiagnosticsOmitted, r.Enumeration.Limits.MaxDiagnostics)
 	fmt.Fprintln(&b, "Scan limits apply before ranking; candidate limits apply after ranking (primary and unresolved independently).")
 	for _, e := range r.Truncations {
 		fmt.Fprintf(&b, "Truncated %s: %s\n", e.Path, e.Reason)
