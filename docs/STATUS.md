@@ -4,8 +4,8 @@ Updated 2026-10-25. One page; the other docs are the detailed record.
 
 ## What it is
 
-Signal Scout is a local recorder and comparison tool for explaining program
-behavior: a Go server (OTLP intake, SQLite), a zero-code Python probe that
+Signal Scout is a local Python investigation aid: a Go server (OTLP intake,
+SQLite), a Python probe that
 records selected function inputs and outputs, run grouping, cohort comparison,
 declared expectations, and a cited report with a deterministic verifier.
 
@@ -17,10 +17,11 @@ declared expectations, and a cited report with a deterministic verifier.
 
 ## What is not shown
 
-- That it diagnoses faster or better than reading the source. Every real bug
-  tried so far was found by a code-reading baseline in 5 to 13 commands, and the
-  tool's own evidence was downstream of the cause. See
-  [thesis-reframe.md](thesis-reframe.md) and
+- That it diagnoses faster or better than ordinary debugging. Several cases
+  failed the source-reading difficulty gate, including run4b, run4c and
+  historical-01 (27, 33 and 24 commands respectively). Signal Scout was not
+  tested on those rejected cases. Run 2's provisional Hit had generous
+  downstream attribution and matched an easy source baseline. See
   [independent-critique-response.md](independent-critique-response.md).
 - Production use, real-data privacy (P0 covers synthetic data only), non-Python
   runtimes, or probe cost within the original 100/250 us budget.
@@ -38,6 +39,11 @@ its own owner-approved change with hash manifests, not a drive-by cleanup.
 
 ## Next
 
-A single pre-registered pilot on a bug where reading is a poor strategy
-(rare, statistical, or version-regression behavior), with a kill criterion set
-before results. No new features until it reports.
+The separate [paired pilot](paired-usefulness-pilot.md) specifies three new real
+cases without screening for baseline failure or expected tool advantage. Both
+arms get equal source access; setup costs and failures count, and source,
+scanner and runtime evidence are separately attributed. Freeze all inputs and
+settings before investigations. Its prospective investment bar is a practical
+decision policy, not proof of broad usefulness. Existing incomplete preparation
+attempts do not constitute study results. Node implementation and further
+product expansion remain deferred pending evidence.

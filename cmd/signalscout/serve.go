@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"github.com/signalscout/signalscout/internal/httpdrain"
 	"io"
 	"log/slog"
 	"net"
@@ -14,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/signalscout/signalscout/internal/httpdrain"
 	"github.com/signalscout/signalscout/internal/intake"
 	"github.com/signalscout/signalscout/internal/redaction"
 	"github.com/signalscout/signalscout/internal/store"

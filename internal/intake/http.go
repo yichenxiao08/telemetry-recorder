@@ -9,12 +9,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/signalscout/signalscout/internal/httpdrain"
 	"io"
 	"mime"
 	"net/http"
 	"strings"
 
+	"github.com/signalscout/signalscout/internal/httpdrain"
 	"github.com/signalscout/signalscout/internal/model"
 	"github.com/signalscout/signalscout/internal/redaction"
 	"github.com/signalscout/signalscout/internal/runs"

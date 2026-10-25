@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/signalscout/signalscout/internal/httpdrain"
 	"io"
 	"net/http"
 	"net/url"
@@ -16,6 +15,7 @@ import (
 	"time"
 
 	"github.com/signalscout/signalscout/internal/cohort"
+	"github.com/signalscout/signalscout/internal/httpdrain"
 	"github.com/signalscout/signalscout/internal/model"
 	"github.com/signalscout/signalscout/internal/store"
 	"github.com/spf13/cobra"
