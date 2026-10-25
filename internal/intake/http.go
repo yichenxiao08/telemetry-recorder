@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/signalscout/signalscout/internal/httpdrain"
 	"github.com/signalscout/signalscout/internal/model"
 	"github.com/signalscout/signalscout/internal/redaction"
 	"github.com/signalscout/signalscout/internal/runs"
@@ -63,29 +64,29 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		request = &metricscol.ExportMetricsServiceRequest{}
 		response = &metricscol.ExportMetricsServiceResponse{}
 	default:
-		http.NotFound(w, r)
+		httpdrain.Error(w, r, "404 page not found", http.StatusNotFound)
 		return
 	}
 	contentType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil && r.Header.Get("Content-Type") != "" {
-		http.Error(w, "invalid content type", http.StatusUnsupportedMediaType)
+		httpdrain.Error(w, r, "invalid content type", http.StatusUnsupportedMediaType)
 		return
 	}
 	isJSON := contentType == "application/json" || strings.HasSuffix(contentType, "+json")
 	if !isJSON && contentType != "" && contentType != "application/x-protobuf" && contentType != "application/protobuf" {
-		http.Error(w, "unsupported content type", http.StatusUnsupportedMediaType)
+		httpdrain.Error(w, r, "unsupported content type", http.StatusUnsupportedMediaType)
 		return
 	}
 	encoding := strings.ToLower(strings.TrimSpace(r.Header.Get("Content-Encoding")))
 	if encoding != "" && encoding != "identity" && encoding != "gzip" {
-		http.Error(w, "unsupported content encoding", http.StatusUnsupportedMediaType)
+		httpdrain.Error(w, r, "unsupported content encoding", http.StatusUnsupportedMediaType)
 		return
 	}
 	body := io.Reader(http.MaxBytesReader(w, r.Body, MaxBodyBytes))
 	if encoding == "gzip" {
 		gz, err := gzip.NewReader(body)
 		if err != nil {
-			http.Error(w, "invalid gzip body", http.StatusBadRequest)
+			httpdrain.Error(w, r, "invalid gzip body", http.StatusBadRequest)
 			return
 		}
 		defer func() { _ = gz.Close() }()
