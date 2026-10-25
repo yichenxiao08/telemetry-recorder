@@ -796,3 +796,29 @@ dependency imports, existing file access and a transient loopback bind. A new DB
 path warns without creating any file; creation/WAL permissions remain untested.
 It prints a synthetic PowerShell example, installs/records nothing, and changes
 no store schema, scoring or analysis behavior. See docs/doctor.md.
+
+### Paired agent-session usefulness pilot design — 2026-10-25
+
+Owner-authorized design-only parallel evaluation track:
+[protocol](docs/paired-usefulness-pilot.md) and
+[fresh-session prompts](docs/paired-usefulness-prompts.md).
+DRAFT until reviewed and frozen; no evaluation execution authorized by this change.
+Three paired fresh agent investigations measure correct diagnosis and setup-inclusive
+costs. This is not a human diagnosis-time study, M5 completion, a replacement for
+the existing 150-command hard-bug gate, or evidence of tool usefulness. Keep all
+historical results and cause-naming tool-output attribution rules unchanged.
+
+### Near-term scope narrowed after independent critique — 2026-10-25
+
+Owner-authorized docs-only response: local Python investigation aid with no
+established diagnostic advantage or causal-proof claim. Defer Node implementation,
+LLM integration, value linking, first-divergence and other product expansion pending
+the paired pilot; PR #31 remains unmerged design reference. See
+[attributed critique response](docs/independent-critique-response.md) and
+[prospective investment policy](docs/paired-usefulness-pilot.md).
+For that separate pilot only, both arms read implementation source from first read;
+original hard-test capture/access rules and 150-command gate stay unchanged.
+Three valid pairs, >=2/3 correct tool diagnoses, no correctness regression and a
+runtime-supported discordant solve or >=20% setup-inclusive elapsed advantage are
+the prospective continuation bar. Incomplete is inconclusive; failure pauses
+expansion; passing only supports another held-out evaluation. No runs launched.
