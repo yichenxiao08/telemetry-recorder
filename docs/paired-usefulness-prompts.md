@@ -14,7 +14,11 @@ No study directory or evidence was created while designing these prompts.
 You are the PAIRED PILOT CURATOR/CUSTODIAN, not an investigator or builder.
 Windows native PowerShell. No subagents. Read this protocol first:
 C:\Users\yiche\telemetry-project\docs\paired-usefulness-pilot.md
-If no owner-supplied reviewed merged protocol freeze SHA, stop: NOT FROZEN. The DRAFT banner is superseded only by the explicit freeze described in the protocol.
+Preparation needs the reviewed merged protocol SHA, not a case registration
+that already exists. If that SHA is unavailable stop NOT FROZEN. Otherwise
+prepare registration; the DRAFT banner is superseded only by protocol freeze.
+Unknown model/reasoning settings do not prevent preparation: save pending/null
+settings, never invent them, and do not launch investigators until fully frozen.
 
 ISOLATION
 Never read previous blind-test/baseline/historical projects or reports, other
@@ -46,18 +50,20 @@ to exclude a case. Do not open scanner source/rank cases by scanner signals.
 Seal per-case answer.md and reproduction.txt and hash final answers. Prepare
 anonymous arm mapping and custody records. Provision frozen engine/binary/adapter
 and generic support documents, recording provenance; no modifications/build tuning.
-Same model/reasoning selection must be supplied by owner/session configuration
-and recorded for both arms; do not invent it. No investigator launches until all
-registration fields exist, registration is committed/frozen and hashes verified.
+Same model/reasoning must be recorded for both arms. If owner/session settings
+are not available, finish feasible preparation and save registration status
+PENDING_SETTINGS with null missing fields; do not invent settings. No investigator
+launches until all fields exist and registration is committed/frozen/hash-verified.
 
 Write registration.json, public sanitized case-01/02/03 handoffs and preparation
 log under public root, sealed detailed provenance under new sealed root. Hash all
 inputs, dependencies, manifests, code and binary as protocol requires. Coordinator
 receives only sanitized handoffs; never send cause/issue/fix links. Do not launch
-investigators. If frozen engine artifact/settings unavailable, report blocker.
+investigators. Missing engine artifacts or settings leave registration pending;
+report them without discarding completed preparation.
 
 FINAL REPLY — EXACT FORMAT
-Status: READY, INCOMPLETE, COLLISION, or NOT FROZEN
+Status: READY, PENDING_SETTINGS, INCOMPLETE, COLLISION, or NOT FROZEN
 Registration: absolute path or unavailable
 Registration freeze: commit/hash or pending
 Case handoffs: three absolute paths or unavailable
@@ -98,12 +104,15 @@ BUDGET
 plus at most ten minutes only to report/cleanup. Use protocol counting including
 failed/setup commands and pipeline stages. Log UTC start/end, approval waits,
 commands/file opens/edits. Wall time includes waits; never invent solve times.
+Record investigation stop when committing final diagnosis, then report-only time;
+no new diagnosis/evidence in reporting allowance. Use protocol elapsed formula.
 
 Verify frozen target/dependencies/settings. Disclose prior recognition; if familiar,
 flag contamination and stop primary investigation. Read README/tests/source, run
 EXACT documented reproduction offline, verify counts/exit. Ordinary debugging,
 local logging/scripts/tests and debugger are allowed only in your disposable copy.
-Record edits; restore pristine target before final reproduction, do not deliver a
+Source access is equal from first read in both arms. Record edits; restore
+pristine target before final reproduction, do not deliver a
 fix. No downloads. Same ordinary tools are allowed to the other arm.
 
 Diagnose causal mechanism with evidence; distinguish symptom, hypothesis and
@@ -154,18 +163,24 @@ If output is nonempty stop COLLISION. No reuse/overwrites.
 BUDGET
 150 counted commands TOTAL with ten reserved for report/cleanup; 60 investigation
 minutes then ten report-only minutes. Setup, failed commands, waits and approvals
-count. Follow protocol counting, log file reads relative to first complete capture.
+count. Follow protocol counting and log file reads/source edits throughout.
+Commit final diagnosis and record investigation stop before report-only allowance;
+no new diagnosis/evidence during that allowance. Use protocol elapsed formula.
 Disclose prior familiarity and stop primary investigation if familiar.
 
-Before first COMPLETE zero-drop recording read target README/tests ONLY; generic
-frozen tool docs and scanner outputs allowed. Do not open implementation source.
-After complete capture source debugging is allowed and separately attributed.
-Verify exact documented reproduction and expected counts; no target changes before
-first capture. Read only engine generic docs needed for supported syntax.
-Use scanner suggestions as suggestions, not diagnostic evidence. No engine tuning.
+BOTH arms may read implementation source from the first read and use ordinary
+debugging/logging/experiments throughout. No capture prerequisite for ordinary
+reproduction or source diagnosis. This changes ONLY paired-track access; original
+hard-test first-capture restrictions are unchanged. Verify exact documented
+reproduction and expected counts. Restore pristine target before every recording
+and final reproduction; log edits. Read frozen generic engine docs for CLI syntax.
+Keep scanner suggestions separate from source reasoning and runtime evidence.
 
 Use new output\attempt-01, then attempt-02 only if necessary. Each has fresh DB,
-config, doctor and capture outputs. Stop after TWO failed setup/capture attempts.
+config, doctor and capture outputs. After TWO failed setup/capture attempts,
+stop further tool attempts and retain the failure. Use remaining investigation
+budget for ordinary source diagnosis if useful, labeled source-only; no tool Hit.
+Capture failure does not force termination of source investigation.
 Unsupported probeability, incomplete capture and lost records remain failures.
 Explicit scalar allowlists only, default capture off; no personal data.
 Create empty DB, start frozen engine loopback server with --retention 0; wait for
@@ -189,7 +204,9 @@ Queue settings above are bounded starting settings, not a delivery guarantee.
 Required --doctor and --manifest; preserve raw output, doctor, manifest and counters.
 Judge probe by exit code/summary, not PowerShell stderr color. Verify all required
 probes invoked, acknowledged delivery, complete scoped capture and ZERO drops before
-analysis. No source-led diagnosis if capture cannot complete. Unsampled is unknown.
+RUNTIME EVIDENCE ANALYSIS. Source diagnosis may proceed without capture.
+Inspect failed recordings only for setup diagnostics, never explanatory evidence.
+Unsampled is unknown.
 Complex returns may be unsupported; do not invent hidden state capture.
 
 After complete capture use frozen CLI/viewer to inspect, compare and check declared
@@ -199,12 +216,12 @@ its own output naming the causal function/input; downstream symptoms aren't enou
 AST pointer alone isn't runtime causal explanation. No copying your hypothesis into
 a report then calling that generated evidence. Hypotheses remain hypotheses.
 
-After complete capture, ordinary experiments/debugger/logging permitted on your copy;
-log edits and restore pristine source before any fresh recording. New attempt dir
+Ordinary experiments/debugger/logging permitted from start, equally to ordinary
+arm; log edits and restore pristine source before any fresh recording. New attempt dir
 every rerun; two failed-attempt maximum still applies. Stop by cap/deadline.
 Save output\report.md BEFORE replying: reproduction; diagnosis and causal chain;
-tool-output evidence with command/path/hash/exact excerpt; source-reading evidence
-separately; uncertainty/proposed correction; capture coverage/drop counts; configs;
+runtime-output evidence with command/path/hash/exact excerpt; source reasoning
+and static scanner suggestions separately; uncertainty/proposed correction; capture coverage/drop counts; configs;
 first complete-capture time; timestamps/setup/analysis/report/waits; commands/files/
 edits. Save diagnosis-only.md with causal claims, no arm names or timing; raw evidence
 remains separate for attribution grading. Shut down own intake cleanly.
@@ -303,10 +320,20 @@ context. Partial: differing outcomes/downstream evidence only. Miss: neither/set
 failure. Source-only correct diagnosis is separately reported, NEVER tool Hit.
 Distinguish static-only scanner pointer from runtime-supported output; do not count
 investigator-supplied hypotheses echoed by tool as independent discovery.
-Check first capture restriction, zero drops/completeness, two-failure limit, budgets,
+Check equal source access from first read, restoration before capture, complete
+zero-drop capture BEFORE runtime evidence analysis, two-failure tool-attempt limit,
+source-only fallback attribution, budgets,
+and whether any invalidation is justified independently of tool capture loss.
+Capture failure alone is a retained tool outcome, not an invalid pair. Check
 source/packet integrity, access violations. Record UTC times, setup+analysis+report,
 commands/waits/censoring, omissions and violations. Do not invent solved times.
-Keep all detailed evidence sealed; no cause/file/function/issue hints in final.
+Check per-case contribution to prospective investment bar without changing it:
+runtime-supported cause-naming Hit on same case as correct discordant tool solve,
+or both correct with >=20% setup-inclusive elapsed saving using ordinary elapsed
+as denominator. Report raw unrounded seconds; censored pairs cannot show speedup.
+Do not decide whole-pilot PASS from one pair; coordinator aggregates all three
+sanitized grades using the frozen four-part bar. Keep all detailed evidence sealed;
+no cause/file/function/issue hints in final.
 FINAL REPLY EXACT:
 Integrity: PASS or FAIL
 Ordinary diagnosis: correct, partial, incorrect, unsolved, or invalid
@@ -314,9 +341,11 @@ Tool-arm diagnosis: same choices
 Tool attribution: Hit, Partial, Miss, or NOT GRADED
 Source-derived diagnosis: YES or NO
 Static-only cause pointer: YES or NO
+Runtime-supported cause-naming tool Hit: YES or NO
 Complete zero-drop capture: YES or NO
-Ordinary elapsed/setup/report: minutes each; censored YES or NO
-Tool elapsed/setup/report: minutes each; censored YES or NO
+Ordinary elapsed/setup/report: seconds each; censored YES or NO
+Tool elapsed/setup/report: seconds each; censored YES or NO
+Pair elapsed saving fraction: unrounded value or INELIGIBLE
 Ordinary commands: number/150
 Tool commands: number/150
 Material violation: YES or NO

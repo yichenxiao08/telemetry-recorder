@@ -807,3 +807,18 @@ Three paired fresh agent investigations measure correct diagnosis and setup-incl
 costs. This is not a human diagnosis-time study, M5 completion, a replacement for
 the existing 150-command hard-bug gate, or evidence of tool usefulness. Keep all
 historical results and cause-naming tool-output attribution rules unchanged.
+
+### Near-term scope narrowed after independent critique — 2026-10-25
+
+Owner-authorized docs-only response: local Python investigation aid with no
+established diagnostic advantage or causal-proof claim. Defer Node implementation,
+LLM integration, value linking, first-divergence and other product expansion pending
+the paired pilot; PR #31 remains unmerged design reference. See
+[attributed critique response](docs/independent-critique-response.md) and
+[prospective investment policy](docs/paired-usefulness-pilot.md).
+For that separate pilot only, both arms read implementation source from first read;
+original hard-test capture/access rules and 150-command gate stay unchanged.
+Three valid pairs, >=2/3 correct tool diagnoses, no correctness regression and a
+runtime-supported discordant solve or >=20% setup-inclusive elapsed advantage are
+the prospective continuation bar. Incomplete is inconclusive; failure pauses
+expansion; passing only supports another held-out evaluation. No runs launched.
