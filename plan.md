@@ -796,3 +796,14 @@ dependency imports, existing file access and a transient loopback bind. A new DB
 path warns without creating any file; creation/WAL permissions remain untested.
 It prints a synthetic PowerShell example, installs/records nothing, and changes
 no store schema, scoring or analysis behavior. See docs/doctor.md.
+
+### Paired agent-session usefulness pilot design — 2026-10-25
+
+Owner-authorized design-only parallel evaluation track:
+[protocol](docs/paired-usefulness-pilot.md) and
+[fresh-session prompts](docs/paired-usefulness-prompts.md).
+DRAFT until reviewed and frozen; no evaluation execution authorized by this change.
+Three paired fresh agent investigations measure correct diagnosis and setup-inclusive
+costs. This is not a human diagnosis-time study, M5 completion, a replacement for
+the existing 150-command hard-bug gate, or evidence of tool usefulness. Keep all
+historical results and cause-naming tool-output attribution rules unchanged.
