@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/signalscout/signalscout/internal/httpdrain"
 	"io"
 	"log/slog"
 	"net"
@@ -109,7 +110,7 @@ func servePolicy(ctx context.Context, database, address string, options store.Op
 	if policy != nil {
 		mux.Handle("/api/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.Method != "GET" && r.Method != "HEAD" {
-				http.Error(w, "P0 metadata writes disabled; annotation text has no approved capture policy", http.StatusForbidden)
+				httpdrain.Error(w, r, "P0 metadata writes disabled; annotation text has no approved capture policy", http.StatusForbidden)
 				return
 			}
 			metadata.ServeHTTP(w, r)

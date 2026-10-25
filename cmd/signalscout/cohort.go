@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/signalscout/signalscout/internal/httpdrain"
 	"io"
 	"net/http"
 	"net/url"
@@ -305,13 +306,13 @@ func metadataHandler(s *store.Store) http.Handler {
 			w.Header().Set("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'")
 			w.Header().Set("X-Content-Type-Options", "nosniff")
 			if r.Header.Get("Sec-Fetch-Site") == "cross-site" || !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
-				http.Error(w, "same-origin JSON required", http.StatusForbidden)
+				httpdrain.Error(w, r, "same-origin JSON required", http.StatusForbidden)
 				return
 			}
 			if origin := r.Header.Get("Origin"); origin != "" {
 				u, err := url.Parse(origin)
 				if err != nil || u.Scheme != "http" || u.Host != r.Host {
-					http.Error(w, "same origin required", http.StatusForbidden)
+					httpdrain.Error(w, r, "same origin required", http.StatusForbidden)
 					return
 				}
 			}
