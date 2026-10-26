@@ -1,0 +1,420 @@
+[
+  {
+    "epoch": "aa194658e187257c51be78ecf08dbd39",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "4a97ded4fd60923ec28ddaed6abf4247",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "0ab3d1fcac10f95c00c27c0f3e4ff61d",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "2637870c3f118cd0fee27afcee680aba",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "036a890ffe4ae0db49cecae248dbba45",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "7b46c60db2f44d5e1285d6498b995aa2",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "5ccf5d0ec2c7f3811c2f82205e999ecc",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "69cbffaf0157ee46f6395383d772b67b",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "8bb569578cc8cb97148c99a837fec99a",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "3608b94242fcae93e29bb4b1917b2306",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "01a2d044645b8ae421e02547ccd71ea6",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "f391323021f1ef2dcdf869573093601f",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "caea72017dae0fb5b91481db3a9e9218",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "9beb82bc2acaa2e7d2063dd0486cd727",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "b867b65fe67b5be832b49169f33eeeed",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "88ea2b694cf69832b52f9255ce6295b0",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "d976f065228b3a2ead2f85bfbe6f5db7",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "51a9063bae740c07e53c34fb729b4f91",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  },
+  {
+    "epoch": "4b3428f56e0f7c0b00fa28821b738a04",
+    "scope_final": true,
+    "scope_expected": 1,
+    "listed_runs": 1,
+    "population_known": true,
+    "counts": {
+      "complete": 1,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "reasons": {
+      "complete: final marker; every selected item acknowledged": 1
+    },
+    "runs": null
+  }
+]

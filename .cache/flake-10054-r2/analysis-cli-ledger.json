@@ -1,0 +1,488 @@
+[
+  {
+    "name": "runs-list",
+    "args": [
+      "runs",
+      "list"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "runs-list",
+    "args": [
+      "runs",
+      "list"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-01",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "aa194658e187257c51be78ecf08dbd39"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-02",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "4a97ded4fd60923ec28ddaed6abf4247"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-03",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "0ab3d1fcac10f95c00c27c0f3e4ff61d"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-04",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "2637870c3f118cd0fee27afcee680aba"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-05",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "036a890ffe4ae0db49cecae248dbba45"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-06",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "7b46c60db2f44d5e1285d6498b995aa2"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-07",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "5ccf5d0ec2c7f3811c2f82205e999ecc"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-08",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "69cbffaf0157ee46f6395383d772b67b"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-09",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "8bb569578cc8cb97148c99a837fec99a"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-10",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "3608b94242fcae93e29bb4b1917b2306"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-11",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "01a2d044645b8ae421e02547ccd71ea6"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-12",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "f391323021f1ef2dcdf869573093601f"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-13",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "caea72017dae0fb5b91481db3a9e9218"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-14",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "9beb82bc2acaa2e7d2063dd0486cd727"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-15",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "b867b65fe67b5be832b49169f33eeeed"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-16",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "88ea2b694cf69832b52f9255ce6295b0"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-17",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "d976f065228b3a2ead2f85bfbe6f5db7"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-18",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "51a9063bae740c07e53c34fb729b4f91"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-19",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "4b3428f56e0f7c0b00fa28821b738a04"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "cohort-failure",
+    "args": [
+      "cohort",
+      "create",
+      "r2-failure",
+      "--endpoint",
+      "http://127.0.0.1:59122",
+      "--profile",
+      "C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054-r2\\phase3\\analysis-profile.json",
+      "--from",
+      "2026-10-23T20:00:00Z",
+      "--to",
+      "2026-10-24T00:00:00Z",
+      "--limit",
+      "100",
+      "--predicate",
+      "output.failed",
+      "--equals",
+      "true",
+      "--require-complete"
+    ],
+    "exit": 1
+  },
+  {
+    "name": "runs-list",
+    "args": [
+      "runs",
+      "list"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-01",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "aa194658e187257c51be78ecf08dbd39"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-02",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "4a97ded4fd60923ec28ddaed6abf4247"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-03",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "0ab3d1fcac10f95c00c27c0f3e4ff61d"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-04",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "2637870c3f118cd0fee27afcee680aba"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-05",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "036a890ffe4ae0db49cecae248dbba45"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-06",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "7b46c60db2f44d5e1285d6498b995aa2"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-07",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "5ccf5d0ec2c7f3811c2f82205e999ecc"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-08",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "69cbffaf0157ee46f6395383d772b67b"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-09",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "8bb569578cc8cb97148c99a837fec99a"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-10",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "3608b94242fcae93e29bb4b1917b2306"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-11",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "01a2d044645b8ae421e02547ccd71ea6"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-12",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "f391323021f1ef2dcdf869573093601f"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-13",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "caea72017dae0fb5b91481db3a9e9218"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-14",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "9beb82bc2acaa2e7d2063dd0486cd727"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-15",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "b867b65fe67b5be832b49169f33eeeed"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-16",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "88ea2b694cf69832b52f9255ce6295b0"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-17",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "d976f065228b3a2ead2f85bfbe6f5db7"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-18",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "51a9063bae740c07e53c34fb729b4f91"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "completeness-19",
+    "args": [
+      "cohort",
+      "completeness",
+      "--scope",
+      "4b3428f56e0f7c0b00fa28821b738a04"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "cohort-failure",
+    "args": [
+      "cohort",
+      "create",
+      "r2-failure",
+      "--endpoint",
+      "http://127.0.0.1:59122",
+      "--profile",
+      "C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054-r2\\phase3\\analysis-profile.json",
+      "--from",
+      "2026-10-23T20:00:00Z",
+      "--to",
+      "2026-10-24T00:00:00Z",
+      "--limit",
+      "100",
+      "--predicate",
+      "output.failed",
+      "--equals",
+      "true",
+      "--require-complete"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "cohort-passing",
+    "args": [
+      "cohort",
+      "create",
+      "r2-passing",
+      "--endpoint",
+      "http://127.0.0.1:59122",
+      "--profile",
+      "C:\\Users\\yiche\\telemetry-project\\.cache\\flake-10054-r2\\phase3\\analysis-profile.json",
+      "--from",
+      "2026-10-23T20:00:00Z",
+      "--to",
+      "2026-10-24T00:00:00Z",
+      "--limit",
+      "100",
+      "--predicate",
+      "output.failed",
+      "--equals",
+      "false",
+      "--require-complete"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "explain",
+    "args": [
+      "explain-cohort",
+      "r2-failure",
+      "r2-passing",
+      "--json"
+    ],
+    "exit": 0
+  }
+]

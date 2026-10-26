@@ -1,0 +1,5 @@
+{
+  "file": "recordings-snapshot.db",
+  "sha256": "55738bd23f90bca1416a6031810611bde9430d5e72ef6dedf27ef0d5d656cdda",
+  "method": "SQLite backup from quiescent cached store, including WAL transactions"
+}

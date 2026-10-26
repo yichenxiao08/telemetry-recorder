@@ -1,0 +1,157 @@
+{
+  "id": "r2-failure",
+  "profile": {
+    "id": "flake10054-r2",
+    "unit": "per-run",
+    "workload": "r2_capture.main",
+    "step": "r2_capture.main",
+    "envelope_profile": "synthetic",
+    "envelope_version": "1",
+    "numeric": [
+      {
+        "name": "startup_ms",
+        "selector": "output.startup_ms",
+        "unit": "ms",
+        "epsilon": 1,
+        "floor": 1
+      },
+      {
+        "name": "request_ms",
+        "selector": "output.request_ms",
+        "unit": "ms",
+        "epsilon": 1,
+        "floor": 1
+      },
+      {
+        "name": "test_ms",
+        "selector": "output.test_ms",
+        "unit": "ms",
+        "epsilon": 1,
+        "floor": 1
+      },
+      {
+        "name": "body_bytes",
+        "selector": "output.body_bytes",
+        "unit": "bytes",
+        "epsilon": 1,
+        "floor": 1
+      },
+      {
+        "name": "port",
+        "selector": "output.port",
+        "unit": "port",
+        "epsilon": 1,
+        "floor": 1
+      }
+    ],
+    "categories": [
+      {
+        "name": "ready",
+        "selector": "output.ready"
+      },
+      {
+        "name": "reset",
+        "selector": "output.reset"
+      },
+      {
+        "name": "status",
+        "selector": "output.status"
+      }
+    ],
+    "invariant": {
+      "declared": "",
+      "current": "",
+      "used": "",
+      "delta": 0
+    }
+  },
+  "selection": {
+    "from": 1792785600000000000,
+    "to": 1792800000000000000,
+    "limit": 100,
+    "predicate": "output.failed",
+    "equals": "true",
+    "require_complete": true
+  },
+  "created_at": 1792789763515728500,
+  "run_ids": [
+    "3f477f12d4f609ee6acf9e022c8aeba3",
+    "8ca461fa198a5cf608524ecf3f4838b7",
+    "b8e2ecad6a8b6820317fd9864a3dd644",
+    "d2a7145e2a978e332521f16ff9832993",
+    "ff63725be27e11482c3837b11c850977"
+  ],
+  "label_ids": [],
+  "decision_ids": {
+    "3f477f12d4f609ee6acf9e022c8aeba3": "event:2ea72ce3d75df2eb16a9dbcba02c30b5e50c805104f3d2b60ccd277c9c5d989e/0",
+    "8ca461fa198a5cf608524ecf3f4838b7": "event:6cba68d75f1d0c463758867f6f32a1b83eba5675087c564d50077999fbbb407e/0",
+    "b8e2ecad6a8b6820317fd9864a3dd644": "event:14420fafb08cb6264470c4ee3c8b7e5cdaa5a2cc1d1dc0375b4d1d9b9548bfd4/0",
+    "d2a7145e2a978e332521f16ff9832993": "event:45a493037d4fec3076c747b16f1db1171ad2bb165153088d5fb3f9b284591a76/0",
+    "ff63725be27e11482c3837b11c850977": "event:75a839dd314ceeb2c94d42d3af99673033f052aac1ef6610f8d3ba518219d967/0"
+  },
+  "sessions": {
+    "3f477f12d4f609ee6acf9e022c8aeba3": "",
+    "8ca461fa198a5cf608524ecf3f4838b7": "",
+    "b8e2ecad6a8b6820317fd9864a3dd644": "",
+    "d2a7145e2a978e332521f16ff9832993": "",
+    "ff63725be27e11482c3837b11c850977": ""
+  },
+  "excluded": {
+    "predicate_false": 14
+  },
+  "completeness": {
+    "version": 1,
+    "mode": "require_complete",
+    "candidates": {
+      "complete": 19,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "selected": {
+      "complete": 5,
+      "partial": 0,
+      "unknown": 0,
+      "absent": 0,
+      "unassessed": 0,
+      "partial_with_unknown": 0,
+      "lost_items": 0,
+      "unknown_items": 0,
+      "detail_loss_items": 0
+    },
+    "run_status": {
+      "3f477f12d4f609ee6acf9e022c8aeba3": "complete",
+      "8ca461fa198a5cf608524ecf3f4838b7": "complete",
+      "b8e2ecad6a8b6820317fd9864a3dd644": "complete",
+      "d2a7145e2a978e332521f16ff9832993": "complete",
+      "ff63725be27e11482c3837b11c850977": "complete"
+    },
+    "population_known": true,
+    "scopes": [
+      "01a2d044645b8ae421e02547ccd71ea6",
+      "036a890ffe4ae0db49cecae248dbba45",
+      "0ab3d1fcac10f95c00c27c0f3e4ff61d",
+      "2637870c3f118cd0fee27afcee680aba",
+      "3608b94242fcae93e29bb4b1917b2306",
+      "4a97ded4fd60923ec28ddaed6abf4247",
+      "4b3428f56e0f7c0b00fa28821b738a04",
+      "51a9063bae740c07e53c34fb729b4f91",
+      "5ccf5d0ec2c7f3811c2f82205e999ecc",
+      "69cbffaf0157ee46f6395383d772b67b",
+      "7b46c60db2f44d5e1285d6498b995aa2",
+      "88ea2b694cf69832b52f9255ce6295b0",
+      "8bb569578cc8cb97148c99a837fec99a",
+      "9beb82bc2acaa2e7d2063dd0486cd727",
+      "aa194658e187257c51be78ecf08dbd39",
+      "b867b65fe67b5be832b49169f33eeeed",
+      "caea72017dae0fb5b91481db3a9e9218",
+      "d976f065228b3a2ead2f85bfbe6f5db7",
+      "f391323021f1ef2dcdf869573093601f"
+    ]
+  }
+}

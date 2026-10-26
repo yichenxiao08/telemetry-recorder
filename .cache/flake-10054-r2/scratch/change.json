@@ -1,0 +1,7 @@
+{
+  "original_sha256": "fe8cdf2eea20cadbb1ea9c1e9a54d3a50f7ed2797a6d7dfef1715b75f5e39250",
+  "replacement": {
+    "old": "json.dumps({\"review\": secrets}).encode()",
+    "new": "b\"\""
+  }
+}

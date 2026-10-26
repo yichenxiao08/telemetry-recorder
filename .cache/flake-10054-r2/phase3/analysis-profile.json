@@ -1,0 +1,59 @@
+{
+  "id": "flake10054-r2",
+  "unit": "per-run",
+  "workload": "r2_capture.main",
+  "step": "r2_capture.main",
+  "envelope_profile": "synthetic",
+  "envelope_version": "1",
+  "numeric": [
+    {
+      "name": "startup_ms",
+      "selector": "output.startup_ms",
+      "unit": "ms",
+      "epsilon": 1,
+      "floor": 1
+    },
+    {
+      "name": "request_ms",
+      "selector": "output.request_ms",
+      "unit": "ms",
+      "epsilon": 1,
+      "floor": 1
+    },
+    {
+      "name": "test_ms",
+      "selector": "output.test_ms",
+      "unit": "ms",
+      "epsilon": 1,
+      "floor": 1
+    },
+    {
+      "name": "body_bytes",
+      "selector": "output.body_bytes",
+      "unit": "bytes",
+      "epsilon": 1,
+      "floor": 1
+    },
+    {
+      "name": "port",
+      "selector": "output.port",
+      "unit": "port",
+      "epsilon": 1,
+      "floor": 1
+    }
+  ],
+  "categories": [
+    {
+      "name": "ready",
+      "selector": "output.ready"
+    },
+    {
+      "name": "reset",
+      "selector": "output.reset"
+    },
+    {
+      "name": "status",
+      "selector": "output.status"
+    }
+  ]
+}
