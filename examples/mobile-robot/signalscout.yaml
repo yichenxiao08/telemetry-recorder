@@ -1,0 +1,7 @@
+version: 1
+synthetic_only: true
+service: synthetic.mobile-robot-example
+probes:
+  - module: robot_sim
+    function: command
+    capture: {args: [clearance, brake_at], return: true}

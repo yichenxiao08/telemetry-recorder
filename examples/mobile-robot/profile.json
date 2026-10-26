@@ -1,0 +1,18 @@
+{
+  "id": "mobile-robot-stop-v1",
+  "unit": "decision",
+  "workload": "robot_sim.command",
+  "step": "robot_sim.command",
+  "envelope_profile": "synthetic",
+  "envelope_version": "1",
+  "relations": {
+    "version": 1,
+    "rules": [{
+      "id": "stop-near-obstacle",
+      "unit": "speed",
+      "tolerance": 0,
+      "when": {"op": "le", "args": [{"op": "field", "field": "inputs.clearance"}, {"op": "number", "number": 0.3}]},
+      "assert": {"op": "le", "args": [{"op": "field", "field": "output"}, {"op": "number", "number": 0}]}
+    }]
+  }
+}
