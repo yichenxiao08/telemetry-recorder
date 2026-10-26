@@ -822,3 +822,16 @@ Three valid pairs, >=2/3 correct tool diagnoses, no correctness regression and a
 runtime-supported discordant solve or >=20% setup-inclusive elapsed advantage are
 the prospective continuation bar. Incomplete is inconclusive; failure pauses
 expansion; passing only supports another held-out evaluation. No runs launched.
+
+### Pilot02 partial outcome — 2026-10-26
+
+The coordinator stops the primary pilot02 as INCONCLUSIVE under the unchanged
+all-three-valid rule. Owner-reported case-01 grading found both diagnoses correct,
+runtime attribution Partial, and tool investigation 747 seconds versus 220 ordinary.
+Case-02 stopped for a reported isolation incident; its separate audit record is
+incomplete (UNRESOLVED, no saved notes, 41/30 commands). Case 02 is unscorable and
+case 03 was not launched. See [outcome and limitations](docs/pilot02-outcome.md).
+No case replacement, rerun, budget reset, criteria change or automatic restart.
+This is not an overall product pass/fail or evidence of diagnostic advantage.
+Expansion remains paused; future evaluation requires a deliberate new registration.
+The frozen protocol, previous results, tags and executable implementation remain unchanged.
