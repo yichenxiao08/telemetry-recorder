@@ -125,3 +125,9 @@ structured report. Legacy synthetic capture is not a production privacy gate.
 The previous exploratory/paired results and failures remain unchanged. This
 workflow demonstrates recording and native checking of declared observations,
 not causation, independent mechanism discovery or comparative usefulness.
+
+## Transfer boundary
+
+The [Flappy Bird transfer assessment](workflow-transfer-assessment.md) separates
+this fixed Snake helper from generic probe compatibility and target entry-point
+preparation. No launcher-free Flappy behavior capture has been demonstrated.
