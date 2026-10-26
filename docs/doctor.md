@@ -1,5 +1,10 @@
 # Local setup check
 
+For the next step after setup, use the
+[single-window Python recording recipe](python-first-recording.md): public scalar
+fixture, new outputs, persisted completeness and observation report verification.
+It uses a prepared Python environment directly, without requiring uv on PATH.
+
 From the repository root in native PowerShell:
 
 ```powershell
