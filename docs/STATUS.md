@@ -1,6 +1,6 @@
 # Status at a glance
 
-Updated 2026-10-25. One page; the other docs are the detailed record.
+Updated 2026-10-26. One page; the other docs are the detailed record.
 
 ## What it is
 
@@ -39,11 +39,16 @@ its own owner-approved change with hash manifests, not a drive-by cleanup.
 
 ## Next
 
-The separate [paired pilot](paired-usefulness-pilot.md) specifies three new real
-cases without screening for baseline failure or expected tool advantage. Both
-arms get equal source access; setup costs and failures count, and source,
-scanner and runtime evidence are separately attributed. Freeze all inputs and
-settings before investigations. Its prospective investment bar is a practical
-decision policy, not proof of broad usefulness. Existing incomplete preparation
-attempts do not constitute study results. Node implementation and further
-product expansion remain deferred pending evidence.
+The primary pilot02 is stopped as **INCONCLUSIVE**: one valid case had both
+diagnoses correct, but tool attribution Partial and investigation times of
+747 seconds with the tool versus 220 ordinarily. A case-02 isolation incident
+was reported; its independent audit reply exceeded budget and saved no notes.
+Case 02 is unscorable and case 03 was not launched. These are owner-reported
+outcomes, not an independent evidence inspection. See
+[partial outcome and limitations](pilot02-outcome.md).
+
+Preserve attempts and costs; no case replacement, rerun or automatic restart.
+The [frozen protocol](paired-usefulness-pilot.md) is unchanged. Its all-three-valid
+requirement was not met, so this is neither an overall product pass nor fail.
+Node implementation and further expansion remain paused; a future study requires
+a deliberate decision and new registration. No diagnostic advantage is shown.

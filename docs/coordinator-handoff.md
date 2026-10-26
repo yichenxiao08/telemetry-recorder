@@ -1,4 +1,4 @@
-CURRENT OVERRIDE — 2026-10-25 (owner-reported outcomes; docs-only)
+CURRENT OVERRIDE — 2026-10-26 (owner-reported outcomes; docs-only)
 This section supersedes stale startup/queue/status text below; history is retained.
 Coordinator remains read-only in the owner checkout, learns evaluation outcomes
 only from pasted sanitized reports, and never opens sealed answers or evaluation
@@ -8,8 +8,9 @@ Builder subagents may create reviewed docs/code PRs; builders never merge or mov
 Current implementation: doctor probe importability PR #19 merged; static scanner
 PRs #22–24 merged; scanner resource/cancellation reliability PR #30 merged at
 f610228bc8df2fc5a21f4d1ae13533051c943027. Node adapter PR #31 is design-only,
-ready/unmerged; no Node implementation authorized. Paired-study PR #32 is docs-only,
-under review; no study launched. Never infer an implementation from a design PR.
+ready/unmerged; no Node implementation authorized. Paired-study PR #32 merged at
+929614097be4e591fc21cfcb035534b9a06ddf18. Rejected-upload PR #33 merged at
+0ff7ff6288d2aca189cc9a232d22427d96d44e93. Never infer an implementation from a design PR.
 
 Owner-pasted evidence: run4b baseline Hit in 27 commands; run4c Hit in 33;
 historical-01 Hit in 24. Independent graders confirmed all three difficulty gates
@@ -29,14 +30,17 @@ capture attempts stop tool attempts; remaining-budget source-only diagnosis allo
 never tool Hit. Original hard-test README/tests-first rule and 150-command gate
 remain intact and apply only to their original track.
 
-Next: review/freeze the paired design, then owner launches a fresh curator to
-prepare registration. Unknown model/settings may remain pending during preparation;
-all settings/hashes must be fixed before investigator launches. No further invented
-puzzles or baseline-failure selection. Pre-register all-three-valid, >=2/3 tool
-correct, no paired correctness regression, and >=1 runtime-supported cause-naming
-Hit with discordant tool solve OR >=20% setup-inclusive elapsed saving in a pair
-both correct. Invalid/incomplete is inconclusive; failure pauses product expansion;
-passing supports another held-out evaluation, not a usefulness claim or M5 completion.
+Current decision: stop primary pilot02 as INCONCLUSIVE; see docs/pilot02-outcome.md.
+Owner-pasted case-01 grading: valid, both correct, tool attribution Partial,
+no runtime-supported cause-naming Hit; ordinary/tool investigation 220/747 seconds,
+45/138 commands, setup timing not separately measured. Case-02 stopped before
+reproduction/capture. Its procedure auditor reported material cross-arm exposure
+but returned UNRESOLVED, wrote no notes and exceeded 41/30 commands; audit evidence
+is incomplete, not independently established here. Case 02 is unscorable; case 03
+was not launched. No replacements, reruns, budget resets or automatic recovery loop.
+Preserve all costs/results. The original all-three-valid bar/protocol is unchanged;
+this is not overall product PASS/FAIL or M5 completion. Expansion remains paused;
+a future study needs a deliberate decision and independent registration.
 
 HISTORICAL HANDOFF (stale queue/startup instructions below are not current)
 
