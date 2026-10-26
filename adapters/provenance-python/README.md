@@ -6,6 +6,14 @@ only. Standard requests/logging instrumentations are pinned at 0.49b2.
 PyYAML is used only for bounded safe configuration. No Go dependencies changed.
 
 Primary interface: python -m scout_probe, not an edit to the target source.
+
+For a prepared Windows environment, start with the
+[single-window first-recording recipe](../../docs/python-first-recording.md).
+It uses the existing scalar fixture, fresh outputs, direct Python, persisted
+completeness and a verified observation report; no uv on PATH or manual
+run-ID/report-request assembly. It is synthetic mechanics, not a diagnosis
+benchmark or general application launcher.
+
 signalscout.yaml names directly defined synchronous module functions or methods
 of top-level plain Python classes, with explicit argument/return/receiver-field
 allowlists. Default capture is OFF. Fixed signatures are required. Unsupported
