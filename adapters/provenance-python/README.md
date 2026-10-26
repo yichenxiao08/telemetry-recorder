@@ -385,3 +385,7 @@ input and remain unsupported as explanations. Sampling holes are unknown.
 No capture/probe/recorder changes are needed. See
 [the PowerShell walkthrough](../../docs/report-walkthrough.md) for the closed
 schema, bounded reads, numeric tolerance and the limits of structural verification.
+
+## Prepared reward-behavior audit
+
+For the fixed public Snake study, the [record-once reward audit](../../docs/reward-audit-workflow.md) composes capture and native declared relations in one command, then supports new questions on saved data. Measurement meanings and pacing are explicit; this is not automatic diagnosis or evidence of usefulness.

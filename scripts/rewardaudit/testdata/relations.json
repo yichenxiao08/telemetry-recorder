@@ -1,0 +1,835 @@
+{
+  "version": 1,
+  "evidence_tier": "observation",
+  "step": "reward_capture.step_observation",
+  "profile": {
+    "relations": {
+      "version": 1,
+      "rules": [
+        {
+          "id": "apple-events",
+          "unit": "boolean",
+          "tolerance": 0,
+          "assert": {
+            "op": "eq",
+            "args": [
+              {
+                "op": "field",
+                "field": "inputs.apple"
+              },
+              {
+                "op": "boolean",
+                "boolean": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "alive-steps",
+          "unit": "boolean",
+          "tolerance": 0,
+          "assert": {
+            "op": "eq",
+            "args": [
+              {
+                "op": "field",
+                "field": "inputs.death"
+              },
+              {
+                "op": "boolean",
+                "boolean": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "configuration-repeats",
+          "unit": "boolean",
+          "tolerance": 0,
+          "assert": {
+            "op": "eq",
+            "args": [
+              {
+                "op": "field",
+                "field": "inputs.repeated_configuration"
+              },
+              {
+                "op": "boolean",
+                "boolean": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "positive-reward-on-repeat",
+          "unit": "reward-units",
+          "tolerance": 0,
+          "when": {
+            "op": "and",
+            "args": [
+              {
+                "op": "and",
+                "args": [
+                  {
+                    "op": "not",
+                    "args": [
+                      {
+                        "op": "field",
+                        "field": "inputs.apple"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "not",
+                    "args": [
+                      {
+                        "op": "field",
+                        "field": "inputs.death"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "field",
+                "field": "inputs.repeated_configuration"
+              }
+            ]
+          },
+          "assert": {
+            "op": "le",
+            "args": [
+              {
+                "op": "field",
+                "field": "inputs.actual_reward"
+              },
+              {
+                "op": "number",
+                "number": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "id": "snake-declared-reward-audit-v1",
+    "unit": "transition",
+    "workload": "reward_capture.episode_run",
+    "step": "reward_capture.step_observation",
+    "envelope_profile": "synthetic",
+    "envelope_version": "1",
+    "numeric": null,
+    "categories": null,
+    "invariant": {
+      "declared": "",
+      "current": "",
+      "used": "",
+      "delta": 0
+    }
+  },
+  "from": 1792972800000000000,
+  "to": 1793059200000000000,
+  "run_limit": 10,
+  "record_limit": 100000,
+  "candidate_runs": 10,
+  "runs_without_supported_decision": [],
+  "step_counts": {
+    "alive-steps": {
+      "recorded_decisions": 1329,
+      "satisfied": 1321,
+      "violated": 8,
+      "unknown": 0,
+      "not_applicable": 0,
+      "sampled_records": 0,
+      "violation_evidence": [
+        "event:a27b8cb3e542eab598b797e5e97e78a908ac30d7006301fb514f1c5f35b88c70/0",
+        "event:7ed865f64e0192275d5b5f5e4b2e07b79f54f0cb51d4c8233dab25d129811bd1/0",
+        "event:2dd7d6a38beb9b0b64ef547225aad42ad341941b7f3dd4d4c34655cc419326d1/0"
+      ],
+      "violation_urls": [
+        "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-3c7172f5845aaafe4e421ba35a2b345c07496344047fbfac7c423c93dfb6363a",
+        "/run?id=60cf946be6c1964ef05b33c5662904a9#e-a67be4245a3bf653562e906dd3c7a2fe0216745961fa1604aa18e62ecb100b85",
+        "/run?id=c2fe9e33d556b8f4c089c2b89e0410e6#e-887fb999b2835801afe8fa4668c81168061ade52412f729e1d78943a258bcfd6"
+      ],
+      "evidence_omitted": 5,
+      "last_violation": "event:96bd7479f73b6fdbeadc00db0f95158ef6d72a0bd754e91227b88d40c7362ecd/0",
+      "unknown_reasons": {}
+    },
+    "apple-events": {
+      "recorded_decisions": 1329,
+      "satisfied": 1233,
+      "violated": 96,
+      "unknown": 0,
+      "not_applicable": 0,
+      "sampled_records": 0,
+      "violation_evidence": [
+        "event:03fbbdd723184ba94fa94b34ed0447b67d2aaa6fa19b1edd1ffe34abdd94505f/0",
+        "event:2570e0a63aa0b443b8c168bd41b4807e515bbfd1dbefaeb92fa48e11743379db/0",
+        "event:b3bc099c733ed5af19937f4552242fab112d514bd70331692730c9286df79b05/0"
+      ],
+      "violation_urls": [
+        "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-b03a135f8ea1bd501f03e60c9076c1720e8b80af4208955f142c3459571325b9",
+        "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-1773291d19a5fecd57b714d5dd0d8de8d40a3806b041d1b28edeed3be29c7258",
+        "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-e7022f62047f447a62e1b83a478919174d23bb5fa4e8b7d932f58fc46efbbc45"
+      ],
+      "evidence_omitted": 93,
+      "last_violation": "event:eefc81a9e3c9a299a4163f4d06e2c031a2df24faf78558af7f3b45eb65148219/0",
+      "unknown_reasons": {}
+    },
+    "configuration-repeats": {
+      "recorded_decisions": 1329,
+      "satisfied": 1329,
+      "violated": 0,
+      "unknown": 0,
+      "not_applicable": 0,
+      "sampled_records": 0,
+      "violation_evidence": [],
+      "violation_urls": [],
+      "evidence_omitted": 0,
+      "unknown_reasons": {}
+    },
+    "positive-reward-on-repeat": {
+      "recorded_decisions": 1329,
+      "satisfied": 0,
+      "violated": 0,
+      "unknown": 0,
+      "not_applicable": 1329,
+      "sampled_records": 0,
+      "violation_evidence": [],
+      "violation_urls": [],
+      "evidence_omitted": 0,
+      "unknown_reasons": {}
+    }
+  },
+  "run_counts": {
+    "3b53c5508026dfadc921a6bf93e30d27": {
+      "alive-steps": {
+        "recorded_decisions": 110,
+        "satisfied": 109,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:a27b8cb3e542eab598b797e5e97e78a908ac30d7006301fb514f1c5f35b88c70/0"
+        ],
+        "violation_urls": [
+          "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-3c7172f5845aaafe4e421ba35a2b345c07496344047fbfac7c423c93dfb6363a"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:a27b8cb3e542eab598b797e5e97e78a908ac30d7006301fb514f1c5f35b88c70/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 110,
+        "satisfied": 104,
+        "violated": 6,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:03fbbdd723184ba94fa94b34ed0447b67d2aaa6fa19b1edd1ffe34abdd94505f/0",
+          "event:2570e0a63aa0b443b8c168bd41b4807e515bbfd1dbefaeb92fa48e11743379db/0",
+          "event:b3bc099c733ed5af19937f4552242fab112d514bd70331692730c9286df79b05/0"
+        ],
+        "violation_urls": [
+          "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-b03a135f8ea1bd501f03e60c9076c1720e8b80af4208955f142c3459571325b9",
+          "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-1773291d19a5fecd57b714d5dd0d8de8d40a3806b041d1b28edeed3be29c7258",
+          "/run?id=3b53c5508026dfadc921a6bf93e30d27#e-e7022f62047f447a62e1b83a478919174d23bb5fa4e8b7d932f58fc46efbbc45"
+        ],
+        "evidence_omitted": 3,
+        "last_violation": "event:88c525f95993880d03af47aefbd976aeb67c7678bf9d63ad0f4ea4e3ba5f828f/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 110,
+        "satisfied": 110,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 110,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 110,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "49990dbc1a63251ddaa441df47c6d479": {
+      "alive-steps": {
+        "recorded_decisions": 256,
+        "satisfied": 256,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 256,
+        "satisfied": 237,
+        "violated": 19,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:9bf5a365ffb1d4eac79da351da2b6b3e9fb6450c831b315f7a979b541fbcbcbb/0",
+          "event:0cc9ad25fb87b659328ff8e36d90a7aab9365e5a6b9d8b2afddf7341cfe4af85/0",
+          "event:218dab677b7da67850be50ec182fc735b38e28785790930ad4a57370ac717b3a/0"
+        ],
+        "violation_urls": [
+          "/run?id=49990dbc1a63251ddaa441df47c6d479#e-c5befcbd0cd26f1334e7937b3ce38bde8628d7b781e3a196cbffb2e95a85cbdc",
+          "/run?id=49990dbc1a63251ddaa441df47c6d479#e-56c05ef8a761b013517bdee93a9366ea1eb462a2b2c56c828fafebfe161e8c14",
+          "/run?id=49990dbc1a63251ddaa441df47c6d479#e-5a2bf615f157662b30cb028753061c4c27c87b71315e4091eb4faa8c4cff4e7a"
+        ],
+        "evidence_omitted": 16,
+        "last_violation": "event:de08af6ad58096858d67cab22f37198f70e3f19d896244262601fa06cf285202/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 256,
+        "satisfied": 256,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 256,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 256,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "60cf946be6c1964ef05b33c5662904a9": {
+      "alive-steps": {
+        "recorded_decisions": 108,
+        "satisfied": 107,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:7ed865f64e0192275d5b5f5e4b2e07b79f54f0cb51d4c8233dab25d129811bd1/0"
+        ],
+        "violation_urls": [
+          "/run?id=60cf946be6c1964ef05b33c5662904a9#e-a67be4245a3bf653562e906dd3c7a2fe0216745961fa1604aa18e62ecb100b85"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:7ed865f64e0192275d5b5f5e4b2e07b79f54f0cb51d4c8233dab25d129811bd1/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 108,
+        "satisfied": 102,
+        "violated": 6,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:fa016e9e56bc052178346d6dc5255266ec6f97411a5070c360f80c6724c8db56/0",
+          "event:5e0c6d455bf67bf23cc6342a1d1a7c8b2d3b27566067256a941f87b7ffcf34ff/0",
+          "event:a485a46448d72b1633b58a6c0c7bf28ab52d0075ff9f33bca0045ffcebeeb2a0/0"
+        ],
+        "violation_urls": [
+          "/run?id=60cf946be6c1964ef05b33c5662904a9#e-918d1cc0fca7f4cbc8c101693b44272dde645338db23f538ce05a200855c2497",
+          "/run?id=60cf946be6c1964ef05b33c5662904a9#e-00f7a1364d6f1da919e2ccc493d14c3693e6a69ca4a221e7c38e4601d039959b",
+          "/run?id=60cf946be6c1964ef05b33c5662904a9#e-2095b0f253e67f5a3c3058ba6b3ab626ebaa7edbf2857427d533064ecaaaac8e"
+        ],
+        "evidence_omitted": 3,
+        "last_violation": "event:9ac6c6f22b5b4a7c12c9946c4374a0bc57492998a381482833806db3ca8f3e64/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 108,
+        "satisfied": 108,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 108,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 108,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "70ef09dffbf3d20ef3193f2adba42a2c": {
+      "alive-steps": {
+        "recorded_decisions": 171,
+        "satisfied": 170,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:e2f39b7596913599c6db747652225853c256739702adde26eba1e0055214c3bc/0"
+        ],
+        "violation_urls": [
+          "/run?id=70ef09dffbf3d20ef3193f2adba42a2c#e-428b63e15980b9bf00aaed1cb4495b23e3dac6a4dd70023b585a2b434257b573"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:e2f39b7596913599c6db747652225853c256739702adde26eba1e0055214c3bc/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 171,
+        "satisfied": 156,
+        "violated": 15,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:841dab4a394e19997759ae574e5eedf5a6c34bad66fdbe1ed4881ff893a8fc03/0",
+          "event:0990f70b5cd339bd320e854a465acf2f08b96976b2239c91848d6cc107d3176f/0",
+          "event:accd088b09807429a4c2b875275bbdece06930fff150d09358bc9d7c1d744b07/0"
+        ],
+        "violation_urls": [
+          "/run?id=70ef09dffbf3d20ef3193f2adba42a2c#e-9d307c6fc5d39b6a32ad31d9cb4c4a30be820a1bc4f1d2d2a77a2d18ae9e0c7e",
+          "/run?id=70ef09dffbf3d20ef3193f2adba42a2c#e-ac3ed381bbe031116aaab0728b0cc27786c83e2c1d1b62f14babbe9700fc5cd4",
+          "/run?id=70ef09dffbf3d20ef3193f2adba42a2c#e-402b2a52c65dac21a638ddc1196914c6c1d78cf6c365211f82c50a0e91c036a2"
+        ],
+        "evidence_omitted": 12,
+        "last_violation": "event:66663a0af7bf6566fd51ae26e1396cd6fd3d463c11d4c0ac41f911327e4f127e/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 171,
+        "satisfied": 171,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 171,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 171,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "af1527db543a5d991c4f27b001c94cf2": {
+      "alive-steps": {
+        "recorded_decisions": 129,
+        "satisfied": 128,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:a6df5781451d086f01a86d84132a28d51acb628eb3a91255ab14f493dbf1319a/0"
+        ],
+        "violation_urls": [
+          "/run?id=af1527db543a5d991c4f27b001c94cf2#e-01c2443457774b2d861a80db6992bf41f51af249cce607c3c74cf6f84c4cd617"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:a6df5781451d086f01a86d84132a28d51acb628eb3a91255ab14f493dbf1319a/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 129,
+        "satisfied": 120,
+        "violated": 9,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:4ac1fd74ad0d4630de8557b6d71db4c0764d6a59526e66f84e0853dfc3833b55/0",
+          "event:e9ea46450ce6ef15e0fb93ddcb5bd7ed798e54c68a6e5251852be831b83eb21d/0",
+          "event:e868738e07a66fdf29a5a009988124befadf1f35dea1f43b9f76057524552b1f/0"
+        ],
+        "violation_urls": [
+          "/run?id=af1527db543a5d991c4f27b001c94cf2#e-ca7855199f3d6e4009bd0494aed36d40d0ead1aa33b31eb0ac90cb63c87e2a6c",
+          "/run?id=af1527db543a5d991c4f27b001c94cf2#e-49578ad1f948a01ecbac5a4c551689a6ce0ff5fe7a69ed58f6b6e74c968638c8",
+          "/run?id=af1527db543a5d991c4f27b001c94cf2#e-416e4afcd963671cb1ada622c3dffbdd5a3ce8e1a1d95fccfe9a640e25cb9217"
+        ],
+        "evidence_omitted": 6,
+        "last_violation": "event:785ab7a79e1caaf702d523c43e2b64a2fa7fe16a26c9c4dd06b24933162aad7e/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 129,
+        "satisfied": 129,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 129,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 129,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "c2fe9e33d556b8f4c089c2b89e0410e6": {
+      "alive-steps": {
+        "recorded_decisions": 119,
+        "satisfied": 118,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:2dd7d6a38beb9b0b64ef547225aad42ad341941b7f3dd4d4c34655cc419326d1/0"
+        ],
+        "violation_urls": [
+          "/run?id=c2fe9e33d556b8f4c089c2b89e0410e6#e-887fb999b2835801afe8fa4668c81168061ade52412f729e1d78943a258bcfd6"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:2dd7d6a38beb9b0b64ef547225aad42ad341941b7f3dd4d4c34655cc419326d1/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 119,
+        "satisfied": 111,
+        "violated": 8,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:99d0087619be3a7c9b7fba6844467be01f304d5014ea7520fad8f38b030db133/0",
+          "event:b91af32b504a7a2078542e1632e356d4ec2906b9664baf5a4767e33b76d7e7d7/0",
+          "event:cb4d6e19300c73f999c5ab608b49e9407ee596a40d767cdb011be120b9e91ac8/0"
+        ],
+        "violation_urls": [
+          "/run?id=c2fe9e33d556b8f4c089c2b89e0410e6#e-398e2d14bc9c1157c3d516d62fff507506cac28bca00e17474422c2e760b4504",
+          "/run?id=c2fe9e33d556b8f4c089c2b89e0410e6#e-6ee4e8322f7e15eaf4b29615d5b215149c9d4c006f0be321bc7e70e97ef71816",
+          "/run?id=c2fe9e33d556b8f4c089c2b89e0410e6#e-01312a4902f7c44db5a4345ce7a0687767cfa5205cdac63050230598cd142a1e"
+        ],
+        "evidence_omitted": 5,
+        "last_violation": "event:6ae12becddba5054eddfc66c52bace1465605f84409a464694d27079274ac2b0/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 119,
+        "satisfied": 119,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 119,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 119,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "dbd644106f85631132d0df1a4ad12dcc": {
+      "alive-steps": {
+        "recorded_decisions": 256,
+        "satisfied": 256,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 256,
+        "satisfied": 235,
+        "violated": 21,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:885d2d3250c99ab266b9525751f5622801450f6b41b90c8a94a9bde492a1c857/0",
+          "event:31247b67063aed63e6dc4c8d6a6b3d26ba7f2a3e89d2fa41796bc1cb140a086e/0",
+          "event:a1e0f20450d4e9eda2a244e97f4994ce340f14d7f1ce0655372f809a3e50e153/0"
+        ],
+        "violation_urls": [
+          "/run?id=dbd644106f85631132d0df1a4ad12dcc#e-24408c03edfaa43f7938b8583338f5c636c9e4757d7c038988bd00762a59f96a",
+          "/run?id=dbd644106f85631132d0df1a4ad12dcc#e-9f15c11c10b7878d0dc6bd69b2b5bca4ce572b7ece6ce550e4bf11f40874808b",
+          "/run?id=dbd644106f85631132d0df1a4ad12dcc#e-786fb8b5754096b7a3fc0d526092f5d13653641cb9e1dbc6cb80ce75c2fcfd28"
+        ],
+        "evidence_omitted": 18,
+        "last_violation": "event:07e5c9af834660641a15121b468c9ef82103ac9ee00879197cad9859960732ad/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 256,
+        "satisfied": 256,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 256,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 256,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "e183813124bfbae86047fe3bc22071a6": {
+      "alive-steps": {
+        "recorded_decisions": 49,
+        "satisfied": 48,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:96bd7479f73b6fdbeadc00db0f95158ef6d72a0bd754e91227b88d40c7362ecd/0"
+        ],
+        "violation_urls": [
+          "/run?id=e183813124bfbae86047fe3bc22071a6#e-0bea55c3bb2d11370fc6d6877a2262d8da1de3a8bf55f36e41a362e5f68602c7"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:96bd7479f73b6fdbeadc00db0f95158ef6d72a0bd754e91227b88d40c7362ecd/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 49,
+        "satisfied": 46,
+        "violated": 3,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:a7d62aca42775323da7e722635ed00a567c9e26bc622202d37ce62d54db524af/0",
+          "event:d31e30a8c5b51d2a09022d4c270b4f09291cf4eeeef23e0392c17b5f4004a35c/0",
+          "event:eefc81a9e3c9a299a4163f4d06e2c031a2df24faf78558af7f3b45eb65148219/0"
+        ],
+        "violation_urls": [
+          "/run?id=e183813124bfbae86047fe3bc22071a6#e-4babb43f7f0475cb65b86102994eb5ef977e66e77acaa98d49c44140020c91af",
+          "/run?id=e183813124bfbae86047fe3bc22071a6#e-0e753ecd03c82aea3d904cada1195d1062abd32e9a5f02646ce5ad6a78df030a",
+          "/run?id=e183813124bfbae86047fe3bc22071a6#e-029e4c794e24bcfde5172c9bf5782ed83d655fc740ccea02c8aefc2c76f6af64"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:eefc81a9e3c9a299a4163f4d06e2c031a2df24faf78558af7f3b45eb65148219/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 49,
+        "satisfied": 49,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 49,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 49,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "e3215a3cbd69afdfbc37bd7ae5720468": {
+      "alive-steps": {
+        "recorded_decisions": 101,
+        "satisfied": 100,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:dbd55bb4782d2c7666423365b3672fb276d1e519afccf703f1ed7e50ae4e40db/0"
+        ],
+        "violation_urls": [
+          "/run?id=e3215a3cbd69afdfbc37bd7ae5720468#e-2db094118e06dbf6be3c43b57be8d141d114cba61fa85ac4fbd9f39b5ae19ad7"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:dbd55bb4782d2c7666423365b3672fb276d1e519afccf703f1ed7e50ae4e40db/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 101,
+        "satisfied": 94,
+        "violated": 7,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:b7baa924cb4c690eaf7bca9cd892ae6f00ec35d4ed5a9baef07ec8ce3683719b/0",
+          "event:aebac755a20fc3b5415cc2b7d13bf64f59570178f5871c02e5be8fc157b8786f/0",
+          "event:ceb2063c2e441445e760c74468ed1e7b1109725716b99af053da3cf71032d6f5/0"
+        ],
+        "violation_urls": [
+          "/run?id=e3215a3cbd69afdfbc37bd7ae5720468#e-eb11343db84bdf8720816d3720afd80468a32e4b1289731a7adb5bcdb0fb7b67",
+          "/run?id=e3215a3cbd69afdfbc37bd7ae5720468#e-d072b524103701c8d74626b1bbe89291d3451ae152517da01199dcca138678ca",
+          "/run?id=e3215a3cbd69afdfbc37bd7ae5720468#e-22874910bb253c80b04ea6ed3e70954eeae0c8b3bdb374ab8888cbf61c9a774b"
+        ],
+        "evidence_omitted": 4,
+        "last_violation": "event:41e710714e039ae83d8223e2169e2c10ff083d437b2986a019f685cbcc11735c/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 101,
+        "satisfied": 101,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 101,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 101,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    },
+    "ff2483c4b54e53a09bff6b7eb63cd075": {
+      "alive-steps": {
+        "recorded_decisions": 30,
+        "satisfied": 29,
+        "violated": 1,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:99a7157f0a045ac42a56678840e1b07179a85b0be9780f6669d19e0db03f062f/0"
+        ],
+        "violation_urls": [
+          "/run?id=ff2483c4b54e53a09bff6b7eb63cd075#e-6f5933558cc62888c315d47336d74d010fde3e03b805dcc214db30ace43d56a3"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:99a7157f0a045ac42a56678840e1b07179a85b0be9780f6669d19e0db03f062f/0",
+        "unknown_reasons": {}
+      },
+      "apple-events": {
+        "recorded_decisions": 30,
+        "satisfied": 28,
+        "violated": 2,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [
+          "event:d7f3ec30c22e9df3abb2742047def0eb54d11b27b4a87f81cedb07334e6d087f/0",
+          "event:c514af4b5c848756d01a1f1d6f4999d098957bc7bd754261c9da1970cd7b0935/0"
+        ],
+        "violation_urls": [
+          "/run?id=ff2483c4b54e53a09bff6b7eb63cd075#e-96bc7a368c4cbd4736fe885d3bfe14c012fe22cc5b93ac9d285c4065213243cd",
+          "/run?id=ff2483c4b54e53a09bff6b7eb63cd075#e-958190bb4b3cc38470139f61811780999a13391ea19ed32a5600768b47b9f085"
+        ],
+        "evidence_omitted": 0,
+        "last_violation": "event:c514af4b5c848756d01a1f1d6f4999d098957bc7bd754261c9da1970cd7b0935/0",
+        "unknown_reasons": {}
+      },
+      "configuration-repeats": {
+        "recorded_decisions": 30,
+        "satisfied": 30,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 0,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      },
+      "positive-reward-on-repeat": {
+        "recorded_decisions": 30,
+        "satisfied": 0,
+        "violated": 0,
+        "unknown": 0,
+        "not_applicable": 30,
+        "sampled_records": 0,
+        "violation_evidence": [],
+        "violation_urls": [],
+        "evidence_omitted": 0,
+        "unknown_reasons": {}
+      }
+    }
+  },
+  "sampling_note": "Counts are recorded decisions, not total host calls. Sampled capture is incomplete: unsampled calls are unknown, never satisfied or evidence of absence. Without a complete capture manifest, missing calls cannot be counted. Boundary capture does not prove the code read a value."
+}

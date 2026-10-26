@@ -1,0 +1,19 @@
+{
+  "id": "snake-declared-reward-audit-v1",
+  "unit": "transition",
+  "workload": "reward_capture.episode_run",
+  "step": "reward_capture.step_observation",
+  "envelope_profile": "synthetic",
+  "envelope_version": "1",
+  "relations": {
+    "version": 1,
+    "rules": [
+      {"id":"apple-events","unit":"boolean","tolerance":0,"assert":{"op":"eq","args":[{"op":"field","field":"inputs.apple"},{"op":"boolean","boolean":false}]}},
+      {"id":"alive-steps","unit":"boolean","tolerance":0,"assert":{"op":"eq","args":[{"op":"field","field":"inputs.death"},{"op":"boolean","boolean":false}]}},
+      {"id":"configuration-repeats","unit":"boolean","tolerance":0,"assert":{"op":"eq","args":[{"op":"field","field":"inputs.repeated_configuration"},{"op":"boolean","boolean":false}]}},
+      {"id":"positive-reward-on-repeat","unit":"reward-units","tolerance":0,
+       "when":{"op":"and","args":[{"op":"and","args":[{"op":"not","args":[{"op":"field","field":"inputs.apple"}]},{"op":"not","args":[{"op":"field","field":"inputs.death"}]}]},{"op":"field","field":"inputs.repeated_configuration"}]},
+       "assert":{"op":"le","args":[{"op":"field","field":"inputs.actual_reward"},{"op":"number","number":0}]}}
+    ]
+  }
+}

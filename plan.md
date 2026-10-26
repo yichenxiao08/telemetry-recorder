@@ -835,3 +835,7 @@ No case replacement, rerun, budget reset, criteria change or automatic restart.
 This is not an overall product pass/fail or evidence of diagnostic advantage.
 Expansion remains paused; future evaluation requires a deliberate new registration.
 The frozen protocol, previous results, tags and executable implementation remain unchanged.
+
+### Bounded record-once reward workflow — 2026-10-26
+
+Owner-authorized local Python usability milestone: a versioned orchestration command for the fixed public Snake reward study, using existing native relations counts and evidence. No new aggregation, scoring, migration, report-cap change or automatic diagnosis. See [workflow and limits](docs/reward-audit-workflow.md). Supplied measurement semantics, explicit pacing, all-six-policy coverage, fail-closed completeness and immutable saved-data queries are part of the contract. This is exploratory workflow validation; earlier pilot outcomes and lack of demonstrated practical advantage remain unchanged.

@@ -1,0 +1,56 @@
+{
+  "drained": {
+    "attempted": 1349,
+    "acknowledged": 1349,
+    "failed": 0,
+    "dropped": 0,
+    "unknown": 0,
+    "drained": true,
+    "complete": true
+  },
+  "runs_created": 10,
+  "records_captured": 1339,
+  "probes": [
+    {
+      "module": "reward_capture",
+      "function": "episode_run",
+      "status": "attached",
+      "calls": 10,
+      "records_captured": 10
+    },
+    {
+      "module": "reward_capture",
+      "function": "step_observation",
+      "status": "attached",
+      "calls": 1329,
+      "records_captured": 1329
+    }
+  ],
+  "counters": {
+    "attempted": 1349,
+    "accepted": 1349,
+    "exported": 1349,
+    "acknowledged": 1349,
+    "failed": 0,
+    "dropped": 0,
+    "unknown": 0,
+    "drop_bytes": 0,
+    "drop_full": 0,
+    "queue_size": 0,
+    "retained_items": 0,
+    "manifest": {
+      "manifests_built": 10,
+      "scope_records_built": 1,
+      "records_acked": 11,
+      "records_failed": 0,
+      "records_unknown": 0,
+      "epoch": "08c5a13e7e408fd2ddaddb55a4efe68b",
+      "expected_runs": 10,
+      "pending_runs": 0,
+      "outbox": 0,
+      "ledger_overflow": 0,
+      "population_overflow": 0,
+      "scope_tail_sent": true
+    }
+  }
+}
