@@ -50,9 +50,15 @@ def load_config(path):
     if len(text.encode("utf-8")) > 32768:
         raise ValueError("config too large")
     cfg = yaml.safe_load(text)
-    if type(cfg) is not dict or cfg.get("version") != 1 or cfg.get("synthetic_only") is not True:
+    if type(cfg) is not dict or cfg.get("version") != 1:
+        raise ValueError("only version 1 configs supported")
+    public = cfg.get("public_data_experiment") is True
+    if public:
+        if cfg.get("synthetic_only") is not False or not cfg.get("capture_policy") or not cfg.get("capture_profile") or cfg.get("auto_otel", False) is not False:
+            raise ValueError("public data requires synthetic_only: false, strict policy/profile and auto_otel off")
+    elif cfg.get("synthetic_only") is not True or "public_data_experiment" in cfg:
         raise ValueError("only version 1 synthetic configs supported")
-    if set(cfg) - {"version", "synthetic_only", "endpoint", "service", "probes", "auto_otel", "capture_policy", "capture_profile"}:
+    if set(cfg) - {"version", "synthetic_only", "endpoint", "service", "probes", "auto_otel", "capture_policy", "capture_profile", "public_data_experiment"}:
         raise ValueError("unknown config key")
     probes = cfg.get("probes", [])
     if type(probes) is not list or len(probes) > 32:
@@ -431,6 +437,8 @@ class Injector(importlib.abc.MetaPathFinder):
         privacy = "synthetic-only; per-field capture default OFF; NOT P0"
         if self.recorder.capture_policy is not None:
             privacy = "synthetic-only; explicit strict P0 policy; default OFF; no real-data authorization"
+        if self.recorder.public_digest:
+            privacy = "public-data experiment; strict numeric policy; trusted local server; not a privacy guarantee"
         counters = self.recorder.snapshot()
         for item in result:
             item["calls"] = counters.get("probe_calls:" + item["module"] + "." + item["function"], 0)
@@ -485,7 +493,7 @@ def standard_otel(recorder):
 
 
 def summary(report):
-    print("Signal Scout probe summary (synthetic only; capture default OFF)", file=sys.stderr)
+    print("Signal Scout probe summary (" + report["privacy"] + ")", file=sys.stderr)
     print(f"configured probes: {len(report['probes'])}; attached: {sum(p['status']=='attached' for p in report['probes'])}", file=sys.stderr)
     for probe in report["probes"]:
         reason = probe.get("reason", "")
@@ -538,16 +546,26 @@ def main(argv=None):
     if any(p.get("capture", {}).get("return", False) or "return_items" in p.get("capture", {}) for p in cfg["probes"]):
         names.add("output")
     policy = None
+    public_digest, public_opener = "", None
     if "capture_policy" in cfg:
-        from capture_policy import Policy
-        policy = Policy.load(Path(args.config).resolve().parent / cfg["capture_policy"],
-                             base64.b64decode(os.environ.get("SIGNALSCOUT_P0_HMAC_KEY", ""), validate=True))
+        from capture_policy import Policy, unique
+        with (Path(args.config).resolve().parent / cfg["capture_policy"]).open("rb") as stream:
+            raw_policy = stream.read(65537)
+        if len(raw_policy) > 65536:
+            raise ValueError("policy too large")
+        policy = Policy(json.loads(raw_policy, object_pairs_hook=unique),
+                        base64.b64decode(os.environ.get("SIGNALSCOUT_P0_HMAC_KEY", ""), validate=True))
     elif "capture_profile" in cfg:
         raise ValueError("capture_profile requires capture_policy")
+    if cfg.get("public_data_experiment") is True:
+        from public_capture import prepare
+        public_digest, public_opener = prepare(cfg.get("endpoint", "http://127.0.0.1:4318"), policy,
+                                               cfg["capture_profile"], raw_policy)
     recorder = Recorder(cfg.get("endpoint", "http://127.0.0.1:4318"),
                         service=cfg.get("service", "synthetic.probe"), capture_fields=names,
                         _start_worker=not args.preflight, queue_limits=queue_limits, manifest=args.manifest,
-                        capture_policy=policy, capture_profile=cfg.get("capture_profile", ""))
+                        capture_policy=policy, capture_profile=cfg.get("capture_profile", ""),
+                        public_digest=public_digest, public_opener=public_opener)
     injector = Injector(recorder, cfg["probes"])
     previous_optional, _optional = _optional, injector
     # python -m names this module __main__; optional target imports must share it.

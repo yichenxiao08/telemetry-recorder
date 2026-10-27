@@ -1,5 +1,9 @@
 # P0 capture gate — synthetic only, 2026-10-21
 
+For the separate explicitly opted-in public-data experiment, see
+[public-data-experiment.md](public-data-experiment.md). This document describes
+the existing synthetic-only mode.
+
 This is an **opt-in synthetic privacy gate**, not permission to use personal
 data. The owner delegated the compatibility choice: retain the existing synthetic
 mode and add an explicit policy mode, strict default OFF within that mode. Legacy
