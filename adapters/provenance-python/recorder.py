@@ -248,7 +248,7 @@ class Recorder:
     def __init__(self, endpoint="http://127.0.0.1:4318", *, service="synthetic.provenance",
                  capture_fields=(), capacity=256, timeout=.5, cooldown=1,
                  resource_attributes=None, _start_worker=True, retry_limit=1, queue_limits=None,
-                 manifest=False, capture_policy=None, capture_profile=""):
+                 manifest=False, capture_policy=None, capture_profile="", public_digest="", public_opener=None):
         # queue_limits=(max_items, max_bytes) replaces `capacity`; default None keeps
         # the legacy 256-item queue (1..4096 validation) exactly as before.
         self._limits = None
@@ -262,6 +262,7 @@ class Recorder:
         self.resource_attributes = bounded({} if resource_attributes is None else resource_attributes)
         self.endpoint, self.service = endpoint.rstrip("/"), service
         self.capture_policy, self.capture_profile = capture_policy, capture_profile
+        self.public_digest, self.public_opener = public_digest, public_opener
         self.scope_name = "signalscout.synthetic.spike"
         if capture_policy is not None:
             if capture_profile not in capture_policy.profiles:
@@ -541,12 +542,16 @@ class Recorder:
 
     def _send(self, items):
         self.diagnostics.phase = "encode"
-        request = urllib.request.Request(self.endpoint + "/v1/traces", self._encode(items),
-                                         {"Content-Type": "application/x-protobuf"})
+        headers = {"Content-Type": "application/x-protobuf"}
+        if self.public_digest:
+            headers["X-SignalScout-Public-Policy"] = self.public_digest
+            headers["X-SignalScout-Public-Profile"] = self.capture_profile
+        request = urllib.request.Request(self.endpoint + "/v1/traces", self._encode(items), headers)
         self._count("network_requests")
         self.diagnostics.phase = "connect"
         with observe(self.diagnostics):
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            with (self.public_opener.open(request, timeout=self.timeout) if self.public_opener
+                  else urllib.request.urlopen(request, timeout=self.timeout)) as response:
                 self.diagnostics.phase = "response"
                 if response.status != 200:
                     raise OSError("OTLP export failed")
